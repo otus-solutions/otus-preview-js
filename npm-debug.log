@@ -1,23 +1,25 @@
 0 info it worked if it ends with ok
 1 verbose cli [ 'c:\\Program Files\\nodejs\\node.exe',
 1 verbose cli   'c:\\Program Files\\nodejs\\node_modules\\npm\\bin\\npm-cli.js',
-1 verbose cli   'install' ]
+1 verbose cli   'start' ]
 2 info using npm@2.14.4
 3 info using node@v4.1.2
-4 verbose readDependencies loading dependencies from c:\Users\Emanoel\Documents\repositorios2\otus-preview-js\package.json
-5 error install Couldn't read dependencies
-6 verbose stack Error: ENOENT: no such file or directory, open 'c:\Users\Emanoel\Documents\repositorios2\otus-preview-js\package.json'
-6 verbose stack     at Error (native)
-7 verbose cwd c:\Users\Emanoel\Documents\repositorios2\otus-preview-js
-8 error Windows_NT 6.1.7601
-9 error argv "c:\\Program Files\\nodejs\\node.exe" "c:\\Program Files\\nodejs\\node_modules\\npm\\bin\\npm-cli.js" "install"
-10 error node v4.1.2
-11 error npm  v2.14.4
-12 error path c:\Users\Emanoel\Documents\repositorios2\otus-preview-js\package.json
-13 error code ENOPACKAGEJSON
-14 error errno -4058
-15 error syscall open
-16 error package.json ENOENT: no such file or directory, open 'c:\Users\Emanoel\Documents\repositorios2\otus-preview-js\package.json'
-16 error package.json This is most likely not a problem with npm itself.
-16 error package.json npm can't find a package.json file in your current directory.
-17 verbose exit [ -4058, true ]
+4 verbose stack Error: missing script: start
+4 verbose stack     at run (c:\Program Files\nodejs\node_modules\npm\lib\run-script.js:142:19)
+4 verbose stack     at c:\Program Files\nodejs\node_modules\npm\lib\run-script.js:58:5
+4 verbose stack     at c:\Program Files\nodejs\node_modules\npm\node_modules\read-package-json\read-json.js:345:5
+4 verbose stack     at checkBinReferences_ (c:\Program Files\nodejs\node_modules\npm\node_modules\read-package-json\read-json.js:309:45)
+4 verbose stack     at final (c:\Program Files\nodejs\node_modules\npm\node_modules\read-package-json\read-json.js:343:3)
+4 verbose stack     at then (c:\Program Files\nodejs\node_modules\npm\node_modules\read-package-json\read-json.js:113:5)
+4 verbose stack     at c:\Program Files\nodejs\node_modules\npm\node_modules\read-package-json\read-json.js:300:12
+4 verbose stack     at c:\Program Files\nodejs\node_modules\npm\node_modules\graceful-fs\graceful-fs.js:76:16
+4 verbose stack     at FSReqWrap.readFileAfterClose [as oncomplete] (fs.js:380:3)
+5 verbose cwd c:\Users\Emanoel\Documents\repositorios2\otus-preview-js
+6 error Windows_NT 6.1.7601
+7 error argv "c:\\Program Files\\nodejs\\node.exe" "c:\\Program Files\\nodejs\\node_modules\\npm\\bin\\npm-cli.js" "start"
+8 error node v4.1.2
+9 error npm  v2.14.4
+10 error missing script: start
+11 error If you need help, you may report this error at:
+11 error     <https://github.com/npm/npm/issues>
+12 verbose exit [ 1, true ]

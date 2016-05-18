@@ -5,7 +5,7 @@
     var uglify = require("gulp-uglify");
     var minify = require('gulp-minify');
     var concat = require('gulp-concat');
-
+    
     gulp.task('upgrade-version', function(value) {
         gulp.src('./package.json')
             .pipe(bump({
@@ -22,4 +22,3 @@
     });
 
 }());
-
