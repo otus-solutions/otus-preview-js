@@ -15,7 +15,7 @@
     function otusSurveyPreview() {
         var ddo = {
             scope: {},
-            template: 'node_modules/otus-preview-js/app/preview/preview-container-template.html',
+            templateUrl: 'node_modules/otus-preview-js/app/preview/preview-container-template.html',
             retrict: 'E'
         };
         return ddo;
