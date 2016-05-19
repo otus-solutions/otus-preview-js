@@ -2,15 +2,14 @@
     'use strict';
 
     angular
-        .module('preview')
-        .directive('surveyPreviewGenerator', surveyPreviewGenerator);
+        .module('otus.preview')
+        .directive('otusSurveyPreview', otusSurveyPreview);
 
-    function surveyPreviewGenerator() {
+    function otusSurveyPreview() {
         var ddo = {
             scope: {},
-            templateUrl: 'app/preview/preview-container-template.html',
-            retrict: 'E',
             template: 'preview-container-template.html',
+            retrict: 'E'
         };
         return ddo;
     }
