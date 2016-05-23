@@ -1,5 +1,16 @@
 <div id="preview-container" layout-align="none center" layout="column">
     <md-content id="survey-preview" layout-align="center center">
+        <!-- cabeçalho -->
+        <md-content layout-align="start center" style="padding: 0" flex>
+            <md-content layout="row">
+                <md-content>
+                    <label>1. Qual sua data de nascimento?</label>
+                </md-content>
+                <md-icon md-svg-icon="eraser" aria-label="Limpar resposta"></md-icon>
+            </md-content>
+        </md-content>
+
+        <!-- container para as questões e itens não respondiveis -->
         <otus-item-preview></otus-item-preview>
     </md-content>
 </div>
