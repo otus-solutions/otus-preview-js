@@ -8,7 +8,7 @@
     function otusItemPreview() {
         var ddo = {
             scope: {},
-            templateUrl: 'node_modules/otus-preview-js/app/preview/container-item/preview-container-item.html',
+            templateUrl: 'node_modules/otus-preview-js/app/preview/item/item-preview-container.html',
             retrict: 'E'
         };
         return ddo;

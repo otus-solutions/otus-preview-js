@@ -1,0 +1,57 @@
+<md-content class="custom-whiteframe" layout="column">
+    <div layout="row" class="label-container" layout-align="left center">
+        <label>Primeiro, vamos conversar sobre você.</label>
+    </div>
+</md-content>
+</br>
+<md-content class="custom-whiteframe" layout="column">
+    <!-- cabeçalho do item -->
+    <md-content layout-align="start center" style="padding: 0" flex>
+        <md-content layout="row">
+            <md-content layout-padding layout-align="start center" flex>
+                <label>1. Qual sua data de nascimento?</label>
+            </md-content>
+            <md-button tooltip="Limpar resposta">
+                <md-icon md-svg-icon="eraser" aria-label="Limpar resposta"></md-icon>
+            </md-button>
+        </md-content>
+    </md-content>
+    <!-- item -->
+    <md-content layout="column">
+        <md-tabs>
+            <md-tab label="Resposta">
+                <md-content>
+                    </br>
+                    <md-datepicker ng-model="calendarQuestion" md-placeholder="Insira a data"></md-datepicker>
+                </md-content>
+            </md-tab>
+            <md-tab label="Metadado">
+                <md-content>
+                    <md-content>Metadado</md-content>
+                </md-content>
+            </md-tab>
+            <md-tab label="Comentário">
+                <md-content>Comentário</md-content>
+            </md-tab>
+        </md-tabs>
+    </md-content>
+</md-content>
+</br>
+<md-content class="custom-whiteframe" layout="column">
+    <div layout="row" class="label-container" layout-align="left center">
+        <label>Agora vamos lhe perguntar sobre atividades físicas. Primeiro eu gostaria que você pensasse apenas nas atividades que você faz no seu tempo livre (lazer). Por favor, apenas relate atividades que durem pelo menos 10 minutos seguidos.</label>
+    </div>
+</md-content>
+</br>
+<md-content class="custom-whiteframe" layout="column">
+    <md-content layout="column" flex>
+        <div>
+            <md-card>
+                <img ng-src="{{'app/assets/img/image_not_found.jpg'}}" class="md-card-image">
+                <md-card-content>
+                    <label>Legenda de exemplo</label>
+                </md-card-content>
+            </md-card>
+        </div>
+    </md-content>
+</md-content>
