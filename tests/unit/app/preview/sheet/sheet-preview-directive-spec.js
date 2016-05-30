@@ -10,7 +10,7 @@ describe('otusSheetPreview', function() {
         $location = $injector.get('$location');
         $httpBackend = $injector.get('$httpBackend');
 
-        $httpBackend.when('GET', 'sheet-preview-container.html').respond('sheet');
+        $httpBackend.when('GET', '/app/preview/sheet/sheet-preview-container.html').respond('sheet');
     }));
 
     describe('test of directive otusSheetPreview', function() {
@@ -19,13 +19,12 @@ describe('otusSheetPreview', function() {
             expect(element).toBeDefined();
         });
 
-        xit('should navigate to page sheet-preview-container', function() {
-
+        xit('should go to the sheet-preview-containe state', function() {
             $rootScope.$apply(function() {
                 $location.path('/sheet');
             });
             expect($location.path()).toBe('/sheet');
-            expect($route.current.templateUrl).toBe('sheet-preview-container.html');
+            expect($route.current.templateUrl).toBe('node_modules/otus-preview-js/app/preview/sheet/sheet-preview-container.html');
         });
     });
 });
