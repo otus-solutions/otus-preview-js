@@ -2,6 +2,6 @@
     'use strict';
 
     angular
-        .module('core.reader', []);
+        .module('otus.core.preview', []);
 
 }());

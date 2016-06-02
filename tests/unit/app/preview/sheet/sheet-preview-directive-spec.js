@@ -10,7 +10,7 @@ describe('otusSheetPreview', function() {
         $location = $injector.get('$location');
         $httpBackend = $injector.get('$httpBackend');
 
-        $httpBackend.when('GET', '/app/preview/sheet/sheet-preview-container.html').respond('sheet');
+        $httpBackend.when('GET', '/app/ui-preview/sheet/sheet-preview-container.html').respond('sheet');
     }));
 
     describe('test of directive otusSheetPreview', function() {
