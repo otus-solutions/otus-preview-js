@@ -14,8 +14,8 @@
             scope: {},
             templateUrl: 'node_modules/otus-preview-js/app/ui-preview/sheet/sheet-preview-container.html',
             retrict: 'E',
-            link: function linkFunc() {
-                CoreSheetContentPreviewService.startSheet();
+            link: function linkFunc(scope, element) {
+                CoreSheetContentPreviewService.startSheet(scope);
             }
         };
         return ddo;

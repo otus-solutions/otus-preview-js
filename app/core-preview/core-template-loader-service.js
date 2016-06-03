@@ -1,7 +1,6 @@
 /**
-  CoreTemplateLoaderService tem como objetivo ler o json e distribuir/delegar para os respectivos servicos 
+  CoreTemplateLoaderService tem como objetivo ler o json e o guardar em um objeto acessivel
 **/
-
 (function() {
     'use strict';
 
@@ -10,20 +9,55 @@
         .module('otus.core.preview')
         .service('CoreTemplateLoaderService', CoreTemplateLoaderService);
 
+    CoreTemplateLoaderService.$inject = [
+        '$compile',
+        '$templateRequest',
+        '$templateCache'
+    ];
 
-    function CoreTemplateLoaderService () {
 
-        var data = '{"activityContainer":{"participant":{"recruitment_number":"123456"},"status":[{"objectType":"Status","name":"INITIALIZED","date":"25/03/1986","user":{"username":"diogo.rosas.ferreira@gmail.com"}}],"category":{"type":"Normal"}},"answerContainer":[{"objectType":"TextQuestion","questionID":"LUAA0","value":"Resposta para a questão LUAA0","metadata":{"objectType":"MetadataGroup","value":""},"comment":""},{"objectType":"TextQuestion","questionID":"LUAA1","value":"Resposta para a questão LUAA1","metadata":{"objectType":"MetadataGroup","value":"Não sabe responder"},"comment":""}],"template":{"extents":"StudioObject","objectType":"Survey","oid":"dXNlclVVSUQ6W3VuZGVmaW5lZF1zdXJ2ZXlVVUlEOls2MTkzYTJmMC0xOTEyLTExZTYtYmY2Yi0zMWQ3YzFiZDU3YWFdcmVwb3NpdG9yeVVVSUQ6WyBOb3QgZG9uZSB5ZXQgXQ==","identity":{"extents":"StudioObject","objectType":"SurveyIdentity","name":"LUAA","acronym":"LUAA","recommendedTo":"","description":"","keywords":[]},"metainfo":{"extents":"StudioObject","objectType":"SurveyMetaInfo","creationDatetime":1463157792261,"otusStudioVersion":""},"questionContainer":{"LUAA0":{"extents":"Question","objectType":"TextQuestion","templateID":"LUAA0","dataType":"String","label":{"ptBR":{"extends":"StudioObject","objectType":"Label","oid":"","plainText":"Qual é o seu nome completo?","formattedText":"Qual é o seu nome completo?"},"enUS":{"extends":"StudioObject","objectType":"Label","oid":"","plainText":"","formattedText":""},"esES":{"extends":"StudioObject","objectType":"Label","oid":"","plainText":"","formattedText":""}},"metadata":{"extents":"StudioObject","objectType":"MetadataGroup","option":[]}},"LUAA1":{"extents":"Question","objectType":"TextQuestion","templateID":"LUAA1","dataType":"String","label":{"ptBR":{"extends":"StudioObject","objectType":"Label","oid":"","plainText":"Qual sua cor de pele?","formattedText":"Qual sua cor de pele?"},"enUS":{"extends":"StudioObject","objectType":"Label","oid":"","plainText":"","formattedText":""},"esES":{"extends":"StudioObject","objectType":"Label","oid":"","plainText":"","formattedText":""}},"metadata":{"extents":"StudioObject","objectType":"MetadataGroup","option":[]}}},"navigationList":[{"extents":"StudioObject","objectType":"Navigation","index":0,"origin":"LUAA0","routes":[]},{"extents":"StudioObject","objectType":"Navigation","index":1,"origin":"LUAA1","routes":[]}]}}';
+    function CoreTemplateLoaderService($compile, $templateRequest, $templateCache) {
+        var data = '{"activityContainer":{"participant":{"recruitment_number":"123456"},"status":[{"objectType":"Status","name":"INITIALIZED","date":"25/03/1986","user":{"username":"diogo.rosas.ferreira@gmail.com"}}],"category":{"type":"Normal"}},"answerContainer":[{"objectType":"TextQuestion","questionID":"LUAA0","value":"Resposta","metadata":{"objectType":"MetadataGroup","value":""},"comment":""},{"objectType":"TextQuestion","questionID":"LUAA1","value":"Resposta para a questão ","metadata":{"objectType":"MetadataGroup","value":"Não sabe responder"},"comment":""}],"template":{"extents":"StudioObject","objectType":"Survey","oid":"dXNlclVVSUQ6W3VuZGVmaW5lZF1zdXJ2ZXlVVUlEOls2MTkzYTJmMC0xOTEyLTExZTYtYmY2Yi0zMWQ3YzFiZDU3YWFdcmVwb3NpdG9yeVVVSUQ6WyBOb3QgZG9uZSB5ZXQgXQ==","identity":{"extents":"StudioObject","objectType":"SurveyIdentity","name":"LUAA","acronym":"LUAA","recommendedTo":"","description":"","keywords":[]},"metainfo":{"extents":"StudioObject","objectType":"SurveyMetaInfo","creationDatetime":1463157792261,"otusStudioVersion":""},"questionContainer":[{"extents":"SurveyItem","objectType":"CalendarQuestion","templateID":"LUAA0","dataType":"LocalDate","label":{"ptBR":{"extends":"StudioObject","objectType":"Label","oid":"","plainText":"Qual é sua data de nascimento?","formattedText":"Qual é sua data de nascimento?"},"enUS":{"extends":"StudioObject","objectType":"Label","oid":"","plainText":"","formattedText":""},"esES":{"extends":"StudioObject","objectType":"Label","oid":"","plainText":"","formattedText":""}},"metadata":{"extents":"StudioObject","objectType":"MetadataGroup","options":[]}},{"extents":"SurveyItem","objectType":"CalendarQuestion","templateID":"LUAA1","dataType":"LocalDate","label":{"ptBR":{"extends":"StudioObject","objectType":"Label","oid":"","plainText":"Qual é sua data de nascimento?","formattedText":"Qual é sua data de nascimento?"},"enUS":{"extends":"StudioObject","objectType":"Label","oid":"","plainText":"","formattedText":""},"esES":{"extends":"StudioObject","objectType":"Label","oid":"","plainText":"","formattedText":""}},"metadata":{"extents":"StudioObject","objectType":"MetadataGroup","options":[]}}],"navigationList":[{"extents":"StudioObject","objectType":"Navigation","index":0,"origin":"LUAA0","routes":[]},{"extents":"StudioObject","objectType":"Navigation","index":1,"origin":"LUAA1","routes":[]}]}}';
+
+        var scope = null;
         var self = this;
+        var json = null;
+        var listOfQuestions = [];
+        var question = {
+            objectType: '',
+            templateID: ''
+        };
 
         /* Public interface */
-        self.load = load;
+        self.loadInitForJsonFile = loadInitForJsonFile;
 
-        function load() {
-            var json = JSON.parse(data);
-            console.log(json.template);
+        function loadInitForJsonFile(scopeReference) {
+            scope = scopeReference;
+            json = JSON.parse(data);
+            loadTemplate();
         }
 
-        //return self;
+        /* Private */
+        function loadTemplate() {
+            var object = json.template.questionContainer;
+            for (var key in object) {
+                question = new Object();
+                question.objectType = object[key].objectType;
+                listOfQuestions.push(question);
+                loadQuestion(question);
+            }
+        }
+
+        function loadQuestion(item) {
+            if (question.objectType === "CalendarQuestion") {
+                var templateCompiled = compileTemplate('<question-preview></question-preview>', scope);
+                $('#survey-preview').append(templateCompiled);
+            }
+        }
+
+        function compileTemplate(html, scope) {
+            return $compile(html)(scope);
+        }
+
     }
 }());
