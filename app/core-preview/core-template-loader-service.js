@@ -22,11 +22,6 @@
         var scope = null;
         var self = this;
         var json = null;
-        var listOfQuestions = [];
-        var question = {
-            objectType: '',
-            templateID: ''
-        };
 
         /* Public interface */
         self.loadInitForJsonFile = loadInitForJsonFile;
@@ -34,22 +29,19 @@
         function loadInitForJsonFile(scopeReference) {
             scope = scopeReference;
             json = JSON.parse(data);
-            loadTemplate();
+            buildItemTemplate();
         }
 
         /* Private */
-        function loadTemplate() {
+        function buildItemTemplate() {
             var object = json.template.questionContainer;
             for (var key in object) {
-                question = new Object();
-                question.objectType = object[key].objectType;
-                listOfQuestions.push(question);
-                loadQuestion(question);
+                loadItem(object[key]);
             }
         }
 
-        function loadQuestion(item) {
-            if (question.objectType === "CalendarQuestion") {
+        function loadItem(item) {
+            if (item.objectType === "CalendarQuestion") {
                 var templateCompiled = compileTemplate('<question-preview></question-preview>', scope);
                 $('#survey-preview').append(templateCompiled);
             }

@@ -64,11 +64,6 @@
         var scope = null;
         var self = this;
         var json = null;
-        var listOfQuestions = [];
-        var question = {
-            objectType: '',
-            templateID: ''
-        };
 
         /* Public interface */
         self.loadInitForJsonFile = loadInitForJsonFile;
@@ -83,15 +78,12 @@
         function loadTemplate() {
             var object = json.template.questionContainer;
             for (var key in object) {
-                question = new Object();
-                question.objectType = object[key].objectType;
-                listOfQuestions.push(question);
-                loadQuestion(question);
+                loadQuestion(object[key]);
             }
         }
 
         function loadQuestion(item) {
-            if (question.objectType === "CalendarQuestion") {
+            if (item.objectType === "CalendarQuestion") {
                 var templateCompiled = compileTemplate('<question-preview></question-preview>', scope);
                 $('#survey-preview').append(templateCompiled);
             }
