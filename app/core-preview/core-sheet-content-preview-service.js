@@ -19,8 +19,8 @@
         /* Public interface */
         self.startSheet = startSheet;
 
-        function startSheet(scopeReference) {
-            CoreTemplateLoaderService.loadInitForJsonFile(scopeReference);
+        function startSheet(scopeReference, elementReference, template) {
+            CoreTemplateLoaderService.loadInitForJsonFile(scopeReference, elementReference);
         }
     }
 }());
