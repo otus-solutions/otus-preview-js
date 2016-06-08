@@ -5,18 +5,11 @@
         .module('otus.preview')
         .directive('otusSheetPreview', otusSheetPreview);
 
-    otusSheetPreview.$inject = [
-        'CoreSheetContentPreviewService'
-    ];
-
-    function otusSheetPreview(CoreSheetContentPreviewService) {
+    function otusSheetPreview() {
         var ddo = {
             scope: {},
             templateUrl: 'node_modules/otus-preview-js/app/ui-preview/sheet/sheet-preview-container.html',
-            retrict: 'E',
-            link: function linkFunc(scope, element) {
-                //CoreSheetContentPreviewService.startSheet(scope, element);
-            }
+            retrict: 'E'
         };
         return ddo;
     }

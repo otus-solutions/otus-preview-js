@@ -20,7 +20,7 @@
         self.startSheet = startSheet;
 
         function startSheet(scopeReference, elementReference, template) {
-            CoreTemplateLoaderService.loadInitForJsonFile(scopeReference, elementReference);
+            CoreTemplateLoaderService.loadInitForJsonFile(scopeReference, elementReference, template);
         }
     }
 }());

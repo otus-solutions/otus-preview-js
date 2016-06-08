@@ -6,20 +6,20 @@
         .factory('TemplateItemFactory', TemplateItemFactory);
 
     TemplateItemFactory.$inject = [
-        //'CalendarQuestionTemplateFactory'
+        'CalendarQuestionTemplateFactory'
     ];
 
-    function TemplateItemFactory() {
+    function TemplateItemFactory(CalendarQuestionTemplateFactory) {
         var self = this;
         var itemFactories = {
-            //'CalendarQuestion': CalendarQuestionTemplateFactory
+            'CalendarQuestion': CalendarQuestionTemplateFactory
         };
 
         /* Public interface */
         self.create = create;
 
         function create(scope, element, item) {
-            //return itemFactories[item.objectType].create(scope, element, item);
+            return itemFactories[item.objectType].create(scope, element, item);
         }
 
         function loadItem(item) {
@@ -34,5 +34,5 @@
         }
         return self;
     }
-    
+
 }());

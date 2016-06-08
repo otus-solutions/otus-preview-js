@@ -1,6 +1,7 @@
 (function() {
     'use strict';
 
-    angular.module('otus.preview', ['otus.core.preview']);
+    angular
+        .module('otus.preview', []);
 
 }());
