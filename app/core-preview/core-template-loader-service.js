@@ -34,17 +34,15 @@
             scope = scopeReference;
             element = elementReference;
             template = template;
-            buildItemTemplate();
+            buildItemTemplate(template);
         }
 
         /* Private */
-        function buildItemTemplate() {
-            var object = template.itemContainer;
-            console.log(template.itemContainer);
-            if (object.length > 0) {
-                for (var key in object) {
-                    var item = object[key];
-                    TemplateItemFactory.create(scope, element, item);
+        function buildItemTemplate(template) {
+            if (template.itemContainer.length > 0) { // existem questões?
+                var questions = template.itemContainer;
+                for (var key in questions) {
+                    TemplateItemFactory.create(scope, element, questions[key]);
                 }
             }
         }

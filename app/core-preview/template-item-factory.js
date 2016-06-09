@@ -6,12 +6,19 @@
         .factory('TemplateItemFactory', TemplateItemFactory);
 
     TemplateItemFactory.$inject = [
+        /* Question items */
+
+        '$compile',
+        '$templateRequest',
+        '$templateCache',
         'CalendarQuestionTemplateFactory'
     ];
 
-    function TemplateItemFactory(CalendarQuestionTemplateFactory) {
+    function TemplateItemFactory($compile, $templateRequest, $templateCache, CalendarQuestionTemplateFactory) {
         var self = this;
-        var itemFactories = {
+        var question = null;
+
+        var templateFactories = {
             'CalendarQuestion': CalendarQuestionTemplateFactory
         };
 
@@ -19,19 +26,20 @@
         self.create = create;
 
         function create(scope, element, item) {
-            return itemFactories[item.objectType].create(scope, element, item);
+            question = templateFactories[item.objectType].create(scope, element, item);
+            loadItem(question, scope);
         }
 
-        function loadItem(item) {
-            if (item.objectType === "CalendarQuestion") {
-                var templateCompiled = compileTemplate('<question-preview></question-preview>', scope);
-                $('#survey-preview').append(templateCompiled);
-            }
+        function loadItem(question, scope) {
+            var templateCompiled = compileTemplate(question.getTemplate(), scope);
+            $('#survey-preview').append(templateCompiled);
+
         }
 
         function compileTemplate(html, scope) {
             return $compile(html)(scope);
         }
+
         return self;
     }
 

@@ -77,17 +77,15 @@
             scope = scopeReference;
             element = elementReference;
             template = template;
-            buildItemTemplate();
+            buildItemTemplate(template);
         }
 
         /* Private */
-        function buildItemTemplate() {
-            var object = template.itemContainer;
-            console.log(template.itemContainer);
-            if (object.length > 0) {
-                for (var key in object) {
-                    var item = object[key];
-                    TemplateItemFactory.create(scope, element, item);
+        function buildItemTemplate(template) {
+            if (template.itemContainer.length > 0) { // existem questões?
+                var questions = template.itemContainer;
+                for (var key in questions) {
+                    TemplateItemFactory.create(scope, element, questions[key]);
                 }
             }
         }
@@ -103,12 +101,19 @@
         .factory('TemplateItemFactory', TemplateItemFactory);
 
     TemplateItemFactory.$inject = [
+        /* Question items */
+
+        '$compile',
+        '$templateRequest',
+        '$templateCache',
         'CalendarQuestionTemplateFactory'
     ];
 
-    function TemplateItemFactory(CalendarQuestionTemplateFactory) {
+    function TemplateItemFactory($compile, $templateRequest, $templateCache, CalendarQuestionTemplateFactory) {
         var self = this;
-        var itemFactories = {
+        var question = null;
+
+        var templateFactories = {
             'CalendarQuestion': CalendarQuestionTemplateFactory
         };
 
@@ -116,19 +121,21 @@
         self.create = create;
 
         function create(scope, element, item) {
-            return itemFactories[item.objectType].create(scope, element, item);
+            question = templateFactories[item.objectType].create(scope, element, item);
+            console.log(question);
+            loadItem(question, scope);
         }
 
-        function loadItem(item) {
-            if (item.objectType === "CalendarQuestion") {
-                var templateCompiled = compileTemplate('<question-preview></question-preview>', scope);
-                $('#survey-preview').append(templateCompiled);
-            }
+        function loadItem(question, scope) {
+            var templateCompiled = compileTemplate(question.getTemplate(), scope);
+            $('#survey-preview').append(templateCompiled);
+
         }
 
         function compileTemplate(html, scope) {
             return $compile(html)(scope);
         }
+
         return self;
     }
 
@@ -223,6 +230,25 @@
 
     angular
         .module('otus.preview')
+        .directive('otusPreviewCalendarQuestion', directive);
+
+    function directive() {
+        var ddo = {
+            scope: {},
+            templateUrl: 'node_modules/otus-preview-js/app/ui-preview/item/question/calendar/calendar-question-preview.html',
+            retrict: 'E'
+        };
+
+        return ddo;
+    }
+
+}());
+
+(function() {
+    'use strict';
+
+    angular
+        .module('otus.preview')
         .factory('CalendarQuestionTemplateFactory', CalendarQuestionTemplateFactory);
 
     function CalendarQuestionTemplateFactory() {
@@ -231,7 +257,7 @@
         /* Public interface */
         self.create = create;
 
-        function create(scope, element) {
+        function create(scope, element, item) {
             return new CalendarQuestionTemplate(scope, element, item);
         }
 
@@ -239,15 +265,49 @@
     }
 
     function CalendarQuestionTemplate(scope, element, item) {
-        selft.extents = item.extents;
-        selft.objectType = item.objectType;
-        selft.templateID = item.templateID;
-        selft.dataType = item.dataType;
-        selft.label = item.label.plainText;
+        var self = this;
+        self.extents = item.extents;
+        self.objectType = item.objectType;
+        self.templateID = item.templateID;
+        self.dataType = item.dataType;
+        self.label = item.label.ptBR.formattedText;
 
-        console.log(selft.label);
+        /* Public interface*/
+        self.getClassName = getClassName;
+        self.getScope = getScope;
+        self.getExtents = getExtents;
+        self.getObjectType = getObjectType;
+        self.getTemplateID = getTemplateID;
+        self.getformattedText = getformattedText;
+        self.getTemplate = getTemplate;
 
-        // TODO: atribuir o restante dos atributos
+        function getClassName() {
+            return 'CalendarQuestionTemplate';
+        }
+
+        function getScope() {
+            return scope.uuid;
+        }
+
+        function getExtents() {
+            return self.extents;
+        }
+
+        function getObjectType() {
+            return self.objectType;
+        }
+
+        function getTemplateID() {
+            return self.templateID;
+        }
+
+        function getformattedText() {
+            return self.label;
+        }
+
+        function getTemplate() {
+            return '<otus-preview-calendar-question></otus-preview-calendar-question>';
+        }
     }
 
 

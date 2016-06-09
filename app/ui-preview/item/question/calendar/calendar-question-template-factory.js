@@ -11,7 +11,7 @@
         /* Public interface */
         self.create = create;
 
-        function create(scope, element) {
+        function create(scope, element, item) {
             return new CalendarQuestionTemplate(scope, element, item);
         }
 
@@ -19,15 +19,49 @@
     }
 
     function CalendarQuestionTemplate(scope, element, item) {
-        selft.extents = item.extents;
-        selft.objectType = item.objectType;
-        selft.templateID = item.templateID;
-        selft.dataType = item.dataType;
-        selft.label = item.label.plainText;
+        var self = this;
+        self.extents = item.extents;
+        self.objectType = item.objectType;
+        self.templateID = item.templateID;
+        self.dataType = item.dataType;
+        self.label = item.label.ptBR.formattedText;
 
-        console.log(selft.label);
+        /* Public interface*/
+        self.getClassName = getClassName;
+        self.getScope = getScope;
+        self.getExtents = getExtents;
+        self.getObjectType = getObjectType;
+        self.getTemplateID = getTemplateID;
+        self.getformattedText = getformattedText;
+        self.getTemplate = getTemplate;
 
-        // TODO: atribuir o restante dos atributos
+        function getClassName() {
+            return 'CalendarQuestionTemplate';
+        }
+
+        function getScope() {
+            return scope.uuid;
+        }
+
+        function getExtents() {
+            return self.extents;
+        }
+
+        function getObjectType() {
+            return self.objectType;
+        }
+
+        function getTemplateID() {
+            return self.templateID;
+        }
+
+        function getformattedText() {
+            return self.label;
+        }
+
+        function getTemplate() {
+            return '<otus-preview-calendar-question></otus-preview-calendar-question>';
+        }
     }
 
 
