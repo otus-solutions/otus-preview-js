@@ -33,7 +33,7 @@
         self.getObjectType = getObjectType;
         self.getTemplateID = getTemplateID;
         self.getformattedText = getformattedText;
-        self.getTemplate = getTemplate;
+        self.getDirectiveTemplate = getDirectiveTemplate;
 
         function getClassName() {
             return 'CalendarQuestionTemplate';
@@ -59,10 +59,8 @@
             return self.label;
         }
 
-        function getTemplate() {
-            return '<otus-preview-calendar-question></otus-preview-calendar-question>';
+        function getDirectiveTemplate(label) {
+            return '<otus-preview-calendar-question label="' + label + '"></otus-preview-calendar-question>';
         }
     }
-
-
 }());

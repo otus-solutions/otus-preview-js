@@ -111,7 +111,7 @@
 
     function TemplateItemFactory($compile, $templateRequest, $templateCache, CalendarQuestionTemplateFactory) {
         var self = this;
-        var question = null;
+        var template = null;
 
         var templateFactories = {
             'CalendarQuestion': CalendarQuestionTemplateFactory
@@ -121,15 +121,14 @@
         self.create = create;
 
         function create(scope, element, item) {
-            question = templateFactories[item.objectType].create(scope, element, item);
-            console.log(question);
-            loadItem(question, scope);
+            template = templateFactories[item.objectType].create(scope, element, item);
+            console.log(template);
+            loadItem(template, scope);
         }
 
-        function loadItem(question, scope) {
-            var templateCompiled = compileTemplate(question.getTemplate(), scope);
+        function loadItem(template, scope) {
+            var templateCompiled = compileTemplate(template.getDirectiveTemplate(template.label), scope);
             $('#survey-preview').append(templateCompiled);
-
         }
 
         function compileTemplate(html, scope) {
@@ -230,11 +229,27 @@
 
     angular
         .module('otus.preview')
+        .controller('Controller', ['$scope', function($scope) {
+            $scope.customer = {
+                name: 'Naomi',
+                address: '1600 Amphitheatre'
+            };
+        }])
         .directive('otusPreviewCalendarQuestion', directive);
 
     function directive() {
         var ddo = {
-            scope: {},
+            scope: {
+                label: '@'
+            },
+            link: function($scope, $elem, $attr) {
+                var label = $attr.label;
+                //console.log(id, title);
+                $attr.$observe('label', function(value) {
+                    console.log(value);
+                });
+
+            },
             templateUrl: 'node_modules/otus-preview-js/app/ui-preview/item/question/calendar/calendar-question-preview.html',
             retrict: 'E'
         };
@@ -279,7 +294,7 @@
         self.getObjectType = getObjectType;
         self.getTemplateID = getTemplateID;
         self.getformattedText = getformattedText;
-        self.getTemplate = getTemplate;
+        self.getDirectiveTemplate = getDirectiveTemplate;
 
         function getClassName() {
             return 'CalendarQuestionTemplate';
@@ -305,10 +320,8 @@
             return self.label;
         }
 
-        function getTemplate() {
-            return '<otus-preview-calendar-question></otus-preview-calendar-question>';
+        function getDirectiveTemplate(label) {
+            return '<otus-preview-calendar-question label="' + label + '"></otus-preview-calendar-question>';
         }
     }
-
-
 }());
