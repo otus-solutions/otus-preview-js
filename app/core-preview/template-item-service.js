@@ -3,19 +3,18 @@
 
     angular
         .module('otus.core.preview')
-        .factory('TemplateItemFactory', TemplateItemFactory);
+        .factory('TemplateItemService', TemplateItemService);
 
-    TemplateItemFactory.$inject = [
-        /* Question items */
-
+    TemplateItemService.$inject = [
         '$compile',
         '$templateRequest',
         '$templateCache',
-        'CalendarQuestionTemplateFactory',
-        'UiItemPreviewService'
+        'UiItemPreviewService',
+        /* Itens */
+        'CalendarQuestionTemplateFactory'
     ];
 
-    function TemplateItemFactory($compile, $templateRequest, $templateCache, CalendarQuestionTemplateFactory, UiItemPreviewService) {
+    function TemplateItemService($compile, $templateRequest, $templateCache, UiItemPreviewService, CalendarQuestionTemplateFactory) {
         var self = this;
         var template = null;
 
