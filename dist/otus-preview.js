@@ -106,7 +106,8 @@
         '$compile',
         '$templateRequest',
         '$templateCache',
-        'CalendarQuestionTemplateFactory'
+        'CalendarQuestionTemplateFactory',
+        'UiItemPreviewService'
     ];
 
     function TemplateItemFactory($compile, $templateRequest, $templateCache, CalendarQuestionTemplateFactory) {
@@ -122,12 +123,12 @@
 
         function create(scope, element, item) {
             template = templateFactories[item.objectType].create(scope, element, item);
-            console.log(template);
+            UiItemPreviewService.currentQuestionToLoad = item;
             loadItem(template, scope);
         }
 
         function loadItem(template, scope) {
-            var templateCompiled = compileTemplate(template.getDirectiveTemplate(template.label), scope);
+            var templateCompiled = compileTemplate(template.getDirectiveTemplate(), scope);
             $('#survey-preview').append(templateCompiled);
         }
 
@@ -136,6 +137,22 @@
         }
 
         return self;
+    }
+
+}());
+
+(function() {
+    'use strict';
+
+    angular
+        .module('otus.preview')
+        .service('UiItemPreviewService', UiItemPreviewService);
+
+    function UiItemPreviewService() {
+        var self = this;
+        self.currentQuestionToLoad = {};
+
+        
     }
 
 }());
@@ -229,26 +246,15 @@
 
     angular
         .module('otus.preview')
-        .controller('Controller', ['$scope', function($scope) {
-            $scope.customer = {
-                name: 'Naomi',
-                address: '1600 Amphitheatre'
-            };
-        }])
         .directive('otusPreviewCalendarQuestion', directive);
 
-    function directive() {
-        var ddo = {
-            scope: {
-                label: '@'
-            },
-            link: function($scope, $elem, $attr) {
-                var label = $attr.label;
-                //console.log(id, title);
-                $attr.$observe('label', function(value) {
-                    console.log(value);
-                });
+    directive.inject = ['UiItemPreviewService'];
 
+    function directive(UiItemPreviewService) {
+        var ddo = {
+            scope: {},
+            link: function(scope) {
+                scope.widget = UiItemPreviewService.currentQuestionToLoad;
             },
             templateUrl: 'node_modules/otus-preview-js/app/ui-preview/item/question/calendar/calendar-question-preview.html',
             retrict: 'E'
@@ -320,8 +326,8 @@
             return self.label;
         }
 
-        function getDirectiveTemplate(label) {
-            return '<otus-preview-calendar-question label="' + label + '"></otus-preview-calendar-question>';
+        function getDirectiveTemplate() {
+            return '<otus-preview-calendar-question></otus-preview-calendar-question>';
         }
     }
 }());

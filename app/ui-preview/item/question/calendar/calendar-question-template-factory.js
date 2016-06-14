@@ -59,8 +59,8 @@
             return self.label;
         }
 
-        function getDirectiveTemplate(label) {
-            return '<otus-preview-calendar-question label="' + label + '"></otus-preview-calendar-question>';
+        function getDirectiveTemplate() {
+            return '<otus-preview-calendar-question></otus-preview-calendar-question>';
         }
     }
 }());

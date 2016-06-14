@@ -11,10 +11,11 @@
         '$compile',
         '$templateRequest',
         '$templateCache',
-        'CalendarQuestionTemplateFactory'
+        'CalendarQuestionTemplateFactory',
+        'UiItemPreviewService'
     ];
 
-    function TemplateItemFactory($compile, $templateRequest, $templateCache, CalendarQuestionTemplateFactory) {
+    function TemplateItemFactory($compile, $templateRequest, $templateCache, CalendarQuestionTemplateFactory, UiItemPreviewService) {
         var self = this;
         var template = null;
 
@@ -27,12 +28,12 @@
 
         function create(scope, element, item) {
             template = templateFactories[item.objectType].create(scope, element, item);
-            console.log(template);
+            UiItemPreviewService.currentQuestionToLoad = item;
             loadItem(template, scope);
         }
 
         function loadItem(template, scope) {
-            var templateCompiled = compileTemplate(template.getDirectiveTemplate(template.label), scope);
+            var templateCompiled = compileTemplate(template.getDirectiveTemplate(), scope);
             $('#survey-preview').append(templateCompiled);
         }
 
