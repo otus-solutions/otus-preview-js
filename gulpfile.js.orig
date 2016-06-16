@@ -5,9 +5,13 @@
     var uglify = require("gulp-uglify");
     var minify = require('gulp-minify');
     var concat = require('gulp-concat');
+<<<<<<< HEAD
+    
+=======
     var sonar = require('gulp-sonar');
     var packageJson = require('./package.json');
 
+>>>>>>> 8c98a2e30105c376f75e625409a061cbd5444fb0
     gulp.task('upgrade-version', function(value) {
         gulp.src('./package.json')
             .pipe(bump({
@@ -19,10 +23,14 @@
     gulp.task('compress', function() {
         gulp.src(['app/**/*-module.js', 'app/**/*.js'])
             .pipe(concat('otus-preview.js'))
-            .pipe(minify({'mangle' : false}))
+            .pipe(minify({
+                'mangle': false
+            }))
             .pipe(gulp.dest('dist'));
     });
 
+<<<<<<< HEAD
+=======
     gulp.task('sonar', function() {
         var options = {
             sonar: {
@@ -54,5 +62,5 @@
     });
 
 
+>>>>>>> 8c98a2e30105c376f75e625409a061cbd5444fb0
 }());
-
