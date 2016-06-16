@@ -8,6 +8,7 @@
     function UiItemPreviewService() {
         var self = this;
         self.currentQuestionToLoad = {};
+        self.listMetadata = {};
     }
 
 }());

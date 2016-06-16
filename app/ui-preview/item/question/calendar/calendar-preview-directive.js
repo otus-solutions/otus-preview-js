@@ -12,6 +12,7 @@
             scope: {},
             link: function(scope) {
                 scope.widget = UiItemPreviewService.currentQuestionToLoad;
+                scope.widgetMetadata = UiItemPreviewService.listMetadata;
             },
             templateUrl: 'node_modules/otus-preview-js/app/ui-preview/item/question/calendar/calendar-question-preview.html',
             retrict: 'E'

@@ -141,6 +141,7 @@
     function UiItemPreviewService() {
         var self = this;
         self.currentQuestionToLoad = {};
+        self.listMetadata = {};
     }
 
 }());
@@ -210,6 +211,7 @@
             scope: {},
             link: function(scope) {
                 scope.widget = UiItemPreviewService.currentQuestionToLoad;
+                scope.widgetMetadata = UiItemPreviewService.listMetadata;
             },
             templateUrl: 'node_modules/otus-preview-js/app/ui-preview/item/question/calendar/calendar-question-preview.html',
             retrict: 'E'
@@ -239,6 +241,12 @@
 
         function create(scope, element, item) {
             UiItemPreviewService.currentQuestionToLoad = item;
+            //UiItemPreviewService.listMetadata = item.metadata.options;
+            if (item.metadata.options.length > 0) {
+                for (var i = 0; i < item.metadata.options.length; i++) {
+                    UiItemPreviewService.listMetadata[i] = item.metadata.options[i].label.ptBR.formattedText;
+                }
+            }
             return new CalendarQuestionTemplate(scope, element, item);
         }
         return self;

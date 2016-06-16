@@ -20,8 +20,13 @@
                 </md-content>
             </md-tab>
             <md-tab label="Metadado">
-                <md-content>
-                    <md-content>Metadado</md-content>
+                <md-content layout-padding>
+                    <md-radio-group>
+                        <md-content ng-repeat="value in widgetMetadata" layout="row" style="margin: 10px">
+                            <md-radio-button flex>{{value}}</md-radio-button>
+                            </div>
+                        </md-content>
+                    </md-radio-group>
                 </md-content>
             </md-tab>
             <md-tab label="Comentário">
@@ -31,3 +36,4 @@
     </md-content>
 </md-content>
 </br>
+</md-content>
