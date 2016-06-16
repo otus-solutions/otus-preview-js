@@ -5,16 +5,20 @@
         .module('otus.preview')
         .factory('CalendarQuestionTemplateFactory', CalendarQuestionTemplateFactory);
 
-    function CalendarQuestionTemplateFactory() {
+    CalendarQuestionTemplateFactory.$inject = [
+        'UiItemPreviewService'
+    ];
+
+    function CalendarQuestionTemplateFactory(UiItemPreviewService) {
         var self = this;
 
         /* Public interface */
         self.create = create;
 
         function create(scope, element, item) {
+            UiItemPreviewService.currentQuestionToLoad = item;
             return new CalendarQuestionTemplate(scope, element, item);
         }
-
         return self;
     }
 
