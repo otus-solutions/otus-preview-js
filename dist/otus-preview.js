@@ -54,7 +54,7 @@
 
     function CoreTemplateContentService($compile, $templateRequest, $templateCache, CalendarQuestionTemplateFactory) {
         var self = this;
-        var template = null;
+        var question = null;
 
         var templateFactories = {
             'CalendarQuestion': CalendarQuestionTemplateFactory
@@ -64,13 +64,13 @@
         self.create = create;
 
         function create(scope, element, item) {
-            template = templateFactories[item.objectType].create(scope, element, item);
-            loadItem(template, scope);
+            question = templateFactories[item.objectType].create(scope, element, item);
+            loadItem(question, scope);
         }
 
-        function loadItem(template, scope) {
-            var templateCompiled = compileTemplate(template.getDirectiveTemplate(), scope);
-            $('#survey-preview').append(templateCompiled);
+        function loadItem(question, scope) {
+            var questionCompiled = compileTemplate(question.getDirectiveTemplate(), scope);
+            $('#survey-preview').append(questionCompiled);
         }
 
         function compileTemplate(html, scope) {
@@ -136,9 +136,9 @@
 
     angular
         .module('otus.preview')
-        .service('UiItemPreviewService', UiItemPreviewService);
+        .service('UiItemPreviewViewService', UiItemPreviewViewService);
 
-    function UiItemPreviewService() {
+    function UiItemPreviewViewService() {
         var self = this;
         self.currentQuestionToLoad = {};
         self.listMetadata = {};
@@ -204,14 +204,13 @@
         .module('otus.preview')
         .directive('otusPreviewCalendarQuestion', directive);
 
-    directive.inject = ['UiItemPreviewService'];
+    directive.inject = ['UiItemPreviewViewService'];
 
-    function directive(UiItemPreviewService) {
+    function directive(UiItemPreviewViewService) {
         var ddo = {
-            scope: {},
             link: function(scope) {
-                scope.widget = UiItemPreviewService.currentQuestionToLoad;
-                scope.widgetMetadata = UiItemPreviewService.listMetadata;
+                scope.widget = UiItemPreviewViewService.currentQuestionToLoad;
+                scope.widgetMetadata = UiItemPreviewViewService.listMetadata;
             },
             templateUrl: 'node_modules/otus-preview-js/app/ui-preview/item/question/calendar/calendar-question-preview.html',
             retrict: 'E'
@@ -230,21 +229,20 @@
         .factory('CalendarQuestionTemplateFactory', CalendarQuestionTemplateFactory);
 
     CalendarQuestionTemplateFactory.$inject = [
-        'UiItemPreviewService'
+        'UiItemPreviewViewService'
     ];
 
-    function CalendarQuestionTemplateFactory(UiItemPreviewService) {
+    function CalendarQuestionTemplateFactory(UiItemPreviewViewService) {
         var self = this;
 
         /* Public interface */
         self.create = create;
 
         function create(scope, element, item) {
-            UiItemPreviewService.currentQuestionToLoad = item;
-            //UiItemPreviewService.listMetadata = item.metadata.options;
+            UiItemPreviewViewService.currentQuestionToLoad = item;
             if (item.metadata.options.length > 0) {
                 for (var i = 0; i < item.metadata.options.length; i++) {
-                    UiItemPreviewService.listMetadata[i] = item.metadata.options[i].label.ptBR.formattedText;
+                    UiItemPreviewViewService.listMetadata[i] = item.metadata.options[i].label.ptBR.formattedText;
                 }
             }
             return new CalendarQuestionTemplate(scope, element, item);

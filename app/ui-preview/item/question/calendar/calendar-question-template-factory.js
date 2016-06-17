@@ -6,21 +6,20 @@
         .factory('CalendarQuestionTemplateFactory', CalendarQuestionTemplateFactory);
 
     CalendarQuestionTemplateFactory.$inject = [
-        'UiItemPreviewService'
+        'UiItemPreviewViewService'
     ];
 
-    function CalendarQuestionTemplateFactory(UiItemPreviewService) {
+    function CalendarQuestionTemplateFactory(UiItemPreviewViewService) {
         var self = this;
 
         /* Public interface */
         self.create = create;
 
         function create(scope, element, item) {
-            UiItemPreviewService.currentQuestionToLoad = item;
-            //UiItemPreviewService.listMetadata = item.metadata.options;
+            UiItemPreviewViewService.currentQuestionToLoad = item;
             if (item.metadata.options.length > 0) {
                 for (var i = 0; i < item.metadata.options.length; i++) {
-                    UiItemPreviewService.listMetadata[i] = item.metadata.options[i].label.ptBR.formattedText;
+                    UiItemPreviewViewService.listMetadata[i] = item.metadata.options[i].label.ptBR.formattedText;
                 }
             }
             return new CalendarQuestionTemplate(scope, element, item);

@@ -15,7 +15,7 @@
 
     function CoreTemplateContentService($compile, $templateRequest, $templateCache, CalendarQuestionTemplateFactory) {
         var self = this;
-        var template = null;
+        var question = null;
 
         var templateFactories = {
             'CalendarQuestion': CalendarQuestionTemplateFactory
@@ -25,13 +25,13 @@
         self.create = create;
 
         function create(scope, element, item) {
-            template = templateFactories[item.objectType].create(scope, element, item);
-            loadItem(template, scope);
+            question = templateFactories[item.objectType].create(scope, element, item);
+            loadItem(question, scope);
         }
 
-        function loadItem(template, scope) {
-            var templateCompiled = compileTemplate(template.getDirectiveTemplate(), scope);
-            $('#survey-preview').append(templateCompiled);
+        function loadItem(question, scope) {
+            var questionCompiled = compileTemplate(question.getDirectiveTemplate(), scope);
+            $('#survey-preview').append(questionCompiled);
         }
 
         function compileTemplate(html, scope) {
