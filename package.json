@@ -20,12 +20,12 @@
         "build": "gulp compress"
     },
     "dependencies": {
-        "gulp-concat": "2.6.0",
-        "gulp-minify": "0.0.11",
-        "angular": "^1.4.7",
-	"gulp-sonar" : "2.1.0"
+        "angular": "^1.4.7"
     },
     "devDependencies": {
+	"gulp-sonar" : "2.1.0",
+        "gulp-concat": "2.6.0",
+        "gulp-minify": "0.0.11",
         "angular-mocks": "^1.4.9",
         "browser-sync": "2.11.2",
         "browser-sync-middleware-spa": "^1.0.0",
