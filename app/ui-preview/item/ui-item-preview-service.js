@@ -3,9 +3,9 @@
 
     angular
         .module('otus.preview')
-        .service('UiItemPreviewViewService', UiItemPreviewViewService);
+        .service('UiItemPreviewService', UiItemPreviewService);
 
-    function UiItemPreviewViewService() {
+    function UiItemPreviewService() {
         var self = this;
         self.currentQuestionToLoad = {};
         self.listMetadata = {};

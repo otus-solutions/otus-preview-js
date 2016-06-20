@@ -136,9 +136,9 @@
 
     angular
         .module('otus.preview')
-        .service('UiItemPreviewViewService', UiItemPreviewViewService);
+        .service('UiItemPreviewService', UiItemPreviewService);
 
-    function UiItemPreviewViewService() {
+    function UiItemPreviewService() {
         var self = this;
         self.currentQuestionToLoad = {};
         self.listMetadata = {};
@@ -204,13 +204,13 @@
         .module('otus.preview')
         .directive('otusPreviewCalendarQuestion', directive);
 
-    directive.inject = ['UiItemPreviewViewService'];
+    directive.inject = ['UiItemPreviewService'];
 
-    function directive(UiItemPreviewViewService) {
+    function directive(UiItemPreviewService) {
         var ddo = {
             link: function(scope) {
-                scope.widget = UiItemPreviewViewService.currentQuestionToLoad;
-                scope.widgetMetadata = UiItemPreviewViewService.listMetadata;
+                scope.widget = UiItemPreviewService.currentQuestionToLoad;
+                scope.widgetMetadata = UiItemPreviewService.listMetadata;
             },
             templateUrl: 'node_modules/otus-preview-js/app/ui-preview/item/question/calendar/calendar-question-preview.html',
             retrict: 'E'
@@ -218,7 +218,6 @@
 
         return ddo;
     }
-
 }());
 
 (function() {
@@ -229,20 +228,20 @@
         .factory('CalendarQuestionTemplateFactory', CalendarQuestionTemplateFactory);
 
     CalendarQuestionTemplateFactory.$inject = [
-        'UiItemPreviewViewService'
+        'UiItemPreviewService'
     ];
 
-    function CalendarQuestionTemplateFactory(UiItemPreviewViewService) {
+    function CalendarQuestionTemplateFactory(UiItemPreviewService) {
         var self = this;
 
         /* Public interface */
         self.create = create;
 
         function create(scope, element, item) {
-            UiItemPreviewViewService.currentQuestionToLoad = item;
+            UiItemPreviewService.currentQuestionToLoad = item;
             if (item.metadata.options.length > 0) {
                 for (var i = 0; i < item.metadata.options.length; i++) {
-                    UiItemPreviewViewService.listMetadata[i] = item.metadata.options[i].label.ptBR.formattedText;
+                    UiItemPreviewService.listMetadata[i] = item.metadata.options[i].label.ptBR.formattedText;
                 }
             }
             return new CalendarQuestionTemplate(scope, element, item);

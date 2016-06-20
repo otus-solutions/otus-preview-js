@@ -5,13 +5,13 @@
         .module('otus.preview')
         .directive('otusPreviewCalendarQuestion', directive);
 
-    directive.inject = ['UiItemPreviewViewService'];
+    directive.inject = ['UiItemPreviewService'];
 
-    function directive(UiItemPreviewViewService) {
+    function directive(UiItemPreviewService) {
         var ddo = {
             link: function(scope) {
-                scope.widget = UiItemPreviewViewService.currentQuestionToLoad;
-                scope.widgetMetadata = UiItemPreviewViewService.listMetadata;
+                scope.widget = UiItemPreviewService.currentQuestionToLoad;
+                scope.widgetMetadata = UiItemPreviewService.listMetadata;
             },
             templateUrl: 'node_modules/otus-preview-js/app/ui-preview/item/question/calendar/calendar-question-preview.html',
             retrict: 'E'
@@ -19,5 +19,4 @@
 
         return ddo;
     }
-
 }());
