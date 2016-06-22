@@ -3,9 +3,9 @@
 
     angular
         .module('otus.core.preview')
-        .factory('CoreTemplateContentService', CoreTemplateContentService);
+        .factory('UiTemplateContentFactory', UiTemplateContentFactory);
 
-    CoreTemplateContentService.$inject = [
+    UiTemplateContentFactory.$inject = [
         '$compile',
         '$templateRequest',
         '$templateCache',
@@ -13,7 +13,7 @@
         'CalendarQuestionTemplateFactory'
     ];
 
-    function CoreTemplateContentService($compile, $templateRequest, $templateCache, CalendarQuestionTemplateFactory) {
+    function UiTemplateContentFactory($compile, $templateRequest, $templateCache, CalendarQuestionTemplateFactory) {
         var self = this;
         var question = null;
 
@@ -27,6 +27,7 @@
         function create(scope, element, item) {
             question = templateFactories[item.objectType].create(scope, element, item);
             loadItem(question, scope);
+            return question;
         }
 
         function loadItem(question, scope) {
