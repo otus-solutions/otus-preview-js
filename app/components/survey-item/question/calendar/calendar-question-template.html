@@ -1,0 +1,39 @@
+<md-content class="custom-whiteframe" layout="column">
+    <!-- cabeçalho do item -->
+    <md-content layout-align="start center" style="padding: 0" flex>
+        <md-content layout="row">
+            <md-content layout-padding layout-align="start center" flex>
+                <label>{{widget.label.ptBR.formattedText}}</label>
+            </md-content>
+            <md-button tooltip="Limpar resposta">
+                <md-icon md-svg-icon="eraser" aria-label="Limpar resposta"></md-icon>
+            </md-button>
+        </md-content>
+    </md-content>
+    <!-- item -->
+    <md-content layout="column">
+        <md-tabs>
+            <md-tab label="Resposta">
+                <md-content>
+                    </br>
+                    <md-datepicker ng-model="calendarQuestion" md-placeholder="Insira a data"></md-datepicker>
+                </md-content>
+            </md-tab>
+            <md-tab label="Metadado">
+                <md-content layout-padding>
+                    <md-radio-group>
+                        <md-content ng-repeat="value in widgetMetadata" layout="row" style="margin: 10px">
+                            <md-radio-button flex>{{value}}</md-radio-button>
+                            </div>
+                        </md-content>
+                    </md-radio-group>
+                </md-content>
+            </md-tab>
+            <md-tab label="Comentário">
+                <md-content>Comentário</md-content>
+            </md-tab>
+        </md-tabs>
+    </md-content>
+</md-content>
+</br>
+</md-content>
