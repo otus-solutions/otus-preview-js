@@ -2,17 +2,20 @@
     'use strict';
 
     angular
-        .module('otus.preview')
+        .module('otus.preview.component')
         .component('surveyItem', {
-            template: '<otus-question></otus-question',
+            template: '<otus-question item-data="$ctrl.itemData"></otus-question>',
             controller: SurveyItemController,
+            bindings: {
+                itemData : '<'
+            }
         });
-
-    SurveyItemController.$inject = [];
 
     function SurveyItemController() {
         var self = this;
 
+        self.$onInit = function() {
+        };
     }
 
 })();

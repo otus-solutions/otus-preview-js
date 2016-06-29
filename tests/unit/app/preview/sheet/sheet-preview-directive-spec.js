@@ -14,7 +14,7 @@ describe('otusSheetPreview', function() {
     }));
 
     describe('test of directive otusSheetPreview', function() {
-        it('element must be well defined', function() {
+        xit('element must be well defined', function() {
             var element = $compile("<otus-sheet-preview></otus-sheet-preview>")($rootScope);
             expect(element).toBeDefined();
         });
