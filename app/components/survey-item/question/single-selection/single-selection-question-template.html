@@ -1,0 +1,7 @@
+<md-content layout-padding>
+    <md-radio-group>
+        <md-content ng-repeat="options in $ctrl.itemData.options" layout="row" style="margin: 10px">
+            <md-radio-button value="{{options.value}}" flex>{{options.label.ptBR.formattedText}}</md-radio-button>
+        </md-content>
+    </md-radio-group>
+</md-content>

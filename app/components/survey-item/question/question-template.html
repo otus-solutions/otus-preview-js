@@ -17,6 +17,7 @@
                 <calendar-question ng-if="$ctrl.isCalendarQuestion()"></calendar-question>
                 <integer-question item-data="$ctrl.itemData" ng-if="$ctrl.isIntegerQuestion()"></integer-question>
                 <decimal-question item-data="$ctrl.itemData" ng-if="$ctrl.isDecimalQuestion()"></decimal-question>
+                <single-selection-question item-data="$ctrl.itemData" ng-if="$ctrl.isSingleSelectionQuestion()"></single-selection-question>
             </md-tab>
             <md-tab label="Metadado">
                 <metadata-group item-data="$ctrl.itemData"></metadata-group>

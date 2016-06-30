@@ -7,7 +7,7 @@
             templateUrl: 'app/components/survey-item/question/question-template.html',
             controller: OtusQuestionController,
             bindings: {
-                itemData : '<'
+                itemData: '<'
             }
         });
 
@@ -18,9 +18,9 @@
         self.isCalendarQuestion = isCalendarQuestion;
         self.isIntegerQuestion = isIntegerQuestion;
         self.isDecimalQuestion = isDecimalQuestion;
+        self.isSingleSelectionQuestion = isSingleSelectionQuestion;
 
-        self.$onInit = function() {
-        };
+        self.$onInit = function() {};
 
         function isCalendarQuestion() {
             return self.itemData.objectType === 'CalendarQuestion' ? true : false;
@@ -33,6 +33,11 @@
         function isDecimalQuestion() {
             return self.itemData.objectType === 'DecimalQuestion' ? true : false;
         }
+
+        function isSingleSelectionQuestion() {
+            return self.itemData.objectType === 'SingleSelectionQuestion' ? true : false;
+        }
+
 
     }
 
