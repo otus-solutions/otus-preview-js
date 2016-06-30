@@ -223,6 +223,118 @@
                 "formattedText": ""
             }
         }
+    }, {
+        "extents": "SurveyItem",
+        "objectType": "DecimalQuestion",
+        "templateID": "PW4",
+        "dataType": "Decimal",
+        "label": {
+            "ptBR": {
+                "extends": "StudioObject",
+                "objectType": "Label",
+                "oid": "",
+                "plainText": "Qual foi o seu último peso?",
+                "formattedText": "Qual foi o seu último peso? "
+            },
+            "enUS": {
+                "extends": "StudioObject",
+                "objectType": "Label",
+                "oid": "",
+                "plainText": "",
+                "formattedText": ""
+            },
+            "esES": {
+                "extends": "StudioObject",
+                "objectType": "Label",
+                "oid": "",
+                "plainText": "",
+                "formattedText": ""
+            }
+        },
+        "metadata": {
+            "extents": "StudioObject",
+            "objectType": "MetadataGroup",
+            "options": [{
+                "extends": "StudioObject",
+                "objectType": "MetadataAnswer",
+                "dataType": "Integer",
+                "value": 1,
+                "label": {
+                    "ptBR": {
+                        "extends": "StudioObject",
+                        "objectType": "Label",
+                        "oid": "",
+                        "plainText": "Não sabe responder",
+                        "formattedText": "Não sabe responder"
+                    },
+                    "enUS": {
+                        "extends": "StudioObject",
+                        "objectType": "Label",
+                        "oid": "",
+                        "plainText": "",
+                        "formattedText": ""
+                    },
+                    "esES": {
+                        "extends": "StudioObject",
+                        "objectType": "Label",
+                        "oid": "",
+                        "plainText": "",
+                        "formattedText": ""
+                    }
+                }
+            }, {
+                "extends": "StudioObject",
+                "objectType": "MetadataAnswer",
+                "dataType": "Integer",
+                "value": 2,
+                "label": {
+                    "ptBR": {
+                        "extends": "StudioObject",
+                        "objectType": "Label",
+                        "oid": "",
+                        "plainText": "Não quer responder",
+                        "formattedText": "Não quer responder"
+                    },
+                    "enUS": {
+                        "extends": "StudioObject",
+                        "objectType": "Label",
+                        "oid": "",
+                        "plainText": "",
+                        "formattedText": ""
+                    },
+                    "esES": {
+                        "extends": "StudioObject",
+                        "objectType": "Label",
+                        "oid": "",
+                        "plainText": "",
+                        "formattedText": ""
+                    }
+                }
+            }]
+        },
+        "unit": {
+            "ptBR": {
+                "extends": "StudioObject",
+                "objectType": "Unit",
+                "oid": "",
+                "plainText": "",
+                "formattedText": ""
+            },
+            "enUS": {
+                "extends": "StudioObject",
+                "objectType": "Unit",
+                "oid": "",
+                "plainText": "",
+                "formattedText": ""
+            },
+            "esES": {
+                "extends": "StudioObject",
+                "objectType": "Unit",
+                "oid": "",
+                "plainText": "",
+                "formattedText": ""
+            }
+        }
     }],
     "navigationList": [{
         "extents": "StudioObject",
@@ -246,6 +358,18 @@
             "name": "1",
             "origin": "PW2",
             "destination": "PW3",
+            "conditionSet": {}
+        }]
+    }, {
+        "extents": "StudioObject",
+        "objectType": "Navigation",
+        "origin": "PW3",
+        "routes": [{
+            "extents": "StudioObject",
+            "objectType": "Route",
+            "name": "1",
+            "origin": "PW3",
+            "destination": "PW4",
             "conditionSet": {}
         }]
     }]

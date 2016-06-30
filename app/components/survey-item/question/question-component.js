@@ -17,6 +17,7 @@
         var self = this;
         self.isCalendarQuestion = isCalendarQuestion;
         self.isIntegerQuestion = isIntegerQuestion;
+        self.isDecimalQuestion = isDecimalQuestion;
 
         self.$onInit = function() {
         };
@@ -27,6 +28,10 @@
 
         function isIntegerQuestion() {
             return self.itemData.objectType === 'IntegerQuestion' ? true : false;
+        }
+
+        function isDecimalQuestion() {
+            return self.itemData.objectType === 'DecimalQuestion' ? true : false;
         }
 
     }
