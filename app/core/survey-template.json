@@ -28,7 +28,7 @@
                 "objectType": "Label",
                 "oid": "",
                 "plainText": "Qual sua data de nascimento?",
-                "formattedText": "<i>Qual sua data de</i> nascimento?"
+                "formattedText": "Qual sua data de nascimento?"
             },
             "enUS": {
                 "extends": "StudioObject",
@@ -139,6 +139,90 @@
             "objectType": "MetadataGroup",
             "options": []
         }
+    }, {
+        "extents": "SurveyItem",
+        "objectType": "IntegerQuestion",
+        "templateID": "PW3",
+        "dataType": "Integer",
+        "label": {
+            "ptBR": {
+                "extends": "StudioObject",
+                "objectType": "Label",
+                "oid": "",
+                "plainText": "Quantos filhos você tem?",
+                "formattedText": "Quantos filhos você tem?"
+            },
+            "enUS": {
+                "extends": "StudioObject",
+                "objectType": "Label",
+                "oid": "",
+                "plainText": "",
+                "formattedText": ""
+            },
+            "esES": {
+                "extends": "StudioObject",
+                "objectType": "Label",
+                "oid": "",
+                "plainText": "",
+                "formattedText": ""
+            }
+        },
+        "metadata": {
+            "extents": "StudioObject",
+            "objectType": "MetadataGroup",
+            "options": [{
+                "extends": "StudioObject",
+                "objectType": "MetadataAnswer",
+                "dataType": "Integer",
+                "value": 1,
+                "label": {
+                    "ptBR": {
+                        "extends": "StudioObject",
+                        "objectType": "Label",
+                        "oid": "",
+                        "plainText": "Não possui",
+                        "formattedText": "Não possui"
+                    },
+                    "enUS": {
+                        "extends": "StudioObject",
+                        "objectType": "Label",
+                        "oid": "",
+                        "plainText": "",
+                        "formattedText": ""
+                    },
+                    "esES": {
+                        "extends": "StudioObject",
+                        "objectType": "Label",
+                        "oid": "",
+                        "plainText": "",
+                        "formattedText": ""
+                    }
+                }
+            }]
+        },
+        "unit": {
+            "ptBR": {
+                "extends": "StudioObject",
+                "objectType": "Unit",
+                "oid": "",
+                "plainText": "",
+                "formattedText": ""
+            },
+            "enUS": {
+                "extends": "StudioObject",
+                "objectType": "Unit",
+                "oid": "",
+                "plainText": "",
+                "formattedText": ""
+            },
+            "esES": {
+                "extends": "StudioObject",
+                "objectType": "Unit",
+                "oid": "",
+                "plainText": "",
+                "formattedText": ""
+            }
+        }
     }],
     "navigationList": [{
         "extents": "StudioObject",
@@ -150,6 +234,18 @@
             "name": "1",
             "origin": "PW1",
             "destination": "PW2",
+            "conditionSet": {}
+        }]
+    }, {
+        "extents": "StudioObject",
+        "objectType": "Navigation",
+        "origin": "PW2",
+        "routes": [{
+            "extents": "StudioObject",
+            "objectType": "Route",
+            "name": "1",
+            "origin": "PW2",
+            "destination": "PW3",
             "conditionSet": {}
         }]
     }]

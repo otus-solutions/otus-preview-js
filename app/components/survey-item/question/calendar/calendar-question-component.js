@@ -6,8 +6,8 @@
         .component('calendarQuestion', {
             templateUrl: 'app/components/survey-item/question/calendar/calendar-question-template.html',
             controller: CalendarQuestionController,
-            require: {
-                surveyItemCtrl: '^^surveyItem'
+            bindings: {
+                itemData: '<'
             }
         });
 

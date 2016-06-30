@@ -15,6 +15,7 @@
         <md-tabs>
             <md-tab label="Resposta">
                 <calendar-question ng-if="$ctrl.isCalendarQuestion()"></calendar-question>
+                <integer-question item-data="$ctrl.itemData" ng-if="$ctrl.isIntegerQuestion()"></integer-question>
             </md-tab>
             <md-tab label="Metadado">
                 <metadata-group item-data="$ctrl.itemData"></metadata-group>

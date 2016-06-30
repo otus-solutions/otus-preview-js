@@ -16,12 +16,17 @@
     function OtusQuestionController($element) {
         var self = this;
         self.isCalendarQuestion = isCalendarQuestion;
+        self.isIntegerQuestion = isIntegerQuestion;
 
         self.$onInit = function() {
         };
 
         function isCalendarQuestion() {
             return self.itemData.objectType === 'CalendarQuestion' ? true : false;
+        }
+
+        function isIntegerQuestion() {
+            return self.itemData.objectType === 'IntegerQuestion' ? true : false;
         }
 
     }
