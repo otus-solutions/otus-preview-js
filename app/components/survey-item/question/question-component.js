@@ -23,6 +23,7 @@
         self.isTextQuestion = isTextQuestion;
         self.isEmailQuestion = isEmailQuestion;
         self.isTimeQuestion = isTimeQuestion;
+        self.isPhoneQuestion = isPhoneQuestion;
 
         self.$onInit = function() {};
 
@@ -56,6 +57,10 @@
 
         function isTimeQuestion() {
             return self.itemData.objectType === 'TimeQuestion' ? true : false;
+        }
+
+        function isPhoneQuestion() {
+            return self.itemData.objectType === 'PhoneQuestion' ? true : false;
         }
     }
 
