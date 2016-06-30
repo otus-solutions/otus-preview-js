@@ -1,12 +1,40 @@
 (function() {
 
     var gulp = require('gulp');
+    var browserSync = require('browser-sync').create();
     var bump = require('gulp-bump');
     var uglify = require("gulp-uglify");
     var minify = require('gulp-minify');
     var concat = require('gulp-concat');
     var sonar = require('gulp-sonar');
     var packageJson = require('./package.json');
+    var browserSyncSpa = require('browser-sync-middleware-spa');
+    var baseDir = __dirname + '/app/index.html';
+
+    /* Task registry */
+    gulp.task('browser-sync', function() {
+        browserSync.init({
+            server: {
+                baseDir: '../',
+                middleware: [
+                    browserSyncSpa(/^[^\.]+$/, baseDir),
+
+                    function(req, res, next) {
+                        res.setHeader('Access-Control-Allow-Origin', '*');
+                        res.setHeader('Access-Control-Allow-Headers', '*');
+                        next();
+                    }
+                ]
+            },
+            startPath: 'otus-preview-js/index'
+        });
+
+        gulp.watch([
+            'app/**/*.html',
+            'app/**/*.js',
+            'app/**/*.css'
+        ]).on('change', browserSync.reload);
+    });
 
     gulp.task('upgrade-version', function(value) {
         gulp.src('./package.json')
@@ -19,7 +47,9 @@
     gulp.task('compress', function() {
         gulp.src(['app/**/*-module.js', 'app/**/*.js'])
             .pipe(concat('otus-preview.js'))
-            .pipe(minify({'mangle' : false}))
+            .pipe(minify({
+                'mangle': false
+            }))
             .pipe(gulp.dest('dist'));
     });
 
@@ -55,4 +85,3 @@
 
 
 }());
-

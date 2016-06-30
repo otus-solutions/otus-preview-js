@@ -1,0 +1,55 @@
+<!doctype html>
+<html lang="en" ng-app="otus.preview">
+
+<head>
+    <meta charset="utf-8">
+    <base href="/otus-preview-js/" />
+    <link href="node_modules/angular-material/angular-material.min.css" rel="stylesheet" />
+    <link href="app/assets/preview-styles.css" rel="stylesheet" />
+    <style>
+        [ng-cloak] {
+            display: none;
+        }
+    </style>
+    <title>Otus Preview Components</title>
+</head>
+
+<body ng-cloak md-theme="layoutTheme">
+
+    <div ui-view></div>
+
+    <!-- LIBRABY DEPENDECIES -->
+    <!-- AngularJS -->
+    <script src='node_modules/angular/angular.min.js'></script>
+    <!-- ui-router -->
+    <script src="node_modules/angular-ui-router/release/angular-ui-router.min.js"></script>
+    <!-- Angular Material -->
+    <script src="node_modules/angular-material/angular-material.min.js"></script>
+    <script src="node_modules/angular-aria/angular-aria.min.js"></script>
+    <script src="node_modules/angular-animate/angular-animate.min.js"></script>
+    <script src="node_modules/angular-messages/angular-messages.min.js"></script>
+
+
+    <!-- APPLICATION DEPENDECIES -->
+    <script src="app/app.js"></script>
+    <script src="app/config/theme-configuration.js"></script>
+
+    <script src="app/components/otus-preview-component-module.js"></script>
+
+    <script src="app/components/otus-preview-component.js"></script>
+
+    <script src="app/components/survey-item/survey-item-component.js"></script>
+
+    <script src="app/components/survey-item/question/question-component.js"></script>
+    <script src="app/components/survey-item/question/calendar/calendar-question-component.js"></script>
+
+    <script src="app/components/metadata/metadata-component.js"></script>
+
+    <!-- CORE APPLICATION FAKE -->
+    <script src="app/core/fake-data-service.js"></script>
+    <script src="app/core/main-controller.js"></script>
+    <script src="app/config/state-configuration.js"></script>
+
+</body>
+
+</html>

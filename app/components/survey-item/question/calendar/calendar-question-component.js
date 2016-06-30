@@ -2,20 +2,24 @@
     'use strict';
 
     angular
-        .module('otus.preview')
+        .module('otus.preview.component')
         .component('calendarQuestion', {
-            templateUrl: 'otus-preview-js/app/components/survey-item/question/calendar/calendar-question-template.html',
+            templateUrl: 'app/components/survey-item/question/calendar/calendar-question-template.html',
             controller: CalendarQuestionController,
+            require: {
+                surveyItemCtrl: '^^surveyItem'
+            }
         });
 
-    CalendarQuestionController.$inject = [];
 
     function CalendarQuestionController() {
         var self = this;
 
         self.$onInit = function() {
-
+             //console.log(self.surveyItemCtrl.itemData);
         };
+
+
     }
 
 })();
