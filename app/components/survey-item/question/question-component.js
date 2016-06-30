@@ -19,6 +19,7 @@
         self.isIntegerQuestion = isIntegerQuestion;
         self.isDecimalQuestion = isDecimalQuestion;
         self.isSingleSelectionQuestion = isSingleSelectionQuestion;
+        self.isCheckboxQuestion = isCheckboxQuestion;
 
         self.$onInit = function() {};
 
@@ -38,7 +39,9 @@
             return self.itemData.objectType === 'SingleSelectionQuestion' ? true : false;
         }
 
-
+        function isCheckboxQuestion() {
+            return self.itemData.objectType === 'CheckboxQuestion' ? true : false;
+        }
     }
 
 })();

@@ -16,10 +16,7 @@
         var self = this;
 
         self.$onInit = function() {
-             //console.log(self.surveyItemCtrl.itemData);
+            //console.log(self.surveyItemCtrl.itemData);
         };
-
-
     }
-
 })();
