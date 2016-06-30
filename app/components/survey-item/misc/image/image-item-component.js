@@ -3,15 +3,15 @@
 
     angular
         .module('otus.preview.component')
-        .component('metadataGroup', {
-            templateUrl: 'app/components/metadata/metadata-group-template.html',
-            controller: MetadataGroupController,
+        .component('imageItem', {
+            templateUrl: 'app/components/survey-item/misc/image/image-item-template.html',
+            controller: ImageItemController,
             bindings: {
                 itemData : '<'
             }
         });
 
-    function MetadataGroupController() {
+    function ImageItemController() {
         var self = this;
 
         self.$onInit = function() {};

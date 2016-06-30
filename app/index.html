@@ -24,24 +24,28 @@
     <script src='node_modules/angular/angular.min.js'></script>
     <!-- ui-router -->
     <script src="node_modules/angular-ui-router/release/angular-ui-router.min.js"></script>
-    <!-- Angular Material -->
+    <!-- Angular Material & Dependencies -->
     <script src="node_modules/angular-material/angular-material.min.js"></script>
     <script src="node_modules/angular-aria/angular-aria.min.js"></script>
     <script src="node_modules/angular-animate/angular-animate.min.js"></script>
     <script src="node_modules/angular-messages/angular-messages.min.js"></script>
 
-
     <!-- APPLICATION DEPENDECIES -->
+    <!-- Main Module -->
     <script src="app/app.js"></script>
+    <!-- Application Config Files -->
     <script src="app/config/theme-configuration.js"></script>
+    <script src="app/config/state-configuration.js"></script>
 
+    <!--Preview Module-->
     <script src="app/components/otus-preview-component-module.js"></script>
-
+    <!--Preview Component-->
     <script src="app/components/otus-preview-component.js"></script>
-
+    <!--Survey Item Generic-->
     <script src="app/components/survey-item/survey-item-component.js"></script>
-
+    <!-- Question Default Component -->
     <script src="app/components/survey-item/question/question-component.js"></script>
+    <!-- Question Types -->
     <script src="app/components/survey-item/question/calendar/calendar-question-component.js"></script>
     <script src="app/components/survey-item/question/integer/integer-question-component.js"></script>
     <script src="app/components/survey-item/question/decimal/decimal-question-component.js"></script>
@@ -51,13 +55,18 @@
     <script src="app/components/survey-item/question/email/email-question-component.js"></script>
     <script src="app/components/survey-item/question/time/time-question-component.js"></script>
     <script src="app/components/survey-item/question/phone/phone-question-component.js"></script>
+    <!-- Item Default Component -->
+    <script src="app/components/survey-item/misc/misc-item-component.js"></script>
+    <!-- Item Types -->
+    <script src="app/components/survey-item/misc/image/image-item-component.js"></script>
+    <script src="app/components/survey-item/misc/text/text-item-component.js"></script>
 
+    <!-- Metadata Component -->
     <script src="app/components/metadata/metadata-component.js"></script>
 
-    <!-- CORE APPLICATION FAKE -->
-    <script src="app/core/fake-data-service.js"></script>
-    <script src="app/core/main-controller.js"></script>
-    <script src="app/config/state-configuration.js"></script>
+    <!-- Application Fake Data -->
+    <script src="app/fake-data/fake-data-service.js"></script>
+    <script src="app/fake-data/main-controller.js"></script>
 
 </body>
 

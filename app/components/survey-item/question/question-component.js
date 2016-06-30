@@ -15,6 +15,7 @@
 
     function OtusQuestionController($element) {
         var self = this;
+        // Public Interface
         self.isCalendarQuestion = isCalendarQuestion;
         self.isIntegerQuestion = isIntegerQuestion;
         self.isDecimalQuestion = isDecimalQuestion;

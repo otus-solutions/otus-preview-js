@@ -11,12 +11,10 @@
             }
         });
 
-
     function IntegerQuestionController() {
         var self = this;
 
-        self.$onInit = function() {
-        };
+        self.$onInit = function() {};
     }
 
 })();

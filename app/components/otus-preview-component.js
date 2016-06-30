@@ -11,8 +11,6 @@
             }
         });
 
-    OtusPreviewController.$inject = [];
-
     function OtusPreviewController() {
         var self = this;
 

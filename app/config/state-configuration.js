@@ -25,7 +25,7 @@
                 controller: 'MainController as mainController'
             });
 
-        $urlRouterProvider.otherwise('');
+        $urlRouterProvider.otherwise('/index');
         $locationProvider.html5Mode(true);
     }
 

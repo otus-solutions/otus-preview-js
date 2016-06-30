@@ -14,8 +14,7 @@
     function TimeQuestionController() {
         var self = this;
 
-        self.$onInit = function() {
-        };
+        self.$onInit = function() {};
     }
 
 })();

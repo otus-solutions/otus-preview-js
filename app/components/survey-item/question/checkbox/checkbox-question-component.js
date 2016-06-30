@@ -15,7 +15,7 @@
     function CheckboxQuestionController() {
         var self = this;
 
-        self.$onInit = function() {
-        };
+        self.$onInit = function() {};
     }
+
 })();

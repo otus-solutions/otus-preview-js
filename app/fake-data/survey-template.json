@@ -205,8 +205,8 @@
                 "extends": "StudioObject",
                 "objectType": "Unit",
                 "oid": "",
-                "plainText": "",
-                "formattedText": ""
+                "plainText": "Filhos",
+                "formattedText": "Filhos"
             },
             "enUS": {
                 "extends": "StudioObject",
@@ -317,8 +317,8 @@
                 "extends": "StudioObject",
                 "objectType": "Unit",
                 "oid": "",
-                "plainText": "",
-                "formattedText": ""
+                "plainText": "Quilos",
+                "formattedText": "Quilos"
             },
             "enUS": {
                 "extends": "StudioObject",
@@ -759,6 +759,63 @@
                 }
             }]
         }
+    }, {
+        "extents": "SurveyItem",
+        "objectType": "TextItem",
+        "templateID": "PW11",
+        "dataType": "String",
+        "value": {
+            "ptBR": {
+                "extends": "StudioObject",
+                "objectType": "Label",
+                "oid": "",
+                "plainText": "Agora já estamos quase acabando. O próximo item é uma imagem!!",
+                "formattedText": "Agora já estamos quase acabando. O próximo item é uma imagem!!"
+            },
+            "enUS": {
+                "extends": "StudioObject",
+                "objectType": "Label",
+                "oid": "",
+                "plainText": "",
+                "formattedText": ""
+            },
+            "esES": {
+                "extends": "StudioObject",
+                "objectType": "Label",
+                "oid": "",
+                "plainText": "",
+                "formattedText": ""
+            }
+        }
+    }, {
+        "extents": "SurveyItem",
+        "objectType": "ImageItem",
+        "templateID": "PW12",
+        "dataType": "String",
+        "url": "http://www.bacancytechnology.com/wp-content/uploads/2015/02/AngularJS-Flat-Icon-Vector.png",
+        "footer": {
+            "ptBR": {
+                "extends": "StudioObject",
+                "objectType": "Label",
+                "oid": "",
+                "plainText": "Fonte: Google Imagens",
+                "formattedText": "Fonte: Google Imagens"
+            },
+            "enUS": {
+                "extends": "StudioObject",
+                "objectType": "Label",
+                "oid": "",
+                "plainText": "",
+                "formattedText": ""
+            },
+            "esES": {
+                "extends": "StudioObject",
+                "objectType": "Label",
+                "oid": "",
+                "plainText": "",
+                "formattedText": ""
+            }
+        }
     }],
     "navigationList": [{
         "extents": "StudioObject",
@@ -866,6 +923,30 @@
             "name": "1",
             "origin": "PW9",
             "destination": "PW10",
+            "conditionSet": {}
+        }]
+    }, {
+        "extents": "StudioObject",
+        "objectType": "Navigation",
+        "origin": "PW10",
+        "routes": [{
+            "extents": "StudioObject",
+            "objectType": "Route",
+            "name": "1",
+            "origin": "PW10",
+            "destination": "PW11",
+            "conditionSet": {}
+        }]
+    }, {
+        "extents": "StudioObject",
+        "objectType": "Navigation",
+        "origin": "PW11",
+        "routes": [{
+            "extents": "StudioObject",
+            "objectType": "Route",
+            "name": "1",
+            "origin": "PW11",
+            "destination": "PW12",
             "conditionSet": {}
         }]
     }]

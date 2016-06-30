@@ -15,8 +15,7 @@
     function CalendarQuestionController() {
         var self = this;
 
-        self.$onInit = function() {
-            //console.log(self.surveyItemCtrl.itemData);
-        };
+        self.$onInit = function() {};
     }
+
 })();

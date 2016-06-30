@@ -11,12 +11,10 @@
             }
         });
 
-
     function PhoneQuestionController() {
         var self = this;
 
-        self.$onInit = function() {
-        };
+        self.$onInit = function() {};
     }
 
 })();
