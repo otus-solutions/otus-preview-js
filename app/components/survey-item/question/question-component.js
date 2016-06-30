@@ -20,6 +20,7 @@
         self.isDecimalQuestion = isDecimalQuestion;
         self.isSingleSelectionQuestion = isSingleSelectionQuestion;
         self.isCheckboxQuestion = isCheckboxQuestion;
+        self.isTextQuestion = isTextQuestion;
 
         self.$onInit = function() {};
 
@@ -41,6 +42,10 @@
 
         function isCheckboxQuestion() {
             return self.itemData.objectType === 'CheckboxQuestion' ? true : false;
+        }
+
+        function isTextQuestion() {
+            return self.itemData.objectType === 'TextQuestion' ? true : false;
         }
     }
 

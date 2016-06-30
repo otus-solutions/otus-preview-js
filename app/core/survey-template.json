@@ -571,6 +571,67 @@
                 }
             }]
         }
+    }, {
+        "extents": "SurveyItem",
+        "objectType": "TextQuestion",
+        "templateID": "PW7",
+        "dataType": "String",
+        "label": {
+            "ptBR": {
+                "extends": "StudioObject",
+                "objectType": "Label",
+                "oid": "",
+                "plainText": " O(a) está dormindo bem?",
+                "formattedText": "&nbsp;O(a) está dormindo bem?"
+            },
+            "enUS": {
+                "extends": "StudioObject",
+                "objectType": "Label",
+                "oid": "",
+                "plainText": "",
+                "formattedText": ""
+            },
+            "esES": {
+                "extends": "StudioObject",
+                "objectType": "Label",
+                "oid": "",
+                "plainText": "",
+                "formattedText": ""
+            }
+        },
+        "metadata": {
+            "extents": "StudioObject",
+            "objectType": "MetadataGroup",
+            "options": [{
+                "extends": "StudioObject",
+                "objectType": "MetadataAnswer",
+                "dataType": "Integer",
+                "value": 1,
+                "label": {
+                    "ptBR": {
+                        "extends": "StudioObject",
+                        "objectType": "Label",
+                        "oid": "",
+                        "plainText": "Não sabe responder",
+                        "formattedText": "Não sabe responder"
+                    },
+                    "enUS": {
+                        "extends": "StudioObject",
+                        "objectType": "Label",
+                        "oid": "",
+                        "plainText": "",
+                        "formattedText": ""
+                    },
+                    "esES": {
+                        "extends": "StudioObject",
+                        "objectType": "Label",
+                        "oid": "",
+                        "plainText": "",
+                        "formattedText": ""
+                    }
+                }
+            }]
+        }
     }],
     "navigationList": [{
         "extents": "StudioObject",
@@ -630,6 +691,18 @@
             "name": "1",
             "origin": "PW5",
             "destination": "PW6",
+            "conditionSet": {}
+        }]
+    }, {
+        "extents": "StudioObject",
+        "objectType": "Navigation",
+        "origin": "PW6",
+        "routes": [{
+            "extents": "StudioObject",
+            "objectType": "Route",
+            "name": "1",
+            "origin": "PW6",
+            "destination": "PW7",
             "conditionSet": {}
         }]
     }]
