@@ -582,7 +582,7 @@
                 "objectType": "Label",
                 "oid": "",
                 "plainText": " O(a) está dormindo bem?",
-                "formattedText": "O(a) está dormindo bem?"
+                "formattedText": "&nbsp;O(a) está dormindo bem?"
             },
             "enUS": {
                 "extends": "StudioObject",
@@ -644,6 +644,39 @@
                 "oid": "",
                 "plainText": "Você possui um email para contato?",
                 "formattedText": "<span style='letter-spacing: 0.14px;'>Você possui um email para contato?</span>"
+            },
+            "enUS": {
+                "extends": "StudioObject",
+                "objectType": "Label",
+                "oid": "",
+                "plainText": "",
+                "formattedText": ""
+            },
+            "esES": {
+                "extends": "StudioObject",
+                "objectType": "Label",
+                "oid": "",
+                "plainText": "",
+                "formattedText": ""
+            }
+        },
+        "metadata": {
+            "extents": "StudioObject",
+            "objectType": "MetadataGroup",
+            "options": []
+        }
+    }, {
+        "extents": "SurveyItem",
+        "objectType": "TimeQuestion",
+        "templateID": "PW9",
+        "dataType": "LocalTime",
+        "label": {
+            "ptBR": {
+                "extends": "StudioObject",
+                "objectType": "Label",
+                "oid": "",
+                "plainText": "Qual é a hora da realização do exame?",
+                "formattedText": "Qual é a hora da realização do exame?"
             },
             "enUS": {
                 "extends": "StudioObject",
@@ -748,6 +781,18 @@
             "name": "1",
             "origin": "PW7",
             "destination": "PW8",
+            "conditionSet": {}
+        }]
+    }, {
+        "extents": "StudioObject",
+        "objectType": "Navigation",
+        "origin": "PW8",
+        "routes": [{
+            "extents": "StudioObject",
+            "objectType": "Route",
+            "name": "1",
+            "origin": "PW8",
+            "destination": "PW9",
             "conditionSet": {}
         }]
     }]

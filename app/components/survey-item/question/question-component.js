@@ -22,6 +22,7 @@
         self.isCheckboxQuestion = isCheckboxQuestion;
         self.isTextQuestion = isTextQuestion;
         self.isEmailQuestion = isEmailQuestion;
+        self.isTimeQuestion = isTimeQuestion;
 
         self.$onInit = function() {};
 
@@ -51,6 +52,10 @@
 
         function isEmailQuestion() {
             return self.itemData.objectType === 'EmailQuestion' ? true : false;
+        }
+
+        function isTimeQuestion() {
+            return self.itemData.objectType === 'TimeQuestion' ? true : false;
         }
     }
 
