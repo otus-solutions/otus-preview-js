@@ -1,7 +1,9 @@
 <md-content layout-padding>
     <md-radio-group>
         <md-content ng-repeat="metadata in $ctrl.itemData.metadata.options" layout="row" style="margin: 10px">
-            <md-radio-button value="{{metadata.value}}" flex>{{metadata.label.ptBR.formattedText}}</md-radio-button>
+            <md-radio-button aria-label="{{metadata.label}}" value="{{metadata.value}}" flex>
+                <otus-label item-label="metadata.label"></otus-label>
+            </md-radio-button>
         </md-content>
     </md-radio-group>
 </md-content>

@@ -11,7 +11,7 @@
             }
         });
 
-    OtusQuestionController.$inject = [];
+    OtusQuestionController.$inject = ['$element'];
 
     function OtusQuestionController($element) {
         var self = this;

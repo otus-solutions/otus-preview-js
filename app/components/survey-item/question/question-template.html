@@ -2,10 +2,8 @@
     <!-- cabeçalho do item -->
     <md-content layout-align="start center" style="padding: 0" flex>
         <md-content layout="row">
-            <md-content layout-padding layout-align="start center" flex>
-                <p>{{$ctrl.itemData.templateID}}</p>
-                <label>{{$ctrl.itemData.label.ptBR.formattedText}}</label>
-            </md-content>
+            <otus-label item-label="$ctrl.itemData.templateID"></otus-label>
+            <otus-label item-label="$ctrl.itemData.label"></otus-label>
             <md-button tooltip="Limpar resposta">
                 <md-icon md-svg-icon="eraser" aria-label="Limpar resposta"></md-icon>
             </md-button>

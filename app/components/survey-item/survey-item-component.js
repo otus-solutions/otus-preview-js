@@ -7,7 +7,7 @@
             templateUrl: 'app/components/survey-item/survey-item-template.html',
             controller: SurveyItemController,
             bindings: {
-                itemData : '<'
+                itemData: '<'
             }
         });
 

@@ -2,9 +2,8 @@
     <div>
         <form name="emailForm">
             <md-input-container class="md-block">
-                <label></label>
                 <md-icon class="material-icons">email</md-icon>
-                <input name="email" type="email" ng-model="email" minlength="0" maxlength="5000">{{$ctrl.itemData.answer.ptBR.formattedText}}</input>
+                <input name="email" type="email" aria-label="{{$ctrl.ariaLabel()}}"></input>
             </md-input-container>
         </form>
 </md-content>

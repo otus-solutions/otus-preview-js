@@ -28,7 +28,7 @@
                 "objectType": "Label",
                 "oid": "",
                 "plainText": "Qual sua data de nascimento?",
-                "formattedText": "Qual sua data de nascimento?"
+                "formattedText": "<i>Qual sua data de nascimento?</i>"
             },
             "enUS": {
                 "extends": "StudioObject",

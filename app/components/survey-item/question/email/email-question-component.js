@@ -11,12 +11,24 @@
             }
         });
 
+    EmailQuestionController.$inject = ['$element'];
 
-    function EmailQuestionController() {
+    function EmailQuestionController($element) {
         var self = this;
 
+        self.ariaLabel = ariaLabel;
+
         self.$onInit = function() {
+            // var input = $element.find('input');
+            //
+            // input.on('keyup', function(event) {
+            //     itemData.input.val();
+            // });
         };
+
+        function ariaLabel() {
+            return self.itemData.label.ptBR.plainText;
+        }
     }
 
 })();
