@@ -5,7 +5,8 @@
         .module('otus.preview', [
             'otus.preview.component',
             'ngMaterial',
-            'ui.router'
+            'ui.router',
+            'angular-bind-html-compile'
         ]);
 
 }());

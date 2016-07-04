@@ -13,15 +13,7 @@
     <md-content layout="column">
         <md-tabs>
             <md-tab label="Resposta">
-                <calendar-question ng-if="$ctrl.isCalendarQuestion()"></calendar-question>
-                <integer-question item-data="$ctrl.itemData" ng-if="$ctrl.isIntegerQuestion()"></integer-question>
-                <decimal-question item-data="$ctrl.itemData" ng-if="$ctrl.isDecimalQuestion()"></decimal-question>
-                <single-selection-question item-data="$ctrl.itemData" ng-if="$ctrl.isSingleSelectionQuestion()"></single-selection-question>
-                <text-question item-data="$ctrl.itemData" ng-if="$ctrl.isTextQuestion()"></text-question>
-                <email-question item-data="$ctrl.itemData" ng-if="$ctrl.isEmailQuestion()"></email-question>
-                <time-question item-data="$ctrl.itemData" ng-if="$ctrl.isTimeQuestion()"></time-question>
-                <phone-question item-data="$ctrl.itemData" ng-if="$ctrl.isPhoneQuestion()"></phone-question>
-                <checkbox-question item-data="$ctrl.itemData" ng-if="$ctrl.isCheckboxQuestion()"></checkbox-question-question>
+                <md-content bind-html-compile="$ctrl.template"></md-content>
             </md-tab>
             <md-tab label="Metadado">
                 <metadata-group item-data="$ctrl.itemData"></metadata-group>
