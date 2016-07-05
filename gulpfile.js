@@ -1,15 +1,30 @@
 (function() {
 
+    var baseDir = __dirname + '/app/index.html';
+
     var gulp = require('gulp');
     var browserSync = require('browser-sync').create();
     var bump = require('gulp-bump');
-    var uglify = require("gulp-uglify");
-    var minify = require('gulp-minify');
     var concat = require('gulp-concat');
     var sonar = require('gulp-sonar');
     var packageJson = require('./package.json');
     var browserSyncSpa = require('browser-sync-middleware-spa');
-    var baseDir = __dirname + '/app/index.html';
+    var useref = require('gulp-useref');
+    var gulpif = require('gulp-if');
+    var uglify = require("gulp-uglify");
+    var minify = require('gulp-minify');
+    var minifyCss = require('gulp-minify-css');
+
+    gulp.task('concat', function() {
+        return gulp.src('app/index.html')
+            .pipe(useref({
+                transformPath: function(filePath) {
+                    return filePath.replace('app', '');
+                }
+            }))
+            .pipe(gulpif('*.js', uglify()))
+            .pipe(gulp.dest('dist/otus-preview-js'));
+    });
 
     /* Task registry */
     gulp.task('browser-sync', function() {

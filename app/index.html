@@ -4,8 +4,12 @@
 <head>
     <meta charset="utf-8">
     <base href="/otus-preview-js/" />
+    <!-- build:css css/angular-material.css -->
     <link href="node_modules/angular-material/angular-material.min.css" rel="stylesheet" />
+    <!-- endbuild -->
+    <!-- build:css css/preview.css -->
     <link href="app/assets/preview-styles.css" rel="stylesheet" />
+    <!-- endbuild -->
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
     <style>
         [ng-cloak] {
@@ -19,7 +23,8 @@
 
     <div ui-view></div>
 
-    <!-- LIBRABY DEPENDECIES -->
+    <!-- LIBRABY DEPENDECIES OF APP FAKE-->
+    <!-- build:js scripts/aplication-fake/dependecies.js -->
     <!-- AngularJS -->
     <script src='node_modules/angular/angular.min.js'></script>
     <!-- ui-router -->
@@ -31,15 +36,22 @@
     <script src="node_modules/angular-messages/angular-messages.min.js"></script>
     <!-- Bind HTML Compile -->
     <script src="node_modules/angular-bind-html-compile-ci-dev/angular-bind-html-compile.js"></script>
+    <!-- endbuild -->
 
-    <!-- APPLICATION DEPENDECIES -->
+    <!-- APP FAKE -->
     <!-- Main Module -->
+    <!-- build:js scripts/aplication-fake/app.js -->
     <script src="app/app.js"></script>
     <!-- Application Config Files -->
     <script src="app/config/theme-configuration.js"></script>
     <script src="app/config/state-configuration.js"></script>
+    <!-- Application Fake Data -->
+    <script src="app/fake-data/fake-data-service.js"></script>
+    <script src="app/fake-data/main-controller.js"></script>
+    <!-- endbuild -->
 
-    <!--Preview Module-->
+    <!--PREVIEW MODULE-->
+    <!-- build:js scripts/preview.js -->
     <script src="app/components/otus-preview-component-module.js"></script>
     <!--Preview Component-->
     <script src="app/components/otus-preview-component.js"></script>
@@ -72,10 +84,8 @@
     <!-- Services -->
     <script src="app/service/html-builder-service.js"></script>
     <script src="app/service/tag-component-builder-service.js"></script>
-
-    <!-- Application Fake Data -->
-    <script src="app/fake-data/fake-data-service.js"></script>
-    <script src="app/fake-data/main-controller.js"></script>
+    <!-- END PREVIEW MODULE-->
+    <!-- endbuild -->
 
 </body>
 
