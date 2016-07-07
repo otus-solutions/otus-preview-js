@@ -29,7 +29,7 @@
     });
 
     gulp.task('template', function() {
-        gulp.src('app/components/**/*.js')
+        gulp.src('app/components/preview/**/*.js')
             .pipe(embedTemplates({
                 basePath: __dirname + '/'
             }))
