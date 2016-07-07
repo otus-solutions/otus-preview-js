@@ -3,20 +3,25 @@
 
     angular
         .module('otus.preview.component')
-        .component('singleSelectionQuestion', {
+        .component('otusSingleSelectionQuestion', {
             templateUrl: 'app/components/preview/survey-item/question/single-selection/single-selection-question-template.html',
             controller: SingleSelectionQuestionController,
             bindings: {
-                itemData: '<'
+                itemData: '<',
+                onUpdate: '&'
             }
         });
 
     function SingleSelectionQuestionController() {
         var self = this;
 
-        self.update = function(prop, value) {
+        self.$onInit = function() {
+            console.log(self.itemData);
+        };
+
+        self.update = function(optionIndex) {
             self.onUpdate({
-                answer: value
+                value: self.answer
             });
         };
     }

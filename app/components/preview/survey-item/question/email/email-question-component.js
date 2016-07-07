@@ -3,11 +3,12 @@
 
     angular
         .module('otus.preview.component')
-        .component('emailQuestion', {
+        .component('otusEmailQuestion', {
             templateUrl: 'app/components/preview/survey-item/question/email/email-question-template.html',
             controller: EmailQuestionController,
             bindings: {
-                itemData: '<'
+                itemData: '<',
+                onUpdate: '&'
             }
         });
 
@@ -16,9 +17,9 @@
     function EmailQuestionController($element) {
         var self = this;
 
-        self.update = function(prop, value) {
+        self.update = function() {
             self.onUpdate({
-                answer: value
+                value: self.answer
             });
         };
 

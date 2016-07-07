@@ -1,7 +1,7 @@
 <md-content layout-padding>
     <div layout="row">
-        <md-input-container class="md-block" flex-gt-sm="45">
-            <input type="text" ui-decimal placeholder="Insira um valor decimal" />
+        <md-input-container md-no-float class="md-block" flex-gt-sm="45">
+            <input type="text" ng-model="$ctrl.answer" ng-change="$ctrl.update()" ui-decimal placeholder="Insira um valor decimal" />
         </md-input-container>
         <md-input-container class="md-block" flex-gt-sm="45">
             <otus-label item-label="$ctrl.itemData.unit"></otus-label>

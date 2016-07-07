@@ -1,7 +1,7 @@
 <md-content layout-padding>
     <div layout="row">
-        <md-input-container class="md-block" flex-gt-sm="45">
-            <input type="text" ui-integer placeholder="Insira um valor inteiro" />
+        <md-input-container md-no-float class="md-block" flex-gt-sm="45">
+            <input type="text" ng-model="$ctrl.answer" ng-change="$ctrl.update()" ui-integer placeholder="Insira um valor inteiro" />
         </md-input-container>
         <md-input-container class="md-block" flex-gt-sm="45">
             <otus-label item-label="$ctrl.itemData.unit"></otus-label>

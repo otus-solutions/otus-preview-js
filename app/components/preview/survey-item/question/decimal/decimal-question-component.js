@@ -3,11 +3,12 @@
 
     angular
         .module('otus.preview.component')
-        .component('decimalQuestion', {
+        .component('otusDecimalQuestion', {
             templateUrl: 'app/components/preview/survey-item/question/decimal/decimal-question-template.html',
             controller: DecimalQuestionController,
             bindings: {
-                itemData: '<'
+                itemData: '<',
+                onUpdate: '&'
             }
         });
 
@@ -15,9 +16,9 @@
     function DecimalQuestionController() {
         var self = this;
 
-        self.update = function(prop, value) {
+        self.update = function() {
             self.onUpdate({
-                answer: value
+                value: self.answer
             });
         };
     }

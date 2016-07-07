@@ -1,8 +1,7 @@
 <md-content layout-padding>
-    <div>
-        <md-input-container class="md-block">
-            <label>{{$ctrl.itemData.answer.ptBR.formattedText}}</label>
-            <textarea>{{$ctrl.itemData.answer.ptBR.formattedText}}</textarea>
+    <div layout="row">
+        <md-input-container md-no-float class="md-block" flex>
+            <textarea ng-model="$ctrl.answer" ng-change="$ctrl.update()" placeholder="Digite o texto aqui"></textarea>
         </md-input-container>
     </div>
 </md-content>

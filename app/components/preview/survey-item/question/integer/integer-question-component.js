@@ -3,20 +3,21 @@
 
     angular
         .module('otus.preview.component')
-        .component('integerQuestion', {
+        .component('otusIntegerQuestion', {
             templateUrl: 'app/components/preview/survey-item/question/integer/integer-question-template.html',
             controller: IntegerQuestionController,
             bindings: {
-                itemData: '<'
+                itemData: '<',
+                onUpdate: '&'
             }
         });
 
     function IntegerQuestionController() {
         var self = this;
 
-        self.update = function(prop, value) {
+        self.update = function() {
             self.onUpdate({
-                answer: value
+                value: self.answer
             });
         };
     }

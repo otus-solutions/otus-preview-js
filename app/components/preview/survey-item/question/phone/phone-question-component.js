@@ -3,20 +3,21 @@
 
     angular
         .module('otus.preview.component')
-        .component('phoneQuestion', {
+        .component('otusPhoneQuestion', {
             templateUrl: 'app/components/preview/survey-item/question/phone/phone-question-template.html',
             controller: PhoneQuestionController,
             bindings: {
-                itemData: '<'
+                itemData: '<',
+                onUpdate: '&'
             }
         });
 
     function PhoneQuestionController() {
         var self = this;
 
-        self.update = function(prop, value) {
+        self.update = function() {
             self.onUpdate({
-                answer: value
+                value: self.answer
             });
         };
     }

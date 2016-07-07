@@ -3,24 +3,21 @@
 
     angular
         .module('otus.preview.component')
-        .component('calendarQuestion', {
+        .component('otusCalendarQuestion', {
             templateUrl: 'app/components/preview/survey-item/question/calendar/calendar-question-template.html',
-            controller: CalendarQuestionController,
+            controller: OtusCalendarQuestionController,
             bindings: {
                 itemData: '<',
-                date: '<',
                 onUpdate: '&'
             }
         });
 
-    CalendarQuestionController.$inject = ['$element'];
-
-    function CalendarQuestionController($element) {
+    function OtusCalendarQuestionController() {
         var self = this;
 
         self.update = function() {
             self.onUpdate({
-                value: self.date
+                value: self.answer
             });
         };
     }

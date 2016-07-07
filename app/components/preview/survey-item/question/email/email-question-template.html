@@ -1,9 +1,8 @@
 <md-content layout-padding>
-    <div>
-        <form name="emailForm">
-            <md-input-container class="md-block">
-                <md-icon class="material-icons">email</md-icon>
-                <input name="email" type="email" aria-label="{{$ctrl.ariaLabel()}}"></input>
-            </md-input-container>
-        </form>
+    <div layout="row">
+        <md-input-container md-no-float class="md-block" flex-gt-sm="45">
+            <md-icon class="material-icons">email</md-icon>
+            <input name="email" type="email" ng-model="$ctrl.answer" ng-change="$ctrl.update()" placeholder="email@email.com" aria-label="{{$ctrl.ariaLabel()}}"></input>
+        </md-input-container>
+    </div>
 </md-content>

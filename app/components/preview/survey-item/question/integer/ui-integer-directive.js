@@ -28,8 +28,6 @@
                     } else if (!isValidKey(keycode)) {
                         element.val(lastValidValue);
                     }
-
-                    console.log(lastValidValue);
                 }
 
                 function isNumberKey(keycode) {
