@@ -14,8 +14,10 @@
     var uglify = require("gulp-uglify");
     var minify = require('gulp-minify');
     var minifyCss = require('gulp-minify-css');
+    var addsrc = require('gulp-add-src');
+    var embedTemplates = require('gulp-angular-embed-templates');
 
-    gulp.task('concat', function() {
+    gulp.task('useref', function() {
         return gulp.src('app/index.html')
             .pipe(useref({
                 transformPath: function(filePath) {
@@ -24,6 +26,17 @@
             }))
             .pipe(gulpif('*.js', uglify()))
             .pipe(gulp.dest('dist/otus-preview-js'));
+    });
+
+    gulp.task('template', function() {
+        gulp.src('app/components/**/*.js')
+            .pipe(embedTemplates({
+                basePath: __dirname + '/'
+            }))
+            .pipe(addsrc('app/service/**/*.js'))
+            .pipe(concat('otus-preview-min.js'))
+            .pipe(uglify())
+            .pipe(gulp.dest('dist/template'));
     });
 
     /* Task registry */
