@@ -12,7 +12,7 @@
         $stateProvider
             .state('index', {
                 url: '/index',
-                templateUrl: 'app/view/survey-template-preview.html',
+                templateUrl: 'app/view/sheet-view-template.html',
                 resolve: {
                     resolvedSurveyTemplate: function prepareWorkEnvironment(FakeDataService, $q) {
                         var deferred = $q.defer();
@@ -22,7 +22,7 @@
                         return deferred.promise;
                     }
                 },
-                controller: 'MainController as mainController'
+                controller: 'SheetViewController as sheetViewCtrl'
             });
 
         $urlRouterProvider.otherwise('/index');
