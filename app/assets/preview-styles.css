@@ -12,3 +12,34 @@
 .custom-whiteframe {
     box-shadow: 0 1px 3px 0 rgba(0, 0, 0, .2), 0 1px 1px 0 #E8E8E8, 0 2px 1px -1px rgba(0, 0, 0, .12);
 }
+
+md-icon[md-svg-icon="eraser"] {
+    color: #FF7B1C
+}
+
+md-icon[md-svg-icon="check"] {
+    color: green
+}
+
+/**
+*
+* Survey Header.css
+*
+**/
+
+#survey-header {
+    margin-top: 20px;
+    color: #727272;
+}
+#survey-header md-chips-wrap {
+    box-shadow: 0 0px !important;
+}
+#survey-header .md-caption {
+    margin: 0;
+    padding: 0;
+}
+#survey-header .md-display-1 {
+    margin: 0;
+    padding: 0;
+    font-size: 2vw;
+}

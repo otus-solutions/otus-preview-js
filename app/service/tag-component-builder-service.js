@@ -16,8 +16,8 @@
             return _replace(HtmlBuilderService.generateTagName(elementType));
         }
 
-        function _replace(tagName){
-            return '<' + tagName  + ' item-data="$ctrl.itemData" />';
+        function _replace(tagName) {
+            return '<' + tagName + ' item-data="$ctrl.itemData" on-update="$ctrl.update(\'answer\', value)" />';
         }
     }
 

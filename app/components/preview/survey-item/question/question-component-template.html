@@ -1,0 +1,13 @@
+<md-content layout="column">
+    <md-tabs>
+        <md-tab label="Resposta">
+            <md-content bind-html-compile="$ctrl.template"></md-content>
+        </md-tab>
+        <md-tab label="Metadado">
+            <metadata-group item-data="$ctrl.itemData"></metadata-group>
+        </md-tab>
+        <md-tab label="Comentário">
+            <md-content>Comentário</md-content>
+        </md-tab>
+    </md-tabs>
+</md-content>
