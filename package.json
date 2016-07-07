@@ -39,6 +39,8 @@
     "browser-sync-middleware-spa": "^1.0.0",
     "concurrently": "^1.0.0",
     "gulp": "^3.9.1",
+    "gulp-add-src": "^0.2.0",
+    "gulp-angular-embed-templates": "^2.2.0",
     "gulp-bump": "2.1.0",
     "gulp-if": "^2.0.1",
     "gulp-minify-css": "^1.2.4",
