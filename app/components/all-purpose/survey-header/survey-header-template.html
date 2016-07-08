@@ -1,15 +1,27 @@
-<div id="survey-header">
-    <md-card>
-        <md-card-title>
-            <md-card-title-text>
-                <span class="md-headline">Aqui Vai o Nome do Formulário</span>
+<md-card flex>
+    <md-card-title>
+        <md-card-title-text>
+            <span class="md-headline">
+                Aqui Vai o Nome do Formulário
                 <md-chips>
                     <md-chip>{{$ctrl.surveyIdentity.acronym}}</md-chip>
                 </md-chips>
-                <span class="md-subhead">Uma possível descrição básica do formulário.</span>
-            </md-card-title-text>
-        </md-card-title>
+            </span>
+            <span class="md-subhead">Uma possível descrição básica do formulário.</span>
+        </md-card-title-text>
+        <md-content flex="15">
+            <md-input-container class="md-block" flex-gt-xs>
+                <label>Data de realização</label>
+                <input ng-model="$ctrl.realizationDate" disabled>
+            </md-input-container>
+            <md-input-container class="md-block" flex-gt-xs>
+                <label>Entrevistador(a)</label>
+                <input ng-model="$ctrl.interviewer" disabled>
+            </md-input-container>
+        </md-content>
+    </md-card-title>
 
-        <!-- <md-progress-linear ng-show="$ctrl.isLoading" md-mode="indeterminate"></md-progress-linear> -->
-    </md-card>
-</div>
+    <md-card-content>
+        <md-progress-linear ng-show="true" md-mode="indeterminate"></md-progress-linear>
+    </md-card-content>
+</md-card>

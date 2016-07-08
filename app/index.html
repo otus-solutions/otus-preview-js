@@ -8,9 +8,10 @@
     <link href="node_modules/angular-material/angular-material.min.css" rel="stylesheet" />
     <!-- endbuild -->
     <!-- build:css css/preview.css -->
-    <link href="app/assets/preview-styles.css" rel="stylesheet" />
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700,400italic">
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+
+    <link href="app/assets/preview-styles.css" rel="stylesheet" />
     <style>
         [ng-cloak] {
             display: none;
@@ -19,9 +20,9 @@
     <title>Otus Preview Components</title>
 </head>
 
-<body ng-cloak md-theme="layoutTheme">
+<body layout="column" flex md-theme="layoutTheme">
 
-    <div ui-view></div>
+    <div ui-view layout="row" flex layout-align="center start"></div>
 
     <!-- LIBRABY DEPENDECIES -->
     <!-- AngularJS -->
@@ -35,7 +36,6 @@
     <script src="node_modules/angular-messages/angular-messages.min.js"></script>
     <!-- Bind HTML Compile -->
     <script src="node_modules/angular-bind-html-compile-ci-dev/angular-bind-html-compile.js"></script>
-    <!-- endbuild -->
 
     <!-- APPLICATION DEPENDECIES -->
     <!-- Main Module -->
