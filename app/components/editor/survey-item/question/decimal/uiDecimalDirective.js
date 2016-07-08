@@ -1,7 +1,7 @@
 (function() {
     'use strict';
 
-    angular.module("editor.ui").directive("uiDecimal", function() {
+    angular.module("otus.component.editor").directive("uiDecimal", function() {
         return {
             link: function($scope, element, attrs, ngModelCtrl) {
                 var lastValidValue;

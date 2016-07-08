@@ -2,6 +2,6 @@
     'use strict';
 
     angular
-        .module('otus.editor.component', []);
+        .module('otus.component.editor', []);
 
 }());

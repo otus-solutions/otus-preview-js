@@ -2,7 +2,7 @@
     'use strict';
 
     angular
-        .module('editor.ui')
+        .module('otus.component.editor')
         .component('otusPageAnchor', {
             templateUrl: 'app/editor/ui/page-anchor-item/page-anchor-template.html',
             controller: AnchorController,

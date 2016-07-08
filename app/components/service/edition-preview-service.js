@@ -2,7 +2,7 @@
     'use strict';
 
     angular
-        .module('preview')
+        .module('otus.preview')
         .service('EditionPreviewService', EditionPreviewService);
 
     EditionPreviewService.$inject = [

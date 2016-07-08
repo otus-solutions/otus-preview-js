@@ -2,7 +2,7 @@
     'use strict';
 
     angular
-        .module('editor.ui')
+        .module('otus.component.editor')
         .directive('otusIntegerQuestion', directive);
 
     directive.$inject = ['IntegerQuestionWidgetFactory'];

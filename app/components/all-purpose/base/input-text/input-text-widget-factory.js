@@ -2,7 +2,7 @@
     'use strict';
 
     angular
-        .module('editor.ui')
+        .module('otus.component.editor')
         .factory('OtusInputTextWidgetFactory', OtusInputTextWidgetFactory);
 
     function OtusInputTextWidgetFactory() {

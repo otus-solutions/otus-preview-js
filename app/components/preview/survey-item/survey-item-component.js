@@ -11,6 +11,8 @@
             }
         });
 
+    // OtusSurveyItemController.$inject = ['AnswerFactory'];
+
     function OtusSurveyItemController() {
         var self = this;
 
@@ -25,6 +27,7 @@
 
         self.$onInit = function() {
             // loadAnswer
+            console.log(self.itemData);
         };
 
         function isQuestion() {

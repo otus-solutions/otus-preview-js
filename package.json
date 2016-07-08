@@ -22,6 +22,7 @@
     "build": "gulp compress"
   },
   "dependencies": {
+    "otus-model-js": "git@github.com:ccem-dev/otus-model-js.git#FOR-60",
     "angular": "^1.4.7",
     "angular-animate": "^1.4.7",
     "angular-aria": "^1.4.7",

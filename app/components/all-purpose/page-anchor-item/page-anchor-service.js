@@ -1,6 +1,6 @@
 (function() {
     angular
-        .module('editor.ui')
+        .module('otus.component.editor')
         .service('PageAnchorService', PageAnchorService);
 
     function PageAnchorService() {

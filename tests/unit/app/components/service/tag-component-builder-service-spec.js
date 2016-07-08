@@ -1,6 +1,6 @@
 describe('TagComponentBuilderService', function() {
     var service;
-    var expectedTagElement = '<calendar-question item-data="$ctrl.itemData" />';
+    var expectedTagElement = '<otus-calendar-question item-data="$ctrl.itemData" on-update="$ctrl.update(\'answer\', value)" />';
     var elementType = "CalendarQuestion";
     var Mock = {};
 
