@@ -24,20 +24,23 @@
                     return filePath.replace('app', '');
                 }
             }))
+            .pipe(gulpif('*.js', embedTemplates({
+                basePath: __dirname + '/'
+            })))
             .pipe(gulpif('*.js', uglify()))
             .pipe(gulp.dest('dist/otus-preview-js'));
     });
 
-    gulp.task('template', function() {
-        gulp.src('app/components/preview/**/*.js')
-            .pipe(embedTemplates({
-                basePath: __dirname + '/'
-            }))
-            .pipe(addsrc('app/service/**/*.js'))
-            .pipe(concat('otus-preview-min.js'))
-            .pipe(uglify())
-            .pipe(gulp.dest('dist/template'));
-    });
+    // gulp.task('template', function() {
+    //     gulp.src('app/components/preview/**/*.js')
+    //         .pipe(embedTemplates({
+    //             basePath: __dirname + '/'
+    //         }))
+    //         .pipe(addsrc('app/service/**/*.js'))
+    //         .pipe(concat('otus-preview-min.js'))
+    //         .pipe(uglify())
+    //         .pipe(gulp.dest('dist/template'));
+    // });
 
     /* Task registry */
     gulp.task('browser-sync', function() {

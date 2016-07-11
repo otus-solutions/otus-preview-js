@@ -4,10 +4,7 @@
 <head>
     <meta charset="utf-8">
     <base href="/otus-preview-js/" />
-    <!-- build:css css/angular-material.css -->
     <link href="node_modules/angular-material/angular-material.min.css" rel="stylesheet" />
-    <!-- endbuild -->
-    <!-- build:css css/preview.css -->
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700,400italic">
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
 
@@ -42,7 +39,6 @@
 
     <!-- APPLICATION DEPENDECIES -->
     <!-- Main Module -->
-    <!-- build:js scripts/aplication-fake/app.js -->
     <script src="app/app.js"></script>
     <!-- Application Config Files -->
     <script src="app/config/theme-configuration.js"></script>
@@ -50,9 +46,9 @@
     <!-- Application Fake Data -->
     <script src="app/fake-data/fake-data-service.js"></script>
     <script src="app/view/sheet-view-controller.js"></script>
-    <!-- endbuild -->
 
     <!--Preview Module-->
+    <!-- build:js scripts/otus-preview-min.js -->
     <script src="app/components/preview/otus-preview-component-module.js"></script>
     <!--Preview Component-->
     <script src="app/components/preview/otus-preview-component.js"></script>
@@ -92,8 +88,8 @@
     <!-- Services -->
     <script src="app/components/service/html-builder-service.js"></script>
     <script src="app/components/service/tag-component-builder-service.js"></script>
-    <!-- END PREVIEW MODULE-->
     <!-- endbuild -->
+    <!-- END PREVIEW MODULE-->
 
 </body>
 
