@@ -3,7 +3,7 @@
 
     angular
         .module('otus.preview.component')
-        .component('textItem', {
+        .component('otusTextItem', {
             templateUrl: 'app/components/preview/survey-item/misc/text/text-item-template.html',
             controller: TextItemController,
             bindings: {

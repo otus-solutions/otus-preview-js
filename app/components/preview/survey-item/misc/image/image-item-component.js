@@ -3,7 +3,7 @@
 
     angular
         .module('otus.preview.component')
-        .component('imageItem', {
+        .component('otusImageItem', {
             templateUrl: 'app/components/preview/survey-item/misc/image/image-item-template.html',
             controller: ImageItemController,
             bindings: {
