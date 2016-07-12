@@ -17,6 +17,7 @@
 
         self.update = function() {
             self.onUpdate({
+                valueType: 'answer',
                 value: self.answer
             });
         };

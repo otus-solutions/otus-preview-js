@@ -16,7 +16,7 @@
     function OtusSurveyItemController() {
         var self = this;
 
-        var _answer;
+        var filling = {};
 
         /* Public methods */
         self.isQuestion = isQuestion;
@@ -27,7 +27,6 @@
 
         self.$onInit = function() {
             // loadAnswer
-            console.log(self.itemData);
         };
 
         function isQuestion() {
@@ -43,13 +42,13 @@
         }
 
         function confirmAnswer() {
+            console.log(filling);
             // Service.fillQuestion(ID, _answer, meta);
-            self.itemData.answer = _answer;
-            console.log(self.itemData);
+            // self.itemData.answer = _answer;
         }
 
         function update(prop, value) {
-            _answer = value;
+            filling[prop] = value;
         }
     }
 

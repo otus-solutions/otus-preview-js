@@ -30,6 +30,7 @@
 
         function _buildAnswerObject(index, value) {
             return {
+                valueType: 'answer',
                 value: {
                     option: index,
                     state: value

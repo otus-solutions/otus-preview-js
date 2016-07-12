@@ -15,12 +15,9 @@
     function SingleSelectionQuestionController() {
         var self = this;
 
-        self.$onInit = function() {
-            console.log(self.itemData);
-        };
-
-        self.update = function(optionIndex) {
+        self.update = function() {
             self.onUpdate({
+                valueType: 'answer',
                 value: self.answer
             });
         };

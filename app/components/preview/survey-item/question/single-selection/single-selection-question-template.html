@@ -1,6 +1,6 @@
 <md-content layout-padding style="margin-left: 10px">
     <md-radio-group ng-model="$ctrl.answer" ng-change="$ctrl.update()" layout-padding flex>
-        <md-radio-button value="{{option.value}}" ng-repeat="option in $ctrl.itemData.options" layout="row" style="margin: 7px">
+        <md-radio-button value="{{option.value}}" ng-repeat="option in $ctrl.itemData.options" layout="row" style="margin: 10px">
             <otus-label item-label="option.label.ptBR.formattedText"></otus-label>
         </md-radio-button>
     </md-radio-group>

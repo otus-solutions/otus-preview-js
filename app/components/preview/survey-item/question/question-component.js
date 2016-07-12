@@ -26,7 +26,8 @@
 
         self.update = function(prop, value) {
             self.onUpdate({
-                answer: value
+                valueType: prop,
+                value: value
             });
         };
 

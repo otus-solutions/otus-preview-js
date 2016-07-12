@@ -3,22 +3,22 @@
 
     angular
         .module('otus.preview.component')
-        .component('metadataGroup', {
-            templateUrl: 'app/components/preview/metadata/metadata-group-template.html',
-            controller: MetadataGroupController,
+        .component('otusComment', {
+            templateUrl: 'app/components/preview/comment/comment-template.html',
+            controller: OtusCommentController,
             bindings: {
                 itemData : '<',
                 onUpdate: '&'
             }
         });
 
-    function MetadataGroupController() {
+    function OtusCommentController() {
         var self = this;
 
         self.update = function() {
             self.onUpdate({
-                valueType: 'metadata',
-                value: self.metadata
+                valueType: 'comment',
+                value: self.comment
             });
         };
     }
