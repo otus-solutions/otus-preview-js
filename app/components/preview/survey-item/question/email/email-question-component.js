@@ -2,7 +2,7 @@
     'use strict';
 
     angular
-        .module('otus.preview.component')
+        .module('otus.component.preview')
         .component('otusEmailQuestion', {
             templateUrl: 'app/components/preview/survey-item/question/email/email-question-template.html',
             controller: EmailQuestionController,

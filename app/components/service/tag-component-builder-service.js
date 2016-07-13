@@ -2,7 +2,7 @@
     'use strict';
 
     angular
-        .module('otus.preview.component')
+        .module('otus.component.preview')
         .service('TagComponentBuilderService', TagComponentBuilderService);
 
     TagComponentBuilderService.$inject = ['HtmlBuilderService'];

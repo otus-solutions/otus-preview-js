@@ -2,7 +2,7 @@
     'use strict';
 
     angular
-        .module('otus.preview.component')
+        .module('otus.component.preview')
         .component('otusSurveyItem', {
             templateUrl: 'app/components/preview/survey-item/survey-item-template.html',
             controller: OtusSurveyItemController,
@@ -11,9 +11,9 @@
             }
         });
 
-    // OtusSurveyItemController.$inject = ['AnswerFactory'];
+    OtusSurveyItemController.$inject = ['DataService'];
 
-    function OtusSurveyItemController() {
+    function OtusSurveyItemController(DataService) {
         var self = this;
 
         var filling = {};
@@ -42,9 +42,7 @@
         }
 
         function confirmAnswer() {
-            console.log(filling);
-            // Service.fillQuestion(ID, _answer, meta);
-            // self.itemData.answer = _answer;
+            DataService.transferData(filling);
         }
 
         function update(prop, value) {

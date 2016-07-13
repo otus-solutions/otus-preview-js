@@ -2,9 +2,9 @@ describe('otusSheetPreview', function() {
 
     var $route, $rootScope, $location, $httpBackend;
 
-    beforeEach(module('otus.preview'));
-
     beforeEach(inject(function($injector) {
+        module('otus.preview');
+        
         //$route = $injector.get('$route');
         $rootScope = $injector.get('$rootScope');
         $location = $injector.get('$location');

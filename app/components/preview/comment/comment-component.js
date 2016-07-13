@@ -2,7 +2,7 @@
     'use strict';
 
     angular
-        .module('otus.preview.component')
+        .module('otus.component.preview')
         .component('otusComment', {
             templateUrl: 'app/components/preview/comment/comment-template.html',
             controller: OtusCommentController,

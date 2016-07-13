@@ -2,7 +2,7 @@
     'use strict';
 
     angular
-        .module('otus.preview.component')
+        .module('otus.component.preview')
         .component('otusImageItem', {
             templateUrl: 'app/components/preview/survey-item/misc/image/image-item-template.html',
             controller: ImageItemController,

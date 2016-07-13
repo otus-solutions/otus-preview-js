@@ -8,7 +8,7 @@ describe('surveyItem component', function() {
 
     function _getComponentController() {
         var $ctrl;
-        module('otus.preview.component');
+        module('otus.component.preview');
         inject(function($componentController) {
             $ctrl = $componentController('surveyItem');
         });

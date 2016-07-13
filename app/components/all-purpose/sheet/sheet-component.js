@@ -2,7 +2,7 @@
     'use strict';
 
     angular
-        .module('otus.allPurpose.component')
+        .module('otus.component.allPurpose')
         .component('otusSheet', {
             templateUrl: 'app/components/all-purpose/sheet/sheet-template.html',
             controller: OtusSheetController,

@@ -2,7 +2,7 @@
     'use strict';
 
     angular
-        .module('otus.preview.component')
+        .module('otus.component.preview')
         .component('otusDecimalQuestion', {
             templateUrl: 'app/components/preview/survey-item/question/decimal/decimal-question-template.html',
             controller: DecimalQuestionController,

@@ -2,7 +2,7 @@
     'use strict';
 
     angular
-        .module('otus.preview.component')
+        .module('otus.component.preview')
         .component('metadataGroup', {
             templateUrl: 'app/components/preview/metadata/metadata-group-template.html',
             controller: MetadataGroupController,

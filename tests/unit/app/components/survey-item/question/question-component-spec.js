@@ -19,7 +19,7 @@ describe('otusQuestion component', function() {
 
     function _getComponentController() {
         var $ctrl;
-        module('otus.preview.component');
+        module('otus.component.preview');
         inject(function($rootScope, $componentController, _$injector_) {
             mockTagComponentBuilderService(_$injector_);
             scope = $rootScope.$new();

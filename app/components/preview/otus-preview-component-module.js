@@ -2,6 +2,6 @@
     'use strict';
 
     angular
-        .module('otus.preview.component', []);
+        .module('otus.component.preview', []);
 
 }());

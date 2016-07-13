@@ -16,7 +16,15 @@ module.exports = function(config) {
         files: [
             /* External dependencies */
             NODE_MODULES_ROOT_PATH + 'angular/angular.min.js',
+            NODE_MODULES_ROOT_PATH + 'angular-animate/angular-animate.min.js',
+            NODE_MODULES_ROOT_PATH + 'angular-aria/angular-aria.min.js',
+            NODE_MODULES_ROOT_PATH + 'angular-bind-html-compile-ci-dev/angular-bind-html-compile.js',
+            NODE_MODULES_ROOT_PATH + 'angular-material/angular-material.min.js',
+            NODE_MODULES_ROOT_PATH + 'angular-messages/angular-messages.min.js',
             NODE_MODULES_ROOT_PATH + 'angular-mocks/angular-mocks.js',
+            NODE_MODULES_ROOT_PATH + 'angular-ui-router/release/angular-ui-router.min.js',
+            NODE_MODULES_ROOT_PATH + 'otus-model-js/dist/otus-model-min.js',
+            NODE_MODULES_ROOT_PATH + 'otus-model-js/dist/st-utils-min.js',
 
             APP_ROOT_PATH + 'app.js',
             APP_ROOT_PATH + '**/*-module.js',

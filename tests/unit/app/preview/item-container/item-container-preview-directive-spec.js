@@ -1,9 +1,8 @@
 describe('otusSheetPreview', function() {
     var Mock = {};
 
-    beforeEach(module('otus.preview'));
-
     beforeEach(inject(function(_$rootScope_, _$compile_) {
+        module('otus.preview');
         $rootScope = _$rootScope_;
         $compile = _$compile_;
     }));

@@ -2,7 +2,7 @@
     'use strict';
 
     angular
-        .module('otus.preview.component')
+        .module('otus.component.preview')
         .component('otusCheckboxQuestion', {
             templateUrl: 'app/components/preview/survey-item/question/checkbox/checkbox-question-template.html',
             controller: CheckboxQuestionController,

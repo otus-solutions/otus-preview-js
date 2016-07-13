@@ -1,7 +1,7 @@
 (function() {
     'use strict';
 
-    angular.module("otus.preview.component").directive("uiInteger", function() {
+    angular.module('otus.component.preview').directive("uiInteger", function() {
         return {
             link: function($scope, element, attrs, ngModelCtrl) {
                 var lastValidValue;
