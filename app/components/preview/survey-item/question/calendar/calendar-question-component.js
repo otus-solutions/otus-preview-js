@@ -2,7 +2,7 @@
     'use strict';
 
     angular
-        .module('otus.preview.component')
+        .module('otus.component.preview')
         .component('otusCalendarQuestion', {
             templateUrl: 'app/components/preview/survey-item/question/calendar/calendar-question-template.html',
             controller: OtusCalendarQuestionController,

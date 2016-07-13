@@ -2,7 +2,7 @@
     'use strict';
 
     angular
-        .module('otus.allPurpose.component')
+        .module('otus.component.allPurpose')
         .component('otusSurveyHeader', {
             templateUrl: 'app/components/all-purpose/survey-header/survey-header-template.html',
             controller: OtusSurveyHeaderController,

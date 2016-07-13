@@ -2,7 +2,7 @@
     'use strict';
 
     angular
-        .module('otus.preview.component')
+        .module('otus.component.preview')
         .component('otusPreview', {
             template: '<survey-item item-data="item" ng-repeat="item in ::$ctrl.itemContainer track by $index"></survey-item>',
             controller: OtusPreviewController,

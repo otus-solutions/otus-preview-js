@@ -2,7 +2,7 @@
     'use strict';
 
     angular
-        .module('otus.preview.component')
+        .module('otus.component.preview')
         .component('otusMiscItem', {
             templateUrl: 'app/components/preview/survey-item/misc/misc-item-template.html',
             controller: OtusMiscItemController,

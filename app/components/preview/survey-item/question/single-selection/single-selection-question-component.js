@@ -2,7 +2,7 @@
     'use strict';
 
     angular
-        .module('otus.preview.component')
+        .module('otus.component.preview')
         .component('otusSingleSelectionQuestion', {
             templateUrl: 'app/components/preview/survey-item/question/single-selection/single-selection-question-template.html',
             controller: SingleSelectionQuestionController,

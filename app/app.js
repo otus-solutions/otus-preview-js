@@ -3,13 +3,16 @@
 
     angular
         .module('otus.preview', [
-            'otus.allPurpose.component',
-            'otus.component.editor',
-            'otus.preview.component',
-            'otusjs',
-            'ngMaterial',
+            /* External modules */
             'ui.router',
-            'angular-bind-html-compile'
+            'ngMaterial',
+            'angular-bind-html-compile',
+            /* Otus model module */
+            'otusjs',
+            /* Components modules */
+            'otus.component.allPurpose',
+            'otus.component.editor',
+            'otus.component.preview'
         ]);
 
 }());

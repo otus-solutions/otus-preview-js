@@ -2,6 +2,6 @@
     'use strict';
 
     angular
-        .module('otus.allPurpose.component', []);
+        .module('otus.component.allPurpose', []);
 
 }());

@@ -2,7 +2,7 @@
     'use strict';
 
     angular
-        .module('otus.preview.component')
+        .module('otus.component.preview')
         .component('otusIntegerQuestion', {
             templateUrl: 'app/components/preview/survey-item/question/integer/integer-question-template.html',
             controller: IntegerQuestionController,
