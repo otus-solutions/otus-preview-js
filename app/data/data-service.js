@@ -13,7 +13,7 @@
         self.transferData = transferData;
 
         function transferData(data) {
-            ActivityFacadeService.fillQuestion(data);
+            ActivityFacadeService.fillQuestion(data.questionID, data.answer, data.metadata, data.comment);
         }
     }
 

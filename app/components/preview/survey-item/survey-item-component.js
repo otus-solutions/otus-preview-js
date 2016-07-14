@@ -42,6 +42,7 @@
         }
 
         function confirmAnswer() {
+            filling.questionID = self.itemData.templateID;
             DataService.transferData(filling);
         }
 
