@@ -19,6 +19,7 @@
         function _replace(tagName) {
             return '<otus-' + tagName + ' item-data="$ctrl.itemData" on-update="$ctrl.update(valueType, value)" />';
         }
+
     }
 
 })();
