@@ -4,7 +4,8 @@ describe('DataService', function() {
     var service;
 
     beforeEach(function() {
-        module('otus.preview');
+        module('otusjs');
+        module('otusjs.player.core');
 
         inject(function(_$injector_) {
             service = _$injector_.get('DataService', {
@@ -18,14 +19,14 @@ describe('DataService', function() {
         it('should call ActivityFacadeService.fillQuestion', function() {
             service.transferData(mockFillingData());
 
-            expect(Mock.ActivityFacadeService.fillQuestion).toHaveBeenCalled();
+            expect(Mock.ActivityFacadeService.createQuestionFill).toHaveBeenCalled();
         });
 
     });
 
     function mockActivityFacadeService($injector) {
         Mock.ActivityFacadeService = $injector.get('ActivityFacadeService');
-        spyOn(Mock.ActivityFacadeService, 'fillQuestion');
+        spyOn(Mock.ActivityFacadeService, 'createQuestionFill');
         return Mock.ActivityFacadeService;
     }
 

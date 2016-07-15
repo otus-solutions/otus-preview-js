@@ -4,7 +4,7 @@ describe('HtmlBuilderService', function() {
     var service;
 
     beforeEach(function() {
-        module('otus.preview');
+        module('otusjs.player.core');
 
         inject(function(_$injector_) {
             service = _$injector_.get('HtmlBuilderService');

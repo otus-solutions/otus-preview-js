@@ -30,7 +30,7 @@ describe('Otus Preview component', function() {
 
     function _getComponentController() {
         var $ctrl;
-        module('otus.component.preview');
+        module('otusjs.player.core');
         inject(function($componentController) {
             $ctrl = $componentController('otusPreview');
         });

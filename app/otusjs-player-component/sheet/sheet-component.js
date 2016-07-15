@@ -34,7 +34,6 @@
             self.itemContainer = self.surveyTemplate.itemContainer;
             lastItem = self.itemContainer.length;
             nextItem();
-            console.log($element);
         }
 
         function onDestroy() {
@@ -69,8 +68,6 @@
             } else {
                 self.currentChild.previous();
             }
-
-
         }
 
         function _loadPreviewMode() {

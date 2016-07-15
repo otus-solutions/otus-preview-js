@@ -5,7 +5,7 @@ describe('TagComponentBuilderService', function() {
     var Mock = {};
 
     beforeEach(function() {
-        module('otus.component.preview');
+        module('otusjs.player.core');
 
         inject(function(_$injector_) {
             service = _$injector_.get('TagComponentBuilderService', {
