@@ -7,7 +7,7 @@
             templateUrl: 'app/otusjs-player-component/survey-item/question/calendar/calendar-question-template.html',
             controller: OtusCalendarQuestionController,
             bindings: {
-                itemData: '=',
+                itemData: '<',
                 onUpdate: '&'
             }
         });

@@ -6,7 +6,7 @@
         .component('otusLabel', {
             controller: LabelController,
             bindings: {
-                itemLabel: '='
+                itemLabel: '<'
             }
         });
 

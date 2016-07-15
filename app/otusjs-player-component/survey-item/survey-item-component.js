@@ -7,7 +7,7 @@
             templateUrl: 'app/otusjs-player-component/survey-item/survey-item-template.html',
             controller: OtusSurveyItemController,
             bindings: {
-                itemData: '='
+                itemData: '<'
             }
         });
 

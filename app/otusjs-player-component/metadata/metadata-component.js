@@ -7,7 +7,7 @@
             templateUrl: 'app/otusjs-player-component/metadata/metadata-group-template.html',
             controller: MetadataGroupController,
             bindings: {
-                itemData : '=',
+                itemData : '<',
                 onUpdate: '&'
             }
         });

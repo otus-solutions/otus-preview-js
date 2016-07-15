@@ -7,7 +7,7 @@
             templateUrl: 'app/editor/ui/page-anchor-item/page-anchor-template.html',
             controller: AnchorController,
             bindings: {
-                id: '='
+                id: '<'
             }
         });
 

@@ -4,10 +4,10 @@
     angular
         .module('otusjs.player.component')
         .component('otusTextQuestion', {
-            templateUrl: 'app/cotusjs-player-component/survey-item/question/text/text-question-template.html',
+            templateUrl: 'app/otusjs-player-component/survey-item/question/text/text-question-template.html',
             controller: TextQuestionController,
             bindings: {
-                itemData: '=',
+                itemData: '<',
                 onUpdate: '&'
             }
         });

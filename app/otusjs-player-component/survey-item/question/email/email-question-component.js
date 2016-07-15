@@ -7,7 +7,7 @@
             templateUrl: 'app/otusjs-player-component/survey-item/question/email/email-question-template.html',
             controller: EmailQuestionController,
             bindings: {
-                itemData: '=',
+                itemData: '<',
                 onUpdate: '&'
             }
         });

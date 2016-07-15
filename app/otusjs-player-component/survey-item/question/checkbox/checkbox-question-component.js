@@ -7,7 +7,7 @@
             templateUrl: 'app/otusjs-player-component/survey-item/question/checkbox/checkbox-question-template.html',
             controller: CheckboxQuestionController,
             bindings: {
-                itemData: '=',
+                itemData: '<',
                 onUpdate: '&'
             }
         });

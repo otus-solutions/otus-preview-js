@@ -8,7 +8,7 @@
             'ngMessages',
             'ngAnimate',
             'ui.router',
-            'monospaced.mousewheel',
+            'angular-bind-html-compile',
             /* Exportable dependencies */
             'otusjs.player.core',
             'otusjs.player.component',

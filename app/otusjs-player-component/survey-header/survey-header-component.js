@@ -7,7 +7,7 @@
             templateUrl: 'app/otusjs-player-component/survey-header/survey-header-template.html',
             controller: OtusSurveyHeaderController,
             bindings: {
-                surveyIdentity: '='
+                surveyIdentity: '<'
             }
         });
 

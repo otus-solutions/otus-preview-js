@@ -7,7 +7,7 @@
             templateUrl: 'app/otusjs-player-component/survey-item/misc/image/image-item-template.html',
             controller: ImageItemController,
             bindings: {
-                itemData : '='
+                itemData : '<'
             }
         });
 

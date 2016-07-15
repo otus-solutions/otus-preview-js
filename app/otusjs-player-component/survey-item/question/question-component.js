@@ -7,7 +7,7 @@
             templateUrl: 'app/otusjs-player-component/survey-item/question/question-component-template.html',
             controller: OtusQuestionController,
             bindings: {
-                itemData: '=',
+                itemData: '<',
                 onUpdate: '&'
             },
             require: {
@@ -15,14 +15,14 @@
             }
         });
 
-    OtusQuestionController.$inject = ['TagComponentBuilderService', 'ViewService'];
+    OtusQuestionController.$inject = ['TagComponentBuilderService'];
 
-    function OtusQuestionController(TagComponentBuilderService, ViewService) {
+    function OtusQuestionController(TagComponentBuilderService) {
         var self = this;
 
         self.$onInit = function() {
             self.template = TagComponentBuilderService.createTagElement(self.itemData.objectType);
-            ViewService.addObserver(self);
+            console.log(self.template);
         };
 
         self.update = function(prop, value) {
@@ -30,11 +30,6 @@
                 valueType: prop,
                 value: value
             });
-        };
-
-        self.updateX = function(data) {
-            self.template = TagComponentBuilderService.createTagElement(data.objectType);
-            console.log(self.template);
         };
 
     }

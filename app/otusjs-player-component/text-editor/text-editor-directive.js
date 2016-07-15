@@ -11,10 +11,10 @@
         var ddo = {
             scope: {
                 placeholder: '@',
-                label: '=',
+                label: '<',
                 ariaLabel: '@',
                 leftIcon: '@',
-                ngModel: '='
+                ngModel: '<'
             },
             templateUrl: 'app/editor/ui/base/text-editor/text-editor.html',
             retrict: 'E',

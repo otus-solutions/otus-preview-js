@@ -7,7 +7,7 @@
             templateUrl: 'app/otusjs-player-component/survey-item/question/decimal/decimal-question-template.html',
             controller: DecimalQuestionController,
             bindings: {
-                itemData: '=',
+                itemData: '<',
                 onUpdate: '&'
             }
         });

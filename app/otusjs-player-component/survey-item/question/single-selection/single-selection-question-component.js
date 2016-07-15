@@ -7,7 +7,7 @@
             templateUrl: 'app/otusjs-player-component/survey-item/question/single-selection/single-selection-question-template.html',
             controller: SingleSelectionQuestionController,
             bindings: {
-                itemData: '=',
+                itemData: '<',
                 onUpdate: '&'
             }
         });

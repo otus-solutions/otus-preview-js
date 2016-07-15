@@ -7,7 +7,7 @@
             templateUrl: 'app/otusjs-player-component/survey-item/question/integer/integer-question-template.html',
             controller: IntegerQuestionController,
             bindings: {
-                itemData: '=',
+                itemData: '<',
                 onUpdate: '&'
             }
         });

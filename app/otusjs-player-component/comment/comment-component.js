@@ -7,7 +7,7 @@
             templateUrl: 'app/otusjs-player-component/comment/comment-template.html',
             controller: OtusCommentController,
             bindings: {
-                itemData : '=',
+                itemData : '<',
                 onUpdate: '&'
             }
         });

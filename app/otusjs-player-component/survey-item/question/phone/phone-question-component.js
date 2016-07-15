@@ -7,7 +7,7 @@
             templateUrl: 'app/otusjs-player-component/survey-item/question/phone/phone-question-template.html',
             controller: PhoneQuestionController,
             bindings: {
-                itemData: '=',
+                itemData: '<',
                 onUpdate: '&'
             }
         });

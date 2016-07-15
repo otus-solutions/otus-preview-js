@@ -7,7 +7,7 @@
             templateUrl: 'app/otusjs-player-component/survey-item/misc/text/text-item-template.html',
             controller: TextItemController,
             bindings: {
-                itemData : '='
+                itemData : '<'
             }
         });
 

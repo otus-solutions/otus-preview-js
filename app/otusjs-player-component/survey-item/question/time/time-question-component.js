@@ -7,7 +7,7 @@
             templateUrl: 'app/otusjs-player-component/survey-item/question/time/time-question-template.html',
             controller: TimeQuestionController,
             bindings: {
-                itemData: '=',
+                itemData: '<',
                 onUpdate: '&'
             }
         });
