@@ -22,7 +22,6 @@
 
         self.$onInit = function() {
             self.template = TagComponentBuilderService.createTagElement(self.itemData.objectType);
-            console.log(self.template);
         };
 
         self.update = function(prop, value) {
