@@ -1,8 +1,10 @@
 (function() {
 
     angular
-        .module('otus.preview')
-        .config(['$mdThemingProvider', '$mdIconProvider', themeConfiguration]);
+        .module('otusjs.player.config')
+        .config(themeConfiguration);
+
+    themeConfiguration.$inject = ['$mdThemingProvider', '$mdIconProvider'];
 
     function themeConfiguration($mdThemingProvider, $mdIconProvider) {
 

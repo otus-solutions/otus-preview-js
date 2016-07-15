@@ -2,7 +2,7 @@
     'use strict';
 
     angular
-        .module('otus.preview')
+        .module('otusjs.player.config')
         .config(stateConfiguration);
 
     stateConfiguration.$inject = ['$stateProvider', '$urlRouterProvider', '$locationProvider'];
@@ -12,7 +12,7 @@
         $stateProvider
             .state('index', {
                 url: '/index',
-                templateUrl: 'app/view/sheet-view-template.html',
+                templateUrl: 'app/otusjs-player-viewer/sheet-view-template.html',
                 resolve: {
                     resolvedSurveyTemplate: function prepareWorkEnvironment(FakeDataService, $q) {
                         var deferred = $q.defer();

@@ -2,10 +2,21 @@
     'use strict';
 
     angular
-        .module('otus.preview', [
-            'otus.component.allPurpose',
-            'otus.component.editor',
-            'otus.component.preview'
+        .module('otusjs.player.standalone', [
+            /* External dependencies */
+            'ngMaterial',
+            'ngMessages',
+            'ngAnimate',
+            'ui.router',
+            'monospaced.mousewheel',
+            /* Exportable dependencies */
+            'otusjs.player.core',
+            'otusjs.player.component',
+            /* Standalone dependencies */
+            'otusjs.player.config',
+            'otusjs.player.data',
+            'otusjs.player.viewer',
+            'otusjs',
         ]);
 
 }());
