@@ -6,14 +6,17 @@
         .component('otusSurveyItem', {
             templateUrl: 'app/otusjs-player-component/survey-item/survey-item-template.html',
             controller: OtusSurveyItemController,
+            require: {
+                otusSheet: '^'
+            },
             bindings: {
                 itemData: '<'
             }
         });
 
-    OtusSurveyItemController.$inject = ['DataService'];
+    OtusSurveyItemController.$inject = ['DataService', '$scope', '$element'];
 
-    function OtusSurveyItemController(DataService) {
+    function OtusSurveyItemController(DataService, $scope, $element) {
         var self = this;
 
         var filling = {};
@@ -22,11 +25,13 @@
         self.isQuestion = isQuestion;
         self.isItem = isItem;
         self.restoreAll = restoreAll;
-        self.confirmAnswer = confirmAnswer;
+        self.previous = previous;
+        self.next = next;
         self.update = update;
 
         self.$onInit = function() {
-            // loadAnswer
+            self.showPrevious = self.otusSheet.hasPreviousItem();
+            self.showNext = self.otusSheet.hasNextItem();
         };
 
         function isQuestion() {
@@ -41,9 +46,22 @@
             console.log(self.itemData);
         }
 
-        function confirmAnswer() {
-            filling.questionID = self.itemData.templateID;
-            DataService.transferData(filling);
+        function previous() {
+            if (self.otusSheet.hasPreviousItem()) {
+                self.otusSheet.previousItem();
+                $element.remove();
+                $scope.$destroy();
+            }
+        }
+
+        function next() {
+            if (self.otusSheet.hasNextItem()) {
+                filling.questionID = self.itemData.templateID;
+                DataService.transferData(filling);
+                self.otusSheet.nextItem();
+                $element.remove();
+                $scope.$destroy();
+            }
         }
 
         function update(prop, value) {
