@@ -32,6 +32,7 @@
         self.$onInit = function() {
             self.showPrevious = self.otusSheet.hasPreviousItem();
             self.showNext = self.otusSheet.hasNextItem();
+            self.otusSheet.currentChild = self;
         };
 
         function isQuestion() {

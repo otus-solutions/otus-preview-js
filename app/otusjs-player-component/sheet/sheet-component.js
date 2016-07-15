@@ -27,12 +27,18 @@
         self.hasNextItem = hasNextItem;
         self.previousItem = previousItem;
         self.nextItem = nextItem;
+        self.catchMouseWheel = catchMouseWheel;
 
         function onInit() {
             self.isLoading = true;
             self.itemContainer = self.surveyTemplate.itemContainer;
             lastItem = self.itemContainer.length;
             nextItem();
+            console.log($element);
+        }
+
+        function onDestroy() {
+            _clearWorspace();
         }
 
         function hasPreviousItem() {
@@ -44,17 +50,27 @@
         }
 
         function previousItem() {
-            $scope.itemData = self.surveyTemplate.itemContainer[--currentItem];
-            $element.append($compile(SURVEY_ITEM)($scope));
+            if (hasPreviousItem()) {
+                $scope.itemData = self.surveyTemplate.itemContainer[--currentItem];
+                $element.find('section').append($compile(SURVEY_ITEM)($scope));
+            }
         }
 
         function nextItem() {
-            $scope.itemData = self.surveyTemplate.itemContainer[++currentItem];
-            $element.append($compile(SURVEY_ITEM)($scope));
+            if (hasNextItem()) {
+                $scope.itemData = self.surveyTemplate.itemContainer[++currentItem];
+                $element.find('section').append($compile(SURVEY_ITEM)($scope));
+            }
         }
 
-        function onDestroy() {
-            _clearWorspace();
+        function catchMouseWheel($event) {
+            if (event.deltaY > 0) {
+                self.currentChild.next();
+            } else {
+                self.currentChild.previous();
+            }
+
+
         }
 
         function _loadPreviewMode() {
