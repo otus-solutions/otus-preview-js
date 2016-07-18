@@ -11,28 +11,29 @@
             }
         });
 
-    OtusSheetController.$inject = ['$scope', '$element', '$compile'];
+    OtusSheetController.$inject = [
+        '$scope',
+        '$element',
+        '$compile',
+        'otusjs.player.core.PlayerService',
+        'DataService'
+    ];
 
-    function OtusSheetController($scope, $element, $compile) {
+    function OtusSheetController($scope, $element, $compile, PlayerService, DataService) {
         var self = this;
 
         var SURVEY_ITEM = '<otus-survey-item item-data="itemData" />';
-        var currentItem = -1;
-        var lastItem;
 
         /* Public methods */
         self.$onInit = onInit;
         self.$onDestroy = onDestroy;
-        self.hasPreviousItem = hasPreviousItem;
-        self.hasNextItem = hasNextItem;
         self.previousItem = previousItem;
         self.nextItem = nextItem;
         self.catchMouseWheel = catchMouseWheel;
 
         function onInit() {
             self.isLoading = true;
-            self.itemContainer = self.surveyTemplate.itemContainer;
-            lastItem = self.itemContainer.length;
+            PlayerService.play(self.surveyTemplate.itemContainer);
             nextItem();
         }
 
@@ -40,33 +41,52 @@
             _clearWorspace();
         }
 
-        function hasPreviousItem() {
-            return (currentItem > 0);
-        }
-
-        function hasNextItem() {
-            return (currentItem < lastItem - 1);
-        }
-
         function previousItem() {
-            if (hasPreviousItem()) {
-                $scope.itemData = self.surveyTemplate.itemContainer[--currentItem];
-                $element.find('section').append($compile(SURVEY_ITEM)($scope));
+            if (PlayerService.hasPrevious()) {
+                loadItem(PlayerService.getPrevious());
+                updateToolbar();
+
+                if (self.currentChild) {
+                    destroyCurrentItem();
+                }
             }
         }
 
         function nextItem() {
-            if (hasNextItem()) {
-                $scope.itemData = self.surveyTemplate.itemContainer[++currentItem];
-                $element.find('section').append($compile(SURVEY_ITEM)($scope));
+            if (PlayerService.hasNext()) {
+                loadItem(PlayerService.getNext());
+                updateToolbar();
+
+                if (self.currentChild) {
+                    transferData();
+                    destroyCurrentItem();
+                }
             }
+        }
+
+        function loadItem(item) {
+            $scope.itemData = item;
+            $element.find('section').prepend($compile(SURVEY_ITEM)($scope));
+        }
+
+        function updateToolbar() {
+            self.isPreviousDisabled = !PlayerService.hasPrevious();
+            self.isNextDisabled = !PlayerService.hasNext();
+        }
+
+        function transferData() {
+            DataService.transferData(self.currentChild.filling);
+        }
+
+        function destroyCurrentItem() {
+            self.currentChild.destroy();
         }
 
         function catchMouseWheel($event) {
             if (event.deltaY > 0) {
-                self.currentChild.next();
+                nextItem();
             } else {
-                self.currentChild.previous();
+                previousItem();
             }
         }
 

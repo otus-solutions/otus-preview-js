@@ -21,6 +21,10 @@ describe('ItemManagerService', function() {
             expect(service.getItems()).toEqual(items);
         });
 
+        it('should not set a current item', function() {
+            expect(service.getCurrentItem()).toBeUndefined();
+        });
+
     });
 
     describe('hasNext method', function() {
@@ -33,6 +37,7 @@ describe('ItemManagerService', function() {
 
         it('should return false when currentItem is the last of the list', function() {
             service.init([jasmine.any(Object)]);
+            service.next();
 
             expect(service.hasNext()).toBe(false);
         });
@@ -43,6 +48,7 @@ describe('ItemManagerService', function() {
 
         it('should return true when currentItem is not the first of the list', function() {
             service.init(items);
+            service.next();
             service.next();
 
             expect(service.hasPrevious()).toBe(true);
@@ -64,11 +70,12 @@ describe('ItemManagerService', function() {
         });
 
         it('should point to the next item in the list', function() {
-            expect(service.getCurrentItem()).toEqual(2);
+            expect(service.getCurrentItem()).toEqual(1);
         });
 
         it('should point to undefined when the current item is the last', function() {
-            service.next(); // points to element 3
+            service.next(); // points to element 1
+            service.next(); // points to element 2
             service.next(); // points to undefined element
 
             expect(service.getCurrentItem()).toBeUndefined();
@@ -87,7 +94,7 @@ describe('ItemManagerService', function() {
         });
 
         it('should point to the next item in the list', function() {
-            expect(service.getCurrentItem()).toEqual(2);
+            expect(service.getCurrentItem()).toEqual(1);
         });
 
         it('should point to undefined when the current item is the last', function() {

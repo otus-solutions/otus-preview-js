@@ -1,21 +1,11 @@
 <md-card flex>
     <md-card-title>
         <md-card-title-text layout="column" flex>
-            <otus-label class="md-headline" item-label="$ctrl.itemData.templateID.concat('&nbsp;&nbsp;')"></otus-label>
-            <otus-label class="md-headline" item-label="$ctrl.itemData.label.ptBR.formattedText"></span>
+            <div layout="row">
+                <otus-label class="md-headline" item-label="$ctrl.itemData.templateID" flex="10" layout-padding></otus-label>
+                <otus-label class="md-headline" item-label="$ctrl.itemData.label.ptBR.formattedText" flex layout-padding></span>
+            </div>
         </md-card-title-text>
-
-        <md-card-actions layout="column" flex="5" layout-align="center center">
-            <md-button class="md-icon-button" aria-label="Confirmar resposta" ng-disabled="!$ctrl.showPrevious" ng-click="$ctrl.previous()">
-                <md-icon md-svg-icon="arrow-up-bold"></md-icon>
-            </md-button>
-            <md-button class="md-icon-button" aria-label="Apagar resposta" ng-click="$ctrl.restoreAll()">
-                <md-icon md-svg-icon="eraser"></md-icon>
-            </md-button>
-            <md-button class="md-icon-button" aria-label="Confirmar resposta" ng-disabled="!$ctrl.showNext" ng-click="$ctrl.next()">
-                <md-icon md-svg-icon="arrow-down-bold"></md-icon>
-            </md-button>
-        </md-card-actions>
     </md-card-title>
 
     <md-card-content layout="row" layout-align="space-between">

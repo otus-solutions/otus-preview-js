@@ -23,14 +23,14 @@
         }
 
         function getNext() {
-            if (ItemManagerService.hasNext()) {
-                return ItemManagerService.getCurrentItem();
+            if (hasNext()) {
+                return ItemManagerService.next();
             }
         }
 
         function getPrevious() {
-            if (ItemManagerService.hasPrevious()) {
-                return ItemManagerService.getCurrentItem();
+            if (hasPrevious()) {
+                return ItemManagerService.previous();
             }
         }
 

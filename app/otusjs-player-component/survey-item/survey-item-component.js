@@ -14,24 +14,24 @@
             }
         });
 
-    OtusSurveyItemController.$inject = ['DataService', '$scope', '$element'];
+    OtusSurveyItemController.$inject = [
+        '$scope',
+        '$element'
+    ];
 
-    function OtusSurveyItemController(DataService, $scope, $element) {
+    function OtusSurveyItemController($scope, $element) {
         var self = this;
-
-        var filling = {};
 
         /* Public methods */
         self.isQuestion = isQuestion;
         self.isItem = isItem;
         self.restoreAll = restoreAll;
-        self.previous = previous;
-        self.next = next;
         self.update = update;
+        self.destroy = destroy;
 
         self.$onInit = function() {
-            self.showPrevious = self.otusSheet.hasPreviousItem();
-            self.showNext = self.otusSheet.hasNextItem();
+            self.filling = {};
+            self.filling.questionID = self.itemData.templateID;
             self.otusSheet.currentChild = self;
         };
 
@@ -47,26 +47,13 @@
             console.log(self.itemData);
         }
 
-        function previous() {
-            if (self.otusSheet.hasPreviousItem()) {
-                self.otusSheet.previousItem();
-                $element.remove();
-                $scope.$destroy();
-            }
-        }
-
-        function next() {
-            if (self.otusSheet.hasNextItem()) {
-                filling.questionID = self.itemData.templateID;
-                DataService.transferData(filling);
-                self.otusSheet.nextItem();
-                $element.remove();
-                $scope.$destroy();
-            }
-        }
-
         function update(prop, value) {
-            filling[prop] = value;
+            self.filling[prop] = value;
+        }
+
+        function destroy() {
+            $element.remove();
+            $scope.$destroy();
         }
     }
 

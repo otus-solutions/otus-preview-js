@@ -40,12 +40,12 @@ describe('PlayerService', function() {
             expect(Mock.ItemManagerService.hasNext).toHaveBeenCalled();
         });
 
-        it('should call ItemManagerService.getCurrentItem method', function() {
-            spyOn(Mock.ItemManagerService, 'getCurrentItem');
+        it('should call ItemManagerService.next method', function() {
+            spyOn(Mock.ItemManagerService, 'next');
 
             service.getNext();
 
-            expect(Mock.ItemManagerService.getCurrentItem).toHaveBeenCalled();
+            expect(Mock.ItemManagerService.next).toHaveBeenCalled();
         });
 
         it('should return an item when it exists', function() {
@@ -76,17 +76,18 @@ describe('PlayerService', function() {
             expect(Mock.ItemManagerService.hasPrevious).toHaveBeenCalled();
         });
 
-        it('should call ItemManagerService.getCurrentItem method', function() {
+        it('should call ItemManagerService.previous method', function() {
             spyOn(Mock.ItemManagerService, 'hasPrevious').and.returnValue(true);
-            spyOn(Mock.ItemManagerService, 'getCurrentItem');
+            spyOn(Mock.ItemManagerService, 'previous');
 
             service.getPrevious();
 
-            expect(Mock.ItemManagerService.getCurrentItem).toHaveBeenCalled();
+            expect(Mock.ItemManagerService.previous).toHaveBeenCalled();
         });
 
         it('should return an item when it exists', function() {
             spyOn(Mock.ItemManagerService, 'hasPrevious').and.returnValue(true);
+            spyOn(Mock.ItemManagerService, 'previous').and.returnValue(items[0]);
 
             expect(service.getPrevious()).toBeDefined();
         });

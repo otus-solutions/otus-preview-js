@@ -25,8 +25,7 @@
 
         function init(items) {
             _items = items;
-            _currentItemIndex = 0;
-            _currentItem = _items[_currentItemIndex];
+            _currentItemIndex = -1;
             _updateIterator();
         }
 
@@ -49,16 +48,19 @@
         function next() {
             ++_currentItemIndex;
             _updateIterator();
-            return _currentItem = _items[_currentItemIndex];
+            return _currentItem;
         }
 
         function previous() {
-            return _currentItem = _items[--_currentItemIndex];
+            --_currentItemIndex;
+            _updateIterator();
+            return _currentItem;
         }
 
         function _updateIterator() {
             _hasNext = _items[_currentItemIndex + 1];
             _hasPrevious = _items[_currentItemIndex - 1];
+            _currentItem = _items[_currentItemIndex];
         }
     }
 
