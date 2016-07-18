@@ -99,6 +99,38 @@ describe('PlayerService', function() {
 
     });
 
+    describe('hasNext method', function() {
+
+        beforeEach(function() {
+            service.play(items);
+        });
+
+        it('should call ItemManagerService.hasNext', function() {
+            spyOn(Mock.ItemManagerService, 'hasNext');
+
+            service.hasNext();
+
+            expect(Mock.ItemManagerService.hasNext).toHaveBeenCalled();
+        });
+
+    });
+
+    describe('hasPrevious method', function() {
+
+        beforeEach(function() {
+            service.play(items);
+        });
+
+        it('should call ItemManagerService.hasPrevious', function() {
+            spyOn(Mock.ItemManagerService, 'hasPrevious');
+
+            service.hasPrevious();
+
+            expect(Mock.ItemManagerService.hasPrevious).toHaveBeenCalled();
+        });
+
+    });
+
     function mockItemManagerService($injector) {
         Mock.ItemManagerService = $injector.get('otusjs.player.core.ItemManagerService');
 

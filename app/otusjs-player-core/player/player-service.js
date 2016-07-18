@@ -15,6 +15,8 @@
         self.play = play;
         self.getNext = getNext;
         self.getPrevious = getPrevious;
+        self.hasNext = hasNext;
+        self.hasPrevious = hasPrevious;
 
         function play(items) {
             ItemManagerService.init(items);
@@ -30,6 +32,14 @@
             if (ItemManagerService.hasPrevious()) {
                 return ItemManagerService.getCurrentItem();
             }
+        }
+
+        function hasNext() {
+            return ItemManagerService.hasNext();
+        }
+
+        function hasPrevious() {
+            return ItemManagerService.hasPrevious();
         }
     }
 
