@@ -14,7 +14,7 @@
 
         function transferData(data) {
             var user = ActivityUserFactory.create('User Name', 'user@email.com');
-            ActivityFacadeService.initializeActivitySurvey('Categoria Teste', 'Grupo Teste', 'TOID', user);
+            ActivityFacadeService.createActivity('category', 'group', 'FOR123', user);
             ActivityFacadeService.createQuestionFill(data.questionID, data.answer, data.metadata, data.comment);
         }
     }
