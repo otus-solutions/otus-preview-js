@@ -9,7 +9,6 @@
             'ngAnimate',
             'ui.router',
             'angular-bind-html-compile',
-            'monospaced.mousewheel',
             /* Exportable dependencies */
             'otusjs.player.core',
             'otusjs.player.component',

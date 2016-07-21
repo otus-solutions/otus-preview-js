@@ -3,7 +3,8 @@
 
     angular
         .module('otusjs.player.core', [
-            'otusjs.player.service'
+            'otusjs.player.service',
+            'monospaced.mousewheel',
         ]);
 
 }());
