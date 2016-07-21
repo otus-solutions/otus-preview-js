@@ -6,9 +6,6 @@
         .component('otusSurveyItem', {
             templateUrl: 'app/otusjs-player-component/survey-item/survey-item-template.html',
             controller: OtusSurveyItemController,
-            require: {
-                otusSheet: '^'
-            },
             bindings: {
                 itemData: '<'
             }
@@ -32,7 +29,7 @@
         self.$onInit = function() {
             self.filling = {};
             self.filling.questionID = self.itemData.templateID;
-            self.otusSheet.currentChild = self;
+            $scope.$parent.$ctrl.currentChild = self;
         };
 
         function isQuestion() {

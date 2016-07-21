@@ -43,24 +43,22 @@
 
         function previousItem() {
             if (PlayerService.hasPrevious()) {
-                loadItem(PlayerService.getPrevious());
-                updateToolbar();
-
                 if (self.currentChild) {
                     destroyCurrentItem();
                 }
+                loadItem(PlayerService.getPrevious());
+                updateToolbar();
             }
         }
 
         function nextItem() {
             if (PlayerService.hasNext()) {
-                loadItem(PlayerService.getNext());
-                updateToolbar();
-
                 if (self.currentChild) {
                     transferData();
                     destroyCurrentItem();
                 }
+                loadItem(PlayerService.getNext());
+                updateToolbar();
             }
         }
 
@@ -88,20 +86,6 @@
             } else {
                 previousItem();
             }
-        }
-
-        function _loadPreviewMode() {
-            EditionPreviewService.setScope($scope);
-            EditionPreviewService.loadSurveyTemplate();
-        }
-
-        function _loadEditorMode() {
-            $window.sessionStorage.setItem('surveyTemplate_OID', WorkspaceService.getSurvey().oid);
-        }
-
-        function _clearWorspace() {
-            WorkspaceService.closeWork();
-            $window.sessionStorage.removeItem('surveyTemplate_OID');
         }
     }
 
