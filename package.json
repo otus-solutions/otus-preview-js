@@ -30,10 +30,10 @@
     "angular-messages": "^1.5.0",
     "angular-mousewheel": "^1.0.5",
     "angular-ui-router": "0.2.14",
-    "gulp-sonar": "2.1.0",
     "otus-model-js": "git@github.com:ccem-dev/otus-model-js.git#FOR-60"
   },
   "devDependencies": {
+    "gulp-sonar": "2.1.0",
     "angular-mocks": "^1.4.9",
     "browser-sync": "2.11.2",
     "browser-sync-middleware-spa": "^1.0.0",
