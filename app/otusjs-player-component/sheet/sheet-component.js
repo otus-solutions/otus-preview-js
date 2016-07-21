@@ -26,7 +26,6 @@
 
         /* Public methods */
         self.$onInit = onInit;
-        self.$onDestroy = onDestroy;
         self.previousItem = previousItem;
         self.nextItem = nextItem;
         self.catchMouseWheel = catchMouseWheel;
@@ -35,10 +34,6 @@
             self.isLoading = true;
             PlayerService.play(self.surveyTemplate.itemContainer);
             nextItem();
-        }
-
-        function onDestroy() {
-            _clearWorspace();
         }
 
         function previousItem() {
