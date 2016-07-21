@@ -4,20 +4,17 @@
 
     var gulp = require('gulp');
     var browserSync = require('browser-sync').create();
-    var bump = require('gulp-bump');
-    var concat = require('gulp-concat');
-    var sonar = require('gulp-sonar');
-    var packageJson = require('./package.json');
     var browserSyncSpa = require('browser-sync-middleware-spa');
+    var sonar = require('gulp-sonar');
+    var bump = require('gulp-bump');
+    var packageJson = require('./package.json');
     var useref = require('gulp-useref');
     var gulpif = require('gulp-if');
     var uglify = require("gulp-uglify");
-    var minify = require('gulp-minify');
     var minifyCss = require('gulp-minify-css');
-    var addsrc = require('gulp-add-src');
     var embedTemplates = require('gulp-angular-embed-templates');
 
-    gulp.task('useref', function() {
+    gulp.task('compress', function() {
         return gulp.src('app/index.html')
             .pipe(useref({
                 transformPath: function(filePath) {
@@ -32,18 +29,6 @@
             .pipe(gulp.dest('dist/otus-preview-js'));
     });
 
-    // gulp.task('template', function() {
-    //     gulp.src('app/components/preview/**/*.js')
-    //         .pipe(embedTemplates({
-    //             basePath: __dirname + '/'
-    //         }))
-    //         .pipe(addsrc('app/service/**/*.js'))
-    //         .pipe(concat('otus-preview-min.js'))
-    //         .pipe(uglify())
-    //         .pipe(gulp.dest('dist/template'));
-    // });
-
-    /* Task registry */
     gulp.task('browser-sync', function() {
         browserSync.init({
             server: {
@@ -74,15 +59,6 @@
                 version: process.env.npm_config_value
             }))
             .pipe(gulp.dest('./'));
-    });
-
-    gulp.task('compress', function() {
-        gulp.src(['app/**/*-module.js', 'app/**/*.js'])
-            .pipe(concat('otus-preview.js'))
-            .pipe(minify({
-                'mangle': false
-            }))
-            .pipe(gulp.dest('dist'));
     });
 
     gulp.task('sonar', function() {
