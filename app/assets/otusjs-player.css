@@ -9,7 +9,6 @@ md-icon[md-svg-icon="check"] {
 
 otus-survey-header {
     color: #727272;
-    min-height: 250px
 }
 otus-survey-header md-chips-wrap {
     box-shadow: 0 0px !important;

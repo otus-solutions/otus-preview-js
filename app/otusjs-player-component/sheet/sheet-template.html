@@ -1,17 +1,17 @@
-<otus-survey-header survey-identity="$ctrl.surveyTemplate.identity" layout="row" flex="5"></otus-survey-header>
+<otus-survey-header survey-identity="$ctrl.surveyTemplate.identity" ></otus-survey-header>
 <md-content layout-padding layout="row">
-        <md-toolbar style="border-radius: 3px" class="md-whiteframe-2dp">
-            <div class="md-toolbar-tools" layout="row" layout-align="space-around center">
-                <md-button aria-label="Voltar" ng-click="$ctrl.previousItem()" ng-disabled="$ctrl.isPreviousDisabled">
-                    Voltar
-                </md-button>
-                <md-button aria-label="Salvar">
-                    Salvar
-                </md-button>
-                <md-button aria-label="Avançar" ng-click="$ctrl.nextItem()" ng-disabled="$ctrl.isNextDisabled">
-                    Avançar
-                </md-button>
-            </div>
-        </md-toolbar>
+    <md-toolbar style="border-radius: 3px" class="md-whiteframe-2dp">
+        <div class="md-toolbar-tools"  layout-align="space-around center">
+            <md-button class="md-icon-button" aria-label="Voltar" ng-click="$ctrl.previousItem()" ng-disabled="$ctrl.isPreviousDisabled">
+                <md-icon md-font-set="material-icons">skip_previous</md-icon>
+            </md-button>
+            <md-button class="md-icon-button" aria-label="Salvar">
+                <md-icon md-font-set="material-icons">save</md-icon>
+            </md-button>
+            <md-button class="md-icon-button" aria-label="Avançar" ng-click="$ctrl.nextItem()" ng-disabled="$ctrl.isNextDisabled">
+                <md-icon md-font-set="material-icons">skip_next</md-icon>
+            </md-button>
+        </div>
+    </md-toolbar>
 </md-content>
 <section msd-wheel="$ctrl.catchMouseWheel($event)"></section>
