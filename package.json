@@ -1,63 +1,64 @@
 {
-  "name": "otus-preview-js",
-  "version": "0.0.1-SNAPSHOT",
-  "description": "Preview Module Otus",
-  "keywords": [
-    "preview",
-    "otus",
-    "otus-studio"
-  ],
-  "url": "https://github.com/ccem-dev/otus-model-js",
-  "email": "ccem.projects@gmail.com",
-  "repository": {
-    "type": "git",
-    "url": "git@github.com:ccem-dev/otus-model-js.git"
-  },
-  "scripts": {
-    "test": "karma start karma.conf.js --single-run",
-    "tdd": "karma start karma.conf.js --auto-watch --browsers Chrome",
-    "gulp": "gulp",
-    "start": "npm run gulp browser-sync",
-    "karma": "karma",
-    "build": "gulp compress"
-  },
-  "dependencies": {
-    "angular": "^1.4.7",
-    "angular-animate": "^1.4.7",
-    "angular-aria": "^1.4.7",
-    "angular-bind-html-compile-ci-dev": "1.1.1",
-    "angular-material": "1.0.9",
-    "angular-messages": "^1.5.0",
-    "angular-mousewheel": "^1.0.5",
-    "angular-ui-router": "0.2.14",
-    "otus-model-js": "git@github.com:ccem-dev/otus-model-js.git#dev"
-  },
-  "devDependencies": {
-    "gulp-sonar": "2.1.0",
-    "angular-mocks": "^1.4.9",
-    "browser-sync": "2.11.2",
-    "browser-sync-middleware-spa": "^1.0.0",
-    "concurrently": "^1.0.0",
-    "eslint": "^3.0.1",
-    "eslint-config-angular": "^0.5.0",
-    "eslint-config-standard": "^5.3.5",
-    "eslint-plugin-angular": "^1.3.0",
-    "gulp-angular-embed-templates": "^2.2.0",
-    "eslint-plugin-promise": "^2.0.0",
-    "eslint-plugin-standard": "^2.0.0",
-    "gulp": "^3.9.1",
-    "gulp-bump": "2.1.0",
-    "gulp-if": "^2.0.1",
-    "gulp-minify-css": "^1.2.4",
-    "gulp-uglify": "^1.5.4",
-    "gulp-useref": "^3.1.0",
-    "jasmine-core": "^2.4.1",
-    "karma": "^0.13.19",
-    "karma-chrome-launcher": "^0.2.2",
-    "karma-htmlfile-reporter": "^0.2.2",
-    "karma-jasmine": "^0.3.6",
-    "karma-phantomjs-launcher": "^0.2.3",
-    "phantomjs": ">=1.9",
-    "phantomjs-prebuilt": "^2.1.2"
-  }
+    "name": "otus-preview-js",
+    "version": "0.0.1-SNAPSHOT",
+    "description": "Preview Module Otus",
+    "keywords": [
+        "preview",
+        "otus",
+        "otus-studio"
+    ],
+    "url": "https://github.com/ccem-dev/otus-model-js",
+    "email": "ccem.projects@gmail.com",
+    "repository": {
+        "type": "git",
+        "url": "git@github.com:ccem-dev/otus-model-js.git"
+    },
+    "scripts": {
+        "test": "karma start karma.conf.js --single-run",
+        "tdd": "karma start karma.conf.js --auto-watch --browsers Chrome",
+        "gulp": "gulp",
+        "start": "npm run gulp browser-sync",
+        "karma": "karma",
+        "build": "gulp compress"
+    },
+    "dependencies": {
+        "angular": "^1.4.7",
+        "angular-animate": "^1.4.7",
+        "angular-aria": "^1.4.7",
+        "angular-bind-html-compile-ci-dev": "1.1.1",
+        "angular-material": "1.0.9",
+        "angular-messages": "^1.5.0",
+        "angular-mousewheel": "^1.0.5",
+        "angular-ui-router": "0.2.14",
+        "otus-model-js": "git@github.com:ccem-dev/otus-model-js.git#dev"
+    },
+    "devDependencies": {
+        "gulp-sonar": "2.1.0",
+        "angular-mocks": "^1.4.9",
+        "browser-sync": "2.11.2",
+        "browser-sync-middleware-spa": "^1.0.0",
+        "concurrently": "^1.0.0",
+        "eslint": "^3.0.1",
+        "eslint-config-angular": "^0.5.0",
+        "eslint-config-standard": "^5.3.5",
+        "eslint-plugin-angular": "^1.3.0",
+        "gulp-angular-embed-templates": "^2.2.0",
+        "eslint-plugin-promise": "^2.0.0",
+        "eslint-plugin-standard": "^2.0.0",
+        "gulp": "^3.9.1",
+        "gulp-bump": "2.1.0",
+        "gulp-if": "^2.0.1",
+        "gulp-minify-css": "^1.2.4",
+        "gulp-uglify": "^1.5.4",
+        "gulp-useref": "^3.1.0",
+        "jasmine-core": "^2.4.1",
+        "karma": "^0.13.19",
+        "karma-chrome-launcher": "^0.2.2",
+        "karma-htmlfile-reporter": "^0.2.2",
+        "karma-jasmine": "^0.3.6",
+        "karma-phantomjs-launcher": "^0.2.3",
+        "phantomjs": ">=1.9",
+        "phantomjs-prebuilt": "^2.1.2",
+        "karma-coverage": "^1.0.0"
+    }
 }
