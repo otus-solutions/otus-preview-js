@@ -5,6 +5,7 @@
         .module('otusjs.player.core', [
             'otusjs.player.service',
             'monospaced.mousewheel',
+            'otus.validation'
         ]);
 
 }());
