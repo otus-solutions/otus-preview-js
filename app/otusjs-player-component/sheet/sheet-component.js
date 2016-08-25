@@ -16,10 +16,11 @@
         '$element',
         '$compile',
         'otusjs.player.core.PlayerService',
-        'DataService'
+        'DataService',
+        'otusjs.player.core.ValidateService'
     ];
 
-    function OtusSheetController($scope, $element, $compile, PlayerService, DataService) {
+    function OtusSheetController($scope, $element, $compile, PlayerService, DataService, ValidateService) {
         var self = this;
 
         var SURVEY_ITEM = '<otus-survey-item item-data="itemData" />';
@@ -34,6 +35,8 @@
             self.isLoading = true;
             PlayerService.play(self.surveyTemplate.itemContainer);
             nextItem();
+            console.log('oi');
+            ValidateService.validationPreview();
         }
 
         function previousItem() {
