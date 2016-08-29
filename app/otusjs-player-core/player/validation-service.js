@@ -7,7 +7,7 @@
 
     ValidateService.$inject = ['ElementRegisterFactory', 'ValidationService'];
 
-    function ValidateService(ElementRegisterFactory){
+    function ValidateService(ElementRegisterFactory, ValidationService){
         var self = this;
 
         self.validationPreview = validationPreview;

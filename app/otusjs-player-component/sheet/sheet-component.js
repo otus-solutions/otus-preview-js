@@ -30,12 +30,13 @@
         self.previousItem = previousItem;
         self.nextItem = nextItem;
         self.catchMouseWheel = catchMouseWheel;
+        self.validationBlock = validationBlock;
 
         function onInit() {
             self.isLoading = true;
             PlayerService.play(self.surveyTemplate.itemContainer);
             nextItem();
-            console.log('oi');
+            console.log(ValidateService);
             ValidateService.validationPreview();
         }
 
@@ -72,6 +73,11 @@
 
         function transferData() {
             DataService.transferData(self.currentChild.filling);
+        }
+
+        function validationBlock() {
+            //TODO trava next quando alguma validação não passar
+            self.isNextDisabled = true;
         }
 
         function destroyCurrentItem() {

@@ -10,5 +10,6 @@
     <md-card-content layout="row" layout-align="space-between">
         <otus-question ng-if="$ctrl.isQuestion()" on-update="$ctrl.update(valueType, value)" item-data="$ctrl.itemData" layout="column" flex></otus-question>
         <otus-misc-item ng-if="$ctrl.isItem()" item-data="$ctrl.itemData" layout="column" flex></otus-misc-item>
+        <!-- <otus-validation-message></otus-validation-message> -->
     </md-card-content>
 </md-card>
