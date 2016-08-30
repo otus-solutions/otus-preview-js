@@ -41,7 +41,7 @@
 
         function previousItem() {
             if (PlayerService.canWeGo('back')) {
-              console.log(self.currentChild);
+            //   console.log(self.currentChild);
                 if (self.currentChild) {
                     destroyCurrentItem();
                 }
@@ -65,7 +65,7 @@
             $scope.itemData = item;
             $element.find('section').prepend($compile(SURVEY_ITEM)($scope));
             CurrentQuestion.setQuestion(item);
-            console.log(item);
+            // console.log(item);
             ValidateService.applyValidation();
         }
 

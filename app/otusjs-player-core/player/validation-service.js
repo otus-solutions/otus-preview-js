@@ -22,25 +22,27 @@
             var model = CurrentQuestion.getAnswer();
             var fillingRulesList = question.fillingRules.options;
             var elementRegister = ElementRegisterFactory.create(question.customID, model);
-            Object.keys(fillingRulesList).map(function(validator){
-              reference = fillingRulesList[validator].data.reference;
-              elementRegister.addValidator(validator, {
-                  'reference': reference
-              });            });
+            Object.keys(fillingRulesList).map(function(validator) {
+                reference = fillingRulesList[validator].data.reference;
+                elementRegister.addValidator(validator, {
+                    'reference': reference
+                });
+            });
 
             ValidationService.registerElement(elementRegister);
             ValidationService.validateAllElements(function(validationResponse) {
                 // console.log(validationResponse);
             });
         }
-        function applyValidation(){
-          var question = CurrentQuestion.getQuestion();
-          var model = CurrentQuestion.getAnswer();
-          var fillingRulesList = question.fillingRules.options;
-          var elementRegister = ElementRegisterFactory.create(question.customID, model);
-          Object.keys(fillingRulesList).map(function(validator){
-            // console.log(fillingRulesList[validator].data.reference);
-          });
+
+        function applyValidation() {
+            var question = CurrentQuestion.getQuestion();
+            var model = CurrentQuestion.getAnswer();
+            var fillingRulesList = question.fillingRules.options;
+            var elementRegister = ElementRegisterFactory.create(question.customID, model);
+            Object.keys(fillingRulesList).map(function(validator) {
+                // console.log(fillingRulesList[validator].data.reference);
+            });
         }
     }
 }());
