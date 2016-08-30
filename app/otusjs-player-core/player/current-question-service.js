@@ -13,6 +13,7 @@
         var self = this;
         var answer ={};
         var question;
+        self.validations = new Map();
 
         self.setQuestion = function(item) {
             answer = {};
@@ -22,7 +23,7 @@
         self.setAnswer = function(ans) {
             answer = ans;
             console.log(ans);
-            ValidateService.applyValidation(question);
+            validateMe();
         };
         self.getFillingRules = function() {
             return question.fillingRules.options;
@@ -36,6 +37,16 @@
 
         function _startValidation() {
           ValidateService.setValidation(self.getQuestion(), answer);
+        }
+
+        function validateMe() {
+          var lista =[];
+          ValidateService.applyValidation(question, callMemaybe);
+        }
+        function callMemaybe(response) {
+          response[0].validatorsResponse.map(function(ValidatorResponse){
+            self.validations.set(ValidatorResponse.name, ValidatorResponse.result);
+          });
         }
     }
 }());

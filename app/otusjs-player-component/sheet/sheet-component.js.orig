@@ -40,6 +40,10 @@
 
         function previousItem() {
             if (PlayerService.canWeGo('back')) {
+<<<<<<< HEAD
+=======
+            //   console.log(self.currentChild);
+>>>>>>> da9590da00159c8f78127f163ec6b5c5b0a58583
                 if (self.currentChild) {
                     destroyCurrentItem();
                 }
@@ -63,6 +67,11 @@
             $scope.itemData = item;
             $element.find('section').prepend($compile(SURVEY_ITEM)($scope));
             CurrentQuestion.setQuestion(item);
+<<<<<<< HEAD
+=======
+            // console.log(item);
+            ValidateService.applyValidation();
+>>>>>>> da9590da00159c8f78127f163ec6b5c5b0a58583
         }
 
         function updateToolbar() {

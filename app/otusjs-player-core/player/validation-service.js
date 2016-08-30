@@ -17,7 +17,7 @@
         self.applyValidation = applyValidation;
 
         function setValidation(question, answer) {
-          var fillingRules = question.fillingRules.options;
+            var fillingRules = question.fillingRules.options;
             var elementRegister = ElementRegisterFactory.create(question.customID, answer);
 
             Object.keys(fillingRules).map(function(validator) {
@@ -28,10 +28,7 @@
         }
 
         function applyValidation(question, callback) {
-          ValidationService.validateElement(question.customID, function(validationResponse) {
-            console.log(question.fillingRules);
-              console.log(validationResponse);
-          });
+            ValidationService.validateElement(question.customID, callback);
         }
     }
 }());
