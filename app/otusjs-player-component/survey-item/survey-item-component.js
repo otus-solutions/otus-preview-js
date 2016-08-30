@@ -49,6 +49,7 @@
         function update(prop, value) {
             self.filling[prop] = value;
             CurrentQuestion.setAnswer(self.filling);
+            applyValidator();
         }
 
         function destroy() {
@@ -57,32 +58,9 @@
         }
 
         function applyValidator() {
-            CurrentQuestion.getQuestion().fillingRules.options;
-            self.$error;
+            self.$error = CurrentQuestion.validations;
+            console.log(self.$error);
         }
-
-        self.$error = {
-            mandatory: true,
-            distinct: true,
-            lowerlimit: true,
-            upperlimit: true,
-            ragedate: true,
-            maxDate: true,
-            minDate: true,
-            pastDate: true,
-            futureDate: true,
-            minLength: true,
-            maxLength: true,
-            in: true,
-            precision: true,
-            scale: true,
-            alphanumeric: true,
-            lowerCase: true,
-            upperCase: true,
-            maxTime: true,
-            minTime: true,
-            specials: true
-        };
 
     }
 
