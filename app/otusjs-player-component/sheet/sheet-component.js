@@ -17,10 +17,11 @@
         '$compile',
         'otusjs.player.core.PlayerService',
         'DataService',
-        'otusjs.player.core.ValidateService'
+        'otusjs.player.core.ValidateService',
+        'otusjs.player.core.CurrentQuestion'
     ];
 
-    function OtusSheetController($scope, $element, $compile, PlayerService, DataService, ValidateService) {
+    function OtusSheetController($scope, $element, $compile, PlayerService, DataService, ValidateService, CurrentQuestion) {
         var self = this;
 
         var SURVEY_ITEM = '<otus-survey-item item-data="itemData" />';
@@ -36,12 +37,11 @@
             self.isLoading = true;
             PlayerService.play(self.surveyTemplate.itemContainer);
             nextItem();
-            console.log(ValidateService);
-            ValidateService.validationPreview();
         }
 
         function previousItem() {
-            if (PlayerService.hasPrevious()) {
+            if (PlayerService.canWeGo('back')) {
+              console.log(self.currentChild);
                 if (self.currentChild) {
                     destroyCurrentItem();
                 }
@@ -51,7 +51,7 @@
         }
 
         function nextItem() {
-            if (PlayerService.hasNext()) {
+            if (PlayerService.canWeGo('ahead')) {
                 if (self.currentChild) {
                     transferData();
                     destroyCurrentItem();
@@ -64,11 +64,14 @@
         function loadItem(item) {
             $scope.itemData = item;
             $element.find('section').prepend($compile(SURVEY_ITEM)($scope));
+            CurrentQuestion.setQuestion(item);
+            console.log(item);
+            ValidateService.applyValidation();
         }
 
         function updateToolbar() {
-            self.isPreviousDisabled = !PlayerService.hasPrevious();
-            self.isNextDisabled = !PlayerService.hasNext();
+            self.isPreviousDisabled = !PlayerService.canWeGo('back');
+            self.isNextDisabled = !PlayerService.canWeGo('ahead');
         }
 
         function transferData() {

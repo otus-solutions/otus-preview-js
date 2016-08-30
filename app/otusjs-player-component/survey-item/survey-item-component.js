@@ -13,10 +13,11 @@
 
     OtusSurveyItemController.$inject = [
         '$scope',
-        '$element'
+        '$element',
+        'otusjs.player.core.CurrentQuestion'
     ];
 
-    function OtusSurveyItemController($scope, $element) {
+    function OtusSurveyItemController($scope, $element, CurrentQuestion) {
         var self = this;
 
         /* Public methods */
@@ -46,6 +47,7 @@
 
         function update(prop, value) {
             self.filling[prop] = value;
+            CurrentQuestion.setAnswer(self.filling);
         }
 
         function destroy() {

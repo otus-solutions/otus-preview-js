@@ -26,6 +26,7 @@ module.exports = function(config) {
             NODE_MODULES_ROOT_PATH + 'angular-ui-router/release/angular-ui-router.min.js',
             NODE_MODULES_ROOT_PATH + 'otus-model-js/dist/otus-model-min.js',
             NODE_MODULES_ROOT_PATH + 'otus-model-js/dist/st-utils-min.js',
+            NODE_MODULES_ROOT_PATH + 'otus-validation-js/dist/otus-validation-min.js',
 
             APP_ROOT_PATH + 'app.js',
             APP_ROOT_PATH + '**/*-module.js',
