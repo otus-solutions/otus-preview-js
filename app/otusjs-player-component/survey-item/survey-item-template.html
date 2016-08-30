@@ -2,7 +2,8 @@
     <md-card-title>
         <md-card-title-text layout="column" flex>
             <div layout="row">
-                <otus-label class="md-headline" item-label="$ctrl.itemData.label.ptBR.formattedText" flex layout-padding></span>
+                <otus-label class="md-headline" item-label="$ctrl.itemData.label.ptBR.formattedText" flex layout-padding>
+                    </span>
             </div>
         </md-card-title-text>
     </md-card-title>
@@ -10,6 +11,6 @@
     <md-card-content layout="row" layout-align="space-between">
         <otus-question ng-if="$ctrl.isQuestion()" on-update="$ctrl.update(valueType, value)" item-data="$ctrl.itemData" layout="column" flex></otus-question>
         <otus-misc-item ng-if="$ctrl.isItem()" item-data="$ctrl.itemData" layout="column" flex></otus-misc-item>
-        <!-- <otus-validation-message></otus-validation-message> -->
+        <otus-validation-message ng-if="$ctrl.valid().$error" ng-message="required">Please enter value</otus-validation-message>
     </md-card-content>
 </md-card>
