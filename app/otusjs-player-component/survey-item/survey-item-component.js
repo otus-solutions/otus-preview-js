@@ -14,7 +14,7 @@
     OtusSurveyItemController.$inject = [
         '$scope',
         '$element',
-        'otusjs.player.core.CurrentQuestion'
+        'otusjs.player.core.CurrentQuestion',
     ];
 
     function OtusSurveyItemController($scope, $element, CurrentQuestion) {
@@ -26,6 +26,7 @@
         self.restoreAll = restoreAll;
         self.update = update;
         self.destroy = destroy;
+        self.applyValidator = applyValidator;
 
         self.$onInit = function() {
             self.filling = {};
@@ -54,6 +55,35 @@
             $element.remove();
             $scope.$destroy();
         }
+
+        function applyValidator() {
+            CurrentQuestion.getQuestion().fillingRules.options;
+            self.$error;
+        }
+
+        self.$error = {
+            mandatory: true,
+            distinct: true,
+            lowerlimit: true,
+            upperlimit: true,
+            ragedate: true,
+            maxDate: true,
+            minDate: true,
+            pastDate: true,
+            futureDate: true,
+            minLength: true,
+            maxLength: true,
+            in: true,
+            precision: true,
+            scale: true,
+            alphanumeric: true,
+            lowerCase: true,
+            upperCase: true,
+            maxTime: true,
+            minTime: true,
+            specials: true
+        };
+
     }
 
 })();

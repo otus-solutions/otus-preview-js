@@ -63,6 +63,8 @@
             $scope.itemData = item;
             $element.find('section').prepend($compile(SURVEY_ITEM)($scope));
             CurrentQuestion.setQuestion(item);
+            console.log(item);
+            ValidateService.applyValidation();
         }
 
         function updateToolbar() {

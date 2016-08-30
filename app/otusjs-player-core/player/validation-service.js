@@ -32,13 +32,6 @@
             console.log(question.fillingRules);
               console.log(validationResponse);
           });
-            // var question = CurrentQuestion.getQuestion();
-            // var model = CurrentQuestion.getAnswer();
-            // var fillingRulesList = question.fillingRules.options;
-            // var elementRegister = ElementRegisterFactory.create(question.customID, model);
-            // Object.keys(fillingRulesList).map(function(validator) {
-            //     console.log(fillingRulesList[validator].data.reference);
-            // });
         }
     }
 }());
