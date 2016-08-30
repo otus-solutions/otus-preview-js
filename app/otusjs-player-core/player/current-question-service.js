@@ -5,33 +5,37 @@
         .module('otusjs.player.core')
         .service('otusjs.player.core.CurrentQuestion', Service);
 
-    Service.$inject = [];
+    Service.$inject = [
+      'otusjs.player.core.ValidateService'
+    ];
 
-    function Service() {
+    function Service(ValidateService) {
         var self = this;
-        var answer;
+        var answer ={};
         var question;
 
         self.setQuestion = function(item) {
             answer = {};
             question = item;
+            _startValidation();
         };
         self.setAnswer = function(ans) {
-          console.log(ans);
             answer = ans;
-        };
-        self.getAnswer = function() {
-            return answer;
+            console.log(ans);
+            ValidateService.applyValidation(question);
         };
         self.getFillingRules = function() {
-            return self.fillingRules;
+            return question.fillingRules.options;
+        };
+        self.getAnswer = function() {
+          return answer;
         };
         self.getQuestion = function() {
             return question;
         };
 
-        function _setFillingRules() {
-            self.fillingRules = question.fillingRules.options;
+        function _startValidation() {
+          ValidateService.setValidation(self.getQuestion(), answer);
         }
     }
 }());

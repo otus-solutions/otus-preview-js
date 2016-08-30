@@ -17,11 +17,10 @@
         '$compile',
         'otusjs.player.core.PlayerService',
         'DataService',
-        'otusjs.player.core.ValidateService',
         'otusjs.player.core.CurrentQuestion'
     ];
 
-    function OtusSheetController($scope, $element, $compile, PlayerService, DataService, ValidateService, CurrentQuestion) {
+    function OtusSheetController($scope, $element, $compile, PlayerService, DataService, CurrentQuestion) {
         var self = this;
 
         var SURVEY_ITEM = '<otus-survey-item item-data="itemData" />';
@@ -41,7 +40,6 @@
 
         function previousItem() {
             if (PlayerService.canWeGo('back')) {
-              console.log(self.currentChild);
                 if (self.currentChild) {
                     destroyCurrentItem();
                 }
@@ -65,8 +63,6 @@
             $scope.itemData = item;
             $element.find('section').prepend($compile(SURVEY_ITEM)($scope));
             CurrentQuestion.setQuestion(item);
-            console.log(item);
-            ValidateService.applyValidation();
         }
 
         function updateToolbar() {

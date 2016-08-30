@@ -8,39 +8,37 @@
     Service.$inject = [
         'ElementRegisterFactory',
         'ValidationService',
-        'otusjs.player.core.CurrentQuestion'
     ];
 
-    function Service(ElementRegisterFactory, ValidationService, CurrentQuestion) {
+    function Service(ElementRegisterFactory, ValidationService) {
         var self = this;
 
-        self.validationPreview = validationPreview;
+        self.setValidation = setValidation;
         self.applyValidation = applyValidation;
 
-        function validationPreview() {
-            var question = CurrentQuestion.getQuestion();
-            var model = CurrentQuestion.getAnswer();
-            var fillingRulesList = question.fillingRules.options;
-            var elementRegister = ElementRegisterFactory.create(question.customID, model);
-            Object.keys(fillingRulesList).map(function(validator){
-              reference = fillingRulesList[validator].data.reference;
-              elementRegister.addValidator(validator, {
-                  'reference': reference
-              });            });
+        function setValidation(question, answer) {
+          var fillingRules = question.fillingRules.options;
+            var elementRegister = ElementRegisterFactory.create(question.customID, answer);
 
-            ValidationService.registerElement(elementRegister);
-            ValidationService.validateAllElements(function(validationResponse) {
-                // console.log(validationResponse);
+            Object.keys(fillingRules).map(function(validator) {
+                var reference = fillingRules[validator].data;
+                elementRegister.addValidator(validator, reference);
             });
+            ValidationService.registerElement(elementRegister);
         }
-        function applyValidation(){
-          var question = CurrentQuestion.getQuestion();
-          var model = CurrentQuestion.getAnswer();
-          var fillingRulesList = question.fillingRules.options;
-          var elementRegister = ElementRegisterFactory.create(question.customID, model);
-          Object.keys(fillingRulesList).map(function(validator){
-            // console.log(fillingRulesList[validator].data.reference);
+
+        function applyValidation(question, callback) {
+          ValidationService.validateElement(question.customID, function(validationResponse) {
+            console.log(question.fillingRules);
+              console.log(validationResponse);
           });
+            // var question = CurrentQuestion.getQuestion();
+            // var model = CurrentQuestion.getAnswer();
+            // var fillingRulesList = question.fillingRules.options;
+            // var elementRegister = ElementRegisterFactory.create(question.customID, model);
+            // Object.keys(fillingRulesList).map(function(validator) {
+            //     console.log(fillingRulesList[validator].data.reference);
+            // });
         }
     }
 }());
