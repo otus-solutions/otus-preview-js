@@ -17,6 +17,7 @@
         self.getPrevious = getPrevious;
         self.hasNext = hasNext;
         self.hasPrevious = hasPrevious;
+        self.canWeGo = canWeGo;
 
         function play(items) {
             ItemManagerService.init(items);
@@ -41,6 +42,28 @@
         function hasPrevious() {
             return ItemManagerService.hasPrevious();
         }
+
+        function canWeGo(where) {
+            var directions = {
+                'ahead': function() {
+                    var conditions = [
+                      !!hasNext(),
+
+                    ];
+                    return conditions.indexOf(false, conditions) === -1;
+                },
+                'back': function() {
+                    var conditions = [
+                      !!hasPrevious()
+
+                    ];
+                    return conditions.indexOf(false, conditions) === -1;
+                }
+            };
+            return directions[where]();
+        }
+
+
     }
 
 })();
