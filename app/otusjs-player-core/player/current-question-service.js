@@ -46,7 +46,10 @@
         function callMemaybe(response) {
           response[0].validatorsResponse.map(function(ValidatorResponse){
             self.validations.set(ValidatorResponse.name, !ValidatorResponse.result);
+
           });
+
+
         }
     }
 }());

@@ -32,6 +32,7 @@
             self.filling = {};
             self.filling.questionID = self.itemData.templateID;
             $scope.$parent.$ctrl.currentChild = self;
+            self.teste = 'teste';
         };
 
         function isQuestion() {
@@ -49,6 +50,7 @@
         function update(prop, value) {
             self.filling[prop] = value;
             CurrentQuestion.setAnswer(self.filling);
+            console.log(CurrentQuestion);
             applyValidator();
         }
 
@@ -59,7 +61,15 @@
 
         function applyValidator() {
             self.$error = CurrentQuestion.validations;
-            console.log(self.$error);
+
+            console.log(CurrentQuestion.validations);
+            console.dir(self.$error);
+            console.log(CurrentQuestion.getFillingRules()['pastDate'].data.reference);
+            // console.log(self.$error);
+        }
+
+        self.reference = function(type) {
+            return CurrentQuestion.getFillingRules()[type].data.reference;
         }
 
     }
