@@ -6,10 +6,11 @@
         .service('otusjs.player.core.PlayerService', PlayerService);
 
     PlayerService.$inject = [
-        'otusjs.player.core.ItemManagerService'
+        'otusjs.player.core.ItemManagerService',
+        'otusjs.player.core.CurrentQuestion'
     ];
 
-    function PlayerService(ItemManagerService) {
+    function PlayerService(ItemManagerService, CurrentQuestion) {
         var self = this;
 
         self.play = play;
@@ -44,17 +45,25 @@
         }
 
         function canWeGo(where) {
+            CurrentQuestion.validateQuestion();
+            var validationOk = !CurrentQuestion.getValidationError();
+            var metadataOk = CurrentQuestion.metadataAcceptance();
+            var validationFinal = (validationOk || metadataOk);
             var directions = {
                 'ahead': function() {
                     var conditions = [
-                      !!hasNext(),
+                        hasNext(),
+                        validationFinal,
+
 
                     ];
                     return conditions.indexOf(false, conditions) === -1;
                 },
                 'back': function() {
                     var conditions = [
-                      !!hasPrevious()
+                        hasPrevious(),
+                        validationFinal,
+
 
                     ];
                     return conditions.indexOf(false, conditions) === -1;

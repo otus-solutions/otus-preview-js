@@ -30,12 +30,22 @@
         self.previousItem = previousItem;
         self.nextItem = nextItem;
         self.catchMouseWheel = catchMouseWheel;
-        self.validationBlock = validationBlock;
 
         function onInit() {
             self.isLoading = true;
             PlayerService.play(self.surveyTemplate.itemContainer);
-            nextItem();
+            _setFirstQuestion();
+        }
+
+        function _setFirstQuestion(){
+          if (PlayerService.hasNext()) {
+              if (self.currentChild) {
+                  transferData();
+                  destroyCurrentItem();
+              }
+              loadItem(PlayerService.getNext());
+              updateToolbar();
+          }
         }
 
         function previousItem() {
@@ -66,17 +76,12 @@
         }
 
         function updateToolbar() {
-            self.isPreviousDisabled = !PlayerService.canWeGo('back');
-            self.isNextDisabled = !PlayerService.canWeGo('ahead');
+            self.isPreviousDisabled = !PlayerService.hasPrevious();
+            self.isNextDisabled = !PlayerService.hasNext();
         }
 
         function transferData() {
             DataService.transferData(self.currentChild.filling);
-        }
-
-        function validationBlock() {
-            //TODO trava next quando alguma validação não passar
-            self.isNextDisabled = true;
         }
 
         function destroyCurrentItem() {

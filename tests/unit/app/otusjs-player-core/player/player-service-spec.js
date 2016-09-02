@@ -9,7 +9,8 @@ describe('PlayerService', function() {
 
         inject(function(_$injector_) {
             service = _$injector_.get('otusjs.player.core.PlayerService', {
-                ItemManagerService: mockItemManagerService(_$injector_)
+                ItemManagerService: mockItemManagerService(_$injector_),
+                CurrentQuestion: mockCurrentQuestion(_$injector_)
             });
         });
     });
@@ -132,12 +133,73 @@ describe('PlayerService', function() {
 
     });
 
+    describe('canWeGo method - an button blocker for next and back', function() {
+        beforeEach(function() {
+            service.play(items);
+        });
+
+        it('should call hasPrevious method when asked if can go ahead', function() {
+          spyOn(Mock.ItemManagerService, 'hasPrevious');
+          service.canWeGo('back');
+
+          expect(Mock.ItemManagerService.hasPrevious).toHaveBeenCalled();
+        });
+        it('should call hasNext method when asked if can go ahead', function() {
+            spyOn(Mock.ItemManagerService, 'hasNext');
+            service.canWeGo('ahead');
+
+            expect(Mock.ItemManagerService.hasNext).toHaveBeenCalled();
+        });
+        it('should call allValidationsOk method when asked if can go ahead', function() {
+            spyOn(Mock.CurrentQuestion, 'allValidationsOk');
+            service.canWeGo('ahead');
+
+            expect(Mock.CurrentQuestion.allValidationsOk).toHaveBeenCalled();
+        });
+        it('should call metadataAcceptance method when asked if can go ahead', function() {
+            spyOn(Mock.CurrentQuestion, 'metadataAcceptance');
+            service.canWeGo('ahead');
+            expect(Mock.CurrentQuestion.metadataAcceptance).toHaveBeenCalled();
+        });
+
+        it('should set canWeGo to false when some validation fails and has no metadata acceptance returns false', function() {
+          Mock.CurrentQuestion.allValidationsOk = function() {
+            return false;
+          };
+          Mock.CurrentQuestion.metadataAcceptance = function() {
+            return false;
+          };
+          canWeGo = service.canWeGo('ahead');
+
+          expect(canWeGo).toBe(false);
+
+        });
+
+        it('should set canWeGo to true when some validation fails but metadataAcceptance returns true', function() {
+          Mock.CurrentQuestion.allValidationsOk = function() {
+            return false;
+          };
+          Mock.CurrentQuestion.metadataAcceptance = function() {
+            return true;
+          };
+          canWeGo = service.canWeGo('ahead');
+          expect(canWeGo).toBe(true);
+
+        });
+    });
+
     function mockItemManagerService($injector) {
         Mock.ItemManagerService = $injector.get('otusjs.player.core.ItemManagerService');
 
         spyOn(Mock.ItemManagerService, 'init').and.callThrough();
 
         return Mock.ItemManagerService;
+    }
+
+    function mockCurrentQuestion($injector) {
+        Mock.CurrentQuestion = $injector.get('otusjs.player.core.CurrentQuestion');
+
+        return Mock.CurrentQuestion;
     }
 
 });

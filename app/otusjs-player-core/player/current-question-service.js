@@ -6,47 +6,78 @@
         .service('otusjs.player.core.CurrentQuestion', Service);
 
     Service.$inject = [
-      'otusjs.player.core.ValidateService'
+        'otusjs.player.core.ValidateService'
     ];
 
     function Service(ValidateService) {
         var self = this;
-        var answer ={};
         var question;
-        self.validations = new Map();
+        var validationError;
+        var observer;
+
+        /* Public Interface */
+        self.getValidationError = getValidationError;
+        self.metadataAcceptance = metadataAcceptance;
+        self.validateQuestion = validateQuestion;
+        self.answer = {};
 
         self.setQuestion = function(item) {
-            answer = {};
             question = item;
             _startValidation();
+            validationError = false;
+            self.validations = new Map();
         };
+
+        self.observerRegistry = function(obs) {
+          observer = obs;
+        };
+
         self.setAnswer = function(ans) {
-            answer = ans;
-            console.log(ans);
-            validateMe();
+            self.answer = ans;
         };
+
+        self.getAnswer = function() {
+            return self.answer;
+        };
+
         self.getFillingRules = function() {
             return question.fillingRules.options;
         };
-        self.getAnswer = function() {
-          return answer;
-        };
+
         self.getQuestion = function() {
             return question;
         };
 
         function _startValidation() {
-          ValidateService.setValidation(self.getQuestion(), answer);
+            ValidateService.setValidation(self.getQuestion(), self.answer);
         }
 
-        function validateMe() {
-          var lista =[];
-          ValidateService.applyValidation(question, callMemaybe);
+        function validateQuestion() {
+            ValidateService.applyValidation(question, validationCallback);
         }
-        function callMemaybe(response) {
-          response[0].validatorsResponse.map(function(ValidatorResponse){
-            self.validations.set(ValidatorResponse.name, !ValidatorResponse.result);
-          });
+
+        function validationCallback(response) {
+            validationError = false;
+            console.log(response[0].validatorsResponse);
+            response[0].validatorsResponse.map(function(ValidatorResponse) {
+                self.validations.set(ValidatorResponse.name, !ValidatorResponse.result);
+                if (!ValidatorResponse.result) {
+                    validationError = true;
+                }
+            });
+            notifyObserver(self.validations);
+        }
+
+        function notifyObserver(answerMap){
+            observer.updateValidation(answerMap);
+        }
+
+        function getValidationError() {
+            return validationError;
+        }
+
+        function metadataAcceptance() {
+            return false;
         }
     }
 }());

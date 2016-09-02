@@ -11,7 +11,7 @@ describe('HtmlBuilderService', function() {
         });
     });
 
-    describe('generateTagName method', function() {
+    describe('generateTagName method', function() {      
 
         it('should replace camel case with hyphen and lower case', function() {
             expect(service.generateTagName(camelCaseString)).toEqual(tagNameString);

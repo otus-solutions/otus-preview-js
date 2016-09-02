@@ -1,35 +1,51 @@
-describe('Validate Service', function() {
+describe('Current Question Service', function() {
     var Mock = {};
     var service;
+    var items = [Mock.question, 2, 3];
     beforeEach(function() {
         module('otusjs.player.core');
         inject(function(_$injector_) {
-            service = _$injector_.get('otusjs.player.core.ValidateService');
-            mockElementRegisterFactory(_$injector_);
-            mockValidationService(_$injector_);
-        });
-    });
-
-    describe('whatever', function() {
-        it('should do whatever', function() {
-            service.setValidation(Mock.question, {});
-
+            service = _$injector_.get('otusjs.player.core.CurrentQuestion');
+            mockValidateService(_$injector_);
+            mockPlayerService(_$injector_);
 
         });
     });
 
-    function mockElementRegisterFactory($injector) {
-        Mock.ElementRegisterFactory = $injector.get('ElementRegisterFactory');
+    describe('a new question setting', function() {
+        it('should call setValidation on ValidateService w question and empty answer', function() {
+            spyOn(Mock.ValidateService, 'setValidation');
+            service.setQuestion(Mock.question);
 
-        // spyOn(Mock.ItemManagerService, 'init').and.callThrough();
+            expect(Mock.ValidateService.setValidation).toHaveBeenCalledWith(Mock.question, {});
+        });
 
-        return Mock.ElementRegisterFactory;
+        it('should get an empty object when call for answer before there is one', function() {
+            service.setQuestion(Mock.question);
+            answer = service.getAnswer();
+
+            expect(answer).toEqual({});
+        });
+
+        it('should return the given answer', function() {
+            service.setQuestion(Mock.question);
+            service.setAnswer('ans');
+            answer = service.getAnswer();
+
+            expect(answer).toEqual('ans');
+        });
+    });
+
+    function mockValidateService($injector) {
+        Mock.ValidateService = $injector.get('otusjs.player.core.ValidateService');
+        return Mock.ValidateService;
     }
 
-    function mockValidationService($injector) {
-        Mock.ValidationService = $injector.get('ValidationService');
 
-        return Mock.ValidationService;
+    function mockPlayerService($injector) {
+        Mock.PlayerService = $injector.get('otusjs.player.core.PlayerService');
+
+        return Mock.PlayerService;
     }
 
     Mock.question = {
