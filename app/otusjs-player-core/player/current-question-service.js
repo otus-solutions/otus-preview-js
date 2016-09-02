@@ -6,7 +6,7 @@
         .service('otusjs.player.core.CurrentQuestion', Service);
 
     Service.$inject = [
-        'otusjs.player.core.ValidateService'
+      'otusjs.player.core.ValidateService'
     ];
 
     function Service(ValidateService) {
