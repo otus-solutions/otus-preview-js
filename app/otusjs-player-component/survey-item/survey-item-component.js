@@ -64,7 +64,7 @@
 
             console.log(CurrentQuestion.validations);
             console.dir(self.$error);
-            console.log(CurrentQuestion.getFillingRules()['distinct'].data.reference);
+            // console.log(CurrentQuestion.getFillingRules()['distinct'].data.reference);
         }
 
         self.reference = function(type) {
