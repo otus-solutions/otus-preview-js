@@ -64,8 +64,7 @@
 
             console.log(CurrentQuestion.validations);
             console.dir(self.$error);
-            console.log(CurrentQuestion.getFillingRules()['pastDate'].data.reference);
-            // console.log(self.$error);
+            console.log(CurrentQuestion.getFillingRules()['distinct'].data.reference);
         }
 
         self.reference = function(type) {
