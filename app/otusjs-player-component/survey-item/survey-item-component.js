@@ -61,7 +61,10 @@
             $scope.$destroy();
         }
 
-
+        self.reference = function(type) {
+            console.log(CurrentQuestion.getFillingRules()['maxDate'].data.reference);
+            return CurrentQuestion.getFillingRules()[type].data.reference;
+        }
 
     }
 
