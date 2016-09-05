@@ -45,15 +45,15 @@
         }
 
         function canWeGo(where) {
-            CurrentQuestion.validateQuestion();
             var validationOk = !CurrentQuestion.getValidationError();
-            var metadataOk = CurrentQuestion.metadataAcceptance();
+            var metadataOk = CurrentQuestion.ignoreValidation();
             var validationFinal = (validationOk || metadataOk);
             var directions = {
                 'ahead': function() {
+                    CurrentQuestion.validateQuestion();
                     var conditions = [
                         hasNext(),
-                        validationFinal,
+                        (!CurrentQuestion.getValidationError() || CurrentQuestion.ignoreValidation()),
 
 
                     ];

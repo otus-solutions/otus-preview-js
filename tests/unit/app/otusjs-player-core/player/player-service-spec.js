@@ -156,17 +156,17 @@ describe('PlayerService', function() {
 
             expect(Mock.CurrentQuestion.allValidationsOk).toHaveBeenCalled();
         });
-        it('should call metadataAcceptance method when asked if can go ahead', function() {
-            spyOn(Mock.CurrentQuestion, 'metadataAcceptance');
+        it('should call ignoreValidation method when asked if can go ahead', function() {
+            spyOn(Mock.CurrentQuestion, 'ignoreValidation');
             service.canWeGo('ahead');
-            expect(Mock.CurrentQuestion.metadataAcceptance).toHaveBeenCalled();
+            expect(Mock.CurrentQuestion.ignoreValidation).toHaveBeenCalled();
         });
 
         it('should set canWeGo to false when some validation fails and has no metadata acceptance returns false', function() {
           Mock.CurrentQuestion.allValidationsOk = function() {
             return false;
           };
-          Mock.CurrentQuestion.metadataAcceptance = function() {
+          Mock.CurrentQuestion.ignoreValidation = function() {
             return false;
           };
           canWeGo = service.canWeGo('ahead');
@@ -175,11 +175,11 @@ describe('PlayerService', function() {
 
         });
 
-        it('should set canWeGo to true when some validation fails but metadataAcceptance returns true', function() {
+        it('should set canWeGo to true when some validation fails but ignoreValidation returns true', function() {
           Mock.CurrentQuestion.allValidationsOk = function() {
             return false;
           };
-          Mock.CurrentQuestion.metadataAcceptance = function() {
+          Mock.CurrentQuestion.ignoreValidation = function() {
             return true;
           };
           canWeGo = service.canWeGo('ahead');

@@ -54,7 +54,6 @@
         function update(prop, value) {
             self.filling[prop] = value;
             CurrentQuestion.setAnswer(self.filling);
-            applyValidator();
         }
 
         function destroy() {

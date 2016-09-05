@@ -17,7 +17,7 @@
 
         /* Public Interface */
         self.getValidationError = getValidationError;
-        self.metadataAcceptance = metadataAcceptance;
+        self.ignoreValidation = ignoreValidation;
         self.validateQuestion = validateQuestion;
         self.answer = {};
 
@@ -76,7 +76,7 @@
             return validationError;
         }
 
-        function metadataAcceptance() {
+        function ignoreValidation() {
             return false;
         }
     }
