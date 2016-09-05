@@ -77,7 +77,7 @@
         }
 
         function ignoreValidation() {
-            return true;
+            return false;
         }
     }
 }());

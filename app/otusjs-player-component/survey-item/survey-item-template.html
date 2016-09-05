@@ -16,25 +16,25 @@
         <md-icon md-font-set="material-icons">info</md-icon>
         <!-- TODO colorir -->
     </md-button>
-    <div ng-messages="$ctrl.$error" ng-messages-multiple role="alert">
+    <div ng-messages="$ctrl.$error" class="alert alert-danger" ng-messages-multiple role="alert">
         <div ng-message="mandatory">Questão deve ser obrigatória</div>
         <div ng-message="distinct">Insira um valor diferente de {{ $ctrl.reference('distinct') }}</div>
         <div ng-message="lowerLimit">O valor deve ser menor que {{ $ctrl.reference('lowerLimit') }}</div>
         <div ng-message="upperLimit">O valor deve ser maior que {{ $ctrl.reference('upperLimit') }}</div>
-        <div ng-message="rangeDate">O valor deve ser maior que {{ $ctrl.reference('rangeDate').initial }} e menor que {{ $ctrl.reference('rangeDate').end }}</div>
-        <div ng-message="maxDate">A data deve ser menor que {{ $ctrl.reference('maxDate') }}</div>
-        <div ng-message="minDate">A data deve ser maior que {{ $ctrl.reference('minDate') }}</div>
-        <div ng-message="pastDate">A data deve ser anterior a {{ $ctrl.reference('pastDate') }}</div>
-        <div ng-message="futureDate">A data deve ser posterior a {{ $ctrl.reference('futureDate') }}</div>
+        <div ng-message="rangeDate">O valor deve ser maior que {{ $ctrl.referenceAsDate('rangeDate').initial }} e menor que {{ $ctrl.referenceAsDate('rangeDate').end }}</div>
+        <div ng-message="maxDate">A data deve ser menor que {{ $ctrl.referenceAsDate('maxDate') }}</div>
+        <div ng-message="minDate">A data deve ser maior que {{ $ctrl.referenceAsDate('minDate') }}</div>
+        <div ng-message="pastDate">A data deve ser anterior a {{ $ctrl.referenceAsDate('pastDate') }}</div>
+        <div ng-message="futureDate">A data deve ser posterior a {{ $ctrl.referenceAsDate('futureDate') }}</div>
         <div ng-message="minLength">Caracteres devem ter número maior que {{ $ctrl.reference('minLength') }}</div>
         <div ng-message="maxLength">Caracteres devem ter número menor que {{ $ctrl.reference('maxLength') }}</div>
         <div ng-message="in">O valor deve ser maior que {{ $ctrl.reference('in').initial }} e menor que {{ $ctrl.reference('in').end }}</div>
         <div ng-message="precision">Número total de digitos deve ser {{ $ctrl.reference('precision') }}</div>
         <div ng-message="scale">Número de casas após a virgula deve ser {{ $ctrl.reference('scale') }}</div>
-        <div ng-message="maxTime">Tempo máximo permitido é {{ $ctrl.reference('maxTime') }}</div>
-        <div ng-message="minTime">Tempo minimo permitido é {{ $ctrl.reference('minTime') }}</div>
+        <div ng-message="maxTime">Tempo máximo permitido é {{ $ctrl.referenceAsTime('maxTime') }}</div>
+        <div ng-message="minTime">Tempo minimo permitido é {{ $ctrl.referenceAsTime('minTime') }}</div>
         <!-- <span ng-message="lowerCase"></span> -->
-        <!-- Caracteres especiais e alphanumericos vai ser bloqueados na digitação -->
+        <!-- Caracteres especiais e alphanumericos serão bloqueados na digitação -->
         <!-- <span ng-message="upperCase">teste</span> -->
     </div>
 

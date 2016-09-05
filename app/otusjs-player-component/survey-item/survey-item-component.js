@@ -61,10 +61,24 @@
             $scope.$destroy();
         }
 
+        self.referenceAsDate = function(type) {
+            var reference = CurrentQuestion.getFillingRules()[type].data.reference;
+            var date = new Date(reference).toLocaleDateString();
+            if (type === 'rangeDate'){
+              date = {'initial':new Date(reference.initial).toLocaleDateString(), 'end': new Date(reference.end).toLocaleDateString()};
+            }
+            return date;
+        };
+
+        self.referenceAsTime = function(type) {
+            var reference = CurrentQuestion.getFillingRules()[type].data.reference;
+            return self.reference;
+        };
+
         self.reference = function(type) {
-            console.log(CurrentQuestion.getFillingRules()['maxDate'].data.reference);
-            return CurrentQuestion.getFillingRules()[type].data.reference;
-        }
+            var reference = CurrentQuestion.getFillingRules()[type].data.reference;
+            return reference;
+        };
 
     }
 

@@ -45,15 +45,14 @@
         }
 
         function canWeGo(where) {
-            var validationOk = !CurrentQuestion.getValidationError();
-            var metadataOk = CurrentQuestion.ignoreValidation();
-            var validationFinal = (validationOk || metadataOk);
+            var ignoreValidation = CurrentQuestion.ignoreValidation();
             var directions = {
                 'ahead': function() {
                     CurrentQuestion.validateQuestion();
+                    var validationOk = !CurrentQuestion.getValidationError();
                     var conditions = [
                         hasNext(),
-                        (!CurrentQuestion.getValidationError() || CurrentQuestion.ignoreValidation()),
+                        (validationOk || ignoreValidation)
 
 
                     ];
@@ -62,7 +61,6 @@
                 'back': function() {
                     var conditions = [
                         hasPrevious(),
-                        validationFinal,
 
 
                     ];
