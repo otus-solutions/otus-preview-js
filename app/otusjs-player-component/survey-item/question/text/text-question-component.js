@@ -21,6 +21,10 @@
                 value: self.answer
             });
         };
+
+        self.applyValidationAlphanumeric = function() {
+            console.log('oi');
+        }
     }
 
 })();
