@@ -19,7 +19,7 @@
         self.getValidationError = getValidationError;
         self.ignoreValidation = ignoreValidation;
         self.validateQuestion = validateQuestion;
-        self.answer = {};
+        self.answer = {'data':{}};
 
         self.setQuestion = function(item) {
             question = item;
@@ -33,11 +33,11 @@
         };
 
         self.setAnswer = function(ans) {
-            self.answer = ans;
+            self.answer.data = ans;
         };
 
         self.getAnswer = function() {
-            return self.answer;
+            return self.answer.data;
         };
 
         self.getFillingRules = function() {
@@ -60,8 +60,8 @@
             validationError = false;
             console.log(response[0].validatorsResponse);
             response[0].validatorsResponse.map(function(ValidatorResponse) {
-                self.validations.set(ValidatorResponse.name, !ValidatorResponse.result);
-                if (!ValidatorResponse.result) {
+                self.validations.set(ValidatorResponse.name, ValidatorResponse.result);
+                if (ValidatorResponse.result) {
                     validationError = true;
                 }
             });

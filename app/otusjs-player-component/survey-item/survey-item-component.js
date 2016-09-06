@@ -53,7 +53,7 @@
 
         function update(prop, value) {
             self.filling[prop] = value;
-            CurrentQuestion.setAnswer(self.filling);
+            CurrentQuestion.setAnswer(self.filling.answer);
         }
 
         function destroy() {

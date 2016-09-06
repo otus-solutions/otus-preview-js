@@ -21,14 +21,13 @@
             var fillingRules = question.fillingRules.options;
             elementRegister = ElementRegisterFactory.create(question.customID, answer);
             Object.keys(fillingRules).map(function(validator) {
-                var reference = fillingRules[validator].data;
+                var reference = fillingRules[validator].data.reference;
                 elementRegister.addValidator(validator, reference);
             });
             ValidationService.registerElement(elementRegister);
         }
 
         function applyValidation(question, callback) {
-          console.log('asd');
             ValidationService.validateElement(question.customID, callback);
         }
     }
