@@ -75,8 +75,10 @@
 
         //TODO
         self.referenceAsTime = function(type) {
-            var reference = CurrentQuestion.getFillingRules()[type].data.reference;
-            return self.reference();
+          console.log(CurrentQuestion.getFillingRules()[type]);
+            // var reference = CurrentQuestion.getFillingRules()[type].data.reference;
+
+            return self.reference(type);
         };
 
         self.reference = function(type) {
