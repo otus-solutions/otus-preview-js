@@ -15,10 +15,12 @@
     TextQuestionController.$inject = [
         '$scope',
         '$element',
-        'otusjs.player.core.CurrentQuestion'
+        'otusjs.player.core.CurrentQuestion',
+        'uiSpecialsService',
+        'uiAlphanumericService'
     ];
 
-    function TextQuestionController($scope, $element, CurrentQuestion) {
+    function TextQuestionController($scope, $element, CurrentQuestion, uiSpecialsService, uiAlphanumericService) {
         var self = this;
 
         self.update = function() {
@@ -28,22 +30,15 @@
             });
         };
 
-        self.verifyValidator = function() {
-            // Responsável por identificar qual é o validador corrente
-
+        self.verifyValidator = function($event) {
             console.log('É um validador ');
-            var uiAlphanumeric = false;
-            var uiSpecial = false;
+            uiAlphanumericService.apply($element);
 
-            console.log(CurrentQuestion.getFillingRules());
             if (CurrentQuestion.getFillingRules().validatorType == 'alphanumeric') {
-                console.log('alphanumeric');
-                //aplicar uiAlphanumeric
-                uiAlphanumeric = true;
+                uiAlphanumericService.apply($element);
+
             } else if (CurrentQuestion.getFillingRules().validatorType == 'specials') {
-                console.log('specials');
-                //aplicar uiSpecials
-                uiSpecial = true;
+                uiSpecialsService.apply($element);
             }
         }
     }
