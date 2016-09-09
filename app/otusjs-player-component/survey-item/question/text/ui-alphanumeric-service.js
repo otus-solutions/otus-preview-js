@@ -7,26 +7,29 @@
 
     function uiAlphanumericService() {
         var self = this;
-        var lastValidValue;
 
         self.apply = apply;
 
-        function apply($element) {
+        function apply($scope, $element, attrs, ngModelCtrl) {
 
-            $element.on('keydown', shouldPrintChar);
+            var lastValidValue;
 
-            function shouldPrintChar(event) {
-                var element = angular.element(event.currentTarget);
-                var keycode = event.which;
-                return (isAlphanumericKey(keycode) || isValidKey(keycode));
-            }
+            $element.on('keydown', function() {
+                //Cannot read property 'on' of undefined
+
+                function shouldPrintChar(event) {
+                    var element = angular.element(event.currentTarget);
+                    var keycode = event.which;
+                    return (isAlphanumericKey(keycode) || isValidKey(keycode));
+                }
+            });
 
             $element.on('keyup', formatedAlphanumeric);
 
             function formatedAlphanumeric(event) {
                 var element = angular.element(event.currentTarget);
                 var keycode = event.which;
-                // var currentValue = $element.val();
+                var currentValue = $element.val();
 
                 if (element.length === 0) {
                     lastValidValue = '';

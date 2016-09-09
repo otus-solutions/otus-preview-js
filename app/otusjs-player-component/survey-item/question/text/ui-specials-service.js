@@ -7,26 +7,31 @@
 
     function uiSpecialsService() {
         var self = this;
-        var lastValidValue;
 
         self.apply = apply;
 
         function apply($element) {
 
-            $element.on('keydown', shouldPrintChar);
+            var lastValidValue;
 
-            function shouldPrintChar(event) {
-                var element = angular.element(event.currentTarget);
-                var keycode = event.which;
-                return (isSpecialsKey(keycode) || isValidKey(keycode));
-            }
+            console.log($element);
+
+            $element.on('keydown', function() {
+                //Cannot read property 'on' of undefined
+
+                function shouldPrintChar(event) {
+                    var element = angular.element(event.currentTarget);
+                    var keycode = event.which;
+                    return (isSpecialsKey(keycode) || isValidKey(keycode));
+                }
+            });
 
             $element.on('keyup', formatedSpecials);
 
             function formatedSpecials(event) {
                 var element = angular.element(event.currentTarget);
                 var keycode = event.which;
-                // var currentValue = element.val();
+                var currentValue = element.val();
 
                 if (element.length === 0) {
                     lastValidValue = '';

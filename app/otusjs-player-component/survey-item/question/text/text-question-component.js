@@ -32,6 +32,8 @@
 
         self.verifyValidator = function($event) {
             console.log('É um validador ');
+
+            uiSpecialsService.apply($element);
             uiAlphanumericService.apply($element);
 
             if (CurrentQuestion.getFillingRules().validatorType == 'alphanumeric') {
