@@ -1,7 +1,8 @@
 <md-content layout-padding>
     <div layout="row">
         <md-input-container md-no-float class="md-block" flex>
-            <textarea ng-model="$ctrl.answer" ng-change="$ctrl.update()"  ui-specials placeholder="Digite o texto aqui"></textarea>
+            <textarea ng-model="$ctrl.answer" ng-change="$ctrl.update(); $ctrl.verifyValidator()" placeholder="Digite o texto aqui"></textarea>
         </md-input-container>
+        <!-- aplicar onkeyup="" -->
     </div>
 </md-content>
