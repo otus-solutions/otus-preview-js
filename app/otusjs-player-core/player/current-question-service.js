@@ -6,7 +6,7 @@
         .service('otusjs.player.core.CurrentQuestion', Service);
 
     Service.$inject = [
-      'otusjs.player.core.ValidateService'
+        'otusjs.player.core.ValidateService'
     ];
 
     function Service(ValidateService) {
@@ -19,17 +19,19 @@
         self.getValidationError = getValidationError;
         self.ignoreValidation = ignoreValidation;
         self.validateQuestion = validateQuestion;
-        self.answer = {'data':{}};
+        self.answer = {
+            'data': {}
+        };
 
         self.setQuestion = function(item) {
             question = item;
             _startValidation();
             validationError = false;
-            self.validations = new Map();
+            self.validations = {};
         };
 
         self.observerRegistry = function(obs) {
-          observer = obs;
+            observer = obs;
         };
 
         self.setAnswer = function(ans) {
@@ -57,10 +59,15 @@
         }
 
         function validationCallback(response) {
+            console.log('--------');
+            console.log('validating');
+            self.validations = {};
             validationError = false;
             console.log(response[0].validatorsResponse);
+            var validationResult;
             response[0].validatorsResponse.map(function(ValidatorResponse) {
-                self.validations.set(ValidatorResponse.name, ValidatorResponse.result);
+                validationResult = !ValidatorResponse.result;
+                self.validations[ValidatorResponse.name] = validationResult;
                 if (ValidatorResponse.result) {
                     validationError = true;
                 }
@@ -68,8 +75,8 @@
             notifyObserver(self.validations);
         }
 
-        function notifyObserver(answerMap){
-            observer.updateValidation(answerMap);
+        function notifyObserver(validationMap) {
+            observer.updateValidation(validationMap);
         }
 
         function getValidationError() {
@@ -77,7 +84,7 @@
         }
 
         function ignoreValidation() {
-            return false;
+            return true;
         }
     }
 }());

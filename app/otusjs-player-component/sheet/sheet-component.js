@@ -38,7 +38,6 @@
         }
 
         function _setFirstQuestion(){
-          console.log('first');
           if (PlayerService.hasNext()) {
               if (self.currentChild) {
                   transferData();

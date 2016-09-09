@@ -35,8 +35,8 @@
             CurrentQuestion.observerRegistry(self);
         };
 
-        function updateValidation(answerMap) {
-            self.$error = answerMap;
+        function updateValidation(validationMap) {
+                self.$error = validationMap;
         }
 
         function isQuestion() {
@@ -64,15 +64,19 @@
         self.referenceAsDate = function(type) {
             var reference = CurrentQuestion.getFillingRules()[type].data.reference;
             var date = new Date(reference).toLocaleDateString();
-            if (type === 'rangeDate'){
-              date = {'initial':new Date(reference.initial).toLocaleDateString(), 'end': new Date(reference.end).toLocaleDateString()};
+            if (type === 'rangeDate') {
+                date = {
+                    'initial': new Date(reference.initial).toLocaleDateString(),
+                    'end': new Date(reference.end).toLocaleDateString()
+                };
             }
             return date;
         };
 
+        //TODO
         self.referenceAsTime = function(type) {
             var reference = CurrentQuestion.getFillingRules()[type].data.reference;
-            return self.reference;
+            return self.reference();
         };
 
         self.reference = function(type) {
