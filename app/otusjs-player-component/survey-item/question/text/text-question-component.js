@@ -23,6 +23,8 @@
     function TextQuestionController($scope, $element, CurrentQuestion, uiSpecialsService, uiAlphanumericService) {
         var self = this;
 
+        _init();
+
         self.update = function() {
             self.onUpdate({
                 valueType: 'answer',
@@ -30,18 +32,14 @@
             });
         };
 
-        self.verifyValidator = function($event) {
-            console.log('É um validador ');
-
+        function _init() {
+            // if (CurrentQuestion.getFillingRules().validatorType == 'alphanumeric') {
+            console.log($element.find('input'));
             uiSpecialsService.apply($element);
-            uiAlphanumericService.apply($element);
 
-            if (CurrentQuestion.getFillingRules().validatorType == 'alphanumeric') {
-                uiAlphanumericService.apply($element);
-
-            } else if (CurrentQuestion.getFillingRules().validatorType == 'specials') {
-                uiSpecialsService.apply($element);
-            }
+            //    } else if (CurrentQuestion.getFillingRules().validatorType == 'specials') {
+            // uiSpecialsService.apply($element);
+            //    }
         }
     }
 

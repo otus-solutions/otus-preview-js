@@ -11,27 +11,23 @@
         self.apply = apply;
 
         function apply($element) {
-
             var lastValidValue;
+            var element = $element.find('textarea');
 
-            console.log($element);
+            $element.on('keydown', shouldPrintChar);
 
-            $element.on('keydown', function() {
-                //Cannot read property 'on' of undefined
+            function shouldPrintChar(event) {
+                console.log(event);
+                var keycode = event.which;
+                return (isSpecialsKey(keycode) || isValidKey(keycode));
+            }
 
-                function shouldPrintChar(event) {
-                    var element = angular.element(event.currentTarget);
-                    var keycode = event.which;
-                    return (isSpecialsKey(keycode) || isValidKey(keycode));
-                }
-            });
-
+            //mudar a ordem de chamada, está chamando somente a primeira função.
             $element.on('keyup', formatedSpecials);
 
             function formatedSpecials(event) {
-                var element = angular.element(event.currentTarget);
+
                 var keycode = event.which;
-                var currentValue = element.val();
 
                 if (element.length === 0) {
                     lastValidValue = '';
@@ -50,13 +46,16 @@
                 var shiftKey = (keycode === 16);
                 var ctrlkey = (keycode === 17);
                 var backspaceKey = (keycode === 8);
+                var spacebar = (keycode === 32);
+                var capslock = (keycode === 20);
                 var homeKey = (keycode === 36);
                 var endKey = (keycode === 35);
                 var deleteKey = (keycode === 46);
                 var leftKey = (keycode === 37);
                 var rightKey = (keycode === 39);
+                var enterkey = (keycode === 13);
 
-                return (shiftKey || ctrlkey || backspaceKey || homeKey || endKey || deleteKey || leftKey || rightKey);
+                return (shiftKey || ctrlkey || backspaceKey || spacebar || capslock || homeKey || endKey || deleteKey || leftKey || rightKey || enterkey) ? true : false;
             }
         }
     }
