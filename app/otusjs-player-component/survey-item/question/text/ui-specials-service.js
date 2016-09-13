@@ -14,32 +14,29 @@
             var lastValidValue;
             var element = $element.find('textarea');
 
-            $element.on('keydown', shouldPrintChar);
+            element.on('keydown', shouldPrintChar);
+            element.on('keyup', formatedSpecials);
 
             function shouldPrintChar(event) {
-                console.log(event);
                 var keycode = event.which;
-                return (isSpecialsKey(keycode) || isValidKey(keycode));
+                return (!isSpecialsKey(keycode) || isValidKey(keycode));
             }
 
-            //mudar a ordem de chamada, está chamando somente a primeira função.
-            $element.on('keyup', formatedSpecials);
-
             function formatedSpecials(event) {
-
                 var keycode = event.which;
+                var currentValue = element.val();
 
-                if (element.length === 0) {
+                if (currentValue.length === 0) {
                     lastValidValue = '';
-                } else if (isSpecialsKey(keycode) || isValidKey(keycode)) {
-                    lastValidValue = $element.val();
+                } else if (!isSpecialsKey(keycode) || isValidKey(keycode)) {
+                    lastValidValue = element.val();
                 } else if (!isValidKey(keycode)) {
-                    $element.val(lastValidValue);
+                    element.val(lastValidValue);
                 }
             }
 
             function isSpecialsKey(keycode) {
-                return ((keycode > 47 && keycode < 58) || (keycode > 186 && keycode < 195) || (keycode > 218 && keycode < 223) || (keycode > 105 && keycode < 112) || (keycode == 226)) ? true : false;
+                return ((event.shiftKey == true && (keycode > 47 && keycode < 58)) || (keycode > 186 && keycode < 195) || (keycode > 218 && keycode < 223) || (keycode > 105 && keycode < 112) || (keycode == 226)) ? true : false;
             }
 
             function isValidKey(keycode) {

@@ -12,38 +12,34 @@
 
         function apply($element) {
             var lastValidValue;
+            var element = $element.find('textarea');
 
-            $element.on('keydown', shouldPrintChar);
+            element.on('keydown', shouldPrintChar);
+            element.on('keyup', formatedAlphanumeric);
 
             function shouldPrintChar(event) {
-                var element = angular.element(event.currentTarget);
                 var keycode = event.which;
                 return (isAlphanumericKey(keycode) || isValidKey(keycode));
-            } //está saindo aqui e não executa o resto
-
-            $element.on('keyup', formatedAlphanumeric);
+            }
 
             function formatedAlphanumeric(event) {
-
-                var element = angular.element(event.currentTarget);
                 var keycode = event.which;
+                var currentValue = element.val();
 
-                if (element.length === 0) {
+                if (currentValue.length === 0) {
                     lastValidValue = '';
                 } else if (isAlphanumericKey(keycode) || isValidKey(keycode)) {
-                    lastValidValue = $element.val();
+                    lastValidValue = element.val();
                 } else if (!isValidKey(keycode)) {
-                    $element.val(lastValidValue);
+                    element.val(lastValidValue);
                 }
             }
 
             function isAlphanumericKey(keycode) {
-                console.log('is alphanumeric key');
                 return ((keycode > 47 && keycode < 58) || (keycode > 64 && keycode < 91) || (keycode > 96 && keycode < 105)) ? true : false;
             }
 
             function isValidKey(keycode) {
-                console.log('is alpha valid key');
                 var shiftKey = (keycode === 16);
                 var capslock = (keycode === 20);
                 var backspaceKey = (keycode === 8);

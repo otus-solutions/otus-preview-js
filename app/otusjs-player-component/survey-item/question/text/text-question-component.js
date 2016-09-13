@@ -33,13 +33,14 @@
         };
 
         function _init() {
-            // if (CurrentQuestion.getFillingRules().validatorType == 'alphanumeric') {
-            console.log($element.find('input'));
-            uiSpecialsService.apply($element);
-
-            //    } else if (CurrentQuestion.getFillingRules().validatorType == 'specials') {
-            // uiSpecialsService.apply($element);
-            //    }
+            var hasAlphanumeric = CurrentQuestion.getFillingRules()['alphanumeric'];
+            var hasSpecials = CurrentQuestion.getFillingRules()['specials'];
+            if (hasAlphanumeric && hasAlphanumeric.data.reference) {
+                uiAlphanumericService.apply($element);
+            }
+            if (hasSpecials && hasSpecials.data.reference) {
+                uiSpecialsService.apply($element);
+            }
         }
     }
 
