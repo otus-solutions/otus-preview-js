@@ -48,7 +48,7 @@
             var ignoreValidation = CurrentQuestion.ignoreValidation();
             var directions = {
                 'ahead': function() {
-                    CurrentQuestion.validateQuestion();
+                    CurrentQuestion.validateQuestion(); //updates getValidationError
                     var validationOk = !CurrentQuestion.getValidationError();
                     var conditions = [
                         hasNext(),

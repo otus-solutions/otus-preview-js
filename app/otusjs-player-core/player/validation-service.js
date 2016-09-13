@@ -19,8 +19,8 @@
 
         function setValidation(question, answer) {
             var fillingRules = question.fillingRules.options;
+            console.log(Object.keys(fillingRules).length);
             elementRegister = ElementRegisterFactory.create(question.customID, answer);
-            console.log(fillingRules);
             Object.keys(fillingRules).map(function(validator) {
                 var reference = fillingRules[validator].data.reference;
                 elementRegister.addValidator(validator, reference);

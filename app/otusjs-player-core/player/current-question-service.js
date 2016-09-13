@@ -27,7 +27,7 @@
             question = item;
             _startValidation();
             validationError = false;
-            self.validations = {};
+            self.validationAnswer = {};
         };
 
         self.observerRegistry = function(obs) {
@@ -59,20 +59,21 @@
         }
 
         function validationCallback(response) {
-            console.log('--------');
-            console.log('validating');
-            self.validations = {};
+            self.validationAnswer = {};
             validationError = false;
+            console.log('--------');
+            console.log('response');
             console.log(response[0].validatorsResponse);
+            console.log('--------');
             var validationResult;
             response[0].validatorsResponse.map(function(ValidatorResponse) {
                 validationResult = !ValidatorResponse.result;
-                self.validations[ValidatorResponse.name] = validationResult;
+                self.validationAnswer[ValidatorResponse.name] = validationResult;
                 if (ValidatorResponse.result) {
                     validationError = true;
                 }
             });
-            notifyObserver(self.validations);
+            notifyObserver(self.validationAnswer);
         }
 
         function notifyObserver(validationMap) {
@@ -80,11 +81,12 @@
         }
 
         function getValidationError() {
+          console.log(validationError);
             return validationError;
         }
 
         function ignoreValidation() {
-            return true;
+            return false;
         }
     }
 }());

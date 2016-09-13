@@ -14,10 +14,11 @@
     OtusSurveyItemController.$inject = [
         '$scope',
         '$element',
-        'otusjs.player.core.CurrentQuestion'
+        'otusjs.player.core.CurrentQuestion',
+        '$filter'
     ];
 
-    function OtusSurveyItemController($scope, $element, CurrentQuestion) {
+    function OtusSurveyItemController($scope, $element, CurrentQuestion, $filter) {
         var self = this;
 
         /* Public methods */
@@ -36,7 +37,7 @@
         };
 
         function updateValidation(validationMap) {
-                self.$error = validationMap;
+            self.$error = validationMap;
         }
 
         function isQuestion() {
@@ -63,19 +64,21 @@
 
         self.referenceAsDate = function(type) {
             var reference = CurrentQuestion.getFillingRules()[type].data.reference;
-            var date = new Date(reference).toLocaleDateString();
+            var date;
             if (type === 'rangeDate') {
                 date = {
                     'initial': new Date(reference.initial).toLocaleDateString(),
                     'end': new Date(reference.end).toLocaleDateString()
                 };
+            } else {
+                 date = $filter('date')(new Date(reference), 'dd/MM/yyyy');
             }
             return date;
         };
 
         //TODO
         self.referenceAsTime = function(type) {
-          console.log(CurrentQuestion.getFillingRules()[type]);
+            console.log(CurrentQuestion.getFillingRules()[type]);
             // var reference = CurrentQuestion.getFillingRules()[type].data.reference;
 
             return self.reference(type);
