@@ -17,10 +17,11 @@
         '$element',
         'otusjs.player.core.CurrentQuestion',
         'uiSpecialsService',
-        'uiAlphanumericService'
+        'uiAlphanumericService',
+        'uiLowerCaseService'
     ];
 
-    function TextQuestionController($scope, $element, CurrentQuestion, uiSpecialsService, uiAlphanumericService) {
+    function TextQuestionController($scope, $element, CurrentQuestion, uiSpecialsService, uiAlphanumericService, uiLowerCaseService) {
         var self = this;
 
         _init();
@@ -35,11 +36,15 @@
         function _init() {
             var hasAlphanumeric = CurrentQuestion.getFillingRules()['alphanumeric'];
             var hasSpecials = CurrentQuestion.getFillingRules()['specials'];
+            var hasLowerCase = CurrentQuestion.getFillingRules()['lowerCase'];
             if (hasAlphanumeric && hasAlphanumeric.data.reference) {
                 uiAlphanumericService.apply($element);
             }
             if (hasSpecials && hasSpecials.data.reference) {
                 uiSpecialsService.apply($element);
+            }
+            if(hasLowerCase && hasLowerCase.data.reference) {
+                uiLowerCaseService.apply($element);
             }
         }
     }
