@@ -67,11 +67,11 @@
             var date;
             if (type === 'rangeDate') {
                 date = {
-                    'initial': $filter('date')(new Date(reference.initial)),
-                    'end': $filter('date')(new Date(reference.end))
+                    'initial': $filter('date')(new Date(reference.initial), 'dd/MM/yyyy'),
+                    'end': $filter('date')(new Date(reference.end), 'dd/MM/yyyy')
                 };
             } else {
-                 date = $filter('date')(new Date(reference), 'dd/MM/yyyy');
+                date = $filter('date')(new Date(reference), 'dd/MM/yyyy');
             }
             return date;
         };

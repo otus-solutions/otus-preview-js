@@ -19,13 +19,13 @@
     <ng-messages layout = "column" for="$ctrl.$error" ng-messages-multiple role="alert">
         <ng-message when="mandatory">Questão deve ser obrigatória</ng-message>
         <ng-message when="distinct">Insira um valor diferente de {{ $ctrl.reference('distinct') }}</ng-message>
-        <ng-message when="lowerLimit">O valor deve ser menor que {{ $ctrl.reference('lowerLimit') }}</ng-message>
-        <ng-message when="upperLimit">O valor deve ser maior que {{ $ctrl.reference('upperLimit') }}</ng-message>
+        <ng-message when="lowerLimit">O valor deve ser maior que {{ $ctrl.reference('lowerLimit') }}</ng-message>
+        <ng-message when="upperLimit">O valor deve ser menor que {{ $ctrl.reference('upperLimit') }}</ng-message>
         <ng-message when="rangeDate">O valor deve ser maior que {{ $ctrl.referenceAsDate('rangeDate').initial }} e menor que {{ $ctrl.referenceAsDate('rangeDate').end }}</ng-message>
         <ng-message when="maxDate">A data deve ser menor que {{ $ctrl.referenceAsDate('maxDate')}}</ng-message>
         <ng-message when="minDate">A data deve ser maior que {{ $ctrl.referenceAsDate('minDate') }}</ng-message>
-        <ng-message when="pastDate">A data deve ser anterior a {{ $ctrl.referenceAsDate('pastDate') }}</ng-message>
-        <ng-message when="futureDate">A data deve ser posterior a {{ $ctrl.referenceAsDate('futureDate') }} </ng-message>
+        <ng-message when="pastDate">A data deve ser anterior a atual</ng-message>
+        <ng-message when="futureDate">A data deve ser posterior a atual </ng-message>
         <ng-message when="minLength">Caracteres devem ter número maior que {{ $ctrl.reference('minLength') }}</ng-message>
         <ng-message when="maxLength">Caracteres devem ter número menor que {{ $ctrl.reference('maxLength') }}</ng-message>
         <ng-message when="in">O valor deve ser maior que {{ $ctrl.reference('in').initial }} e menor que {{ $ctrl.reference('in').end }}</ng-message>
