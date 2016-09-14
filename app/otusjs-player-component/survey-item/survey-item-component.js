@@ -67,8 +67,8 @@
             var date;
             if (type === 'rangeDate') {
                 date = {
-                    'initial': new Date(reference.initial).toLocaleDateString(),
-                    'end': new Date(reference.end).toLocaleDateString()
+                    'initial': $filter('date')(new Date(reference.initial)),
+                    'end': $filter('date')(new Date(reference.end))
                 };
             } else {
                  date = $filter('date')(new Date(reference), 'dd/MM/yyyy');

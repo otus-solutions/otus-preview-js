@@ -7,8 +7,8 @@
     function localeConfiguration($mdDateLocaleProvider) {
 
         $mdDateLocaleProvider.formatDate = function(date) {
-            if (!date) {
-                return '';
+            if (Object.prototype.toString.call(date) !== '[object Date]') {
+                return null;
             }
             var day = date.getDate();
             var monthIndex = date.getMonth();
@@ -16,15 +16,6 @@
 
             return day + '/' + (monthIndex + 1) + '/' + year;
         };
-
-        $mdDateLocaleProvider.parseDate = function(dateString) {
-          console.log('oia');
-            // var m = new Date(dateString);
-            // m.split('/');
-            // return m;
-        };
-
-
     }
 
 }());

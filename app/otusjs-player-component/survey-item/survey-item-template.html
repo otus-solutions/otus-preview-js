@@ -22,7 +22,7 @@
         <ng-message when="lowerLimit">O valor deve ser menor que {{ $ctrl.reference('lowerLimit') }}</ng-message>
         <ng-message when="upperLimit">O valor deve ser maior que {{ $ctrl.reference('upperLimit') }}</ng-message>
         <ng-message when="rangeDate">O valor deve ser maior que {{ $ctrl.referenceAsDate('rangeDate').initial }} e menor que {{ $ctrl.referenceAsDate('rangeDate').end }}</ng-message>
-        <ng-message when="maxDate">A data deve ser menor que {{ $ctrl.referenceAsDate('maxDate') | date: 'dd/MM/yyyy' }}</ng-message>
+        <ng-message when="maxDate">A data deve ser menor que {{ $ctrl.referenceAsDate('maxDate')}}</ng-message>
         <ng-message when="minDate">A data deve ser maior que {{ $ctrl.referenceAsDate('minDate') }}</ng-message>
         <ng-message when="pastDate">A data deve ser anterior a {{ $ctrl.referenceAsDate('pastDate') }}</ng-message>
         <ng-message when="futureDate">A data deve ser posterior a {{ $ctrl.referenceAsDate('futureDate') }} </ng-message>
