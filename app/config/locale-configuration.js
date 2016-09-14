@@ -7,8 +7,8 @@
     function localeConfiguration($mdDateLocaleProvider) {
 
         $mdDateLocaleProvider.formatDate = function(date) {
-            if (!date) {
-                return '';
+            if (Object.prototype.toString.call(date) !== '[object Date]') {
+                return null;
             }
             var day = date.getDate();
             var monthIndex = date.getMonth();
@@ -18,13 +18,18 @@
         };
 
         $mdDateLocaleProvider.parseDate = function(dateString) {
-          console.log('oia');
-            // var m = new Date(dateString);
-            // m.split('/');
-            // return m;
+            date = new Date(dateString);
+            if (Object.prototype.toString.call(date) !== '[object Date]') {
+                return date;
+            } else {
+                newDateString = dateString.split('/');
+                if (newDateString.length === 3) {
+                    date = new Date(newDateString[2], newDateString[1]-1, newDateString[0]);
+                    console.log(date);
+                    return date;
+                }
+            }
         };
-
-
     }
 
 }());
