@@ -14,7 +14,7 @@
 
         function getSurveyTemplate() {
             var defer = $q.defer();
-            $http.get('app/otusjs-player-data/validation-time-tester.json').success(function(data) {
+            $http.get('app/otusjs-player-data/lowercase-upperCase.json').success(function(data) {
                 defer.resolve(data);
             }).error(function(error) {
                 console.log('Cannot GET a fake survey template.');

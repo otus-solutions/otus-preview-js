@@ -3,9 +3,9 @@
 
     angular
         .module('otusjs.player.component')
-        .service('uiLowerCaseService', uiLowerCaseService);
+        .service('uiUpperCaseService', uiUpperCaseService);
 
-    function uiLowerCaseService() {
+    function uiUpperCaseService() {
         var self = this;
 
         self.apply = apply;
@@ -14,34 +14,33 @@
             var lastValidValue;
             var element = $element.find('textarea');
 
-            element.on('blur', shouldPrintChar);
-            element.on('keyup', transformInLowerCase);
+            element.on('keydown', shouldPrintChar);
+            element.on('keyup', transformInUpperCase);
 
-            console.log(element);
+            console.log('upperCase');
 
             function shouldPrintChar(event) {
                 console.log('entrou');
                 var keycode = event.which;
-                // console.log(element[0].value.toLowerCase());
-                // element.value = element[0].value.toLowerCase();
-                //answer
-                return (characterInLowerCase(keycode));
+                return (characterInUpperCase(keycode));
             }
 
-            function transformInLowerCase(event) {
+            function transformInUpperCase(event) {
                 var keycode = event.which;
                 var currentValue = element.val();
 
                 if (currentValue.length === 0) {
                     lastValidValue = '';
-                } else if (characterInLowerCase(keycode)) {
+                } else if (characterInUpperCase(keycode)) {
                     lastValidValue = element.val();
-                    lastValidValue.toLowerCase();
+                    lastValidValue.toUpperCase();
+                    console.log(lastValidValue.toUpperCase());
                     return lastValidValue;
+                    // Não está transformando em upperCase na tela
                 }
             }
 
-            function characterInLowerCase(keycode) {
+            function characterInUpperCase(keycode) {
                 return ((keycode > 64 && keycode < 91) || (keycode == 186)) ? true : false;
             }
         }
