@@ -61,33 +61,7 @@
             $element.remove();
             $scope.$destroy();
         }
-
-        self.referenceAsDate = function(type) {
-            var reference = CurrentQuestion.getFillingRules()[type].data.reference;
-            var date;
-            if (type === 'rangeDate') {
-                date = {
-                    'initial': $filter('date')(new Date(reference.initial), 'dd/MM/yyyy'),
-                    'end': $filter('date')(new Date(reference.end), 'dd/MM/yyyy')
-                };
-            } else {
-                date = $filter('date')(new Date(reference), 'dd/MM/yyyy');
-            }
-            return date;
-        };
-
-        //TODO
-        self.referenceAsTime = function(type) {
-            console.log(CurrentQuestion.getFillingRules()[type]);
-            // var reference = CurrentQuestion.getFillingRules()[type].data.reference;
-
-            return self.reference(type);
-        };
-
-        self.reference = function(type) {
-            var reference = CurrentQuestion.getFillingRules()[type].data.reference;
-            return reference;
-        };
+        
 
     }
 

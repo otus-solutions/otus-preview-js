@@ -38,8 +38,7 @@
         };
 
         self.setAnswer = function(ans) {
-            self.answer.data = ans;
-            console.log(self.answer);
+            self.answer.data = ans;            
         };
 
         self.getAnswer = function() {

@@ -12,30 +12,5 @@
         <otus-question ng-if="$ctrl.isQuestion()" on-update="$ctrl.update(valueType, value)" item-data="$ctrl.itemData" layout="column" flex></otus-question>
         <otus-misc-item ng-if="$ctrl.isItem()" item-data="$ctrl.itemData" layout="column" flex></otus-misc-item>
     </md-card-content>
-    <md-button class="md-icon-button" ng-click="$ctrl.updateError()">
-        <md-icon md-font-set="material-icons">info</md-icon>
-        <!-- TODO colorir -->
-    </md-button>
-    <ng-messages layout = "column" for="$ctrl.$error" ng-messages-multiple role="alert">
-        <ng-message when="mandatory">Questão deve ser obrigatória</ng-message>
-        <ng-message when="distinct">Insira um valor diferente de {{ $ctrl.reference('distinct') }}</ng-message>
-        <ng-message when="lowerLimit">O valor deve ser maior que {{ $ctrl.reference('lowerLimit') }}</ng-message>
-        <ng-message when="upperLimit">O valor deve ser menor que {{ $ctrl.reference('upperLimit') }}</ng-message>
-        <ng-message when="rangeDate">O valor deve ser maior que {{ $ctrl.referenceAsDate('rangeDate').initial }} e menor que {{ $ctrl.referenceAsDate('rangeDate').end }}</ng-message>
-        <ng-message when="maxDate">A data deve ser menor que {{ $ctrl.referenceAsDate('maxDate')}}</ng-message>
-        <ng-message when="minDate">A data deve ser maior que {{ $ctrl.referenceAsDate('minDate') }}</ng-message>
-        <ng-message when="pastDate">A data deve ser anterior a atual</ng-message>
-        <ng-message when="futureDate">A data deve ser posterior a atual </ng-message>
-        <ng-message when="minLength">Caracteres devem ter número maior que {{ $ctrl.reference('minLength') }}</ng-message>
-        <ng-message when="maxLength">Caracteres devem ter número menor que {{ $ctrl.reference('maxLength') }}</ng-message>
-        <ng-message when="in">O valor deve ser maior que {{ $ctrl.reference('in').initial }} e menor que {{ $ctrl.reference('in').end }}</ng-message>
-        <ng-message when="precision">Número total de digitos deve ser {{ $ctrl.reference('precision') }}</ng-message>
-        <ng-message when="scale">Número de casas após a virgula deve ser {{ $ctrl.reference('scale') }}</ng-message>
-        <ng-message when="maxTime">Tempo máximo permitido é {{ $ctrl.referenceAsTime('maxTime') }}</ng-message>
-        <ng-message when="minTime">Tempo minimo permitido é {{ $ctrl.referenceAsTime('minTime') }}</ng-message>
-        <!-- <span when="lowerCase"></span> -->
-        <!-- Caracteres especiais e alphanumericos serão bloqueados na digitação -->
-        <!-- <span when="upperCase">teste</span> -->
-    </ng-messages>
-
+    <otus-validation-error error="$ctrl.$error"></otus-validation-error>
 </md-card>
