@@ -90,7 +90,7 @@
         }
 
         function ignoreValidation() {
-            return false;
+            return true;
         }
     }
 }());
