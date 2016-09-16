@@ -17,28 +17,35 @@
         '$element',
         'otusjs.player.core.CurrentQuestion',
         'uiSpecialsService',
-        'uiAlphanumericService',
-        'uiLowerCaseService',
-        'uiUpperCaseService'
+        'uiAlphanumericService'
     ];
 
-    function TextQuestionController($scope, $element, CurrentQuestion, uiSpecialsService, uiAlphanumericService, uiLowerCaseService, uiUpperCaseService) {
+    function TextQuestionController($scope, $element, CurrentQuestion, uiSpecialsService, uiAlphanumericService) {
         var self = this;
 
         _init();
 
+        self.hasUpperCase = CurrentQuestion.getFillingRules()['upperCase'];
+        self.hasLowerCase = CurrentQuestion.getFillingRules()['lowerCase'];
+
         self.update = function() {
+            var answer;
+            if (self.hasLowerCase) {
+                answer = self.answer.toLowerCase();
+            }
+            if (self.hasUpperCase) {
+                answer = self.answer.toUpperCase();
+            }
+
             self.onUpdate({
                 valueType: 'answer',
-                value: self.answer
+                value: answer
             });
         };
 
         function _init() {
             var hasAlphanumeric = CurrentQuestion.getFillingRules()['alphanumeric'];
             var hasSpecials = CurrentQuestion.getFillingRules()['specials'];
-            var hasLowerCase = CurrentQuestion.getFillingRules()['lowerCase'];
-            var hasUpperCase = CurrentQuestion.getFillingRules()['upperCase'];
 
             if (hasAlphanumeric && hasAlphanumeric.data.reference) {
                 uiAlphanumericService.apply($element);
@@ -46,13 +53,8 @@
             if (hasSpecials && hasSpecials.data.reference) {
                 uiSpecialsService.apply($element);
             }
-            if(hasLowerCase && hasLowerCase.data.reference) {
-                uiLowerCaseService.apply($element);
-            }
-            if(hasUpperCase && hasUpperCase.data.reference) {
-                uiUpperCaseService.apply($element);
-            }
         }
+
     }
 
 })();
