@@ -24,6 +24,10 @@
         };
 
         self.setQuestion = function(item) {
+            self.answer = {
+                'data': {}
+            };
+            console.log(self.answer);
             question = item;
             Object.keys(question.fillingRules.options).forEach(function(rule) {
                 console.log(rule + ' - ' + question.fillingRules.options[rule].data.reference);
@@ -38,7 +42,7 @@
         };
 
         self.setAnswer = function(ans) {
-            self.answer.data = ans;            
+            self.answer.data = ans;
         };
 
         self.getAnswer = function() {
@@ -58,6 +62,7 @@
         }
 
         function validateQuestion() {
+            console.log(self.answer);
             ValidateService.applyValidation(question, validationCallback);
         }
 
@@ -90,7 +95,7 @@
         }
 
         function ignoreValidation() {
-            return true;
+            return false;
         }
     }
 }());

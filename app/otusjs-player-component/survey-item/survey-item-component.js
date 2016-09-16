@@ -61,7 +61,7 @@
             $element.remove();
             $scope.$destroy();
         }
-        
+
 
     }
 
