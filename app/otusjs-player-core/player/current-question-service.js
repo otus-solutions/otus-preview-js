@@ -27,7 +27,6 @@
             self.answer = {
                 'data': {}
             };
-            console.log(self.answer);
             question = item;
             Object.keys(question.fillingRules.options).forEach(function(rule) {
                 console.log(rule + ' - ' + question.fillingRules.options[rule].data.reference);

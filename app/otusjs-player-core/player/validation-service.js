@@ -16,6 +16,7 @@
 
         self.setValidation = setValidation;
         self.applyValidation = applyValidation;
+        self.finishValidation = finishValidation;
 
         function setValidation(question, answer) {
             var fillingRules = question.fillingRules.options;
@@ -25,6 +26,17 @@
                 elementRegister.addValidator(validator, reference);
             });
             ValidationService.registerElement(elementRegister);
+        }
+
+        function finishValidation() {
+            ValidationService.validateAllElements(function(response) {
+                response.map(function(validationResponse) {
+                  console.log('id - ' + validationResponse.elementID);
+                    validationResponse.validatorsResponse.map(function(ValidatorResponse) {
+                        console.log(ValidatorResponse.name + ' - ' + ValidatorResponse.result);
+                    });
+                });
+            });
         }
 
         function applyValidation(question, callback) {

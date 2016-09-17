@@ -6,8 +6,8 @@
     <ng-message class="md-button md-warn" layout-padding when="rangeDate"> <md-icon md-font-set="material-icons">info</md-icon> O valor deve ser maior que {{ $ctrl.referenceAsDate('rangeDate').initial }} e menor que {{ $ctrl.referenceAsDate('rangeDate').end }}</ng-message>
     <ng-message class="md-button md-warn" layout-padding when="maxDate"> <md-icon md-font-set="material-icons">info</md-icon> A data deve ser menor que {{ $ctrl.referenceAsDate('maxDate')}}</ng-message>
     <ng-message class="md-button md-warn" layout-padding when="minDate"> <md-icon md-font-set="material-icons">info</md-icon> A data deve ser maior que {{ $ctrl.referenceAsDate('minDate') }}</ng-message>
-    <ng-message class="md-button md-warn" layout-padding when="pastDate"> <md-icon md-font-set="material-icons">info</md-icon> A data deve ser anterior a atual</ng-message>
-    <ng-message class="md-button md-warn" layout-padding when="futureDate"> <md-icon md-font-set="material-icons">info</md-icon> A data deve ser posterior a atual </ng-message>
+    <ng-message class="md-button md-warn" layout-padding when="pastDate"> <md-icon md-font-set="material-icons">info</md-icon> A data deve ser anterior à data corrente</ng-message>
+    <ng-message class="md-button md-warn" layout-padding when="futureDate"> <md-icon md-font-set="material-icons">info</md-icon> A data deve ser posterior à data corrente </ng-message>
     <ng-message class="md-button md-warn" layout-padding when="minLength"> <md-icon md-font-set="material-icons">info</md-icon> Caracteres devem ter número maior que {{ $ctrl.reference('minLength') }}</ng-message>
     <ng-message class="md-button md-warn" layout-padding when="maxLength"> <md-icon md-font-set="material-icons">info</md-icon> Caracteres devem ter número menor que {{ $ctrl.reference('maxLength') }}</ng-message>
     <ng-message class="md-button md-warn" layout-padding when="in"> <md-icon md-font-set="material-icons">info</md-icon> O valor deve ser maior que {{ $ctrl.reference('in').initial }} e menor que {{ $ctrl.reference('in').end }}</ng-message>

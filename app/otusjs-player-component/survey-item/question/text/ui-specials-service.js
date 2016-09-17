@@ -36,7 +36,7 @@
             }
 
             function isSpecialsKey(keycode) {
-                return ((event.shiftKey == true && (keycode > 47 && keycode < 58)) || (keycode > 186 && keycode < 195) || (keycode > 218 && keycode < 223) || (keycode > 105 && keycode < 112) || (keycode == 226)) ? true : false;
+                return ((event.shiftKey === true && (keycode > 47 && keycode < 58)) || (keycode > 186 && keycode < 195) || (keycode > 218 && keycode < 223) || (keycode > 105 && keycode < 112) || (keycode == 226)) ? true : false;
             }
 
             function isValidKey(keycode) {
