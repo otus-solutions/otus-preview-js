@@ -28,9 +28,6 @@
                 'data': {}
             };
             question = item;
-            Object.keys(question.fillingRules.options).forEach(function(rule) {
-                console.log(rule + ' - ' + question.fillingRules.options[rule].data.reference);
-            });
             _startValidation();
             validationError = false;
             self.validationAnswer = {};
@@ -61,16 +58,12 @@
         }
 
         function validateQuestion() {
-            console.log(self.answer);
             ValidateService.applyValidation(question, validationCallback);
         }
 
         function validationCallback(response) {
             self.validationAnswer = {};
             validationError = false;
-            console.log('--------');
-            console.log('response');
-            console.log(response[0].validatorsResponse);
             var validationResult;
             response[0].validatorsResponse.map(function(ValidatorResponse) {
                 validationResult = !ValidatorResponse.result;
@@ -87,9 +80,6 @@
         }
 
         function getValidationError() {
-            console.log(validationError);
-            console.log('--------');
-
             return validationError;
         }
 

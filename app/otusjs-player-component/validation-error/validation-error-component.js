@@ -20,7 +20,6 @@
         };
 
         self.referenceAsDate = function(type) {
-          console.log('adksj');
             var reference = CurrentQuestion.getFillingRules()[type].data.reference;
             var date;
             if (type === 'rangeDate') {
@@ -33,10 +32,9 @@
             }
             return date;
         };
-        //TODO
+
         self.referenceAsTime = function(type) {
             var reference = CurrentQuestion.getFillingRules()[type].data.reference;
-            console.log('');
             return $filter('date')(reference, 'hh:mm:ss');
         };
 

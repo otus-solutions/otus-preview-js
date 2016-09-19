@@ -30,12 +30,7 @@
 
         function finishValidation() {
             ValidationService.validateAllElements(function(response) {
-                response.map(function(validationResponse) {
-                  console.log('id - ' + validationResponse.elementID);
-                    validationResponse.validatorsResponse.map(function(ValidatorResponse) {
-                        console.log(ValidatorResponse.name + ' - ' + ValidatorResponse.result);
-                    });
-                });
+              //TODO
             });
         }
 

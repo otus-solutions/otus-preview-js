@@ -25,18 +25,17 @@
 
         _init();
 
-        self.hasUpperCase = CurrentQuestion.getFillingRules()['upperCase'];
-        self.hasLowerCase = CurrentQuestion.getFillingRules()['lowerCase'];
+        self.hasUpperCase = CurrentQuestion.getFillingRules().upperCase;
+        self.hasLowerCase = CurrentQuestion.getFillingRules().lowerCase;
 
         self.update = function() {
-            var answer;
+            var answer = self.answer;
             if (self.hasLowerCase) {
-                answer = self.answer.toLowerCase();
+                answer = answer.toLowerCase();
             }
             if (self.hasUpperCase) {
-                answer = self.answer.toUpperCase();
+                answer = answer.toUpperCase();
             }
-
             self.onUpdate({
                 valueType: 'answer',
                 value: answer
@@ -44,8 +43,8 @@
         };
 
         function _init() {
-            var hasAlphanumeric = CurrentQuestion.getFillingRules()['alphanumeric'];
-            var hasSpecials = CurrentQuestion.getFillingRules()['specials'];
+            var hasAlphanumeric = CurrentQuestion.getFillingRules().alphanumeric;
+            var hasSpecials = CurrentQuestion.getFillingRules().specials;
 
             if (hasAlphanumeric && hasAlphanumeric.data.reference) {
                 uiAlphanumericService.apply($element);

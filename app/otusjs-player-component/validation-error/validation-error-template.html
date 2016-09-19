@@ -1,21 +1,18 @@
-<ng-messages layout = "column" layout-align="end start" for="$ctrl.$error" ng-messages-multiple role="alert">
-    <ng-message class="md-button md-warn" layout-padding when="mandatory" > <md-icon md-font-set="material-icons">info</md-icon> Questão deve ser obrigatória</ng-message>
-    <ng-message class="md-button md-warn" layout-padding when="distinct"> <md-icon md-font-set="material-icons">info</md-icon> Insira um valor diferente de {{ $ctrl.reference('distinct') }}</ng-message>
-    <ng-message class="md-button md-warn" layout-padding when="lowerLimit"> <md-icon md-font-set="material-icons">info</md-icon> O valor deve ser maior que {{ $ctrl.reference('lowerLimit') }}</ng-message>
-    <ng-message class="md-button md-warn" layout-padding when="upperLimit"> <md-icon md-font-set="material-icons">info</md-icon> O valor deve ser menor que {{ $ctrl.reference('upperLimit') }}</ng-message>
-    <ng-message class="md-button md-warn" layout-padding when="rangeDate"> <md-icon md-font-set="material-icons">info</md-icon> O valor deve ser maior que {{ $ctrl.referenceAsDate('rangeDate').initial }} e menor que {{ $ctrl.referenceAsDate('rangeDate').end }}</ng-message>
-    <ng-message class="md-button md-warn" layout-padding when="maxDate"> <md-icon md-font-set="material-icons">info</md-icon> A data deve ser menor que {{ $ctrl.referenceAsDate('maxDate')}}</ng-message>
-    <ng-message class="md-button md-warn" layout-padding when="minDate"> <md-icon md-font-set="material-icons">info</md-icon> A data deve ser maior que {{ $ctrl.referenceAsDate('minDate') }}</ng-message>
-    <ng-message class="md-button md-warn" layout-padding when="pastDate"> <md-icon md-font-set="material-icons">info</md-icon> A data deve ser anterior à data corrente</ng-message>
-    <ng-message class="md-button md-warn" layout-padding when="futureDate"> <md-icon md-font-set="material-icons">info</md-icon> A data deve ser posterior à data corrente </ng-message>
-    <ng-message class="md-button md-warn" layout-padding when="minLength"> <md-icon md-font-set="material-icons">info</md-icon> Caracteres devem ter número maior que {{ $ctrl.reference('minLength') }}</ng-message>
-    <ng-message class="md-button md-warn" layout-padding when="maxLength"> <md-icon md-font-set="material-icons">info</md-icon> Caracteres devem ter número menor que {{ $ctrl.reference('maxLength') }}</ng-message>
-    <ng-message class="md-button md-warn" layout-padding when="in"> <md-icon md-font-set="material-icons">info</md-icon> O valor deve ser maior que {{ $ctrl.reference('in').initial }} e menor que {{ $ctrl.reference('in').end }}</ng-message>
-    <ng-message class="md-button md-warn" layout-padding when="precision"> <md-icon md-font-set="material-icons">info</md-icon> Número total de digitos deve ser {{ $ctrl.reference('precision') }}</ng-message>
-    <ng-message class="md-button md-warn" layout-padding when="scale"> <md-icon md-font-set="material-icons">info</md-icon> Número de casas após a virgula deve ser {{ $ctrl.reference('scale') }}</ng-message>
-    <ng-message class="md-button md-warn" layout-padding when="maxTime"> <md-icon md-font-set="material-icons">info</md-icon> Tempo máximo permitido é {{ $ctrl.referenceAsTime('maxTime') }}</ng-message>
-    <ng-message class="md-button md-warn" layout-padding when="minTime"> <md-icon md-font-set="material-icons">info</md-icon> Tempo minimo permitido é {{ $ctrl.referenceAsTime('minTime') }}</ng-message>
-    <!-- <span when="lowerCase"></span> -->
-    <!-- Caracteres especiais e alphanumericos serão bloqueados na digitação -->
-    <!-- <span when="upperCase">teste</span> -->
+<ng-messages layout = "column" layout-align="end start" for="$ctrl.$error" layout-padding ng-messages-multiple role="alert">
+    <ng-message class="md-button md-warn" when="mandatory" > <md-icon md-font-set="material-icons">info</md-icon> Questão de preenchimento obrigatório</ng-message>
+    <ng-message class="md-button md-warn" when="distinct"> <md-icon md-font-set="material-icons">info</md-icon> Insira um valor diferente de {{ $ctrl.reference('distinct') }}</ng-message>
+    <ng-message class="md-button md-warn" when="lowerLimit"> <md-icon md-font-set="material-icons">info</md-icon> O valor deve ser maior que {{ $ctrl.reference('lowerLimit') }}</ng-message>
+    <ng-message class="md-button md-warn" when="upperLimit"> <md-icon md-font-set="material-icons">info</md-icon> O valor deve ser menor que {{ $ctrl.reference('upperLimit') }}</ng-message>
+    <ng-message class="md-button md-warn" when="rangeDate"> <md-icon md-font-set="material-icons">info</md-icon> O valor deve ser maior que {{ $ctrl.referenceAsDate('rangeDate').initial }} e menor que {{ $ctrl.referenceAsDate('rangeDate').end }}</ng-message>
+    <ng-message class="md-button md-warn" when="maxDate"> <md-icon md-font-set="material-icons">info</md-icon> A data deve ser menor que {{ $ctrl.referenceAsDate('maxDate')}}</ng-message>
+    <ng-message class="md-button md-warn" when="minDate"> <md-icon md-font-set="material-icons">info</md-icon> A data deve ser maior que {{ $ctrl.referenceAsDate('minDate') }}</ng-message>
+    <ng-message class="md-button md-warn" when="pastDate"> <md-icon md-font-set="material-icons">info</md-icon> A data deve ser anterior à data corrente</ng-message>
+    <ng-message class="md-button md-warn" when="futureDate"> <md-icon md-font-set="material-icons">info</md-icon> A data deve ser posterior à data corrente </ng-message>
+    <ng-message class="md-button md-warn" when="minLength"> <md-icon md-font-set="material-icons">info</md-icon> Resposta deve ter mais que {{ $ctrl.reference('minLength') }} caracteres</ng-message>
+    <ng-message class="md-button md-warn" when="maxLength"> <md-icon md-font-set="material-icons">info</md-icon> Resposta deve ter mais que {{ $ctrl.reference('maxLength') }} caracteres</ng-message>
+    <ng-message class="md-button md-warn" when="in"> <md-icon md-font-set="material-icons">info</md-icon> O valor deve ser maior que {{ $ctrl.reference('in').initial }} e menor que {{ $ctrl.reference('in').end }}</ng-message>
+    <ng-message class="md-button md-warn" when="precision"> <md-icon md-font-set="material-icons">info</md-icon> Resposta deve conter exatamente {{ $ctrl.reference('precision') }} dígitos</ng-message>
+    <ng-message class="md-button md-warn" when="scale"> <md-icon md-font-set="material-icons">info</md-icon> Resposta deve conter exatamente {{ $ctrl.reference('scale') }} casas decimais</ng-message>
+    <ng-message class="md-button md-warn" when="maxTime"> <md-icon md-font-set="material-icons">info</md-icon> Hora máxima permitida: {{ $ctrl.referenceAsTime('maxTime') }}</ng-message>
+    <ng-message class="md-button md-warn" when="minTime"> <md-icon md-font-set="material-icons">info</md-icon> Hora mínima permitida: {{ $ctrl.referenceAsTime('minTime') }}</ng-message>
 </ng-messages>
