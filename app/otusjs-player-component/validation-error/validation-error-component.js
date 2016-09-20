@@ -35,7 +35,7 @@
 
         self.referenceAsTime = function(type) {
             var reference = CurrentQuestion.getFillingRules()[type].data.reference;
-            return $filter('date')(reference, 'hh:mm:ss');
+            return $filter('date')(new Date(reference), 'hh:mm:ss');
         };
 
         self.reference = function(type) {
