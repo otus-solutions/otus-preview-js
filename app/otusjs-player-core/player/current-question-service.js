@@ -28,9 +28,17 @@
                 'data': {}
             };
             question = item;
-            _startValidation();
+            console.log(item);
+            if (self.isQuestion()) {
+
+                _startValidation();
+            }
             validationError = false;
             self.validationAnswer = {};
+        };
+
+        self.isQuestion = function() {
+            return (question.objectType === 'ImageItem') || (question.objectType === 'TextItem') ? false : true;
         };
 
         self.observerRegistry = function(obs) {
@@ -58,6 +66,9 @@
         }
 
         function validateQuestion() {
+            if (!self.isQuestion()) {
+                return true;
+            }
             ValidateService.applyValidation(question, validationCallback);
         }
 
