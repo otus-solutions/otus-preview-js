@@ -1,27 +1,22 @@
-xdescribe('surveyItem component', function() {
-    var $ctrl;
-    var $componentController;
-    var Mock = {};
+describe('surveyItem component', function() {
 
-    beforeEach(function() {
-        module('otusjs.player.component');
-        inject(function(_$componentController_) {
-            $componentController = _$componentController_;
-        });
+  var $ctrl;
+  var $componentController;
+  var Mock = {};
+
+  beforeEach(function() {
+    module('otusjs.player.component');
+    inject(function(_$componentController_) {
+      $componentController = _$componentController_;
     });
+  });
 
-    it('should have a defined controller', function() {
-        var bindings = {
-            'itemData': '<'
-        };
-        console.log($componentController);
-        $ctrl = $componentController('otusCheckboxQuestion', null, bindings);
-        console.log($ctrl);
-        expect($ctrl).toBeDefined();
-    });
-
-    function mockCurrentQuestion(_$injector) {
-
-    }
+  it('should have a defined controller', function() {
+    var bindings = {
+      'itemData': '<'
+    };
+    $ctrl = $componentController('otusCheckboxQuestion', null, bindings);
+    expect($ctrl).toBeDefined();
+  });
 
 });

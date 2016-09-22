@@ -2,6 +2,6 @@
     'use strict';
 
     angular
-        .module('otusjs.player.service', []);
+        .module('otusjs.player.core.player', []);
 
 }());

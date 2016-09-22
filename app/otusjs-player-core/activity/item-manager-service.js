@@ -2,8 +2,8 @@
     'use strict';
 
     angular
-        .module('otusjs.player.core')
-        .service('otusjs.player.core.ItemManagerService', ItemManagerService);
+        .module('otusjs.player.core.activity')
+        .service('otusjs.player.core.activity.ItemManagerService', ItemManagerService);
 
     function ItemManagerService() {
         var self = this;
