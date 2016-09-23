@@ -4,6 +4,7 @@ describe('Current Question Service', function() {
   var service;
   var CAD1 = 'CAD1';
   var CAD2 = 'CAD2';
+  var CAD90 = 'CAD90';
 
   beforeEach(function() {
     module('otusjs.player.core');
@@ -14,24 +15,24 @@ describe('Current Question Service', function() {
     });
   });
 
-  describe('setSurvey method', function() {
+  describe('setup method', function() {
 
     it('should keep a reference to survey', function() {
-      service.setSurvey(Mock.survey);
+      service.setup(Mock.survey);
 
       expect(service.getSurvey()).toEqual(Mock.survey);
     });
 
   });
 
-  describe('getQuestions method', function() {
+  describe('getItems method', function() {
 
     beforeEach(function() {
-      service.setSurvey(Mock.survey);
+      service.setup(Mock.survey);
     });
 
-    it('should return the list of survey questions', function() {
-      var value = service.getQuestions();
+    it('should return the items of current survey', function() {
+      var value = service.getItems();
 
       expect(value).toEqual(Mock.survey.itemContainer);
     });
@@ -41,10 +42,10 @@ describe('Current Question Service', function() {
   describe('getNavigations method', function() {
 
     beforeEach(function() {
-      service.setSurvey(Mock.survey);
+      service.setup(Mock.survey);
     });
 
-    it('should return the list of navigations', function() {
+    it('should return the list of navigations of current survey', function() {
       var value = service.getNavigations();
 
       expect(value).toEqual(Mock.survey.navigationList);
@@ -52,30 +53,58 @@ describe('Current Question Service', function() {
 
   });
 
-  describe('getNavigationFrom method', function() {
+  describe('getNavigationByOrigin method', function() {
 
     beforeEach(function() {
-      service.setSurvey(Mock.survey);
+      service.setup(Mock.survey);
     });
 
-    it('should return the list of navigations', function() {
-      var navigation = service.getNavigationFrom(CAD1);
+    describe('when exists a navigation', function() {
 
-      expect(Mock.survey.NavigationManager.selectNavigationByOrigin).toHaveBeenCalledWith(CAD1);
+      it('should return the navigation of origin', function() {
+        var navigation = service.getNavigationByOrigin(CAD1);
+
+        expect(navigation.origin).toEqual(CAD1);
+      });
+
+    });
+
+    describe('when not exists a navigation', function() {
+
+      it('should return null', function() {
+        var navigation = service.getNavigationByOrigin(CAD90);
+
+        expect(navigation).toEqual(null);
+      });
+
     });
 
   });
 
-  describe('getNextItemsFrom method', function() {
+  describe('getItemByCustomID method', function() {
 
     beforeEach(function() {
-      service.setSurvey(Mock.survey);
+      service.setup(Mock.survey);
     });
 
-    it('should return the list of items that can be reachable from a origin', function() {
-      var items = service.getNextItemsFrom(CAD1);
+    describe('when exists an item', function() {
 
-      expect(items[0].templateID).toEqual(CAD2);
+      it('should return the item', function() {
+        var item = service.getItemByCustomID(CAD2);
+
+        expect(item.customID).toEqual(CAD2);
+      });
+
+    });
+
+    describe('when not exists an item', function() {
+
+      it('should return null', function() {
+        var item = service.getItemByCustomID(CAD90);
+
+        expect(item).toBe(null);
+      });
+
     });
 
   });

@@ -11,23 +11,42 @@
 
   function Service(ValidationService) {
     var self = this;
-    var question;
+    var _item;
+    var _navigation;
+    var _previousItem;
     var validationError;
     var observer;
-
-    /* Public Interface */
-    self.getValidationError = getValidationError;
-    self.ignoreValidation = ignoreValidation;
-    self.validateQuestion = validateQuestion;
     self.answer = {
       'data': {}
     };
+
+    /* Public Interface */
+    self.setup = setup;
+    self.getValidationError = getValidationError;
+    self.ignoreValidation = ignoreValidation;
+    self.validateQuestion = validateQuestion;
+    self.getRoutes = getRoutes;
+    self.getPreviousItem = getPreviousItem;
+
+    function setup(item, navigation, previousItem) {
+      _item = item;
+      _navigation = navigation;
+      _previousItem = previousItem || null;
+
+      self.answer = {
+        'data': {}
+      };
+      _item = item;
+      _startValidation();
+      validationError = false;
+      self.validationAnswer = {};
+    }
 
     self.setQuestion = function(item) {
       self.answer = {
         'data': {}
       };
-      question = item;
+      _item = item;
       _startValidation();
       validationError = false;
       self.validationAnswer = {};
@@ -47,11 +66,11 @@
     };
 
     self.getFillingRules = function() {
-      return question.fillingRules.options;
+      return _item.fillingRules.options;
     };
 
     self.getQuestion = function() {
-      return question;
+      return _item;
     };
 
     function _startValidation() {
@@ -59,7 +78,7 @@
     }
 
     function validateQuestion() {
-      ValidationService.applyValidation(question, validationCallback);
+      ValidationService.applyValidation(_item, validationCallback);
     }
 
     function validationCallback(response) {
@@ -86,6 +105,18 @@
 
     function ignoreValidation() {
       return false;
+    }
+
+    function getRoutes() {
+      if (_navigation) {
+        return _navigation.routes;
+      } else {
+        return [];
+      }
+    }
+
+    function getPreviousItem() {
+      return _previousItem;
     }
   }
 }());

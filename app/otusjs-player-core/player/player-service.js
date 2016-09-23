@@ -6,12 +6,11 @@
     .service('otusjs.player.core.player.PlayerService', PlayerService);
 
   PlayerService.$inject = [
-    'otusjs.player.core.activity.ItemManagerService',
-    'otusjs.player.core.activity.CurrentQuestionService',
-    'otusjs.player.core.activity.CurrentSurveyService'
+    'otusjs.player.core.activity.ActivityFacadeService',
+    'otusjs.player.core.activity.CurrentQuestionService'
   ];
 
-  function PlayerService(ItemManagerService, CurrentQuestionService, CurrentSurveyService) {
+  function PlayerService(ActivityFacadeService, CurrentQuestionService) {
     var self = this;
     var _nextItems = [];
 
@@ -23,30 +22,23 @@
     self.canWeGo = canWeGo;
 
     function play(survey) {
-      ItemManagerService.init(survey.itemContainer);
-      CurrentSurveyService.setSurvey(survey);
-      CurrentQuestionService.setQuestion(survey.itemContainer[0]);
+      ActivityFacadeService.setup(survey);
+    }
+
+    function goAhead() {
+      
     }
 
     function getNext() {
-      if (hasNext()) {
-        return ItemManagerService.next();
+      if (ActivityFacadeService.hasNext()) {
+        return ActivityFacadeService.getNextItem();
       }
     }
 
     function getPrevious() {
-      if (hasPrevious()) {
-        return ItemManagerService.previous();
+      if (ActivityFacadeService.hasPrevious()) {
+        return ActivityFacadeService.getPreviousItem();
       }
-    }
-
-    function hasNext() {
-      _nextItems = CurrentSurveyService.getNextItemsFrom(CurrentQuestionService.getQuestion().templateID);
-      return _nextItems.length;
-    }
-
-    function hasPrevious() {
-      return ItemManagerService.hasPrevious();
     }
 
     function canWeGo(where) {
@@ -56,14 +48,14 @@
           CurrentQuestionService.validateQuestion(); //updates getValidationError
           var validationOk = !CurrentQuestionService.getValidationError();
           var conditions = [
-            hasNext(),
+            ActivityFacadeService.hasNext(),
             (validationOk || ignoreValidation)
           ];
           return conditions.indexOf(false, conditions) === -1;
         },
         'back': function() {
           var conditions = [
-            hasPrevious(),
+            ActivityFacadeService.hasPrevious()
           ];
           return conditions.indexOf(false, conditions) === -1;
         }

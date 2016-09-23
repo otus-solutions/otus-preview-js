@@ -10,66 +10,34 @@
   ];
 
   function Service() {
-    var self = this;
-    var _survey;
+    let self = this;
+    let _survey;
 
     /* Public Interface */
+    self.setup = setup;
     self.getSurvey = getSurvey;
-    self.setSurvey = setSurvey;
-    self.getQuestions = getQuestions;
+    self.getItems = getItems;
     self.getNavigations = getNavigations;
-    self.getNavigationFrom = getNavigationFrom;
-    self.getNextItemsFrom = getNextItemsFrom;
-    self.getNextItem = getNextItem;
+    self.getNavigationByOrigin = getNavigationByOrigin;
+    self.getItemByCustomID = getItemByCustomID;
+
+    function setup(survey) {
+      _survey = survey;
+    }
 
     function getSurvey() {
       return _survey;
     }
 
-    function setSurvey(survey) {
-      _survey = survey;
+    function getItems() {
+      return _survey.itemContainer;
     }
 
-    function getQuestions() {
-      return _survey.SurveyItemManager.getItemList();
-    }
+    function getItemByCustomID(customID) {
+      let fetchedItem = null;
 
-    function getNavigations() {
-      return _survey.NavigationManager.getNavigationList();
-    }
-
-    function getNavigationFrom(origin) {
-      return _survey.NavigationManager.selectNavigationByOrigin(origin);
-    }
-
-    function getNextItemsFrom(origin) {
-      var items = [];
-
-      var rootNavigation = _selectNavigationByOrigin(origin);
-      items = rootNavigation.routes.map(function(route) {
-        return _getItemByTemplateID(route.destination);
-      });
-
-      return items;
-    }
-
-    function getNextItem(currentQuestion) {
-
-    }
-
-    function _selectNavigationByOrigin(origin) {
-      var filter = _survey.navigationList.filter(function(navigation) {
-        return navigation.origin === origin;
-      });
-
-      return filter[0];
-    }
-
-    function _getItemByTemplateID(templateID) {
-      var fetchedItem = {};
-
-      _survey.itemContainer.some(function(item) {
-        if (item.templateID.toLowerCase() === templateID.toLowerCase()) {
+      _survey.itemContainer.some((item) => {
+        if (item.customID === customID) {
           fetchedItem = item;
           return true;
         }
@@ -77,5 +45,23 @@
 
       return fetchedItem;
     }
+
+    function getNavigations() {
+      return _survey.navigationList;
+    }
+
+    function getNavigationByOrigin(origin) {
+      let fetchedNavigation = null;
+
+      _survey.navigationList.some((navigation) => {
+        if (navigation.origin === origin) {
+          fetchedNavigation = navigation;
+          return true;
+        }
+      });
+
+      return fetchedNavigation;
+    }
+
   }
 }());

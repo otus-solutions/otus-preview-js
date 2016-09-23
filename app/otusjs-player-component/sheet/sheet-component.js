@@ -15,12 +15,12 @@
     '$scope',
     '$element',
     '$compile',
-    'otusjs.player.core.PlayerService',
-    'DataService',
-    'otusjs.player.core.CurrentQuestion'
+    'otusjs.player.core.player.PlayerService',
+    'otusjs.player.core.player.DataService',
+    'otusjs.player.core.activity.CurrentQuestionService'
   ];
 
-  function OtusSheetController($scope, $element, $compile, PlayerService, DataService, CurrentQuestion) {
+  function OtusSheetController($scope, $element, $compile, PlayerService, DataService, CurrentQuestionService) {
     var self = this;
 
     var SURVEY_ITEM = '<otus-survey-item item-data="itemData" />';
@@ -72,7 +72,7 @@
     function loadItem(item) {
       $scope.itemData = item;
       $element.find('section').prepend($compile(SURVEY_ITEM)($scope));
-      CurrentQuestion.setQuestion(item);
+      CurrentQuestionService.setQuestion(item);
     }
 
     function updateToolbar() {

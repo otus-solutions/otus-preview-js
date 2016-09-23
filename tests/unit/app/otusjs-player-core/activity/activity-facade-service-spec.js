@@ -1,186 +1,234 @@
-describe('PlayerService', function() {
+describe('ActivityFacadeService', function() {
 
   var Mock = {};
   var Injections = {};
   var service = {};
+  var CAD1 = 'CAD1';
+  var CAD2 = 'CAD2';
 
   beforeEach(function() {
     module('otusjs.player.core');
 
     inject(function(_$injector_) {
       mockSurvey();
-      mockActivityFacadeService(_$injector_);
-      service = _$injector_.get('otusjs.player.core.player.PlayerService', Injections);
+      mockItemManagerService(_$injector_);
+      mockCurrentQuestionService(_$injector_);
+      mockCurrentSurveyService(_$injector_);
+      service = _$injector_.get('otusjs.player.core.activity.ActivityFacadeService', Injections);
     });
   });
 
-  describe('play method', function() {
+  describe('setup method', function() {
+
+    it('should keep a reference to survey into activity module', function() {
+      spyOn(Mock.CurrentSurveyService, 'setup');
+
+      service.setup(Mock.survey);
+
+      expect(Mock.CurrentSurveyService.setup).toHaveBeenCalledWith(Mock.survey);
+    });
+
+    it('should keep a reference to first item and respective navigation of survey into activity module', function() {
+      spyOn(Mock.CurrentQuestionService, 'setup');
+
+      service.setup(Mock.survey);
+
+      expect(Mock.CurrentQuestionService.setup).toHaveBeenCalledWith(Mock.survey.itemContainer[0], Mock.survey.navigationList[0]);
+    });
+
+  });
+
+  describe('hasNext method', function() {
 
     beforeEach(function() {
-      service.play(Mock.survey);
+      service.setup(Mock.survey);
     });
 
-    it('should setup the activity module by ActivityFacadeService', function() {
-      spyOn(Mock.ActivityFacadeService, 'setup');
+    describe('when current activity has at least one next item from current question', function() {
 
-      service.play(Mock.survey);
+      it('should return true', function() {
+        expect(service.hasNext()).toBe(true);
+      });
 
-      expect(Mock.ActivityFacadeService.setup).toHaveBeenCalledWith(Mock.survey);
+    });
+
+    describe('when current activity has not next item from current question', function() {
+
+      beforeEach(function() {
+        spyOn(Mock.CurrentQuestionService, 'getRoutes').and.returnValue([]);
+      });
+
+      it('should return false', function() {
+        expect(service.hasNext()).toBe(false);
+      });
+
     });
 
   });
 
-  describe('goAhead', function() {
-
-    it('', function() {
-
-    });
-
-  });
-
-  describe('getNext method', function() {
+  describe('hasPrevious method', function() {
 
     beforeEach(function() {
-      service.play(Mock.survey);
+      service.setup(Mock.survey);
     });
 
-    it('should call ItemManagerService.hasNext method', function() {
-      spyOn(Mock.ItemManagerService, 'hasNext');
+    describe('when current activity has a previous item of current item', function() {
 
-      service.getNext();
+      beforeEach(function() {
+        spyOn(Mock.CurrentQuestionService, 'getPreviousItem').and.returnValue(CAD1);
+      });
 
-      expect(Mock.ItemManagerService.hasNext).toHaveBeenCalled();
+      it('should return true', function() {
+        expect(service.hasPrevious()).toBe(true);
+      });
+
     });
 
-    it('should call ItemManagerService.next method', function() {
-      spyOn(Mock.ItemManagerService, 'next');
+    describe('when current activity has not next item from current question', function() {
 
-      service.getNext();
+      beforeEach(function() {
+        spyOn(Mock.CurrentQuestionService, 'getPreviousItem').and.returnValue(null);
+      });
 
-      expect(Mock.ItemManagerService.next).toHaveBeenCalled();
-    });
+      it('should return false', function() {
+        expect(service.hasPrevious()).toBe(false);
+      });
 
-    it('should return an item when it exists', function() {
-      spyOn(Mock.ItemManagerService, 'hasNext').and.returnValue(true);
-
-      expect(service.getNext()).toBeDefined();
-    });
-
-    it('should return an item when it not exists', function() {
-      spyOn(Mock.ItemManagerService, 'hasNext').and.returnValue(false);
-
-      expect(service.getNext()).toBeUndefined();
     });
 
   });
 
-  describe('getPrevious method', function() {
+  describe('getNextItems method', function() {
 
-    beforeEach(function() {
-      service.play(items);
+    describe('on all cases', function() {
+
+      beforeEach(function() {
+        service.setup(Mock.survey);
+        spyOn(Mock.CurrentQuestionService, 'getRoutes').and.callThrough();
+        spyOn(Mock.CurrentSurveyService, 'getItemByCustomID').and.callThrough();
+      });
+
+      it('should request the routes of current item', function() {
+        var nextItems = service.getNextItems();
+
+        expect(Mock.CurrentQuestionService.getRoutes).toHaveBeenCalledWith();
+      });
+
+      it('should retrieve the respective item of each current item route destination', function() {
+        var nextItems = service.getNextItems();
+
+        expect(Mock.CurrentSurveyService.getItemByCustomID).toHaveBeenCalledWith(CAD2);
+      });
+
     });
 
-    it('should call ItemManagerService.hasPrevious method', function() {
-      spyOn(Mock.ItemManagerService, 'hasPrevious');
+    describe('when exists next items', function() {
 
-      service.getPrevious();
+      beforeEach(function() {
+        service.setup(Mock.survey);
+        spyOn(Mock.CurrentQuestionService, 'getRoutes').and.callThrough();
+        spyOn(Mock.CurrentSurveyService, 'getItemByCustomID').and.callThrough();
+      });
 
-      expect(Mock.ItemManagerService.hasPrevious).toHaveBeenCalled();
+      it('should return an array with the next items from current item', function() {
+        var nextItems = service.getNextItems();
+
+        expect(nextItems[0].extents).toEqual('SurveyItem');
+      });
+
     });
 
-    it('should call ItemManagerService.previous method', function() {
-      spyOn(Mock.ItemManagerService, 'hasPrevious').and.returnValue(true);
-      spyOn(Mock.ItemManagerService, 'previous');
+    describe('when not exists next items', function() {
 
-      service.getPrevious();
+      beforeEach(function() {
+        service.setup(Mock.survey);
+        spyOn(Mock.CurrentQuestionService, 'getRoutes').and.returnValue([]);
+      });
 
-      expect(Mock.ItemManagerService.previous).toHaveBeenCalled();
-    });
+      it('should return an empty array', function() {
+        var nextItems = service.getNextItems();
 
-    it('should return an item when it exists', function() {
-      spyOn(Mock.ItemManagerService, 'hasPrevious').and.returnValue(true);
-      spyOn(Mock.ItemManagerService, 'previous').and.returnValue(items[0]);
+        expect(nextItems.length).toBe(0);
+      });
 
-      expect(service.getPrevious()).toBeDefined();
-    });
-
-    it('should return an item when it not exists', function() {
-      spyOn(Mock.ItemManagerService, 'hasPrevious').and.returnValue(false);
-
-      expect(service.getPrevious()).toBeUndefined();
-    });
-
-  });
-
-  describe('canWeGo method - an button blocker for next and back', function() {
-
-    beforeEach(function() {
-      service.play(items);
-    });
-
-    it('should call hasPrevious method when asked if can go ahead', function() {
-      spyOn(Mock.ItemManagerService, 'hasPrevious');
-
-      service.canWeGo('back');
-
-      expect(Mock.ItemManagerService.hasPrevious).toHaveBeenCalled();
-    });
-
-    it('should call hasNext method when asked if can go ahead', function() {
-      spyOn(Mock.ItemManagerService, 'hasNext');
-
-      service.canWeGo('ahead');
-
-      expect(Mock.ItemManagerService.hasNext).toHaveBeenCalled();
-    });
-
-    it('should call allValidationsOk method when asked if can go ahead', function() {
-      spyOn(Mock.CurrentQuestion, 'allValidationsOk');
-
-      service.canWeGo('ahead');
-
-      expect(Mock.CurrentQuestion.allValidationsOk).toHaveBeenCalled();
-    });
-
-    it('should call ignoreValidation method when asked if can go ahead', function() {
-      spyOn(Mock.CurrentQuestion, 'ignoreValidation');
-
-      service.canWeGo('ahead');
-
-      expect(Mock.CurrentQuestion.ignoreValidation).toHaveBeenCalled();
-    });
-
-    it('should set canWeGo to false when some validation fails and has no metadata acceptance returns false', function() {
-      Mock.CurrentQuestion.allValidationsOk = function() {
-        return false;
-      };
-      Mock.CurrentQuestion.ignoreValidation = function() {
-        return false;
-      };
-
-      canWeGo = service.canWeGo('ahead');
-
-      expect(canWeGo).toBe(false);
-    });
-
-    it('should set canWeGo to true when some validation fails but ignoreValidation returns true', function() {
-      Mock.CurrentQuestion.allValidationsOk = function() {
-        return false;
-      };
-      Mock.CurrentQuestion.ignoreValidation = function() {
-        return true;
-      };
-
-      canWeGo = service.canWeGo('ahead');
-
-      expect(canWeGo).toBe(true);
     });
 
   });
 
-  function mockActivityFacadeService($injector) {
-    Mock.ActivityFacadeService = $injector.get('otusjs.player.core.activity.ActivityFacadeService');
-    Injections.ActivityFacadeService = Mock.ActivityFacadeService;
+  describe('getPreviousItem method', function() {
+
+    describe('on all cases', function() {
+
+      beforeEach(function() {
+        service.setup(Mock.survey);
+        spyOn(Mock.CurrentQuestionService, 'getPreviousItem').and.returnValue(CAD2);
+        spyOn(Mock.CurrentSurveyService, 'getItemByCustomID').and.callThrough();
+      });
+
+      it('should request the ID of previous item of current item', function() {
+        var nextItems = service.getPreviousItem();
+
+        expect(Mock.CurrentQuestionService.getPreviousItem).toHaveBeenCalledWith();
+      });
+
+      it('should retrieve the respective item of previous item ID', function() {
+        var nextItems = service.getPreviousItem();
+
+        expect(Mock.CurrentSurveyService.getItemByCustomID).toHaveBeenCalledWith(CAD2);
+      });
+
+    });
+
+    describe('when exists a previous item', function() {
+
+      beforeEach(function() {
+        service.setup(Mock.survey);
+        spyOn(Mock.CurrentQuestionService, 'getPreviousItem').and.returnValue(CAD2);
+        spyOn(Mock.CurrentSurveyService, 'getItemByCustomID').and.callThrough();
+      });
+
+      it('should return the item that precedes the current item', function() {
+        var item = service.getPreviousItem();
+
+        expect(item.extents).toEqual('SurveyItem');
+      });
+
+    });
+
+    describe('when not exists a previous item', function() {
+
+      beforeEach(function() {
+        service.setup(Mock.survey);
+        spyOn(Mock.CurrentQuestionService, 'getPreviousItem').and.callThrough();
+        spyOn(Mock.CurrentSurveyService, 'getItemByCustomID').and.callThrough();
+      });
+
+      it('should return null', function() {
+        var item = service.getPreviousItem();
+
+        expect(item).toBe(null);
+      });
+
+    });
+
+  });
+
+  function mockItemManagerService($injector) {
+    Mock.ItemManagerService = $injector.get('otusjs.player.core.activity.ItemManagerService');
+
+    spyOn(Mock.ItemManagerService, 'init').and.callThrough();
+
+    Injections.ItemManagerService = Mock.ItemManagerService;
+  }
+
+  function mockCurrentQuestionService($injector) {
+    Mock.CurrentQuestionService = $injector.get('otusjs.player.core.activity.CurrentQuestionService');
+    Injections.CurrentQuestionService = Mock.CurrentQuestionService;
+  }
+
+  function mockCurrentSurveyService($injector) {
+    Mock.CurrentSurveyService = $injector.get('otusjs.player.core.activity.CurrentSurveyService');
+    Injections.CurrentSurveyService = Mock.CurrentSurveyService;
   }
 
   function mockSurvey() {
