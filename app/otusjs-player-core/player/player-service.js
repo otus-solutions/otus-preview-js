@@ -6,27 +6,30 @@
     .service('otusjs.player.core.player.PlayerService', PlayerService);
 
   PlayerService.$inject = [
-    'otusjs.player.core.activity.ActivityFacadeService',
-    'otusjs.player.core.activity.CurrentQuestionService'
+    'otusjs.player.core.player.AheadActionService',
+    'otusjs.player.core.activity.ActivityFacadeService'
   ];
 
-  function PlayerService(ActivityFacadeService, CurrentQuestionService) {
+  function PlayerService(AheadActionService, ActivityFacadeService) {
     var self = this;
     var _nextItems = [];
 
-    self.play = play;
+    self.goAhead = goAhead;
+    self.goBack = goBack;
     self.getNext = getNext;
     self.getPrevious = getPrevious;
-    self.hasNext = hasNext;
-    self.hasPrevious = hasPrevious;
-    self.canWeGo = canWeGo;
-
-    function play(survey) {
-      ActivityFacadeService.setup(survey);
-    }
+    self.play = play;
+    self.setup = setup;
+    // self.canWeGo = canWeGo;
 
     function goAhead() {
-      
+      AheadActionService.execute();
+    }
+
+    function goBack() {
+      // PreBackService.execute();
+      // BackService.execute();
+      // PostBackService.execute();
     }
 
     function getNext() {
@@ -41,26 +44,34 @@
       }
     }
 
-    function canWeGo(where) {
-      var ignoreValidation = CurrentQuestionService.ignoreValidation();
-      var directions = {
-        'ahead': function() {
-          CurrentQuestionService.validateQuestion(); //updates getValidationError
-          var validationOk = !CurrentQuestionService.getValidationError();
-          var conditions = [
-            ActivityFacadeService.hasNext(),
-            (validationOk || ignoreValidation)
-          ];
-          return conditions.indexOf(false, conditions) === -1;
-        },
-        'back': function() {
-          var conditions = [
-            ActivityFacadeService.hasPrevious()
-          ];
-          return conditions.indexOf(false, conditions) === -1;
-        }
-      };
-      return directions[where]();
+    function play() {
+      ActivityFacadeService.initialize();
     }
+
+    function setup(survey) {
+      ActivityFacadeService.setup(survey);
+    }
+
+    // function canWeGo(where) {
+    //   var ignoreValidation = CurrentQuestionService.ignoreValidation();
+    //   var directions = {
+    //     'ahead': function() {
+    //       CurrentQuestionService.validateQuestion(); //updates getValidationError
+    //       var validationOk = !CurrentQuestionService.getValidationError();
+    //       var conditions = [
+    //         ActivityFacadeService.hasNext(),
+    //         (validationOk || ignoreValidation)
+    //       ];
+    //       return conditions.indexOf(false, conditions) === -1;
+    //     },
+    //     'back': function() {
+    //       var conditions = [
+    //         ActivityFacadeService.hasPrevious()
+    //       ];
+    //       return conditions.indexOf(false, conditions) === -1;
+    //     }
+    //   };
+    //   return directions[where]();
+    // }
   }
 })();

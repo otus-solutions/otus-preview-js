@@ -28,10 +28,14 @@ describe('ActivityFacadeService', function() {
       expect(Mock.CurrentSurveyService.setup).toHaveBeenCalledWith(Mock.survey);
     });
 
-    it('should keep a reference to first item and respective navigation of survey into activity module', function() {
+  });
+
+  describe('initialize method', function() {
+
+    it('should point to first item and respective navigation of survey into activity module', function() {
       spyOn(Mock.CurrentQuestionService, 'setup');
 
-      service.setup(Mock.survey);
+      service.initialize();
 
       expect(Mock.CurrentQuestionService.setup).toHaveBeenCalledWith(Mock.survey.itemContainer[0], Mock.survey.navigationList[0]);
     });
@@ -42,6 +46,7 @@ describe('ActivityFacadeService', function() {
 
     beforeEach(function() {
       service.setup(Mock.survey);
+      service.initialize();
     });
 
     describe('when current activity has at least one next item from current question', function() {
@@ -98,12 +103,30 @@ describe('ActivityFacadeService', function() {
 
   });
 
+  describe('getCurrentItem', function() {
+
+    beforeEach(function() {
+      service.setup(Mock.survey);
+      service.initialize();
+    });
+
+    it('should retrieve current item from CurrentQuestionService', function() {
+      spyOn(Mock.CurrentQuestionService, 'getQuestion').and.callThrough();
+
+      service.getCurrentItem();
+
+      expect(Mock.CurrentQuestionService.getQuestion).toHaveBeenCalledWith();
+    });
+
+  });
+
   describe('getNextItems method', function() {
 
     describe('on all cases', function() {
 
       beforeEach(function() {
         service.setup(Mock.survey);
+        service.initialize();
         spyOn(Mock.CurrentQuestionService, 'getRoutes').and.callThrough();
         spyOn(Mock.CurrentSurveyService, 'getItemByCustomID').and.callThrough();
       });
@@ -126,6 +149,7 @@ describe('ActivityFacadeService', function() {
 
       beforeEach(function() {
         service.setup(Mock.survey);
+        service.initialize();
         spyOn(Mock.CurrentQuestionService, 'getRoutes').and.callThrough();
         spyOn(Mock.CurrentSurveyService, 'getItemByCustomID').and.callThrough();
       });
@@ -228,6 +252,9 @@ describe('ActivityFacadeService', function() {
 
   function mockCurrentSurveyService($injector) {
     Mock.CurrentSurveyService = $injector.get('otusjs.player.core.activity.CurrentSurveyService');
+    spyOn(Mock.CurrentSurveyService, 'getItems').and.returnValue(Mock.survey.itemContainer);
+    spyOn(Mock.CurrentSurveyService, 'getNavigations').and.returnValue(Mock.survey.navigationList);
+
     Injections.CurrentSurveyService = Mock.CurrentSurveyService;
   }
 
