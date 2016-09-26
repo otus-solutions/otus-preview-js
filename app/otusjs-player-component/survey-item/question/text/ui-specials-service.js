@@ -54,7 +54,14 @@
 
                 return (shiftKey || ctrlkey || backspaceKey || spacebar || capslock || homeKey || endKey || deleteKey || leftKey || rightKey || enterkey) ? true : false;
             }
+
+            function toUnicodeTablet(codeUnit) {
+                console.log(codeUnit);
+                return '\\u' + codeUnit.toString(16).toUpperCase();
+                console.log('executou code unit');
+            }
         }
+
     }
 
 }());
