@@ -21,7 +21,7 @@ describe('otusQuestion component', function() {
         var $ctrl;
         module('otusjs.player.core');
         inject(function($rootScope, $componentController, _$injector_) {
-            mockTagComponentBuilderService(_$injector_);
+            mockotusjs.player.core.player.TagComponentBuilderService(_$injector_);
             scope = $rootScope.$new();
             $ctrl = $componentController('otusQuestion', {
                 $scope: scope
@@ -34,8 +34,8 @@ describe('otusQuestion component', function() {
         return $ctrl;
     }
 
-    function mockTagComponentBuilderService($injector) {
-        Mock.TagComponentBuilderService = $injector.get('TagComponentBuilderService');
+    function mockotusjs.player.core.player.TagComponentBuilderService($injector) {
+        Mock.otusjs.player.core.player.TagComponentBuilderService = $injector.get('otusjs.player.core.player.TagComponentBuilderService');
     }
 
     function mockQuestion() {

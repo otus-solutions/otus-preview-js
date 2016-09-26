@@ -14,11 +14,11 @@
   OtusSurveyItemController.$inject = [
     '$scope',
     '$element',
-    'otusjs.player.core.CurrentQuestion',
+    'otusjs.player.core.activity.CurrentItemService',
     '$filter'
   ];
 
-  function OtusSurveyItemController($scope, $element, CurrentQuestion, $filter) {
+  function OtusSurveyItemController($scope, $element, CurrentItemService, $filter) {
     var self = this;
 
     /* Public methods */
@@ -33,7 +33,7 @@
       self.filling = {};
       self.filling.questionID = self.itemData.templateID;
       $scope.$parent.$ctrl.currentChild = self;
-      CurrentQuestion.observerRegistry(self);
+      CurrentItemService.observerRegistry(self);
     };
 
     function updateValidation(validationMap) {
@@ -54,7 +54,7 @@
 
     function update(prop, value) {
       self.filling[prop] = value;
-      CurrentQuestion.setAnswer(self.filling);
+      CurrentItemService.fill(self.filling);
     }
 
     function destroy() {

@@ -42,8 +42,8 @@
       _chainTail = link;
     }
 
-    function execute() {
-      _chainHead.execute();
+    function execute(pipe) {
+      _chainHead.execute(pipe);
     }
 
     function getChainHead() {

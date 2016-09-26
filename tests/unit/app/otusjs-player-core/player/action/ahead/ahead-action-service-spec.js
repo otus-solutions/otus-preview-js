@@ -17,25 +17,25 @@ describe('AheadActionService', function() {
 
   describe('execute method', function() {
 
-    it('should execute PreAheadActionService', function() {
+    beforeEach(function() {
       spyOn(Mock.PreAheadActionService, 'execute');
+      spyOn(Mock.ExecutionAheadActionService, 'execute');
+      spyOn(Mock.PostAheadActionService, 'execute');
+    })
 
+    it('should execute PreAheadActionService', function() {
       service.execute();
 
       expect(Mock.PreAheadActionService.execute).toHaveBeenCalledWith();
     });
 
     it('should execute ExecutionAheadActionService', function() {
-      spyOn(Mock.ExecutionAheadActionService, 'execute');
-
       service.execute();
 
       expect(Mock.ExecutionAheadActionService.execute).toHaveBeenCalledWith();
     });
 
     it('should execute PostAheadActionService', function() {
-      spyOn(Mock.PostAheadActionService, 'execute');
-
       service.execute();
 
       expect(Mock.PostAheadActionService.execute).toHaveBeenCalledWith();
@@ -57,5 +57,4 @@ describe('AheadActionService', function() {
     Mock.PostAheadActionService = $injector.get('otusjs.player.core.player.PostAheadActionService');
     Injections.PostAheadActionService = Mock.PostAheadActionService;
   }
-
 });

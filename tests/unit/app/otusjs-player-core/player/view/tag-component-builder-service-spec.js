@@ -1,4 +1,4 @@
-xdescribe('TagComponentBuilderService', function() {
+xdescribe('otusjs.player.core.player.TagComponentBuilderService', function() {
   var service;
   var expectedTagElement = '<otus-calendar-question item-data="$ctrl.itemData" on-update="$ctrl.update(\'answer\', value)" />';
   var elementType = "CalendarQuestion";
@@ -8,7 +8,7 @@ xdescribe('TagComponentBuilderService', function() {
     module('otusjs.player.core');
 
     inject(function(_$injector_) {
-      service = _$injector_.get('otusjs.player.core.player.TagComponentBuilderService', {
+      service = _$injector_.get('otusjs.player.core.player.otusjs.player.core.player.TagComponentBuilderService', {
         HtmlBuilderService: mockHtmlBuilderService(_$injector_)
       });
     });

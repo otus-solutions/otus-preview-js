@@ -15,18 +15,18 @@
     TextQuestionController.$inject = [
         '$scope',
         '$element',
-        'otusjs.player.core.CurrentQuestion',
+        'otusjs.player.core.activity.CurrentItemService',
         'uiSpecialsService',
         'uiAlphanumericService'
     ];
 
-    function TextQuestionController($scope, $element, CurrentQuestion, uiSpecialsService, uiAlphanumericService) {
+    function TextQuestionController($scope, $element, CurrentItemService, uiSpecialsService, uiAlphanumericService) {
         var self = this;
 
         _init();
 
-        self.hasUpperCase = CurrentQuestion.getFillingRules().upperCase;
-        self.hasLowerCase = CurrentQuestion.getFillingRules().lowerCase;
+        self.hasUpperCase = CurrentItemService.getFillingRules().upperCase;
+        self.hasLowerCase = CurrentItemService.getFillingRules().lowerCase;
 
         self.update = function() {
             var answer = self.answer;
@@ -43,8 +43,8 @@
         };
 
         function _init() {
-            var hasAlphanumeric = CurrentQuestion.getFillingRules().alphanumeric;
-            var hasSpecials = CurrentQuestion.getFillingRules().specials;
+            var hasAlphanumeric = CurrentItemService.getFillingRules().alphanumeric;
+            var hasSpecials = CurrentItemService.getFillingRules().specials;
 
             if (hasAlphanumeric && hasAlphanumeric.data.reference) {
                 uiAlphanumericService.apply($element);

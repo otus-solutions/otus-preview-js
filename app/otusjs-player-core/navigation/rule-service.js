@@ -5,18 +5,18 @@
     .module('otusjs.player.core.navigation')
     .service('otusjs.player.core.navigation.RuleService', Service);
 
-  // Service.$inject = [
-  //   'otusjs.model.navigation.NavigationApiService'
-  // ];
+  Service.$inject = [
+    'otusjs.player.core.activity.ActivityFacadeService'
+  ]
 
-  function Service() {
+  function Service(ActivityFacadeService) {
     var self = this;
 
     /* Public Interface */
-    self.testRule = testRule;
+    self.isRuleApplicable = isRuleApplicable;
 
-    function testRule() {
-      return _survey;
+    function isRuleApplicable(rule) {
+      let whenItem = ActivityFacadeService.fetchItemByID(rule.when);
     }
   }
 }());

@@ -7,37 +7,52 @@
 
   Service.$inject = [
     'otusjs.player.core.activity.CurrentSurveyService',
-    'otusjs.player.core.activity.CurrentQuestionService',
+    'otusjs.player.core.activity.CurrentItemService'
   ];
 
-  function Service(CurrentSurveyService, CurrentQuestionService) {
+  function Service(CurrentSurveyService, CurrentItemService) {
     let self = this;
+    let _item = null;
+    let _itemNavigation = null;
 
     /* Public Interface */
+    self.applyAnswer = applyAnswer;
+    self.attachItemValidationError = attachItemValidationError;
+    self.setupAnswer = setupAnswer;
     self.setup = setup;
     self.initialize = initialize;
     self.hasNext = hasNext;
     self.hasPrevious = hasPrevious;
+    self.fetchItemByID = fetchItemByID;
     self.getCurrentItem = getCurrentItem;
     self.getNextItems = getNextItems;
     self.getPreviousItem = getPreviousItem;
     self.loadNextItem = loadNextItem;
 
-    function setup(survey) {
-      var item = survey.itemContainer[0];
-      var itemNavigation = survey.navigationList[0];
+    function applyAnswer() {
+      CurrentItemService.applyFilling();
+    }
 
-      CurrentSurveyService.setup(survey);
+    function attachItemValidationError(validationError) {
+      CurrentItemService.attachValidationError();
+    }
+
+    function setupAnswer(answerData) {
+      CurrentItemService.fill(answerData);
+    }
+
+    function setup() {
+      CurrentSurveyService.setup();
     }
 
     function initialize() {
-      var item = CurrentSurveyService.getItems()[0];
-      var itemNavigation = CurrentSurveyService.getNavigations()[0];
-      CurrentQuestionService.setup(item, itemNavigation);
+      CurrentSurveyService.initialize();
+      _item = CurrentSurveyService.getItems()[0];
+      _itemNavigation = CurrentSurveyService.getNavigations()[0];
     }
 
     function hasNext() {
-      if (CurrentQuestionService.getRoutes().length) {
+      if (CurrentItemService.getRoutes().length) {
         return true;
       } else {
         return false;
@@ -45,31 +60,39 @@
     }
 
     function hasPrevious() {
-      if (CurrentQuestionService.getPreviousItem()) {
+      if (CurrentItemService.getPreviousItem()) {
         return true;
       } else {
         return false;
       }
     }
 
+    function fetchItemByID(id) {
+      return CurrentSurveyService.getItemByCustomID(id);
+    }
+
     function getCurrentItem() {
-      return CurrentQuestionService.getQuestion();
+      return CurrentItemService.getItem();
     }
 
     function getNextItems() {
-      return CurrentQuestionService.getRoutes().map((route) => {
+      return CurrentItemService.getRoutes().map((route) => {
         return CurrentSurveyService.getItemByCustomID(route.destination);
       });
     }
 
     function getPreviousItem() {
-      return CurrentSurveyService.getItemByCustomID(CurrentQuestionService.getPreviousItem());
+      return CurrentSurveyService.getItemByCustomID(CurrentItemService.getPreviousItem());
     }
 
     function loadNextItem() {
-      let currentItem = CurrentQuestionService.getQuestion();
-      let nextItem = NavigationService.getNext();
-      CurrentQuestionService.setup(nextItem, nextItem.getNavigation(), currentItem.customID);
+      if (!CurrentItemService.hasItem()) {
+        CurrentItemService.setup(_item, _itemNavigation);
+      } else {
+        let currentItem = CurrentItemService.getItem();
+        // let nextItem = NavigationService.getNext();
+        // CurrentItemService.setup(nextItem, nextItem.getNavigation(), currentItem.customID);
+      }
     }
   }
 }());

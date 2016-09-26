@@ -63,7 +63,7 @@ describe('PreGoAheadStage', function() {
     });
 
     it('should call execute method from all links on the chain', function() {
-      chain.execute();
+      chain.execute({isFlowing: true});
 
       expect(Mock.linkA.execute).toHaveBeenCalled();
       expect(Mock.linkB.execute).toHaveBeenCalled();

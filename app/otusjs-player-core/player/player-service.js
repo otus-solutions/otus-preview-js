@@ -6,21 +6,24 @@
     .service('otusjs.player.core.player.PlayerService', PlayerService);
 
   PlayerService.$inject = [
-    'otusjs.player.core.player.AheadActionService',
-    'otusjs.player.core.activity.ActivityFacadeService'
+    'otusjs.player.core.activity.ActivityFacadeService',
+    'otusjs.player.core.player.PlayActionService',
+    'otusjs.player.core.player.AheadActionService'
   ];
 
-  function PlayerService(AheadActionService, ActivityFacadeService) {
+  function PlayerService(ActivityFacadeService, PlayActionService, AheadActionService) {
     var self = this;
     var _nextItems = [];
 
+    self.getItem = getItem;
     self.goAhead = goAhead;
     self.goBack = goBack;
-    self.getNext = getNext;
-    self.getPrevious = getPrevious;
     self.play = play;
     self.setup = setup;
-    // self.canWeGo = canWeGo;
+
+    function getItem() {
+      return ActivityFacadeService.getCurrentItem();
+    }
 
     function goAhead() {
       AheadActionService.execute();
@@ -32,32 +35,20 @@
       // PostBackService.execute();
     }
 
-    function getNext() {
-      if (ActivityFacadeService.hasNext()) {
-        return ActivityFacadeService.getNextItem();
-      }
-    }
-
-    function getPrevious() {
-      if (ActivityFacadeService.hasPrevious()) {
-        return ActivityFacadeService.getPreviousItem();
-      }
-    }
-
     function play() {
-      ActivityFacadeService.initialize();
+      PlayActionService.execute();
     }
 
-    function setup(survey) {
-      ActivityFacadeService.setup(survey);
+    function setup() {
+      ActivityFacadeService.setup();
     }
 
     // function canWeGo(where) {
-    //   var ignoreValidation = CurrentQuestionService.ignoreValidation();
+    //   var ignoreValidation = CurrentItemService.ignoreValidation();
     //   var directions = {
     //     'ahead': function() {
-    //       CurrentQuestionService.validateQuestion(); //updates getValidationError
-    //       var validationOk = !CurrentQuestionService.getValidationError();
+    //       CurrentItemService.validateQuestion(); //updates getValidationError
+    //       var validationOk = !CurrentItemService.getValidationError();
     //       var conditions = [
     //         ActivityFacadeService.hasNext(),
     //         (validationOk || ignoreValidation)

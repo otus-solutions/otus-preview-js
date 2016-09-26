@@ -15,6 +15,9 @@
     let self = this;
 
     /* Public methods */
+    self.PreAheadActionService = PreAheadActionService;
+    self.ExecutionAheadActionService = ExecutionAheadActionService;
+    self.PostAheadActionService = PostAheadActionService;
     self.execute = execute;
 
     function execute() {

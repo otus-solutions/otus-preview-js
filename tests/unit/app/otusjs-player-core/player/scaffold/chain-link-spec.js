@@ -7,6 +7,7 @@ describe('ChainLinkFactory', function() {
     module('otusjs.player.core');
 
     inject(function(_$injector_) {
+      mockChainFactory();
       mockLinkClient();
       mockChainLink(_$injector_);
       let factory = _$injector_.get('otusjs.player.core.player.ChainLinkFactory');
@@ -41,7 +42,7 @@ describe('ChainLinkFactory', function() {
 
     it('should keeps a reference to a client method', function() {
       chainLink.setPreExecute(Mock.linkClient.preExecute);
-      chainLink.execute();
+      chainLink.execute(Mock.chain);
 
       expect(Mock.linkClient.preExecute).toHaveBeenCalled();
       expect(Mock.injectA.method).toHaveBeenCalled();
@@ -53,7 +54,7 @@ describe('ChainLinkFactory', function() {
 
     it('should keeps a reference to a client method', function() {
       chainLink.setExecute(Mock.linkClient.execute);
-      chainLink.execute();
+      chainLink.execute(Mock.chain);
 
       expect(Mock.linkClient.execute).toHaveBeenCalled();
       expect(Mock.injectB.method).toHaveBeenCalled();
@@ -65,13 +66,18 @@ describe('ChainLinkFactory', function() {
 
     it('should keeps a reference to a client method', function() {
       chainLink.setPostExecute(Mock.linkClient.postExecute);
-      chainLink.execute();
+      chainLink.execute(Mock.chain);
 
       expect(Mock.linkClient.postExecute).toHaveBeenCalled();
       expect(Mock.injectC.method).toHaveBeenCalled();
     });
 
   });
+
+  function mockChainFactory() {
+    Mock.chain = {};
+    Mock.chain.isFlowing = true;
+  }
 
   function mockChainLink($injector) {
     Mock.nextLink = $injector.get('otusjs.player.core.player.ChainLinkFactory');

@@ -8,45 +8,106 @@ describe('PreAheadActionService', function() {
     module('otusjs.player.core');
 
     inject(function(_$injector_) {
-      mockChainLink();
+      mockStep();
       mockChain(_$injector_);
+      mockChainLink(_$injector_);
       service = _$injector_.get('otusjs.player.core.player.PreAheadActionService', Injections);
     });
   });
 
   describe('pipe method', function() {
 
-    it('should link the step to step chain', function() {
-      spyOn(Mock.chain, 'chain');
+    it('should create a link to step', function() {
+      service.pipe(Mock.step);
 
-      service.pipe(Mock.link);
+      expect(Mock.ChainLinkFactory.create).toHaveBeenCalledWith();
+    });
 
-      expect(Mock.chain.chain).toHaveBeenCalledWith(Mock.link);
+    it('should setup the flow data catch procedure', function() {
+      spyOn(Mock.stepLink, 'catchFlowData');
+
+      service.pipe(Mock.step);
+
+      expect(Mock.stepLink.catchFlowData).toHaveBeenCalledWith(Mock.step.catchPreData);
+    });
+
+    it('should setup the pre execution procedure', function() {
+      spyOn(Mock.stepLink, 'setPreExecute');
+
+      service.pipe(Mock.step);
+
+      expect(Mock.stepLink.setPreExecute).toHaveBeenCalledWith(Mock.step.beforeEffect);
+    });
+
+    it('should setup the execution procedure', function() {
+      spyOn(Mock.stepLink, 'setExecute');
+
+      service.pipe(Mock.step);
+
+      expect(Mock.stepLink.setExecute).toHaveBeenCalledWith(Mock.step.effect);
+    });
+
+    it('should setup the post execution procedure', function() {
+      spyOn(Mock.stepLink, 'setPostExecute');
+
+      service.pipe(Mock.step);
+
+      expect(Mock.stepLink.setPostExecute).toHaveBeenCalledWith(Mock.step.afterEffect);
+    });
+
+    it('should setup the result resolve procedure', function() {
+      spyOn(Mock.stepLink, 'setResult');
+
+      service.pipe(Mock.step);
+
+      expect(Mock.stepLink.setResult).toHaveBeenCalledWith(Mock.step.getEffectResult);
+    });
+
+    xit('should link the step in the chain', function() {
+      service.pipe(Mock.step);
+
+      expect(Mock.stepChain.chain).toHaveBeenCalledWith(Mock.stepLink);
     });
 
   });
 
   describe('execute method', function() {
 
-    it('should call execute from step chain', function() {
-      spyOn(Mock.chain, 'execute');
+    xit('should call execute from step chain', function() {
+      spyOn(Mock.stepChain, 'execute');
 
       service.execute();
 
-      expect(Mock.chain.execute).toHaveBeenCalledWith();
+      expect(Mock.stepChain.execute).toHaveBeenCalledWith();
     });
 
   });
 
+  function mockStep() {
+    Mock.step = {};
+    Mock.step.catchPreData = function() {};
+    Mock.step.beforeEffect = function() {};
+    Mock.step.effect = function() {};
+    Mock.step.afterEffect = function() {};
+    Mock.step.getEffectResult = function() {};
+  }
+
   function mockChain($injector) {
-    let factory = $injector.get('otusjs.player.core.player.ChainFactory');
-    Mock.chain = factory.create();
-    Injections.ChainFactory = factory;
-    spyOn(Injections.ChainFactory, 'create').and.returnValue(Mock.chain);
+    Mock.ChainFactory = $injector.get('otusjs.player.core.player.ChainFactory');
+    Mock.stepChain = Mock.ChainFactory.create();
+
+    spyOn(Mock.ChainFactory, 'create').and.returnValue(Mock.stepChain);
+    spyOn(Mock.stepChain, 'chain');
+
+    Injections.ChainFactory = Mock.stepChainFactory;
   }
 
-  function mockChainLink() {
-    Mock.link = {};
-  }
+  function mockChainLink($injector) {
+    Mock.ChainLinkFactory = $injector.get('otusjs.player.core.player.ChainLinkFactory');
+    Mock.stepLink = $injector.get('otusjs.player.core.player.ChainLinkFactory').create();
 
+    spyOn(Mock.ChainLinkFactory, 'create').and.returnValue(Mock.stepLink);
+
+    Injections.ChainLinkFactory = Mock.ChainLinkFactory;
+  }
 });

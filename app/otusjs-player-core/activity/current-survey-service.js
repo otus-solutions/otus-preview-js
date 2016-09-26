@@ -6,12 +6,11 @@
     .service('otusjs.player.core.activity.CurrentSurveyService', Service);
 
   Service.$inject = [
-    'otusjs.player.core.navigation.NavigationService'
+    'ActivityFacadeService'
   ];
 
-  function Service() {
+  function Service(ActivityFacadeService) {
     let self = this;
-    let _survey;
 
     /* Public Interface */
     self.setup = setup;
@@ -20,23 +19,24 @@
     self.getNavigations = getNavigations;
     self.getNavigationByOrigin = getNavigationByOrigin;
     self.getItemByCustomID = getItemByCustomID;
+    self.initialize = initialize;
 
-    function setup(survey) {
-      _survey = survey;
+    function setup() {
+      ActivityFacadeService.openActivitySurvey();
     }
 
     function getSurvey() {
-      return _survey;
+      return ActivityFacadeService.surveyActivity;
     }
 
     function getItems() {
-      return _survey.itemContainer;
+      return ActivityFacadeService.surveyActivity.template.SurveyItemManager.getItemList();
     }
 
     function getItemByCustomID(customID) {
       let fetchedItem = null;
 
-      _survey.itemContainer.some((item) => {
+      getItems().some((item) => {
         if (item.customID === customID) {
           fetchedItem = item;
           return true;
@@ -47,13 +47,13 @@
     }
 
     function getNavigations() {
-      return _survey.navigationList;
+      return ActivityFacadeService.surveyActivity.template.NavigationManager.getNavigationList();
     }
 
     function getNavigationByOrigin(origin) {
       let fetchedNavigation = null;
 
-      _survey.navigationList.some((navigation) => {
+      getNavigations().some((navigation) => {
         if (navigation.origin === origin) {
           fetchedNavigation = navigation;
           return true;
@@ -63,5 +63,8 @@
       return fetchedNavigation;
     }
 
+    function initialize() {
+      ActivityFacadeService.initializeActivitySurvey();
+    }
   }
 }());
