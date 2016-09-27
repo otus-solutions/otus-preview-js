@@ -24,9 +24,14 @@
         var self = this;
 
         _init();
+        tabletKey();
+
+        self.tabletKey = tabletKey;
 
         self.hasUpperCase = CurrentQuestion.getFillingRules().upperCase;
         self.hasLowerCase = CurrentQuestion.getFillingRules().lowerCase;
+
+        var keycode = event.which;
 
         self.update = function() {
             var answer = self.answer;
@@ -54,6 +59,23 @@
             }
         }
 
+        function tabletKey(keycode) {
+            console.log('entrou unicode');
+
+            var uagent = navigator.userAgent.toLowerCase();
+
+            if(uagent.search("android") > -1){
+                alert('true')
+                var re = /^[a-zA-Z0-9 ]*$/;
+
+                uiSpecialsService.apply($element).formatedSpecials(event);
+                // var str = $element.find('textarea');
+                // str.match(re);
+            }
+            else {
+                alert('false')
+            }
+        }
     }
 
 })();

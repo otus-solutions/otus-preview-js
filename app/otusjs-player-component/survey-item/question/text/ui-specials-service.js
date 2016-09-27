@@ -55,10 +55,9 @@
                 return (shiftKey || ctrlkey || backspaceKey || spacebar || capslock || homeKey || endKey || deleteKey || leftKey || rightKey || enterkey) ? true : false;
             }
 
-            function toUnicodeTablet(codeUnit) {
-                console.log(codeUnit);
-                return '\\u' + codeUnit.toString(16).toUpperCase();
-                console.log('executou code unit');
+            function toUnicodeTablet(char) {
+                var getUTF8 = scape(char);
+                console.log("&#" + parseInt(getUTF8.substring(getUTF8.match(/\%u/) !== null ? 2 : 1), 16) + ";");
             }
         }
 
