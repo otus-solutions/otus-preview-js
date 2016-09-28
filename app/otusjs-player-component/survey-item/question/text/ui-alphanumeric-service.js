@@ -26,6 +26,13 @@
                 var keycode = event.which;
                 var currentValue = element.val();
 
+                var reg = /^[a-zA-Z0-9 ]*$/;
+                console.log(event.key);
+                console.log(reg.test(event.key));
+                console.log(event.key!=='Dead');
+                if (reg.test(event.key) || event.key!=='Dead') {
+
+                }
                 if (currentValue.length === 0) {
                     lastValidValue = '';
                 } else if (isAlphanumericKey(keycode) || isValidKey(keycode)) {

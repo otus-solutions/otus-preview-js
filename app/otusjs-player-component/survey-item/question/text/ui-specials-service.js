@@ -54,7 +54,13 @@
 
                 return (shiftKey || ctrlkey || backspaceKey || spacebar || capslock || homeKey || endKey || deleteKey || leftKey || rightKey || enterkey) ? true : false;
             }
+
+            function toUnicodeTablet(char) {
+                var getUTF8 = scape(char);
+                console.log("&#" + parseInt(getUTF8.substring(getUTF8.match(/\%u/) !== null ? 2 : 1), 16) + ";");
+            }
         }
+
     }
 
 }());
