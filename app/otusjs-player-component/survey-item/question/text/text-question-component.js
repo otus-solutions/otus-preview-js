@@ -35,11 +35,20 @@
 
         self.update = function() {
             var answer = self.answer;
+
+            console.log(typeof answer);
             if (self.hasLowerCase) {
                 answer = answer.toLowerCase();
             }
             if (self.hasUpperCase) {
                 answer = answer.toUpperCase();
+            }
+
+            if (self.hasAlphanumeric && self.hasAlphanumeric.data.reference) {
+              uiAlphanumericService.apply($element, self.answer);
+            }
+            if (self.hasSpecials && self.hasSpecials.data.reference) {
+              uiSpecialsService.apply($element);
             }
             self.onUpdate({
                 valueType: 'answer',
@@ -48,15 +57,8 @@
         };
 
         function _init() {
-            var hasAlphanumeric = CurrentQuestion.getFillingRules().alphanumeric;
-            var hasSpecials = CurrentQuestion.getFillingRules().specials;
-
-            if (hasAlphanumeric && hasAlphanumeric.data.reference) {
-                uiAlphanumericService.apply($element);
-            }
-            if (hasSpecials && hasSpecials.data.reference) {
-                uiSpecialsService.apply($element);
-            }
+          self.hasAlphanumeric = CurrentQuestion.getFillingRules().alphanumeric;
+          self.hasSpecials = CurrentQuestion.getFillingRules().specials;
         }
 
         function tabletKey(keycode) {
@@ -64,15 +66,14 @@
 
             var uagent = navigator.userAgent.toLowerCase();
 
-            if(uagent.search("android") > -1){
-                alert('true')
+            if (uagent.search("android") > -1) {
+                // alert('true');
 
                 // uiSpecialsService.apply($element).formatedSpecials(event);
                 // var str = $element.find('textarea');
                 // str.match(re);
-            }
-            else {
-                alert('false')
+            } else {
+                // alert('false');
             }
         }
     }

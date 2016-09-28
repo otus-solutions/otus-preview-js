@@ -28,7 +28,6 @@
                 'data': {}
             };
             question = item;
-            console.log(item);
             if (self.isQuestion()) {
 
                 _startValidation();
