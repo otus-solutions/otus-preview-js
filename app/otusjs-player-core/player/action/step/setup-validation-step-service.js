@@ -13,43 +13,40 @@
 
   function Service(ActivityFacadeService, ValidationService, ElementRegisterFactory) {
     let self = this;
-    let _flowData = null;
+    let _currentItem;
 
     /* Public methods */
-    self.catchPreData = catchPreData;
     self.beforeEffect = beforeEffect;
     self.effect = effect;
     self.afterEffect = afterEffect;
     self.getEffectResult = getEffectResult;
 
-    function catchPreData(flowData) {
-      _flowData = flowData;
+    function beforeEffect(pipe, flowData) {
+      _currentItem = ActivityFacadeService.getCurrentItem();
+
+      if (_currentItem.shouldIgnoreResponseEvaluation()) {
+        pipe.skipStep = true;
+      } else {
+        pipe.skipStep = false;
+      }
     }
 
-    function beforeEffect() {
-      console.log('Setup validation will begin...');
-    }
+    function effect(pipe, flowData) {
+      let elementRegister = ElementRegisterFactory.create(_currentItem.getItem().customID, { data: {} });
 
-    function effect() {
-      console.log('Setup validation in progress...');
-
-      let currentItem = ActivityFacadeService.getCurrentItem();
-      let elementRegister = ElementRegisterFactory.create(currentItem.customID, { data: {} });
-
-      Object.keys(currentItem.fillingRules.options).map((validator) => {
-        let reference = currentItem.fillingRules.options[validator].data;
+      Object.keys(_currentItem.getItem().fillingRules.options).map((validator) => {
+        let reference = _currentItem.getItem().fillingRules.options[validator].data;
         elementRegister.addValidator(validator, reference);
       });
 
       ValidationService.registerElement(elementRegister);
     }
 
-    function afterEffect(response) {
-      console.log('Setup validation is ended.');
+    function afterEffect(pipe, flowData) {
     }
 
-    function getEffectResult() {
-      return _flowData;
+    function getEffectResult(pipe, flowData) {
+      return flowData;
     }
   }
 })();

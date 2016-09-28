@@ -19,8 +19,6 @@ describe('PlayerService', function() {
   describe('getItem method', function() {
 
     it('should retrieve the current item from ActivityFacadeService', function() {
-      spyOn(Mock.ActivityFacadeService, 'getCurrentItem');
-
       service.getItem();
 
       expect(Mock.ActivityFacadeService.getCurrentItem).toHaveBeenCalled();
@@ -43,6 +41,7 @@ describe('PlayerService', function() {
   describe('play method', function() {
 
     beforeEach(function() {
+      spyOn(Mock.ActivityFacadeService, 'setup');
       service.setup();
     });
 
@@ -58,22 +57,23 @@ describe('PlayerService', function() {
 
   describe('setup method', function() {
 
-    beforeEach(function() {
-      service.setup(Mock.survey);
-    });
-
     it('should setup the activity module by ActivityFacadeService', function() {
       spyOn(Mock.ActivityFacadeService, 'setup');
 
-      service.setup(Mock.survey);
+      service.setup();
 
-      expect(Mock.ActivityFacadeService.setup).toHaveBeenCalledWith(Mock.survey);
+      expect(Mock.ActivityFacadeService.setup).toHaveBeenCalledWith();
     });
 
   });
 
   function mockActivityFacadeService($injector) {
     Mock.ActivityFacadeService = $injector.get('otusjs.player.core.activity.ActivityFacadeService');
+    let currentItem = {};
+    currentItem.getItem = () => { return Mock.itemData; };
+    currentItem.shouldIgnoreResponseEvaluation = () => { return false; };
+
+    spyOn(Mock.ActivityFacadeService, 'getCurrentItem').and.returnValue(currentItem);
 
     Injections.ActivityFacadeService = Mock.ActivityFacadeService;
   }
@@ -91,20 +91,20 @@ describe('PlayerService', function() {
   function mockSurvey() {
     mockSurveyData();
 
-    Mock.survey.SurveyItemManager = {};
-    Mock.survey.SurveyItemManager.getItemList = jasmine.createSpy('getItemList').and.returnValue(Mock.survey.itemContainer);
-    Mock.survey.SurveyItemManager.getItemByTemplateID = jasmine.createSpy('getItemByTemplateID').and.returnValue(Mock.survey.itemContainer[1]);
+    Mock.surveyTemplate.SurveyItemManager = {};
+    Mock.surveyTemplate.SurveyItemManager.getItemList = jasmine.createSpy('getItemList').and.returnValue(Mock.surveyTemplate.itemContainer);
+    Mock.surveyTemplate.SurveyItemManager.getItemByTemplateID = jasmine.createSpy('getItemByTemplateID').and.returnValue(Mock.surveyTemplate.itemContainer[1]);
 
-    Mock.CAD1Navigation = Mock.survey.navigationList[0];
+    Mock.CAD1Navigation = Mock.surveyTemplate.navigationList[0];
     Mock.CAD1Navigation.listRoutes = jasmine.createSpy('listRoutes').and.returnValue(Mock.CAD1Navigation.routes);
 
-    Mock.survey.NavigationManager = {};
-    Mock.survey.NavigationManager.getNavigationList = jasmine.createSpy('getNavigationList').and.returnValue(Mock.survey.navigationList);
-    Mock.survey.NavigationManager.selectNavigationByOrigin = jasmine.createSpy('selectNavigationByOrigin').and.returnValue(Mock.CAD1Navigation);
+    Mock.surveyTemplate.NavigationManager = {};
+    Mock.surveyTemplate.NavigationManager.getNavigationList = jasmine.createSpy('getNavigationList').and.returnValue(Mock.surveyTemplate.navigationList);
+    Mock.surveyTemplate.NavigationManager.selectNavigationByOrigin = jasmine.createSpy('selectNavigationByOrigin').and.returnValue(Mock.CAD1Navigation);
   }
 
   function mockSurveyData() {
-    Mock.survey = {
+    Mock.surveyTemplate = {
       "extents": "StudioObject",
       "objectType": "Survey",
       "oid": "dXNlclVVSUQ6W3VuZGVmaW5lZF1zdXJ2ZXlVVUlEOls2YWM5MjJiMC01ZTJiLTExZTYtOGE0ZS01ZGQyNzhhODUzNTddcmVwb3NpdG9yeVVVSUQ6WyBOb3QgZG9uZSB5ZXQgXQ==",

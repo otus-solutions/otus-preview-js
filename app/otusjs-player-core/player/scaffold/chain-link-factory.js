@@ -47,16 +47,20 @@
     }
 
     function execute(pipe, flowData) {
-      if (_catchFlowData) _catchFlowData(flowData);
-      if (_preExecute) _preExecute();
-      if (_execute) _execute();
-      if (_postExecute) _postExecute();
+      if (_preExecute) _preExecute(pipe, flowData);
+
+      if (_execute && !pipe.skipStep) {
+        _execute(pipe, flowData);
+      }
+
+      if (_postExecute) _postExecute(pipe, flowData);
 
       if (pipe.isFlowing) {
+        pipe.skipStep = false;
         if (_getFlowData) {
-          if (_next) _next.execute(pipe, _getFlowData());
+          if (_next) _next.execute(pipe, _getFlowData(pipe, flowData));
         } else {
-          if (_next) _next.execute(pipe, null);
+          if (_next) _next.execute(pipe, flowData);
         }
       }
     }

@@ -10,6 +10,7 @@ describe('otusPlayerCommander component', function() {
     module('otusjs.player.component');
 
     inject(function(_$componentController_, _$injector_) {
+      mockBindings();
       mockPlayerService(_$injector_);
       component = _$componentController_('otusPlayerCommander', Injections, Bindings);
     });
@@ -54,5 +55,14 @@ describe('otusPlayerCommander component', function() {
   function mockPlayerService($injector) {
     Mock.PlayerService = $injector.get('otusjs.player.core.player.PlayerService')
     Injections.PlayerService = Mock.PlayerService;
+  }
+
+  function mockBindings($injector) {
+    Bindings.onEject = () => {};
+    Bindings.onGoAhead = () => {};
+    Bindings.onGoBack = () => {};
+    Bindings.onPause = () => {};
+    Bindings.onPlay = () => {};
+    Bindings.onStop = () => {};
   }
 });

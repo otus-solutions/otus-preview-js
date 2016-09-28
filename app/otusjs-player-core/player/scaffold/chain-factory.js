@@ -43,7 +43,7 @@
     }
 
     function execute(pipe) {
-      _chainHead.execute(pipe);
+      _chainHead.execute(pipe, {});
     }
 
     function getChainHead() {

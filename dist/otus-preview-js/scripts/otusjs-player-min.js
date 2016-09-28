@@ -102,7 +102,7 @@
   angular
     .module('otusjs.player.component')
     .component('otusPlayer', {
-      template:'<md-content msd-wheel=$ctrl.catchMouseWheel($event)><otus-survey-header survey-identity=$ctrl.identity></otus-survey-header><otus-player-commander></otus-player-commander><otus-player-display></otus-player-display></md-content>',
+      template:'<md-content msd-wheel=$ctrl.catchMouseWheel($event)><otus-player-commander on-eject=$ctrl.eject() on-go-ahead=$ctrl.goAhead() on-go-back=$ctrl.goBack() on-pause=$ctrl.pause() on-play=$ctrl.play() on-stop=$ctrl.stop()></otus-player-commander><otus-survey-header survey-identity=$ctrl.identity></otus-survey-header><otus-player-display></otus-player-display></md-content>',
       controller: Controller,
       bindings: {
         surveyActivity: '<'
@@ -116,22 +116,57 @@
   function Controller(PlayerService) {
     let SURVEY_ITEM = '<otus-survey-item item-data="itemData" />';
     let self = this;
-    self.identity = {};
 
     /* Public methods */
     self.catchMouseWheel = catchMouseWheel;
+    self.eject = eject;
+    self.goAhead = goAhead;
+    self.goBack = goBack;
+    self.pause = pause;
+    self.play = play;
+    self.stop = stop;
     self.$onInit = onInit;
 
     function catchMouseWheel($event) {
       if (event.deltaY > 0) {
-        // goAhead();
+        goAhead();
       } else {
-        // goBack();
+        goBack();
       }
+    }
+
+    function eject() {
+    }
+
+    function goAhead() {
+      self.playerDisplay.loadItem();
+    }
+
+    function goBack() {
+      self.playerDisplay.loadItem();
+    }
+
+    function pause() {
+    }
+
+    function play() {
+      self.playerDisplay.loadItem();
+    }
+
+    function stop() {
     }
 
     function onInit() {
       self.identity = self.surveyActivity.template.identity;
+
+      /*
+       * These objects are initialized by child components of Player
+       * See player-commander-componente.js (onInit method)
+       * See player-display-componente.js (onInit method)
+       */
+      self.playerCommander = {};
+      self.playerDisplay = {};
+
       PlayerService.setup();
     }
   }
@@ -143,15 +178,24 @@
   angular
     .module('otusjs.player.component')
     .component('otusPlayerCommander', {
-      template:'<md-content layout-padding layout=row><md-toolbar style="border-radius: 3px" class=md-whiteframe-2dp><div class=md-toolbar-tools layout-align="space-around center"><md-button class=md-icon-button aria-label=Voltar ng-click=$ctrl.goBack() ng-disabled=$ctrl.isGoBackDisabled><md-icon md-font-set=material-icons>skip_previous</md-icon></md-button><md-button class=md-icon-button aria-label=Salvar><md-icon md-font-set=material-icons>save</md-icon></md-button><md-button class=md-icon-button aria-label=Avançar ng-click=$ctrl.goAhead() ng-disabled=$ctrl.isGoAheadDisabled><md-icon md-font-set=material-icons>skip_next</md-icon></md-button></div></md-toolbar></md-content>',
-      controller: Controller
+      template:'<md-content layout-padding layout=row><md-toolbar style="border-radius: 3px" class=md-whiteframe-2dp><div class=md-toolbar-tools layout-align="space-around center"><md-button class=md-icon-button aria-label=Voltar ng-click=$ctrl.goBack() ng-disabled=$ctrl.isGoBackDisabled><md-icon md-font-set=material-icons>skip_previous</md-icon></md-button><md-button class=md-icon-button aria-label=Play ng-click=$ctrl.play()><md-icon md-font-set=material-icons>play_arrow</md-icon></md-button><md-button class=md-icon-button aria-label=Salvar ng-click=$ctrl.pause()><md-icon md-font-set=material-icons>pause</md-icon></md-button><md-button class=md-icon-button aria-label=Cancelar ng-click=$ctrl.stop()><md-icon md-font-set=material-icons>stop</md-icon></md-button><md-button class=md-icon-button aria-label=Avançar ng-click=$ctrl.goAhead() ng-disabled=$ctrl.isGoAheadDisabled><md-icon md-font-set=material-icons>skip_next</md-icon></md-button></div></md-toolbar></md-content>',
+      controller: Controller,
+      bindings: {
+        onEject: '&',
+        onGoAhead: '&',
+        onGoBack: '&',
+        onPause: '&',
+        onPlay: '&',
+        onStop: '&'
+      }
     });
 
   Controller.$inject = [
+    '$scope',
     'otusjs.player.core.player.PlayerService'
   ];
 
-  function Controller(PlayerService) {
+  function Controller($scope, PlayerService) {
     var self = this;
 
     /* Public methods */
@@ -160,25 +204,33 @@
     self.pause = pause;
     self.play = play;
     self.stop = stop;
+    self.$onInit = onInit;
 
     function goAhead() {
       PlayerService.goAhead();
+      self.onGoAhead();
     }
 
     function goBack() {
       PlayerService.goBack();
+      self.onGoBack();
     }
 
     function pause() {
-      console.log('Pausing player...');
+      self.onPause();
     }
 
     function play() {
       PlayerService.play();
+      self.onPlay();
     }
 
     function stop() {
-      console.log('Stoping player...');
+      self.onStop();
+    }
+
+    function onInit() {
+      $scope.$parent.$ctrl.playerCommander = self;
     }
   }
 }());
@@ -206,21 +258,23 @@
     var SURVEY_ITEM = '<otus-survey-item item-data="itemData" />';
 
     /* Public methods */
+    self.loadItem = loadItem;
     self.$onInit = onInit;
 
     function _destroyCurrentItem() {
-      self.currentChild.destroy();
+      if (self.currentChild) {
+        self.currentChild.destroy();
+      }
+    }
+
+    function loadItem() {
+      _destroyCurrentItem();
+      $scope.itemData = PlayerService.getItem();
+      $element.find('section').prepend($compile(SURVEY_ITEM)($scope));
     }
 
     function onInit() {
-      self.isLoading = true;
-      PlayerService.play();
-      _loadItem(PlayerService.getItem());
-    }
-
-    function _loadItem() {
-      $scope.itemData = PlayerService.getItem();
-      $element.find('section').prepend($compile(SURVEY_ITEM)($scope));
+      $scope.$parent.$ctrl.playerDisplay = self;
     }
   }
 }());
@@ -986,6 +1040,7 @@
     let self = this;
     let _item = null;
     let _itemNavigation = null;
+    let _currentItem = 0;
 
     /* Public Interface */
     self.applyAnswer = applyAnswer;
@@ -1044,7 +1099,7 @@
     }
 
     function getCurrentItem() {
-      return CurrentItemService.getItem();
+      return CurrentItemService;
     }
 
     function getNextItems() {
@@ -1061,9 +1116,13 @@
       if (!CurrentItemService.hasItem()) {
         CurrentItemService.setup(_item, _itemNavigation);
       } else {
+        ++_currentItem;
         let currentItem = CurrentItemService.getItem();
+        let nextItem = CurrentSurveyService.getItems()[_currentItem];
+        let currentNavigation = CurrentSurveyService.getItems()[_currentItem];
+        // let currentItem = CurrentItemService.getItem();
         // let nextItem = NavigationService.getNext();
-        // CurrentItemService.setup(nextItem, nextItem.getNavigation(), currentItem.customID);
+        CurrentItemService.setup(nextItem, currentNavigation, currentItem.customID);
       }
     }
   }
@@ -1102,13 +1161,14 @@
     self.getRoutes = getRoutes;
     self.getValidationError = getValidationError;
     self.hasItem = hasItem;
-    self.ignoreValidation = ignoreValidation;
+    self.shouldIgnoreResponseEvaluation = shouldIgnoreResponseEvaluation;
+    self.shouldApplyAnswer = shouldApplyAnswer;
     self.observerRegistry = observerRegistry;
     self.setup = setup;
 
     function applyFilling() {
       if (_filling) {
-        ActivityFacadeService.fillQuestion(_filling);        
+        ActivityFacadeService.fillQuestion(_filling);
       }
     }
 
@@ -1161,8 +1221,12 @@
       }
     }
 
-    function ignoreValidation() {
-      return false;
+    function shouldIgnoreResponseEvaluation() {
+      return !_item.isQuestion();
+    }
+
+    function shouldApplyAnswer() {
+      return _item.isQuestion();
     }
 
     function observerRegistry(observer) {
@@ -1351,6 +1415,7 @@
        **************************************************************/
       /* PreAhead Phase */
       PlayerConfigurationService.onPreAhead(RunValidation);
+      PlayerConfigurationService.onPreAhead(ReadValidationError);
 
       /* ExecutionAhead Phase */
       PlayerConfigurationService.onAhead(ApplyAnswer);
@@ -1435,7 +1500,7 @@
     self.setup = setup;
 
     function getItem() {
-      return ActivityFacadeService.getCurrentItem();
+      return ActivityFacadeService.getCurrentItem().getItem();
     }
 
     function goAhead() {
@@ -1847,35 +1912,33 @@
 
   function Service(ActivityFacadeService) {
     let self = this;
-    let _flowData = null;
+    let _currentItem;
 
     /* Public methods */
-    self.catchPreData = catchPreData;
     self.beforeEffect = beforeEffect;
     self.effect = effect;
     self.afterEffect = afterEffect;
     self.getEffectResult = getEffectResult;
 
-    function catchPreData(flowData) {
-      _flowData = flowData;
+    function beforeEffect(pipe, flowData) {
+      _currentItem = ActivityFacadeService.getCurrentItem();
+
+      if (!_currentItem.shouldApplyAnswer()) {
+        pipe.skipStep = true;
+      } else {
+        pipe.skipStep = false;
+      }
     }
 
-    function beforeEffect() {
-      console.log('Answer applying will begin...');
-    }
-
-    function effect() {
-      console.log('Answer applying in progress...');
-
+    function effect(pipe, flowData) {
       ActivityFacadeService.applyAnswer();
     }
 
-    function afterEffect() {
-      console.log('Answer applying is ended.');
+    function afterEffect(pipe, flowData) {
     }
 
-    function getEffectResult() {
-      return _flowData;
+    function getEffectResult(pipe, flowData) {
+      return flowData;
     }
   }
 })();
@@ -1893,34 +1956,25 @@
 
   function Service(ActivityFacadeService) {
     let self = this;
-    let _flowData = null;
 
     /* Public methods */
-    self.catchPreData = catchPreData;
     self.beforeEffect = beforeEffect;
     self.effect = effect;
     self.afterEffect = afterEffect;
     self.getEffectResult = getEffectResult;
 
-    function catchPreData(flowData) {
-      _flowData = flowData;
+    function beforeEffect(pipe, flowData) {
     }
 
-    function beforeEffect() {
-      console.log('Survey initialization will begin...');
-    }
-
-    function effect() {
-      console.log('Survey initialization in progress...');
+    function effect(pipe, flowData) {
       ActivityFacadeService.initialize();
     }
 
-    function afterEffect() {
-      console.log('Survey initialization is ended.');
+    function afterEffect(pipe, flowData) {
     }
 
-    function getEffectResult() {
-      return _flowData;
+    function getEffectResult(pipe, flowData) {
+      return flowData;
     }
   }
 })();
@@ -1938,34 +1992,25 @@
 
   function Service(ActivityFacadeService) {
     let self = this;
-    let _flowData = null;
 
     /* Public methods */
-    self.catchPreData = catchPreData;
     self.beforeEffect = beforeEffect;
     self.effect = effect;
     self.afterEffect = afterEffect;
     self.getEffectResult = getEffectResult;
 
-    function catchPreData(flowData) {
-      _flowData = flowData;
+    function beforeEffect(pipe, flowData) {
     }
 
-    function beforeEffect() {
-      console.log('Item loading will begin...');
-    }
-
-    function effect() {
-      console.log('Item loading in progress...');
+    function effect(pipe, flowData) {
       ActivityFacadeService.loadNextItem();
     }
 
-    function afterEffect() {
-      console.log('Item loading is ended.');
+    function afterEffect(pipe, flowData) {
     }
 
-    function getEffectResult() {
-      return _flowData;
+    function getEffectResult(pipe, flowData) {
+      return flowData;
     }
   }
 })();
@@ -1983,47 +2028,47 @@
 
   function Service(ActivityFacadeService) {
     let self = this;
-    let _flowData = null;
     let _validationResult = {};
 
     /* Public methods */
-    self.catchPreData = catchPreData;
     self.beforeEffect = beforeEffect;
     self.effect = effect;
     self.afterEffect = afterEffect;
     self.getEffectResult = getEffectResult;
 
-    function catchPreData(flowData) {
-      _flowData = flowData;
+    function beforeEffect(pipe, flowData) {
     }
 
-    function beforeEffect() {
-      console.log('Validation error reading will begin...');
-    }
-
-    function effect() {
-      console.log('Validation error reading in progress...');
-
+    function effect(pipe, flowData) {
       _validationResult = {};
       _validationResult.hasError = false;
 
-      _flowData.validationResponse.validators.map((validator) => {
-        _validationResult[validator.name] = !validator.result;
-        if (!validator.result) {
-          _validationResult.hasError = true;
-        }
-      });
+      console.log(flowData);
 
-      _flowData.validationResult = _validationResult;
+      // flowData.validationResponse.validatorsResponse.some((validator) => {
+      //   validator.result = _parseBool(validator.result);
+      //   if (!validator.result) {
+      //     return true;
+      //   }
+      // });
+
+
+      // flowData.validationResponse.validators.map((validator) => {
+      //   _validationResult[validator.name] = !validator.result;
+      //   if (!validator.result) {
+      //     _validationResult.hasError = true;
+      //   }
+      // });
+
+      flowData.validationResult = _validationResult;
     }
 
-    function afterEffect() {
+    function afterEffect(pipe, flowData) {
       ActivityFacadeService.attachItemValidationError(_validationResult);
-      console.log('Validation error reading is ended.');
     }
 
-    function getEffectResult() {
-      return _flowData;
+    function getEffectResult(pipe, flowData) {
+      return flowData;
     }
   }
 })();
@@ -2044,50 +2089,37 @@
 
   function Service(ActivityFacadeService, ActionOverflowService, ReadValidationErrorStepService, ValidationService) {
     let self = this;
-    let _flowData = null;
-    let _validationResponse = null;
+    let _currentItem;
 
     /* Public methods */
-    self.catchPreData = catchPreData;
     self.beforeEffect = beforeEffect;
     self.effect = effect;
     self.afterEffect = afterEffect;
     self.getEffectResult = getEffectResult;
 
-    function catchPreData(flowData) {
-      _flowData = flowData;
+    function beforeEffect(pipe, flowData) {
+      _currentItem = ActivityFacadeService.getCurrentItem();
+
+      if (_currentItem.shouldIgnoreResponseEvaluation()) {
+        pipe.skipStep = true;
+      } else {
+        pipe.skipStep = false;
+      }
     }
 
-    function beforeEffect() {
-      console.log('Validation will begin...');
-    }
-
-    function effect() {
-      console.log('Validation in progress...');
-
-      let currentItem = ActivityFacadeService.getCurrentItem();
-      ValidationService.validateElement(currentItem.customID, _keepValidationResponse);
-    }
-
-    function afterEffect() {
-      _validationResponse.validatorsResponse.some((validator) => {
-        validator.result = _parseBool(validator.result);
-        if (!validator.result) {
-          ActionOverflowService.pipe(ReadValidationErrorStepService, _validationResponse);
-          ActionOverflowService.execute();
-          return true;
-        }
+    function effect(pipe, flowData) {
+      let currentItem = _currentItem.getItem();
+      ValidationService.validateElement(currentItem.customID, (validationResponse) => {
+        flowData.validationResponse = validationResponse;
       });
-
-      console.log('Validation is ended.');
     }
 
-    function getEffectResult() {
-      return _flowData;
+    function afterEffect(pipe, flowData) {
+      
     }
 
-    function _keepValidationResponse(response) {
-      _validationResponse = response[0];
+    function getEffectResult(pipe, flowData) {
+      return flowData;
     }
 
     function _parseBool(value) {
@@ -2111,43 +2143,40 @@
 
   function Service(ActivityFacadeService, ValidationService, ElementRegisterFactory) {
     let self = this;
-    let _flowData = null;
+    let _currentItem;
 
     /* Public methods */
-    self.catchPreData = catchPreData;
     self.beforeEffect = beforeEffect;
     self.effect = effect;
     self.afterEffect = afterEffect;
     self.getEffectResult = getEffectResult;
 
-    function catchPreData(flowData) {
-      _flowData = flowData;
+    function beforeEffect(pipe, flowData) {
+      _currentItem = ActivityFacadeService.getCurrentItem();
+
+      if (_currentItem.shouldIgnoreResponseEvaluation()) {
+        pipe.skipStep = true;
+      } else {
+        pipe.skipStep = false;
+      }
     }
 
-    function beforeEffect() {
-      console.log('Setup validation will begin...');
-    }
+    function effect(pipe, flowData) {
+      let elementRegister = ElementRegisterFactory.create(_currentItem.getItem().customID, { data: {} });
 
-    function effect() {
-      console.log('Setup validation in progress...');
-
-      let currentItem = ActivityFacadeService.getCurrentItem();
-      let elementRegister = ElementRegisterFactory.create(currentItem.customID, { data: {} });
-
-      Object.keys(currentItem.fillingRules.options).map((validator) => {
-        let reference = currentItem.fillingRules.options[validator].data;
+      Object.keys(_currentItem.getItem().fillingRules.options).map((validator) => {
+        let reference = _currentItem.getItem().fillingRules.options[validator].data;
         elementRegister.addValidator(validator, reference);
       });
 
       ValidationService.registerElement(elementRegister);
     }
 
-    function afterEffect(response) {
-      console.log('Setup validation is ended.');
+    function afterEffect(pipe, flowData) {
     }
 
-    function getEffectResult() {
-      return _flowData;
+    function getEffectResult(pipe, flowData) {
+      return flowData;
     }
   }
 })();
@@ -2197,7 +2226,7 @@
     }
 
     function execute(pipe) {
-      _chainHead.execute(pipe);
+      _chainHead.execute(pipe, {});
     }
 
     function getChainHead() {
@@ -2259,16 +2288,20 @@
     }
 
     function execute(pipe, flowData) {
-      if (_catchFlowData) _catchFlowData(flowData);
-      if (_preExecute) _preExecute();
-      if (_execute) _execute();
-      if (_postExecute) _postExecute();
+      if (_preExecute) _preExecute(pipe, flowData);
+
+      if (_execute && !pipe.skipStep) {
+        _execute(pipe, flowData);
+      }
+
+      if (_postExecute) _postExecute(pipe, flowData);
 
       if (pipe.isFlowing) {
+        pipe.skipStep = false;
         if (_getFlowData) {
-          if (_next) _next.execute(pipe, _getFlowData());
+          if (_next) _next.execute(pipe, _getFlowData(pipe, flowData));
         } else {
-          if (_next) _next.execute(pipe, null);
+          if (_next) _next.execute(pipe, flowData);
         }
       }
     }

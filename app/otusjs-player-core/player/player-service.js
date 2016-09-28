@@ -22,7 +22,7 @@
     self.setup = setup;
 
     function getItem() {
-      return ActivityFacadeService.getCurrentItem();
+      return ActivityFacadeService.getCurrentItem().getItem();
     }
 
     function goAhead() {

@@ -45,6 +45,7 @@
        **************************************************************/
       /* PreAhead Phase */
       PlayerConfigurationService.onPreAhead(RunValidation);
+      PlayerConfigurationService.onPreAhead(ReadValidationError);
 
       /* ExecutionAhead Phase */
       PlayerConfigurationService.onAhead(ApplyAnswer);

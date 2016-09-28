@@ -14,6 +14,7 @@
     let self = this;
     let _item = null;
     let _itemNavigation = null;
+    let _currentItem = 0;
 
     /* Public Interface */
     self.applyAnswer = applyAnswer;
@@ -72,7 +73,7 @@
     }
 
     function getCurrentItem() {
-      return CurrentItemService.getItem();
+      return CurrentItemService;
     }
 
     function getNextItems() {
@@ -89,9 +90,13 @@
       if (!CurrentItemService.hasItem()) {
         CurrentItemService.setup(_item, _itemNavigation);
       } else {
+        ++_currentItem;
         let currentItem = CurrentItemService.getItem();
+        let nextItem = CurrentSurveyService.getItems()[_currentItem];
+        let currentNavigation = CurrentSurveyService.getItems()[_currentItem];
+        // let currentItem = CurrentItemService.getItem();
         // let nextItem = NavigationService.getNext();
-        // CurrentItemService.setup(nextItem, nextItem.getNavigation(), currentItem.customID);
+        CurrentItemService.setup(nextItem, currentNavigation, currentItem.customID);
       }
     }
   }

@@ -1,11 +1,11 @@
-xdescribe('Current Question Service', function() {
+describe('Current Question Service', function() {
 
-  var Mock = {};
-  var Injections = {};
-  var service;
-  var CAD1 = 'CAD1';
-  var CAD2 = 'CAD2';
-  var CAD90 = 'CAD90';
+  let Mock = {};
+  let Injections = {};
+  let service;
+  let CAD1 = 'CAD1';
+  let CAD2 = 'CAD2';
+  let CAD90 = 'CAD90';
 
   beforeEach(function() {
     module('otusjs.player.core');
@@ -19,10 +19,12 @@ xdescribe('Current Question Service', function() {
 
   describe('setup method', function() {
 
-    it('should keep a reference to survey', function() {
-      service.setup(Mock.ActivityFacadeService.surveyActivity);
+    it('should open the survey activity', function() {
+      spyOn(Mock.ActivityFacadeService, 'openActivitySurvey');
 
-      expect(service.getSurvey()).toEqual(Mock.ActivityFacadeService.surveyActivity);
+      service.setup();
+
+      expect(Mock.ActivityFacadeService.openActivitySurvey).toHaveBeenCalledWith();
     });
 
   });
@@ -34,51 +36,7 @@ xdescribe('Current Question Service', function() {
     });
 
     it('should return the items of current survey', function() {
-      var value = service.getItems();
-
-      expect(value).toEqual(Mock.ActivityFacadeService.surveyActivity.template.itemContainer);
-    });
-
-  });
-
-  describe('getNavigations method', function() {
-
-    beforeEach(function() {
-      service.setup(Mock.ActivityFacadeService.surveyActivity);
-    });
-
-    it('should return the list of navigations of current survey', function() {
-      var value = service.getNavigations();
-
-      expect(value).toEqual(Mock.ActivityFacadeService.surveyActivity.template.navigationList);
-    });
-
-  });
-
-  describe('getNavigationByOrigin method', function() {
-
-    beforeEach(function() {
-      service.setup(Mock.ActivityFacadeService.surveyActivity);
-    });
-
-    describe('when exists a navigation', function() {
-
-      it('should return the navigation of origin', function() {
-        var navigation = service.getNavigationByOrigin(CAD1);
-
-        expect(navigation.origin).toEqual(CAD1);
-      });
-
-    });
-
-    describe('when not exists a navigation', function() {
-
-      it('should return null', function() {
-        var navigation = service.getNavigationByOrigin(CAD90);
-
-        expect(navigation).toEqual(null);
-      });
-
+      expect(service.getItems()).toEqual(Mock.surveyTemplate.itemContainer);
     });
 
   });
@@ -92,7 +50,7 @@ xdescribe('Current Question Service', function() {
     describe('when exists an item', function() {
 
       it('should return the item', function() {
-        var item = service.getItemByCustomID(CAD2);
+        let item = service.getItemByCustomID(CAD2);
 
         expect(item.customID).toEqual(CAD2);
       });
@@ -102,7 +60,7 @@ xdescribe('Current Question Service', function() {
     describe('when not exists an item', function() {
 
       it('should return null', function() {
-        var item = service.getItemByCustomID(CAD90);
+        let item = service.getItemByCustomID(CAD90);
 
         expect(item).toBe(null);
       });
@@ -111,24 +69,77 @@ xdescribe('Current Question Service', function() {
 
   });
 
+  describe('getNavigations method', function() {
+
+    beforeEach(function() {
+      service.setup(Mock.ActivityFacadeService.surveyActivity);
+    });
+
+    it('should return the list of navigations of current survey', function() {
+      let value = service.getNavigations();
+
+      expect(value).toEqual(Mock.surveyTemplate.navigationList);
+    });
+
+  });
+
+  describe('getNavigationByOrigin method', function() {
+
+    beforeEach(function() {
+      service.setup(Mock.ActivityFacadeService.surveyActivity);
+    });
+
+    describe('when exists a navigation', function() {
+
+      it('should return the navigation of origin', function() {
+        let navigation = service.getNavigationByOrigin(CAD1);
+
+        expect(navigation.origin).toEqual(CAD1);
+      });
+
+    });
+
+    describe('when not exists a navigation', function() {
+
+      it('should return null', function() {
+        let navigation = service.getNavigationByOrigin(CAD90);
+
+        expect(navigation).toEqual(null);
+      });
+
+    });
+
+  });
+
+  describe('initialize method', function() {
+
+    it('should initialize the survey activity', function() {
+      spyOn(Mock.ActivityFacadeService, 'initializeActivitySurvey');
+
+      service.initialize();
+
+      expect(Mock.ActivityFacadeService.initializeActivitySurvey).toHaveBeenCalledWith();
+    });
+
+  });
+
   function mockSurvey() {
     mockSurveyData();
 
-    Mock.ActivityFacadeService.surveyActivity.SurveyItemManager = {};
-    Mock.ActivityFacadeService.surveyActivity.SurveyItemManager.getItemList = jasmine.createSpy('getItemList').and.returnValue(Mock.ActivityFacadeService.surveyActivity.template.itemContainer);
-    Mock.ActivityFacadeService.surveyActivity.SurveyItemManager.getItemByTemplateID = jasmine.createSpy('getItemByTemplateID').and.returnValue(Mock.ActivityFacadeService.surveyActivity.template.itemContainer[1]);
+    Mock.surveyTemplate.SurveyItemManager = {};
+    Mock.surveyTemplate.SurveyItemManager.getItemList = jasmine.createSpy('getItemList').and.returnValue(Mock.surveyTemplate.itemContainer);
+    Mock.surveyTemplate.SurveyItemManager.getItemByTemplateID = jasmine.createSpy('getItemByTemplateID').and.returnValue(Mock.surveyTemplate.itemContainer[1]);
 
-    Mock.CAD1Navigation = Mock.ActivityFacadeService.surveyActivity.template.navigationList[0];
+    Mock.CAD1Navigation = Mock.surveyTemplate.navigationList[0];
     Mock.CAD1Navigation.listRoutes = jasmine.createSpy('listRoutes').and.returnValue(Mock.CAD1Navigation.routes);
 
-    Mock.ActivityFacadeService.surveyActivity.NavigationManager = {};
-    Mock.ActivityFacadeService.surveyActivity.NavigationManager.getNavigationList = jasmine.createSpy('getNavigationList').and.returnValue(Mock.ActivityFacadeService.surveyActivity.template.navigationList);
-    Mock.ActivityFacadeService.surveyActivity.NavigationManager.selectNavigationByOrigin = jasmine.createSpy('selectNavigationByOrigin').and.returnValue(Mock.CAD1Navigation);
+    Mock.surveyTemplate.NavigationManager = {};
+    Mock.surveyTemplate.NavigationManager.getNavigationList = jasmine.createSpy('getNavigationList').and.returnValue(Mock.surveyTemplate.navigationList);
+    Mock.surveyTemplate.NavigationManager.selectNavigationByOrigin = jasmine.createSpy('selectNavigationByOrigin').and.returnValue(Mock.CAD1Navigation);
   }
 
   function mockSurveyData() {
-    Mock.ActivityFacadeService.surveyActivity = {};
-    Mock.ActivityFacadeService.surveyActivity.template = {
+    Mock.surveyTemplate = {
       "extents": "StudioObject",
       "objectType": "Survey",
       "oid": "dXNlclVVSUQ6W3VuZGVmaW5lZF1zdXJ2ZXlVVUlEOls2YWM5MjJiMC01ZTJiLTExZTYtOGE0ZS01ZGQyNzhhODUzNTddcmVwb3NpdG9yeVVVSUQ6WyBOb3QgZG9uZSB5ZXQgXQ==",
@@ -2151,10 +2162,10 @@ xdescribe('Current Question Service', function() {
   }
 
   function mockModelActivityFacadeService($injector) {
-    Mock.ActivityFacadeService = $injector.get('ActivityFacadeService');
+    Mock.surveyActivity = $injector.get('ActivitySurveyFactory').create(null, null, Mock.surveyTemplate, {});
 
-    Mock.ActivityFacadeService.surveyActivity = Mock.ActivityFacadeService.surveyActivity;
-    spyOn(Mock.ActivityFacadeService, 'createQuestionFill');
+    Mock.ActivityFacadeService = $injector.get('ActivityFacadeService');
+    Mock.ActivityFacadeService.surveyActivity = Mock.surveyActivity;
 
     Injections.ActivityFacadeService = Mock.ActivityFacadeService;
   }

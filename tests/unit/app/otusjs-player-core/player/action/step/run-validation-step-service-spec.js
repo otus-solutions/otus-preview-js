@@ -9,6 +9,8 @@ describe('RunValidationStepService', function() {
     module('otusjs.player.core');
 
     inject(function(_$injector_) {
+      mockExecutionPipe();
+      mockFlowData();
       mockItemData();
       mockActivityFacadeService(_$injector_);
       mockActionOverflowService(_$injector_);
@@ -21,13 +23,15 @@ describe('RunValidationStepService', function() {
   describe('effect method', function() {
 
     beforeEach(function() {
-      spyOn(Mock.ActivityFacadeService, 'getCurrentItem').and.returnValue(Mock.itemData);
+      spyOn(Mock.currentItem, 'getItem');
       spyOn(Mock.ValidationService, 'validateElement');
-      service.effect();
+
+      service.beforeEffect(Mock.pipe, Mock.flowData);
+      service.effect(Mock.pipe, Mock.flowData);
     })
 
     it('should retrieve the current item', function() {
-      expect(Mock.ActivityFacadeService.getCurrentItem).toHaveBeenCalledWith();
+      expect(Mock.currentItem.getItem).toHaveBeenCalledWith();
     });
 
     it('should validate the item with ValidationService', function() {
@@ -42,12 +46,11 @@ describe('RunValidationStepService', function() {
 
       beforeEach(function() {
         mockFalseValidationResponse();
-        spyOn(Mock.ActivityFacadeService, 'getCurrentItem').and.returnValue(Mock.itemData);
         spyOn(Mock.ValidationService, 'validateElement').and.callFake(_callback);
         spyOn(Mock.ActionOverflowService, 'pipe');
         spyOn(Mock.ActionOverflowService, 'execute');
-        service.effect();
-        service.afterEffect();
+        service.effect(Mock.pipe, Mock.flowData);
+        service.afterEffect(Mock.pipe, Mock.flowData);
       })
 
       it('should pipe ReadValidationErrorStepService to ActionOverflowService', function() {
@@ -64,12 +67,11 @@ describe('RunValidationStepService', function() {
 
       beforeEach(function() {
         mockTrueValidationResponse();
-        spyOn(Mock.ActivityFacadeService, 'getCurrentItem').and.returnValue(Mock.itemData);
         spyOn(Mock.ValidationService, 'validateElement').and.callFake(_callback);
         spyOn(Mock.ActionOverflowService, 'pipe');
         spyOn(Mock.ActionOverflowService, 'execute');
-        service.effect();
-        service.afterEffect();
+        service.effect(Mock.pipe, Mock.flowData);
+        service.afterEffect(Mock.pipe, Mock.flowData);
       })
 
       it('should pipe ReadValidationErrorStepService to ActionOverflowService', function() {
@@ -87,7 +89,7 @@ describe('RunValidationStepService', function() {
   describe('getEffectResult method', function() {
 
     it('should return null', function() {
-      expect(service.getEffectResult()).toBe(null);
+      expect(service.getEffectResult(Mock.pipe, Mock.flowData)).toBeDefined();
     });
 
   });
@@ -95,6 +97,14 @@ describe('RunValidationStepService', function() {
   function _callback() {
     var callback = arguments[1];
     return callback([Mock.validationResponse]);
+  }
+
+  function mockExecutionPipe() {
+    Mock.pipe = {};
+  }
+
+  function mockFlowData() {
+    Mock.flowData = {};
   }
 
   function mockItemData() {
@@ -232,6 +242,12 @@ describe('RunValidationStepService', function() {
 
   function mockActivityFacadeService($injector) {
     Mock.ActivityFacadeService = $injector.get('otusjs.player.core.activity.ActivityFacadeService');
+    Mock.currentItem = {};
+    Mock.currentItem.getItem = () => { return Mock.itemData; };
+    Mock.currentItem.shouldIgnoreResponseEvaluation = () => { return false; };
+
+    spyOn(Mock.ActivityFacadeService, 'getCurrentItem').and.returnValue(Mock.currentItem);
+
     Injections.ActivityFacadeService = Mock.ActivityFacadeService;
   }
 

@@ -9,6 +9,8 @@ describe('SetupValidationStepService', function() {
     module('otusjs.player.core');
 
     inject(function(_$injector_) {
+      mockExecutionPipe();
+      mockFlowData();
       mockItemData();
       mockActivityFacadeService(_$injector_);
       mockValidationService(_$injector_);
@@ -20,11 +22,11 @@ describe('SetupValidationStepService', function() {
   describe('effect method', function() {
 
     beforeEach(function() {
-      spyOn(Mock.ActivityFacadeService, 'getCurrentItem').and.returnValue(Mock.itemData);
       spyOn(Mock.ElementRegisterFactory, 'create').and.returnValue(Mock.elementRegister);
       spyOn(Mock.ValidationService, 'registerElement');
       spyOn(Mock.elementRegister, 'addValidator');
-      service.effect();
+      service.beforeEffect(Mock.pipe, Mock.flowData);
+      service.effect(Mock.pipe, Mock.flowData);
     })
 
     it('should retrieve the current item', function() {
@@ -44,6 +46,14 @@ describe('SetupValidationStepService', function() {
     });
 
   });
+
+  function mockExecutionPipe() {
+    Mock.pipe = {};
+  }
+
+  function mockFlowData() {
+    Mock.flowData = {};
+  }
 
   function mockItemData() {
     Mock.itemData = {
@@ -136,6 +146,12 @@ describe('SetupValidationStepService', function() {
 
   function mockActivityFacadeService($injector) {
     Mock.ActivityFacadeService = $injector.get('otusjs.player.core.activity.ActivityFacadeService');
+    let currentItem = {};
+    currentItem.getItem = () => { return Mock.itemData; };
+    currentItem.shouldIgnoreResponseEvaluation = () => { return false; };
+
+    spyOn(Mock.ActivityFacadeService, 'getCurrentItem').and.returnValue(currentItem);
+
     Injections.ActivityFacadeService = Mock.ActivityFacadeService;
   }
 

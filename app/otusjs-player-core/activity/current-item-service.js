@@ -31,13 +31,14 @@
     self.getRoutes = getRoutes;
     self.getValidationError = getValidationError;
     self.hasItem = hasItem;
-    self.ignoreValidation = ignoreValidation;
+    self.shouldIgnoreResponseEvaluation = shouldIgnoreResponseEvaluation;
+    self.shouldApplyAnswer = shouldApplyAnswer;
     self.observerRegistry = observerRegistry;
     self.setup = setup;
 
     function applyFilling() {
       if (_filling) {
-        ActivityFacadeService.fillQuestion(_filling);        
+        ActivityFacadeService.fillQuestion(_filling);
       }
     }
 
@@ -90,8 +91,12 @@
       }
     }
 
-    function ignoreValidation() {
-      return false;
+    function shouldIgnoreResponseEvaluation() {
+      return !_item.isQuestion();
+    }
+
+    function shouldApplyAnswer() {
+      return _item.isQuestion();
     }
 
     function observerRegistry(observer) {

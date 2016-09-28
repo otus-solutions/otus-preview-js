@@ -18,22 +18,57 @@
   function Controller(PlayerService) {
     let SURVEY_ITEM = '<otus-survey-item item-data="itemData" />';
     let self = this;
-    self.identity = {};
 
     /* Public methods */
     self.catchMouseWheel = catchMouseWheel;
+    self.eject = eject;
+    self.goAhead = goAhead;
+    self.goBack = goBack;
+    self.pause = pause;
+    self.play = play;
+    self.stop = stop;
     self.$onInit = onInit;
 
     function catchMouseWheel($event) {
       if (event.deltaY > 0) {
-        // goAhead();
+        goAhead();
       } else {
-        // goBack();
+        goBack();
       }
+    }
+
+    function eject() {
+    }
+
+    function goAhead() {
+      self.playerDisplay.loadItem();
+    }
+
+    function goBack() {
+      self.playerDisplay.loadItem();
+    }
+
+    function pause() {
+    }
+
+    function play() {
+      self.playerDisplay.loadItem();
+    }
+
+    function stop() {
     }
 
     function onInit() {
       self.identity = self.surveyActivity.template.identity;
+
+      /*
+       * These objects are initialized by child components of Player
+       * See player-commander-componente.js (onInit method)
+       * See player-display-componente.js (onInit method)
+       */
+      self.playerCommander = {};
+      self.playerDisplay = {};
+
       PlayerService.setup();
     }
   }

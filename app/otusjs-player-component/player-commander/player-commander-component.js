@@ -5,14 +5,23 @@
     .module('otusjs.player.component')
     .component('otusPlayerCommander', {
       templateUrl: 'app/otusjs-player-component/player-commander/player-commander-template.html',
-      controller: Controller
+      controller: Controller,
+      bindings: {
+        onEject: '&',
+        onGoAhead: '&',
+        onGoBack: '&',
+        onPause: '&',
+        onPlay: '&',
+        onStop: '&'
+      }
     });
 
   Controller.$inject = [
+    '$scope',
     'otusjs.player.core.player.PlayerService'
   ];
 
-  function Controller(PlayerService) {
+  function Controller($scope, PlayerService) {
     var self = this;
 
     /* Public methods */
@@ -21,25 +30,33 @@
     self.pause = pause;
     self.play = play;
     self.stop = stop;
+    self.$onInit = onInit;
 
     function goAhead() {
       PlayerService.goAhead();
+      self.onGoAhead();
     }
 
     function goBack() {
       PlayerService.goBack();
+      self.onGoBack();
     }
 
     function pause() {
-      console.log('Pausing player...');
+      self.onPause();
     }
 
     function play() {
       PlayerService.play();
+      self.onPlay();
     }
 
     function stop() {
-      console.log('Stoping player...');
+      self.onStop();
+    }
+
+    function onInit() {
+      $scope.$parent.$ctrl.playerCommander = self;
     }
   }
 }());

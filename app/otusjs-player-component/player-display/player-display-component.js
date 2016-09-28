@@ -21,21 +21,23 @@
     var SURVEY_ITEM = '<otus-survey-item item-data="itemData" />';
 
     /* Public methods */
+    self.loadItem = loadItem;
     self.$onInit = onInit;
 
     function _destroyCurrentItem() {
-      self.currentChild.destroy();
+      if (self.currentChild) {
+        self.currentChild.destroy();
+      }
+    }
+
+    function loadItem() {
+      _destroyCurrentItem();
+      $scope.itemData = PlayerService.getItem();
+      $element.find('section').prepend($compile(SURVEY_ITEM)($scope));
     }
 
     function onInit() {
-      self.isLoading = true;
-      PlayerService.play();
-      _loadItem(PlayerService.getItem());
-    }
-
-    function _loadItem() {
-      $scope.itemData = PlayerService.getItem();
-      $element.find('section').prepend($compile(SURVEY_ITEM)($scope));
+      $scope.$parent.$ctrl.playerDisplay = self;
     }
   }
 }());

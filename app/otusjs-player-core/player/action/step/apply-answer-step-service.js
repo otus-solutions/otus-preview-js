@@ -11,35 +11,33 @@
 
   function Service(ActivityFacadeService) {
     let self = this;
-    let _flowData = null;
+    let _currentItem;
 
     /* Public methods */
-    self.catchPreData = catchPreData;
     self.beforeEffect = beforeEffect;
     self.effect = effect;
     self.afterEffect = afterEffect;
     self.getEffectResult = getEffectResult;
 
-    function catchPreData(flowData) {
-      _flowData = flowData;
+    function beforeEffect(pipe, flowData) {
+      _currentItem = ActivityFacadeService.getCurrentItem();
+
+      if (!_currentItem.shouldApplyAnswer()) {
+        pipe.skipStep = true;
+      } else {
+        pipe.skipStep = false;
+      }
     }
 
-    function beforeEffect() {
-      console.log('Answer applying will begin...');
-    }
-
-    function effect() {
-      console.log('Answer applying in progress...');
-
+    function effect(pipe, flowData) {
       ActivityFacadeService.applyAnswer();
     }
 
-    function afterEffect() {
-      console.log('Answer applying is ended.');
+    function afterEffect(pipe, flowData) {
     }
 
-    function getEffectResult() {
-      return _flowData;
+    function getEffectResult(pipe, flowData) {
+      return flowData;
     }
   }
 })();

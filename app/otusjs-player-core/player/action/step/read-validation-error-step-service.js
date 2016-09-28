@@ -11,47 +11,47 @@
 
   function Service(ActivityFacadeService) {
     let self = this;
-    let _flowData = null;
     let _validationResult = {};
 
     /* Public methods */
-    self.catchPreData = catchPreData;
     self.beforeEffect = beforeEffect;
     self.effect = effect;
     self.afterEffect = afterEffect;
     self.getEffectResult = getEffectResult;
 
-    function catchPreData(flowData) {
-      _flowData = flowData;
+    function beforeEffect(pipe, flowData) {
     }
 
-    function beforeEffect() {
-      console.log('Validation error reading will begin...');
-    }
-
-    function effect() {
-      console.log('Validation error reading in progress...');
-
+    function effect(pipe, flowData) {
       _validationResult = {};
       _validationResult.hasError = false;
 
-      _flowData.validationResponse.validators.map((validator) => {
-        _validationResult[validator.name] = !validator.result;
-        if (!validator.result) {
-          _validationResult.hasError = true;
-        }
-      });
+      console.log(flowData);
 
-      _flowData.validationResult = _validationResult;
+      // flowData.validationResponse.validatorsResponse.some((validator) => {
+      //   validator.result = _parseBool(validator.result);
+      //   if (!validator.result) {
+      //     return true;
+      //   }
+      // });
+
+
+      // flowData.validationResponse.validators.map((validator) => {
+      //   _validationResult[validator.name] = !validator.result;
+      //   if (!validator.result) {
+      //     _validationResult.hasError = true;
+      //   }
+      // });
+
+      flowData.validationResult = _validationResult;
     }
 
-    function afterEffect() {
+    function afterEffect(pipe, flowData) {
       ActivityFacadeService.attachItemValidationError(_validationResult);
-      console.log('Validation error reading is ended.');
     }
 
-    function getEffectResult() {
-      return _flowData;
+    function getEffectResult(pipe, flowData) {
+      return flowData;
     }
   }
 })();

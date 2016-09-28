@@ -9,6 +9,8 @@ describe('ReadValidationErrorStepService', function() {
     module('otusjs.player.core');
 
     inject(function(_$injector_) {
+      mockExecutionPipe();
+      mockFlowData();
       mockItemData();
       mockActivityFacadeService(_$injector_);
       service = _$injector_.get('otusjs.player.core.player.ReadValidationErrorStepService', Injections);
@@ -20,12 +22,11 @@ describe('ReadValidationErrorStepService', function() {
     beforeEach(function() {
       mockTrueValidationResponse();
       spyOn(Mock.ActivityFacadeService, 'getCurrentItem').and.returnValue(Mock.itemData);
-      service.catchPreData(Mock.flowData);
-      service.effect();
+      service.effect(Mock.pipe, Mock.flowData);
     })
 
     it('should build an object with all validator results', function() {
-      let flowData = service.getEffectResult();
+      let flowData = service.getEffectResult(Mock.pipe, Mock.flowData);
 
       expect(flowData.validationResult.mandatory).toBeDefined();
       expect(flowData.validationResult.rangeDate).toBeDefined();
@@ -46,12 +47,11 @@ describe('ReadValidationErrorStepService', function() {
 
       beforeEach(function() {
         mockFalseValidationResponse();
-        service.catchPreData(Mock.flowData);
-        service.effect();
+        service.effect(Mock.pipe, Mock.flowData);
       })
 
       it('should return the flag hasError equal to true', function() {
-        let flowData = service.getEffectResult();
+        let flowData = service.getEffectResult(Mock.pipe, Mock.flowData);
 
         expect(flowData.validationResult.hasError).toBe(true);
       });
@@ -62,12 +62,11 @@ describe('ReadValidationErrorStepService', function() {
 
       beforeEach(function() {
         mockTrueValidationResponse();
-        service.catchPreData(Mock.flowData);
-        service.effect();
+        service.effect(Mock.pipe, Mock.flowData);
       })
 
       it('should return the flag hasError equal to false', function() {
-        let flowData = service.getEffectResult();
+        let flowData = service.getEffectResult(Mock.pipe, Mock.flowData);
 
         expect(flowData.validationResult.hasError).toBe(false);
       });
@@ -75,6 +74,14 @@ describe('ReadValidationErrorStepService', function() {
     });
 
   });
+
+  function mockExecutionPipe() {
+    Mock.pipe = {};
+  }
+
+  function mockFlowData() {
+    Mock.flowData = {};
+  }
 
   function mockItemData() {
     Mock.itemData = {

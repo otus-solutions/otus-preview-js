@@ -11,34 +11,25 @@
 
   function Service(ActivityFacadeService) {
     let self = this;
-    let _flowData = null;
 
     /* Public methods */
-    self.catchPreData = catchPreData;
     self.beforeEffect = beforeEffect;
     self.effect = effect;
     self.afterEffect = afterEffect;
     self.getEffectResult = getEffectResult;
 
-    function catchPreData(flowData) {
-      _flowData = flowData;
+    function beforeEffect(pipe, flowData) {
     }
 
-    function beforeEffect() {
-      console.log('Item loading will begin...');
-    }
-
-    function effect() {
-      console.log('Item loading in progress...');
+    function effect(pipe, flowData) {
       ActivityFacadeService.loadNextItem();
     }
 
-    function afterEffect() {
-      console.log('Item loading is ended.');
+    function afterEffect(pipe, flowData) {
     }
 
-    function getEffectResult() {
-      return _flowData;
+    function getEffectResult(pipe, flowData) {
+      return flowData;
     }
   }
 })();

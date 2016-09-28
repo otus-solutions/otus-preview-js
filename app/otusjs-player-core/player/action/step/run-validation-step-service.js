@@ -14,50 +14,37 @@
 
   function Service(ActivityFacadeService, ActionOverflowService, ReadValidationErrorStepService, ValidationService) {
     let self = this;
-    let _flowData = null;
-    let _validationResponse = null;
+    let _currentItem;
 
     /* Public methods */
-    self.catchPreData = catchPreData;
     self.beforeEffect = beforeEffect;
     self.effect = effect;
     self.afterEffect = afterEffect;
     self.getEffectResult = getEffectResult;
 
-    function catchPreData(flowData) {
-      _flowData = flowData;
+    function beforeEffect(pipe, flowData) {
+      _currentItem = ActivityFacadeService.getCurrentItem();
+
+      if (_currentItem.shouldIgnoreResponseEvaluation()) {
+        pipe.skipStep = true;
+      } else {
+        pipe.skipStep = false;
+      }
     }
 
-    function beforeEffect() {
-      console.log('Validation will begin...');
-    }
-
-    function effect() {
-      console.log('Validation in progress...');
-
-      let currentItem = ActivityFacadeService.getCurrentItem();
-      ValidationService.validateElement(currentItem.customID, _keepValidationResponse);
-    }
-
-    function afterEffect() {
-      _validationResponse.validatorsResponse.some((validator) => {
-        validator.result = _parseBool(validator.result);
-        if (!validator.result) {
-          ActionOverflowService.pipe(ReadValidationErrorStepService, _validationResponse);
-          ActionOverflowService.execute();
-          return true;
-        }
+    function effect(pipe, flowData) {
+      let currentItem = _currentItem.getItem();
+      ValidationService.validateElement(currentItem.customID, (validationResponse) => {
+        flowData.validationResponse = validationResponse;
       });
-
-      console.log('Validation is ended.');
     }
 
-    function getEffectResult() {
-      return _flowData;
+    function afterEffect(pipe, flowData) {
+      
     }
 
-    function _keepValidationResponse(response) {
-      _validationResponse = response[0];
+    function getEffectResult(pipe, flowData) {
+      return flowData;
     }
 
     function _parseBool(value) {

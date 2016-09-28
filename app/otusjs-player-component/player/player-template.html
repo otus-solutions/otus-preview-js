@@ -1,5 +1,12 @@
 <md-content msd-wheel="$ctrl.catchMouseWheel($event)">
+  <otus-player-commander
+    on-eject="$ctrl.eject()"
+    on-go-ahead="$ctrl.goAhead()"
+    on-go-back="$ctrl.goBack()"
+    on-pause="$ctrl.pause()"
+    on-play="$ctrl.play()"
+    on-stop="$ctrl.stop()">
+  </otus-player-commander>
   <otus-survey-header survey-identity="$ctrl.identity"></otus-survey-header>
-  <otus-player-commander></otus-player-commander>
   <otus-player-display></otus-player-display>
 </md-content>

@@ -8,6 +8,8 @@ describe('LoadItemStepService', function() {
     module('otusjs.player.core');
 
     inject(function(_$injector_) {
+      mockExecutionPipe();
+      mockFlowData();
       mockActivityFacadeService(_$injector_);
       service = _$injector_.get('otusjs.player.core.player.LoadItemStepService', Injections);
     });
@@ -18,12 +20,20 @@ describe('LoadItemStepService', function() {
     it('should call ActivityFacadeService.applyAnswer', function() {
       spyOn(Mock.ActivityFacadeService, 'loadNextItem');
 
-      service.effect();
+      service.effect(Mock.pipe, Mock.flowData);
 
       expect(Mock.ActivityFacadeService.loadNextItem).toHaveBeenCalled();
     });
 
   });
+
+  function mockExecutionPipe() {
+    Mock.pipe = {};
+  }
+
+  function mockFlowData() {
+    Mock.flowData = {};
+  }
 
   function mockActivityFacadeService($injector) {
     Mock.ActivityFacadeService = $injector.get('otusjs.player.core.activity.ActivityFacadeService');
