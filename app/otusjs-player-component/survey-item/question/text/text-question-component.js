@@ -66,9 +66,8 @@
 
             if(uagent.search("android") > -1){
                 alert('true')
-                var re = /^[a-zA-Z0-9 ]*$/;
 
-                uiSpecialsService.apply($element).formatedSpecials(event);
+                // uiSpecialsService.apply($element).formatedSpecials(event);
                 // var str = $element.find('textarea');
                 // str.match(re);
             }
