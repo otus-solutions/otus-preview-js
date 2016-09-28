@@ -18,27 +18,29 @@
             element.on('keyup', formatedAlphanumeric);
 
             function shouldPrintChar(event) {
-                var keycode = event.which;
-                return (isValidKey());
+                var key = event.key;
+                console.log(key);
+                return (isValidKey(key));
             }
 
             function formatedAlphanumeric(event) {
-                console.log(element);
+                var key = event.key;
                 var currentValue = element[0].value;
+
                 if (currentValue.length === 0) {
                     lastValidValue = '';
-                } else if (isValidKey()) {
-                    // lastValidValue = element[0].val();
-                } else {
-                    console.log('voutrocar');
+                } else if (isValidKey(key)) {
+                    lastValidValue = element[0].value;
+                } else if (!isValidKey(key)) {
+                    // console.log('voutrocar');
                     element.val(lastValidValue);
                 }
             }
 
-            function isValidKey() {
-                var lastChar = answer[answer.length - 1];
+            function isValidKey(key) {
+                var key = event.key;
                 var reg = /^[a-zA-Z0-9 ]*$/;
-                return (reg.test(lastChar) && lastChar !== 'Dead' && lastChar !== 'Unidentified') ? true : false;
+                return (reg.test(key) && key !== 'Dead' && key !== 'Unidentified') ? true : false;
             }
         }
     }

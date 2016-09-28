@@ -10,7 +10,7 @@
 
         self.apply = apply;
 
-        function apply($element) {
+        function apply($element, answer) {
             var lastValidValue;
             var element = $element.find('textarea');
 
@@ -18,47 +18,30 @@
             element.on('keyup', formatedSpecials);
 
             function shouldPrintChar(event) {
-                var keycode = event.which;
-                return (!isSpecialsKey(keycode) || isValidKey(keycode));
+                var key = event.key;
+                return (!isValidKey(key));
             }
 
             function formatedSpecials(event) {
-                var keycode = event.which;
-                var currentValue = element.val();
+                var key = event.which;
+                var currentValue = element[0].value;
 
                 if (currentValue.length === 0) {
                     lastValidValue = '';
-                } else if (!isSpecialsKey(keycode) || isValidKey(keycode)) {
-                    lastValidValue = element.val();
-                } else if (!isValidKey(keycode)) {
+                } else if (isValidKey(key)) {
+                    lastValidValue = element[0].value;
+                } else if (!isValidKey(key)) {
+                    // console.log('voutrocar');
                     element.val(lastValidValue);
                 }
             }
 
-            function isSpecialsKey(keycode) {
-                return ((event.shiftKey === true && (keycode > 47 && keycode < 58)) || (keycode > 186 && keycode < 195) || (keycode > 218 && keycode < 223) || (keycode > 105 && keycode < 112) || (keycode == 226)) ? true : false;
+            function isValidKey(key) {
+                var key = event.key;
+                var reg = /^[a-zçA-ZÇ0-9 ]*$/;
+                return (reg.test(key) && key !== 'Dead' && key !== 'Unidentified') ? true : false;
             }
 
-            function isValidKey(keycode) {
-                var shiftKey = (keycode === 16);
-                var ctrlkey = (keycode === 17);
-                var backspaceKey = (keycode === 8);
-                var spacebar = (keycode === 32);
-                var capslock = (keycode === 20);
-                var homeKey = (keycode === 36);
-                var endKey = (keycode === 35);
-                var deleteKey = (keycode === 46);
-                var leftKey = (keycode === 37);
-                var rightKey = (keycode === 39);
-                var enterkey = (keycode === 13);
-
-                return (shiftKey || ctrlkey || backspaceKey || spacebar || capslock || homeKey || endKey || deleteKey || leftKey || rightKey || enterkey) ? true : false;
-            }
-
-            function toUnicodeTablet(char) {
-                var getUTF8 = scape(char);
-                console.log("&#" + parseInt(getUTF8.substring(getUTF8.match(/\%u/) !== null ? 2 : 1), 16) + ";");
-            }
         }
 
     }

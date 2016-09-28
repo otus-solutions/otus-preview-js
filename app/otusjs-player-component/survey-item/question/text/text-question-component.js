@@ -24,9 +24,6 @@
         var self = this;
 
         _init();
-        tabletKey();
-
-        self.tabletKey = tabletKey;
 
         self.hasUpperCase = CurrentQuestion.getFillingRules().upperCase;
         self.hasLowerCase = CurrentQuestion.getFillingRules().lowerCase;
@@ -36,7 +33,6 @@
         self.update = function() {
             var answer = self.answer;
 
-            console.log(typeof answer);
             if (self.hasLowerCase) {
                 answer = answer.toLowerCase();
             }
@@ -48,7 +44,7 @@
               uiAlphanumericService.apply($element, self.answer);
             }
             if (self.hasSpecials && self.hasSpecials.data.reference) {
-              uiSpecialsService.apply($element);
+              uiSpecialsService.apply($element, self.answer);
             }
             self.onUpdate({
                 valueType: 'answer',
@@ -61,21 +57,6 @@
           self.hasSpecials = CurrentQuestion.getFillingRules().specials;
         }
 
-        function tabletKey(keycode) {
-            console.log('entrou unicode');
-
-            var uagent = navigator.userAgent.toLowerCase();
-
-            if (uagent.search("android") > -1) {
-                // alert('true');
-
-                // uiSpecialsService.apply($element).formatedSpecials(event);
-                // var str = $element.find('textarea');
-                // str.match(re);
-            } else {
-                // alert('false');
-            }
-        }
     }
 
 })();
