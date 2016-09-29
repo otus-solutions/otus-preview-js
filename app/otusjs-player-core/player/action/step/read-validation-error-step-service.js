@@ -34,7 +34,7 @@
         }
       });
 
-      delete flowData.validationResponse;
+      // delete flowData.validationResponse;
       flowData.validationResult = _validationResult;
     }
 
@@ -42,7 +42,6 @@
     }
 
     function getEffectResult(pipe, flowData) {
-      console.log(flowData);
       return flowData;
     }
   }

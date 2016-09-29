@@ -1,4 +1,4 @@
-describe('RunValidationStepService', function() {
+xdescribe('RunValidationStepService', function() {
 
   let Mock = {};
   let Injections = {};
@@ -243,7 +243,7 @@ describe('RunValidationStepService', function() {
   function mockActivityFacadeService($injector) {
     Mock.ActivityFacadeService = $injector.get('otusjs.player.core.activity.ActivityFacadeService');
     Mock.currentItem = {};
-    Mock.currentItem.getItem = () => { return Mock.itemData; };
+    Mock.currentItem.getItem = () => { return false; };
     Mock.currentItem.shouldIgnoreResponseEvaluation = () => { return false; };
 
     spyOn(Mock.ActivityFacadeService, 'getCurrentItem').and.returnValue(Mock.currentItem);

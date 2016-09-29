@@ -10,6 +10,7 @@ describe('Current Question Service', function() {
     module('otusjs.player.core');
 
     inject(function(_$injector_) {
+      mockItemObserver();
       mockSurveyItems();
       mockNavigations()
       mockValidationError()
@@ -35,17 +36,24 @@ describe('Current Question Service', function() {
 
   });
 
-  describe('attachItemValidationError method', function() {
+  describe('attachValidationError method', function() {
 
     beforeEach(function() {
       service.setup(Mock.itemVAL1, Mock.navigation);
+      service.observerRegistry(Mock.itemObserver);
       service.fill(Mock.rawFilling);
     });
 
     it('should keep the validation error data', function() {
-      service.attachItemValidationError(Mock.validationError);
+      service.attachValidationError(Mock.validationError);
 
       expect(service.getValidationError()).toEqual(Mock.validationError);
+    });
+
+    it('should notify the observer', function() {
+      service.attachValidationError(Mock.validationError);
+
+      expect(Mock.itemObserver.updateValidation).toHaveBeenCalledWith(Mock.validationError);
     });
 
   });
@@ -59,7 +67,7 @@ describe('Current Question Service', function() {
     it('should get a QuestionFill based on raw filling data', function() {
       service.fill(Mock.rawFilling);
 
-      expect(Mock.ActivityFacadeService.createQuestionFill).toHaveBeenCalledWith(Mock.itemVAL1.customID, Mock.rawFilling.answer, Mock.rawFilling.metadata, Mock.rawFilling.comment);
+      expect(Mock.ActivityFacadeService.createQuestionFill).toHaveBeenCalledWith(Mock.itemVAL1.customID);
     });
 
     it('should keeps the QuestionFill created', function() {
@@ -223,6 +231,11 @@ describe('Current Question Service', function() {
     });
 
   });
+
+  function mockItemObserver() {
+    Mock.itemObserver = {};
+    Mock.itemObserver.updateValidation = jasmine.createSpy('updateValidation');
+  }
 
   function mockValidationError() {
     Mock.validationError = {};

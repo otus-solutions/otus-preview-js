@@ -29,9 +29,9 @@
       _stepChain.chain(link);
     }
 
-    function execute() {
+    function execute(flowData) {
       self.isFlowing = true;
-      return _stepChain.execute(self, {});
+      return _stepChain.execute(self, flowData);
     }
 
     function stopFlow() {

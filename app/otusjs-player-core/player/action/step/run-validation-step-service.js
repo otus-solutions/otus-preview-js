@@ -33,6 +33,7 @@
     }
 
     function effect(pipe, flowData) {
+      console.log(_currentItem.shouldIgnoreResponseEvaluation());
       let currentItem = _currentItem.getItem();
       ValidationService.validateElement(currentItem.customID, (validationResponse) => {
         flowData.validationResponse = validationResponse[0];

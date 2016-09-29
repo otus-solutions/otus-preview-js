@@ -181,7 +181,7 @@ describe('ReadValidationErrorStepService', function() {
     Mock.flowData = {};
     Mock.flowData.validationResponse = {
       "elementID": "CAD1",
-      "validators": [{
+      "validatorsResponse": [{
         "name": "mandatory",
         "reference": "true",
         "result": true
@@ -204,7 +204,7 @@ describe('ReadValidationErrorStepService', function() {
     Mock.flowData = {};
     Mock.flowData.validationResponse = {
       "elementID": "CAD1",
-      "validators": [{
+      "validatorsResponse": [{
         "name": "mandatory",
         "reference": "true",
         "result": true

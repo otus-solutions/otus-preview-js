@@ -29,7 +29,7 @@
       if (flowData.validationResult.hasError) {
         pipe.isFlowing = false;
       }
-      delete flowData.validationResult;
+      // delete flowData.validationResult;
     }
 
     function getEffectResult(pipe, flowData) {

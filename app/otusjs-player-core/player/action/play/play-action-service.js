@@ -6,12 +6,13 @@
     .service('otusjs.player.core.player.PlayActionService', Service);
 
   Service.$inject = [
+    'otusjs.player.core.player.ActionPipeService',
     'otusjs.player.core.player.PrePlayActionService',
     'otusjs.player.core.player.ExecutionPlayActionService',
     'otusjs.player.core.player.PostPlayActionService'
   ];
 
-  function Service(PrePlayActionService, ExecutionPlayActionService, PostPlayActionService) {
+  function Service(ActionPipeService, PrePlayActionService, ExecutionPlayActionService, PostPlayActionService) {
     let self = this;
 
     /* Public methods */
@@ -21,9 +22,9 @@
     self.execute = execute;
 
     function execute() {
-      PrePlayActionService.execute();
-      ExecutionPlayActionService.execute();
-      PostPlayActionService.execute();
+      let phaseData = PrePlayActionService.execute(ActionPipeService.flowData);
+      phaseData = ExecutionPlayActionService.execute(phaseData);
+      phaseData = PostPlayActionService.execute(phaseData);
     }
   }
 })();

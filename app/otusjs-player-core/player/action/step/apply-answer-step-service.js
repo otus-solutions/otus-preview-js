@@ -33,6 +33,7 @@
 
     function effect(pipe, flowData) {
       ActivityFacadeService.applyAnswer();
+      flowData.answerToEvaluate.data = _currentItem.getFilling().answer.value || {};
     }
 
     function afterEffect(pipe, flowData) {

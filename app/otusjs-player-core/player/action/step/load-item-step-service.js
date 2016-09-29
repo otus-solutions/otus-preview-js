@@ -23,6 +23,8 @@
 
     function effect(pipe, flowData) {
       ActivityFacadeService.loadNextItem();
+      flowData.answerToEvaluate = {};
+      flowData.answerToEvaluate.data = {};
     }
 
     function afterEffect(pipe, flowData) {

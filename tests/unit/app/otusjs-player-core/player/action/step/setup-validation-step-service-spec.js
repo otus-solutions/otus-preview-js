@@ -34,7 +34,7 @@ describe('SetupValidationStepService', function() {
     });
 
     it('should create an ElementRegister instance', function() {
-      expect(Mock.ElementRegisterFactory.create).toHaveBeenCalledWith(Mock.itemData.customID, { data: {} });
+      expect(Mock.ElementRegisterFactory.create).toHaveBeenCalledWith(Mock.itemData.customID,   Mock.flowData.answerToEvaluate);
     });
 
     it('should add a validator in ElementRegister instance for each filling rule option', function() {
@@ -53,6 +53,7 @@ describe('SetupValidationStepService', function() {
 
   function mockFlowData() {
     Mock.flowData = {};
+    Mock.flowData.answerToEvaluate = {};
   }
 
   function mockItemData() {

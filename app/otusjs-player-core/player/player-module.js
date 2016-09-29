@@ -45,12 +45,13 @@
        *
        **************************************************************/
       /* PreAhead Phase */
+      PlayerConfigurationService.onPreAhead(ApplyAnswer);
       PlayerConfigurationService.onPreAhead(RunValidation);
       PlayerConfigurationService.onPreAhead(ReadValidationError);
       PlayerConfigurationService.onPreAhead(HandleValidationError);
 
       /* ExecutionAhead Phase */
-      PlayerConfigurationService.onAhead(ApplyAnswer);
+      // PlayerConfigurationService.onAhead(ApplyAnswer);
 
       /* PostAhead Phase */
       PlayerConfigurationService.onPostAhead(LoadItem);

@@ -32,9 +32,7 @@
     }
 
     function effect(pipe, flowData) {
-      let answer = {}
-      answer.data = _currentItem.getFilling().answer.value;
-      let elementRegister = ElementRegisterFactory.create(_currentItem.getItem().customID, answer);
+      let elementRegister = ElementRegisterFactory.create(_currentItem.getItem().customID, flowData.answerToEvaluate);
 
       Object.keys(_currentItem.getItem().fillingRules.options).map((validator) => {
         let reference = _currentItem.getItem().fillingRules.options[validator].data;
