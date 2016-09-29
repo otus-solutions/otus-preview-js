@@ -12,34 +12,34 @@
 
         function apply($element, answer) {
             var lastValidValue;
-            var element = $element.find('textarea');
+            var element = $element.find('textarea')[0];
 
-            element.on('keydown', shouldPrintChar);
-            element.on('keyup', formatedAlphanumeric);
+            shouldPrintChar();
+            formatedAlphanumeric();
 
-            function shouldPrintChar(event) {
-                var key = event.key;
-                console.log(key);
+            function shouldPrintChar() {
+                var key = element.value;
                 return (isValidKey(key));
             }
 
-            function formatedAlphanumeric(event) {
-                var key = event.key;
-                var currentValue = element[0].value;
+            function formatedAlphanumeric() {
+                var key = element.value;
+                var currentValue = element.value;
 
                 if (currentValue.length === 0) {
                     lastValidValue = '';
                 } else if (isValidKey(key)) {
-                    lastValidValue = element[0].value;
+                    lastValidValue = element.value;
+                    console.log(lastValidValue);
                 } else if (!isValidKey(key)) {
-                    // console.log('voutrocar');
-                    element.val(lastValidValue);
+                    $element.find('textarea').val(lastValidValue);
+                    console.log($element.find('textarea').val(lastValidValue));
                 }
             }
 
             function isValidKey(key) {
-                var key = event.key;
-                var reg = /^[a-zA-Z0-9 ]*$/;
+                var key = element.value;
+                var reg = /^[a-zçA-ZÇ0-9 .,]*$/;
                 return (reg.test(key) && key !== 'Dead' && key !== 'Unidentified') ? true : false;
             }
         }
