@@ -21,9 +21,9 @@
     self.execute = execute;
 
     function execute() {
-      PreAheadActionService.execute();
-      ExecutionAheadActionService.execute();
-      PostAheadActionService.execute();
+      let phaseData = PreAheadActionService.execute();
+      phaseData = ExecutionAheadActionService.execute(phaseData);
+      phaseData = PostAheadActionService.execute(phaseData);
     }
   }
 })();

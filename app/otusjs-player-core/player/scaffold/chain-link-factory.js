@@ -63,6 +63,8 @@
           if (_next) _next.execute(pipe, flowData);
         }
       }
+
+      return { pipe: pipe, flowData: flowData };
     }
 
     function catchFlowData(procedure) {

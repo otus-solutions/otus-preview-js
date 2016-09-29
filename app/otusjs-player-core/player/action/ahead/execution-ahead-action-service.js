@@ -31,8 +31,14 @@
       _stepChain.chain(link);
     }
 
-    function execute() {
-      _stepChain.execute(self);
+    function execute(phaseData) {
+      if (phaseData.pipe.isFlowing) {
+        self.isFlowing = phaseData.pipe.isFlowing;
+        self.flowData = phaseData.flowData;
+        return _stepChain.execute(self, self.flowData);
+      } else {
+        return phaseData;
+      }
     }
 
     function stopFlow() {

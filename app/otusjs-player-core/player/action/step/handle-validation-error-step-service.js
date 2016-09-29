@@ -3,7 +3,7 @@
 
   angular
     .module('otusjs.player.core.player')
-    .service('otusjs.player.core.player.ApplyAnswerStepService', Service);
+    .service('otusjs.player.core.player.HandleValidationErrorStepService', Service);
 
   Service.$inject = [
     'otusjs.player.core.activity.ActivityFacadeService'
@@ -11,7 +11,6 @@
 
   function Service(ActivityFacadeService) {
     let self = this;
-    let _currentItem;
 
     /* Public methods */
     self.beforeEffect = beforeEffect;
@@ -20,22 +19,17 @@
     self.getEffectResult = getEffectResult;
 
     function beforeEffect(pipe, flowData) {
-      _currentItem = ActivityFacadeService.getCurrentItem();
-
-      if (!_currentItem.shouldApplyAnswer()) {
-        pipe.skipStep = true;
-      } else {
-        pipe.skipStep = false;
-      }
-
-      pipe.isFlowing = true;
     }
 
     function effect(pipe, flowData) {
-      ActivityFacadeService.applyAnswer();
+      ActivityFacadeService.attachItemValidationError(flowData.validationResult);
     }
 
     function afterEffect(pipe, flowData) {
+      if (flowData.validationResult.hasError) {
+        pipe.isFlowing = false;
+      }
+      delete flowData.validationResult;
     }
 
     function getEffectResult(pipe, flowData) {

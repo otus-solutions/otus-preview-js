@@ -11,10 +11,11 @@
       'otusjs.player.core.player.ReadValidationErrorStepService',
       'otusjs.player.core.player.RunValidationStepService',
       'otusjs.player.core.player.SetupValidationStepService',
+      'otusjs.player.core.player.HandleValidationErrorStepService',
       run
     ]);
 
-    function run(PlayerConfigurationService, ApplyAnswer, InitializeSurveyActivity, LoadItem, ReadValidationError, RunValidation, SetupValidation) {
+    function run(PlayerConfigurationService, ApplyAnswer, InitializeSurveyActivity, LoadItem, ReadValidationError, RunValidation, SetupValidation, HandleValidationError) {
       /**************************************************************
        * Play Phase
        *
@@ -46,6 +47,7 @@
       /* PreAhead Phase */
       PlayerConfigurationService.onPreAhead(RunValidation);
       PlayerConfigurationService.onPreAhead(ReadValidationError);
+      PlayerConfigurationService.onPreAhead(HandleValidationError);
 
       /* ExecutionAhead Phase */
       PlayerConfigurationService.onAhead(ApplyAnswer);

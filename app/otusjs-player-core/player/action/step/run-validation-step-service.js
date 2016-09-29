@@ -35,12 +35,12 @@
     function effect(pipe, flowData) {
       let currentItem = _currentItem.getItem();
       ValidationService.validateElement(currentItem.customID, (validationResponse) => {
-        flowData.validationResponse = validationResponse;
+        flowData.validationResponse = validationResponse[0];
       });
     }
 
     function afterEffect(pipe, flowData) {
-      
+
     }
 
     function getEffectResult(pipe, flowData) {

@@ -35,7 +35,7 @@
     }
 
     function attachItemValidationError(validationError) {
-      CurrentItemService.attachValidationError();
+      CurrentItemService.attachValidationError(validationError);
     }
 
     function setupAnswer(answerData) {

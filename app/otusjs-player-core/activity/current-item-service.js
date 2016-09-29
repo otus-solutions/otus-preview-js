@@ -21,7 +21,7 @@
 
     /* Public Interface */
     self.applyFilling = applyFilling;
-    self.attachItemValidationError = attachItemValidationError;
+    self.attachValidationError = attachValidationError;
     self.fill = fill;
     self.getFilling = getFilling;
     self.getFillingRules = getFillingRules;
@@ -42,13 +42,15 @@
       }
     }
 
-    function attachItemValidationError(validationError) {
+    function attachValidationError(validationError) {
       _validationError = validationError;
-      // _observer.updateValidation(validationMap);
+      _observer.updateValidation(validationError);
     }
 
     function fill(filling) {
-      _filling = ActivityFacadeService.createQuestionFill(_item.customID, filling.answer, filling.metadata, filling.comment);
+      _filling.answer.value = filling.answer;
+      _filling.metadata.value = filling.metadata;
+      _filling.comment = filling.comment;
     };
 
     function getFilling() {
@@ -107,6 +109,7 @@
       _item = item;
       _navigation = navigation;
       _previousItem = previousItem || null;
+      _filling = ActivityFacadeService.createQuestionFill(_item.customID);
     }
   }
 }());

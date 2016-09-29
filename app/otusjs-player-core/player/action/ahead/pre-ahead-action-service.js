@@ -14,8 +14,6 @@
     let self = this;
     let _stepChain = ChainFactory.create();
 
-    self.isFlowing = true;
-
     /* Public methods */
     self.pipe = pipe;
     self.execute = execute;
@@ -32,7 +30,8 @@
     }
 
     function execute() {
-      _stepChain.execute(self);
+      self.isFlowing = true;
+      return _stepChain.execute(self, {});
     }
 
     function stopFlow() {

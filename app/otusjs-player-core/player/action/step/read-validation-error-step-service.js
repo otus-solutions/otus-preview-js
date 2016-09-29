@@ -26,31 +26,23 @@
       _validationResult = {};
       _validationResult.hasError = false;
 
-      console.log(flowData);
+      flowData.validationResponse.validatorsResponse.map((validator) => {
+        _validationResult[validator.name] = !validator.result;
+        validator.result = validator.result;
+        if (!validator.result) {
+          _validationResult.hasError = true
+        }
+      });
 
-      // flowData.validationResponse.validatorsResponse.some((validator) => {
-      //   validator.result = _parseBool(validator.result);
-      //   if (!validator.result) {
-      //     return true;
-      //   }
-      // });
-
-
-      // flowData.validationResponse.validators.map((validator) => {
-      //   _validationResult[validator.name] = !validator.result;
-      //   if (!validator.result) {
-      //     _validationResult.hasError = true;
-      //   }
-      // });
-
+      delete flowData.validationResponse;
       flowData.validationResult = _validationResult;
     }
 
     function afterEffect(pipe, flowData) {
-      ActivityFacadeService.attachItemValidationError(_validationResult);
     }
 
     function getEffectResult(pipe, flowData) {
+      console.log(flowData);
       return flowData;
     }
   }
