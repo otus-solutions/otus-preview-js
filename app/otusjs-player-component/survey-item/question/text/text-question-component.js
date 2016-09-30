@@ -16,11 +16,10 @@
         '$scope',
         '$element',
         'otusjs.player.core.CurrentQuestion',
-        'uiSpecialsService',
-        'uiAlphanumericService'
+        'uiFormatedService'
     ];
 
-    function TextQuestionController($scope, $element, CurrentQuestion, uiSpecialsService, uiAlphanumericService) {
+    function TextQuestionController($scope, $element, CurrentQuestion, uiFormatedService) {
         var self = this;
 
         _init();
@@ -32,7 +31,6 @@
 
         self.update = function() {
             var answer = self.answer;
-
             if (self.hasLowerCase) {
                 answer = answer.toLowerCase();
             }
@@ -41,10 +39,10 @@
             }
 
             if (self.hasAlphanumeric && self.hasAlphanumeric.data.reference) {
-              uiAlphanumericService.apply($element, self.answer);
+              answer = uiFormatedService.apply($element, self.answer);
             }
             if (self.hasSpecials && self.hasSpecials.data.reference) {
-              uiSpecialsService.apply($element, self.answer);
+              answer = uiFormatedService.apply($element, self.answer);
             }
             self.onUpdate({
                 valueType: 'answer',
