@@ -97,55 +97,55 @@ describe('PlayerConfigurationService', function() {
   });
 
   function mockPlayActionService($injector) {
-    Mock.PlayActionService = $injector.get('otusjs.player.core.player.PlayActionService');
+    Mock.PlayActionService = $injector.get('otusjs.player.core.phase.PlayActionService');
     Injections.PlayActionService = Mock.PlayActionService;
   }
 
   function mockPrePlayActionService($injector) {
-    Mock.PrePlayActionService = $injector.get('otusjs.player.core.player.PrePlayActionService');
+    Mock.PrePlayActionService = $injector.get('otusjs.player.core.phase.PrePlayActionService');
     Injections.PrePlayActionService = Mock.PrePlayActionService;
   }
 
   function mockExecutionPlayActionService($injector) {
-    Mock.ExecutionPlayActionService = $injector.get('otusjs.player.core.player.ExecutionPlayActionService');
+    Mock.ExecutionPlayActionService = $injector.get('otusjs.player.core.phase.ExecutionPlayActionService');
     Injections.ExecutionPlayActionService = Mock.ExecutionPlayActionService;
   }
 
   function mockPostPlayActionService($injector) {
-    Mock.PostPlayActionService = $injector.get('otusjs.player.core.player.PostPlayActionService');
+    Mock.PostPlayActionService = $injector.get('otusjs.player.core.phase.PostPlayActionService');
     Injections.PostPlayActionService = Mock.PostPlayActionService;
   }
 
   function mockAheadActionService($injector) {
-    Mock.AheadActionService = $injector.get('otusjs.player.core.player.AheadActionService');
+    Mock.AheadActionService = $injector.get('otusjs.player.core.phase.AheadActionService');
     Injections.AheadActionService = Mock.AheadActionService;
   }
 
   function mockPreAheadActionService($injector) {
-    Mock.PreAheadActionService = $injector.get('otusjs.player.core.player.PreAheadActionService');
+    Mock.PreAheadActionService = $injector.get('otusjs.player.core.phase.PreAheadActionService');
     Injections.PreAheadActionService = Mock.PreAheadActionService;
   }
 
   function mockExecutionAheadActionService($injector) {
-    Mock.ExecutionAheadActionService = $injector.get('otusjs.player.core.player.ExecutionAheadActionService');
+    Mock.ExecutionAheadActionService = $injector.get('otusjs.player.core.phase.ExecutionAheadActionService');
     Injections.ExecutionAheadActionService = Mock.ExecutionAheadActionService;
   }
 
   function mockPostAheadActionService($injector) {
-    Mock.PostAheadActionService = $injector.get('otusjs.player.core.player.PostAheadActionService');
+    Mock.PostAheadActionService = $injector.get('otusjs.player.core.phase.PostAheadActionService');
     Injections.PostAheadActionService = Mock.PostAheadActionService;
   }
 
   function mockChain($injector) {
-    let factory = $injector.get('otusjs.player.core.player.ChainFactory');
+    let factory = $injector.get('otusjs.player.core.scaffold.ChainFactory');
     Mock.chain = factory.create();
     Injections.ChainFactory = factory;
     spyOn(Injections.ChainFactory, 'create').and.returnValue(Mock.chain);
   }
 
   function mockChainLink($injector) {
-    Mock.ChainLinkFactory = $injector.get('otusjs.player.core.player.ChainLinkFactory');
-    Mock.step = $injector.get('otusjs.player.core.player.ChainLinkFactory').create();
+    Mock.ChainLinkFactory = $injector.get('otusjs.player.core.scaffold.ChainLinkFactory');
+    Mock.step = $injector.get('otusjs.player.core.scaffold.ChainLinkFactory').create();
     spyOn(Mock.ChainLinkFactory, 'create').and.returnValue(Mock.step);
     Injections.ChainLinkFactory = Mock.ChainLinkFactory;
   }

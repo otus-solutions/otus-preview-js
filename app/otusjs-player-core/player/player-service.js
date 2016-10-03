@@ -6,12 +6,13 @@
     .service('otusjs.player.core.player.PlayerService', PlayerService);
 
   PlayerService.$inject = [
-    'otusjs.player.core.activity.ActivityFacadeService',
-    'otusjs.player.core.player.PlayActionService',
-    'otusjs.player.core.player.AheadActionService'
+    'otusjs.player.data.activity.ActivityFacadeService',
+    'otusjs.player.data.navigation.NavigationService',
+    'otusjs.player.core.phase.PlayActionService',
+    'otusjs.player.core.phase.AheadActionService'
   ];
 
-  function PlayerService(ActivityFacadeService, PlayActionService, AheadActionService) {
+  function PlayerService(ActivityFacadeService, NavigationService, PlayActionService, AheadActionService) {
     var self = this;
     var _nextItems = [];
 
@@ -22,7 +23,7 @@
     self.setup = setup;
 
     function getItem() {
-      return ActivityFacadeService.getCurrentItem().getItem();
+      return NavigationService.getCurrentItem().getItem();
     }
 
     function goAhead() {
@@ -42,27 +43,5 @@
     function setup() {
       ActivityFacadeService.setup();
     }
-
-    // function canWeGo(where) {
-    //   var ignoreValidation = CurrentItemService.ignoreValidation();
-    //   var directions = {
-    //     'ahead': function() {
-    //       CurrentItemService.validateQuestion(); //updates getValidationError
-    //       var validationOk = !CurrentItemService.getValidationError();
-    //       var conditions = [
-    //         ActivityFacadeService.hasNext(),
-    //         (validationOk || ignoreValidation)
-    //       ];
-    //       return conditions.indexOf(false, conditions) === -1;
-    //     },
-    //     'back': function() {
-    //       var conditions = [
-    //         ActivityFacadeService.hasPrevious()
-    //       ];
-    //       return conditions.indexOf(false, conditions) === -1;
-    //     }
-    //   };
-    //   return directions[where]();
-    // }
   }
 })();

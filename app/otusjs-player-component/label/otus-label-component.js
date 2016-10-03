@@ -25,10 +25,14 @@
 
         function _getLabel() {
             if (self.itemLabel instanceof Object) {
-                return self.itemLabel.ptBR.formattedText;
+                return _undefinedWrapper(self.itemLabel.ptBR.formattedText);
             } else {
-                return self.itemLabel;
+                return _undefinedWrapper(self.itemLabel);
             }
+        }
+
+        function _undefinedWrapper(value){
+            return value ? value : '';
         }
     }
 

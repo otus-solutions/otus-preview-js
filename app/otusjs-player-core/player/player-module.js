@@ -5,13 +5,13 @@
     .module('otusjs.player.core.player', [])
     .run([
       'otusjs.player.core.player.PlayerConfigurationService',
-      'otusjs.player.core.player.ApplyAnswerStepService',
-      'otusjs.player.core.player.InitializeSurveyActivityStepService',
-      'otusjs.player.core.player.LoadItemStepService',
-      'otusjs.player.core.player.ReadValidationErrorStepService',
-      'otusjs.player.core.player.RunValidationStepService',
-      'otusjs.player.core.player.SetupValidationStepService',
-      'otusjs.player.core.player.HandleValidationErrorStepService',
+      'otusjs.player.core.step.ApplyAnswerStepService',
+      'otusjs.player.core.step.InitializeSurveyActivityStepService',
+      'otusjs.player.core.step.LoadItemStepService',
+      'otusjs.player.core.step.ReadValidationErrorStepService',
+      'otusjs.player.core.step.RunValidationStepService',
+      'otusjs.player.core.step.SetupValidationStepService',
+      'otusjs.player.core.step.HandleValidationErrorStepService',
       run
     ]);
 
@@ -57,5 +57,4 @@
       PlayerConfigurationService.onPostAhead(LoadItem);
       PlayerConfigurationService.onPostAhead(SetupValidation);
     }
-
 }());

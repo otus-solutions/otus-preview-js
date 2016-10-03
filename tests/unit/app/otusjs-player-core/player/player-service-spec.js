@@ -10,6 +10,7 @@ describe('PlayerService', function() {
     inject(function(_$injector_) {
       mockSurvey();
       mockActivityFacadeService(_$injector_);
+      mockNavigationService(_$injector_);
       mockPlayActionService(_$injector_);
       mockAheadActionService(_$injector_);
       service = _$injector_.get('otusjs.player.core.player.PlayerService', Injections);
@@ -21,7 +22,7 @@ describe('PlayerService', function() {
     it('should retrieve the current item from ActivityFacadeService', function() {
       service.getItem();
 
-      expect(Mock.ActivityFacadeService.getCurrentItem).toHaveBeenCalled();
+      expect(Mock.NavigationService.getCurrentItem).toHaveBeenCalled();
     });
 
   });
@@ -68,23 +69,28 @@ describe('PlayerService', function() {
   });
 
   function mockActivityFacadeService($injector) {
-    Mock.ActivityFacadeService = $injector.get('otusjs.player.core.activity.ActivityFacadeService');
-    let currentItem = {};
-    currentItem.getItem = () => { return Mock.itemData; };
-    currentItem.shouldIgnoreResponseEvaluation = () => { return false; };
-
-    spyOn(Mock.ActivityFacadeService, 'getCurrentItem').and.returnValue(currentItem);
-
+    Mock.ActivityFacadeService = $injector.get('otusjs.player.data.activity.ActivityFacadeService');
     Injections.ActivityFacadeService = Mock.ActivityFacadeService;
   }
 
+  function mockNavigationService($injector) {
+    Mock.NavigationService = $injector.get('otusjs.player.data.navigation.NavigationService');
+
+    let currentItem = {};
+    currentItem.getItem = () => { return Mock.itemData; };
+    currentItem.shouldIgnoreResponseEvaluation = () => { return false; };
+    spyOn(Mock.NavigationService, 'getCurrentItem').and.returnValue(currentItem);
+
+    Injections.NavigationService = Mock.NavigationService;
+  }
+
   function mockPlayActionService($injector) {
-    Mock.PlayActionService = $injector.get('otusjs.player.core.player.PlayActionService');
+    Mock.PlayActionService = $injector.get('otusjs.player.core.phase.PlayActionService');
     Injections.PlayActionService = Mock.PlayActionService;
   }
 
   function mockAheadActionService($injector) {
-    Mock.AheadActionService = $injector.get('otusjs.player.core.player.AheadActionService');
+    Mock.AheadActionService = $injector.get('otusjs.player.core.phase.AheadActionService');
     Injections.AheadActionService = Mock.AheadActionService;
   }
 

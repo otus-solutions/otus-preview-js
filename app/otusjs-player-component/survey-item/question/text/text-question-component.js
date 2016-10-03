@@ -15,7 +15,7 @@
     TextQuestionController.$inject = [
         '$scope',
         '$element',
-        'otusjs.player.core.activity.CurrentItemService',
+        'otusjs.player.data.activity.CurrentItemService',
         'uiSpecialsService',
         'uiAlphanumericService'
     ];

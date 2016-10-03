@@ -16,7 +16,7 @@
         });
 
     OtusQuestionController.$inject = [
-      'otusjs.player.core.player.TagComponentBuilderService'
+      'otusjs.player.core.renderer.TagComponentBuilderService'
     ];
 
     function OtusQuestionController(TagComponentBuilderService) {

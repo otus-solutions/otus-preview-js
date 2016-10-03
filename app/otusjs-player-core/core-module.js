@@ -3,11 +3,12 @@
 
   angular
     .module('otusjs.player.core', [
-      'otusjs',
-      'otusjs.player.core.activity',
-      'otusjs.player.core.navigation',
+      'otusjs.player.core.phase',
       'otusjs.player.core.player',
-      'otusjs.player.core.validation'
+      'otusjs.player.core.renderer',
+      'otusjs.player.core.scaffold',
+      'otusjs.player.core.step',
+      'otusjs.player.data'
     ]);
 
 }());

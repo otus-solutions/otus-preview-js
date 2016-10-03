@@ -31,9 +31,11 @@
     }
 
     function loadItem() {
-      _destroyCurrentItem();
-      $scope.itemData = PlayerService.getItem();
-      $element.find('section').prepend($compile(SURVEY_ITEM)($scope));
+      if ($scope.itemData !== PlayerService.getItem()) {        
+        _destroyCurrentItem();
+        $scope.itemData = PlayerService.getItem();
+        $element.find('section').prepend($compile(SURVEY_ITEM)($scope));
+      }
     }
 
     function onInit() {

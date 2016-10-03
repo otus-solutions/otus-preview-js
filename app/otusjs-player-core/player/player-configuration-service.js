@@ -6,8 +6,8 @@
     .service('otusjs.player.core.player.PlayerConfigurationService', Service);
 
   Service.$inject = [
-    'otusjs.player.core.player.PlayActionService',
-    'otusjs.player.core.player.AheadActionService'
+    'otusjs.player.core.phase.PlayActionService',
+    'otusjs.player.core.phase.AheadActionService'
   ];
 
   function Service(PlayActionService, AheadActionService) {

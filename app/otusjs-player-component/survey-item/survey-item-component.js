@@ -14,7 +14,7 @@
   OtusSurveyItemController.$inject = [
     '$scope',
     '$element',
-    'otusjs.player.core.activity.CurrentItemService',
+    'otusjs.player.data.activity.CurrentItemService',
     '$filter'
   ];
 
@@ -34,6 +34,7 @@
       self.filling.questionID = self.itemData.templateID;
       $scope.$parent.$ctrl.currentChild = self;
       CurrentItemService.observerRegistry(self);
+      self.$error = {};
     };
 
     function updateValidation(validationMap) {
