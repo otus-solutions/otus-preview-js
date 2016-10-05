@@ -7,7 +7,8 @@
       'otusjs.player.core.player.PlayerConfigurationService',
       'otusjs.player.core.step.ApplyAnswerStepService',
       'otusjs.player.core.step.InitializeSurveyActivityStepService',
-      'otusjs.player.core.step.LoadItemStepService',
+      'otusjs.player.core.step.LoadPreviousItemStepService',
+      'otusjs.player.core.step.LoadNextItemStepService',
       'otusjs.player.core.step.ReadValidationErrorStepService',
       'otusjs.player.core.step.RunValidationStepService',
       'otusjs.player.core.step.SetupValidationStepService',
@@ -15,7 +16,7 @@
       run
     ]);
 
-    function run(PlayerConfigurationService, ApplyAnswer, InitializeSurveyActivity, LoadItem, ReadValidationError, RunValidation, SetupValidation, HandleValidationError) {
+    function run(PlayerConfigurationService, ApplyAnswer, InitializeSurveyActivity, LoadPreviousItem, LoadNextItem, ReadValidationError, RunValidation, SetupValidation, HandleValidationError) {
       /**************************************************************
        * Play Phase
        *
@@ -30,7 +31,6 @@
 
       /* ExecutionPlay Phase */
       PlayerConfigurationService.onPlay(InitializeSurveyActivity);
-      PlayerConfigurationService.onPlay(LoadItem);
 
       /* PostPlay Phase */
       PlayerConfigurationService.onPostPlay(SetupValidation);
@@ -51,10 +51,28 @@
       PlayerConfigurationService.onPreAhead(HandleValidationError);
 
       /* ExecutionAhead Phase */
-      // PlayerConfigurationService.onAhead(ApplyAnswer);
+      PlayerConfigurationService.onAhead(LoadNextItem);
 
       /* PostAhead Phase */
-      PlayerConfigurationService.onPostAhead(LoadItem);
       PlayerConfigurationService.onPostAhead(SetupValidation);
+
+      /**************************************************************
+       * Back Phase
+       *
+       * Here we put the configurations that will affect the phase
+       * where the player is moving to the previous item of
+       * SurveyActiviy.
+       * This phase is divided in three sub-phases and each one can be
+       * configured separately.
+       *
+       **************************************************************/
+      /* PreBack Phase */
+      // PlayerConfigurationService.onPreBack();
+
+      /* ExecutionBack Phase */
+      PlayerConfigurationService.onPostBack(LoadPreviousItem);
+
+      /* PostBack Phase */
+      PlayerConfigurationService.onPostBack(SetupValidation);
     }
 }());

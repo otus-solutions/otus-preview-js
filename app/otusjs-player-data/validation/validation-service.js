@@ -37,6 +37,7 @@
         elementRegister.addValidator(validator, reference);
       });
 
+      ValidationService.unregisterElement(elementRegister.id);
       ValidationService.registerElement(elementRegister);
     }
   }

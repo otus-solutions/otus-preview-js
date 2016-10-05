@@ -32,8 +32,16 @@
             }
         });
 
-    function OtusCommentController() {
+    OtusCommentController.$inject = [
+        'otusjs.player.data.activity.CurrentItemService'
+    ];
+
+    function OtusCommentController(CurrentItemService) {
         var self = this;
+
+        self.$onInit = function() {
+          self.comment = CurrentItemService.getFilling().comment;
+        };
 
         self.update = function() {
             self.onUpdate({
@@ -99,8 +107,16 @@
             }
         });
 
-    function MetadataGroupController() {
+    MetadataGroupController.$inject = [
+        'otusjs.player.data.activity.CurrentItemService'
+    ];
+
+    function MetadataGroupController(CurrentItemService) {
         var self = this;
+
+        self.$onInit = function() {
+          self.metadata = CurrentItemService.getFilling().metadata.value;
+        };
 
         self.update = function() {
             self.onUpdate({
@@ -344,6 +360,7 @@
     self.isItem = isItem;
     self.restoreAll = restoreAll;
     self.update = update;
+    self.pushData = pushData;
     self.destroy = destroy;
     self.updateValidation = updateValidation;
 
@@ -372,8 +389,17 @@
     }
 
     function update(prop, value) {
-      self.filling[prop] = value;
+      if (prop !== 'comment') {
+        self.filling[prop].value = value;
+      } else {
+        self.filling[prop] = value;
+      }
       CurrentItemService.fill(self.filling);
+    }
+
+    function pushData(filling) {
+      self.filling = filling;
+      console.log(filling);
     }
 
     function destroy() {
@@ -401,10 +427,11 @@
         });
 
     OtusQuestionController.$inject = [
-      'otusjs.player.core.renderer.TagComponentBuilderService'
+      'otusjs.player.core.renderer.TagComponentBuilderService',
+      'otusjs.player.data.activity.CurrentItemService',
     ];
 
-    function OtusQuestionController(TagComponentBuilderService) {
+    function OtusQuestionController(TagComponentBuilderService, CurrentItemService) {
         var self = this;
 
         self.$onInit = function() {
@@ -677,6 +704,8 @@
         };
 
         function _init() {
+            self.answer = CurrentItemService.getFilling().answer.value;
+            
             var hasAlphanumeric = CurrentItemService.getFillingRules().alphanumeric;
             var hasSpecials = CurrentItemService.getFillingRules().specials;
 
@@ -1084,6 +1113,7 @@
     self.execute = execute;
 
     function execute() {
+      ActionPipeService.flowData.flowDirection = 'ahead';
       let phaseData = PreAheadActionService.execute(ActionPipeService.flowData);
       phaseData = ExecutionAheadActionService.execute(phaseData);
       phaseData = PostAheadActionService.execute(phaseData);
@@ -1195,6 +1225,178 @@
   angular
     .module('otusjs.player.core.phase')
     .service('otusjs.player.core.phase.PreAheadActionService', Service);
+
+  Service.$inject = [
+    'otusjs.player.core.scaffold.ChainFactory',
+    'otusjs.player.core.scaffold.ChainLinkFactory'
+  ];
+
+  function Service(ChainFactory, ChainLinkFactory) {
+    let self = this;
+    let _stepChain = ChainFactory.create();
+
+    /* Public methods */
+    self.pipe = pipe;
+    self.execute = execute;
+    self.stopFlow = stopFlow;
+
+    function pipe(step) {
+      let link = ChainLinkFactory.create();
+      link.catchFlowData(step.catchPreData);
+      link.setPreExecute(step.beforeEffect);
+      link.setExecute(step.effect);
+      link.setPostExecute(step.afterEffect);
+      link.setResult(step.getEffectResult);
+      _stepChain.chain(link);
+    }
+
+    function execute(flowData) {
+      self.isFlowing = true;
+      return _stepChain.execute(self, flowData);
+    }
+
+    function stopFlow() {
+      self.isFlowing = false;
+    }
+  }
+})();
+
+(function() {
+  'use strict';
+
+  angular
+    .module('otusjs.player.core.phase')
+    .service('otusjs.player.core.phase.BackActionService', Service);
+
+  Service.$inject = [
+    'otusjs.player.core.phase.ActionPipeService',
+    'otusjs.player.core.phase.PreBackActionService',
+    'otusjs.player.core.phase.ExecutionBackActionService',
+    'otusjs.player.core.phase.PostBackActionService'
+  ];
+
+  function Service(ActionPipeService, PreBackActionService, ExecutionBackActionService, PostBackActionService) {
+    let self = this;
+
+    /* Public methods */
+    self.PreBackActionService = PreBackActionService;
+    self.ExecutionBackActionService = ExecutionBackActionService;
+    self.PostBackActionService = PostBackActionService;
+    self.execute = execute;
+
+    function execute() {
+      ActionPipeService.flowData.flowDirection = 'back';
+      let phaseData = PreBackActionService.execute(ActionPipeService.flowData);
+      phaseData = ExecutionBackActionService.execute(phaseData);
+      phaseData = PostBackActionService.execute(phaseData);
+    }
+  }
+})();
+
+(function() {
+  'use strict';
+
+  angular
+    .module('otusjs.player.core.phase')
+    .service('otusjs.player.core.phase.ExecutionBackActionService', Service);
+
+  Service.$inject = [
+    'otusjs.player.core.scaffold.ChainFactory',
+    'otusjs.player.core.scaffold.ChainLinkFactory'
+  ];
+
+  function Service(ChainFactory, ChainLinkFactory) {
+    let self = this;
+    let _stepChain = ChainFactory.create();
+
+    self.isFlowing = true;
+
+    /* Public methods */
+    self.pipe = pipe;
+    self.execute = execute;
+    self.stopFlow = stopFlow;
+
+    function pipe(step) {
+      let link = ChainLinkFactory.create();
+      link.catchFlowData(step.catchPreData);
+      link.setPreExecute(step.beforeEffect);
+      link.setExecute(step.effect);
+      link.setPostExecute(step.afterEffect);
+      link.setResult(step.getEffectResult);
+      _stepChain.chain(link);
+    }
+
+    function execute(phaseData) {
+      if (phaseData.pipe.isFlowing) {
+        self.isFlowing = phaseData.pipe.isFlowing;
+        self.flowData = phaseData.flowData;
+        return _stepChain.execute(self, self.flowData);
+      } else {
+        return phaseData;
+      }
+    }
+
+    function stopFlow() {
+      self.isFlowing = false;
+    }
+  }
+})();
+
+(function() {
+  'use strict';
+
+  angular
+    .module('otusjs.player.core.phase')
+    .service('otusjs.player.core.phase.PostBackActionService', Service);
+
+  Service.$inject = [
+    'otusjs.player.core.scaffold.ChainFactory',
+    'otusjs.player.core.scaffold.ChainLinkFactory'
+  ];
+
+  function Service(ChainFactory, ChainLinkFactory) {
+    let self = this;
+    let _stepChain = ChainFactory.create();
+
+    self.isFlowing = true;
+
+    /* Public methods */
+    self.pipe = pipe;
+    self.execute = execute;
+    self.stopFlow = stopFlow;
+
+    function pipe(step) {
+      let link = ChainLinkFactory.create();
+      link.catchFlowData(step.catchPreData);
+      link.setPreExecute(step.beforeEffect);
+      link.setExecute(step.effect);
+      link.setPostExecute(step.afterEffect);
+      link.setResult(step.getEffectResult);
+      _stepChain.chain(link);
+    }
+
+    function execute(phaseData) {
+      if (phaseData.pipe.isFlowing) {
+        self.isFlowing = phaseData.pipe.isFlowing;
+        self.flowData = phaseData.flowData;
+        return _stepChain.execute(self, self.flowData);
+      } else {
+        return phaseData;
+      }
+    }
+
+    function stopFlow() {
+      self.isFlowing = false;
+    }
+  }
+})();
+
+(function() {
+  'use strict';
+
+  angular
+    .module('otusjs.player.core.phase')
+    .service('otusjs.player.core.phase.PreBackActionService', Service);
 
   Service.$inject = [
     'otusjs.player.core.scaffold.ChainFactory',
@@ -1413,7 +1615,8 @@
       'otusjs.player.core.player.PlayerConfigurationService',
       'otusjs.player.core.step.ApplyAnswerStepService',
       'otusjs.player.core.step.InitializeSurveyActivityStepService',
-      'otusjs.player.core.step.LoadItemStepService',
+      'otusjs.player.core.step.LoadPreviousItemStepService',
+      'otusjs.player.core.step.LoadNextItemStepService',
       'otusjs.player.core.step.ReadValidationErrorStepService',
       'otusjs.player.core.step.RunValidationStepService',
       'otusjs.player.core.step.SetupValidationStepService',
@@ -1421,7 +1624,7 @@
       run
     ]);
 
-    function run(PlayerConfigurationService, ApplyAnswer, InitializeSurveyActivity, LoadItem, ReadValidationError, RunValidation, SetupValidation, HandleValidationError) {
+    function run(PlayerConfigurationService, ApplyAnswer, InitializeSurveyActivity, LoadPreviousItem, LoadNextItem, ReadValidationError, RunValidation, SetupValidation, HandleValidationError) {
       /**************************************************************
        * Play Phase
        *
@@ -1436,7 +1639,6 @@
 
       /* ExecutionPlay Phase */
       PlayerConfigurationService.onPlay(InitializeSurveyActivity);
-      PlayerConfigurationService.onPlay(LoadItem);
 
       /* PostPlay Phase */
       PlayerConfigurationService.onPostPlay(SetupValidation);
@@ -1457,11 +1659,29 @@
       PlayerConfigurationService.onPreAhead(HandleValidationError);
 
       /* ExecutionAhead Phase */
-      // PlayerConfigurationService.onAhead(ApplyAnswer);
+      PlayerConfigurationService.onAhead(LoadNextItem);
 
       /* PostAhead Phase */
-      PlayerConfigurationService.onPostAhead(LoadItem);
       PlayerConfigurationService.onPostAhead(SetupValidation);
+
+      /**************************************************************
+       * Back Phase
+       *
+       * Here we put the configurations that will affect the phase
+       * where the player is moving to the previous item of
+       * SurveyActiviy.
+       * This phase is divided in three sub-phases and each one can be
+       * configured separately.
+       *
+       **************************************************************/
+      /* PreBack Phase */
+      // PlayerConfigurationService.onPreBack();
+
+      /* ExecutionBack Phase */
+      PlayerConfigurationService.onPostBack(LoadPreviousItem);
+
+      /* PostBack Phase */
+      PlayerConfigurationService.onPostBack(SetupValidation);
     }
 }());
 
@@ -1474,10 +1694,11 @@
 
   Service.$inject = [
     'otusjs.player.core.phase.PlayActionService',
-    'otusjs.player.core.phase.AheadActionService'
+    'otusjs.player.core.phase.AheadActionService',
+    'otusjs.player.core.phase.BackActionService'
   ];
 
-  function Service(PlayActionService, AheadActionService) {
+  function Service(PlayActionService, AheadActionService, BackActionService) {
     var self = this;
 
     /* Public methods */
@@ -1487,6 +1708,9 @@
     self.onPreAhead = onPreAhead;
     self.onAhead = onAhead;
     self.onPostAhead = onPostAhead;
+    self.onPreBack = onPreBack;
+    self.onBack = onBack;
+    self.onPostBack = onPostBack;
 
     function onPrePlay(step) {
       PlayActionService.PrePlayActionService.pipe(step);
@@ -1511,6 +1735,18 @@
     function onPostAhead(step) {
       AheadActionService.PostAheadActionService.pipe(step);
     }
+
+    function onPreBack(step) {
+      BackActionService.PreBackActionService.pipe(step);
+    }
+
+    function onBack(step) {
+      BackActionService.ExecutionBackActionService.pipe(step);
+    }
+
+    function onPostBack(step) {
+      BackActionService.PostBackActionService.pipe(step);
+    }
   }
 })();
 
@@ -1525,10 +1761,11 @@
     'otusjs.player.data.activity.ActivityFacadeService',
     'otusjs.player.data.navigation.NavigationService',
     'otusjs.player.core.phase.PlayActionService',
-    'otusjs.player.core.phase.AheadActionService'
+    'otusjs.player.core.phase.AheadActionService',
+    'otusjs.player.core.phase.BackActionService',
   ];
 
-  function PlayerService(ActivityFacadeService, NavigationService, PlayActionService, AheadActionService) {
+  function PlayerService(ActivityFacadeService, NavigationService, PlayActionService, AheadActionService, BackActionService) {
     var self = this;
     var _nextItems = [];
 
@@ -1547,9 +1784,7 @@
     }
 
     function goBack() {
-      // PreBackService.execute();
-      // BackService.execute();
-      // PostBackService.execute();
+      BackActionService.execute();
     }
 
     function play() {
@@ -1897,10 +2132,11 @@
     .service('otusjs.player.core.step.InitializeSurveyActivityStepService', Service);
 
   Service.$inject = [
-    'otusjs.player.data.activity.ActivityFacadeService'
+    'otusjs.player.data.activity.ActivityFacadeService',
+    'otusjs.player.data.navigation.NavigationService'
   ];
 
-  function Service(ActivityFacadeService) {
+  function Service(ActivityFacadeService, NavigationService) {
     let self = this;
 
     /* Public methods */
@@ -1914,6 +2150,9 @@
 
     function effect(pipe, flowData) {
       ActivityFacadeService.initialize();
+      NavigationService.initialize();
+      flowData.answerToEvaluate = {};
+      flowData.answerToEvaluate.data = {};
     }
 
     function afterEffect(pipe, flowData) {
@@ -1930,7 +2169,7 @@
 
   angular
     .module('otusjs.player.core.step')
-    .service('otusjs.player.core.step.LoadItemStepService', Service);
+    .service('otusjs.player.core.step.LoadNextItemStepService', Service);
 
   Service.$inject = [
     'otusjs.player.data.navigation.NavigationService'
@@ -1946,6 +2185,7 @@
     self.getEffectResult = getEffectResult;
 
     function beforeEffect(pipe, flowData) {
+
     }
 
     function effect(pipe, flowData) {
@@ -1954,8 +2194,43 @@
       flowData.answerToEvaluate.data = {};
     }
 
-    function afterEffect(pipe, flowData) {
+    function afterEffect(pipe, flowData) {}
+
+    function getEffectResult(pipe, flowData) {
+      return flowData;
     }
+  }
+})();
+
+(function() {
+  'use strict';
+
+  angular
+    .module('otusjs.player.core.step')
+    .service('otusjs.player.core.step.LoadPreviousItemStepService', Service);
+
+  Service.$inject = [
+    'otusjs.player.data.navigation.NavigationService'
+  ];
+
+  function Service(NavigationService) {
+    let self = this;
+
+    /* Public methods */
+    self.beforeEffect = beforeEffect;
+    self.effect = effect;
+    self.afterEffect = afterEffect;
+    self.getEffectResult = getEffectResult;
+
+    function beforeEffect(pipe, flowData) {}
+
+    function effect(pipe, flowData) {
+      NavigationService.loadPreviousItem();
+      flowData.answerToEvaluate = {};
+      flowData.answerToEvaluate.data = {};
+    }
+
+    function afterEffect(pipe, flowData) {}
 
     function getEffectResult(pipe, flowData) {
       return flowData;
@@ -2196,7 +2471,7 @@
     .service('otusjs.player.data.activity.CurrentItemService', Service);
 
   Service.$inject = [
-    'ActivityFacadeService'
+    'otusjs.model.activity.ActivityFacadeService'
   ];
 
   function Service(ActivityFacadeService) {
@@ -2236,11 +2511,12 @@
     }
 
     function fill(filling) {
-      if (_item.isQuestion()) {
-        _filling.answer.value = filling.answer;
-        _filling.metadata.value = filling.metadata;
-        _filling.comment = filling.comment;
-      }
+      // if (_item.isQuestion()) {
+      //   _filling.answer.value = filling.answer;
+      //   _filling.metadata.value = filling.metadata;
+      //   _filling.comment = filling.comment;
+      // }
+      _filling = filling;
     };
 
     function getFilling() {
@@ -2285,6 +2561,7 @@
 
     function observerRegistry(observer) {
       _observer = observer;
+      _observer.pushData(_filling);
     };
 
     function setup(item, navigation, previousItem) {
@@ -2293,8 +2570,12 @@
       _previousItem = previousItem || null;
 
       if (item.isQuestion()) {
-        _filling = ActivityFacadeService.createQuestionFill(_item);
-        _filling.answerType = _item.objectType;
+        _filling = ActivityFacadeService.getFillingByQuestionID(item.customID);
+
+        if (!_filling) {
+          _filling = ActivityFacadeService.createQuestionFill(_item);
+          _filling.answerType = _item.objectType;
+        }
       } else {
         _filling = null;
       }
@@ -2310,7 +2591,7 @@
     .service('otusjs.player.data.activity.CurrentSurveyService', Service);
 
   Service.$inject = [
-    'ActivityFacadeService'
+    'otusjs.model.activity.ActivityFacadeService'
   ];
 
   function Service(ActivityFacadeService) {
@@ -2396,23 +2677,26 @@
     .service('otusjs.player.data.navigation.NavigationService', Service);
 
   Service.$inject = [
+    'otusjs.model.navigation.NavigationStackItemFactory',
     'otusjs.player.data.activity.ActivityFacadeService',
     'otusjs.player.data.navigation.RouteService'
   ];
 
-  function Service(ActivityFacadeService, RouteService) {
-    var self = this;
-    let _item = null;
-    let _itemNavigation = null;
+  function Service(NavigationStackItemFactory, ActivityFacadeService, RouteService) {
+    let self = this;
+    let _stack = null;
 
     /* Public Interface */
     self.getCurrentItem = getCurrentItem;
     self.getCurrentSurvey = getCurrentSurvey;
     self.getNextItems = getNextItems;
     self.getPreviousItem = getPreviousItem;
+    self.getStack = getStack;
     self.hasNext = hasNext;
     self.hasPrevious = hasPrevious;
+    self.initialize = initialize;
     self.loadNextItem = loadNextItem;
+    self.loadPreviousItem = loadPreviousItem;
     self.useItem = useItem;
 
     function getCurrentItem() {
@@ -2439,6 +2723,10 @@
       }
     }
 
+    function getStack() {
+      return _stack;
+    }
+
     function hasNext() {
       if (getCurrentItem().getNavigation().listRoutes().length) {
         return true;
@@ -2455,18 +2743,39 @@
       }
     }
 
+    function initialize() {
+      _stack = getCurrentSurvey().getSurvey().getNavigationStack();
+
+      if (_stack.getSize()) {
+        _loadLastVisitedItem();
+      } else {
+        _loadFirstItem();
+      }
+    }
+
     function _loadFirstItem() {
       let item = getCurrentSurvey().getItems()[0];
       let navigation = getCurrentSurvey().getNavigations()[0];
       useItem(item, navigation);
+      _stackUpItem();
+    }
+
+    function _loadLastVisitedItem() {
+      let item = getCurrentSurvey().getItemByCustomID(_stack.getCurrentItem().getID());
+      let navigation = getCurrentSurvey().getNavigationByOrigin(_stack.getCurrentItem().getID());
+
+      if (_stack.getCurrentItem().getPrevious()) {
+        let previous = _stack.getCurrentItem().getPrevious().getID();
+        useItem(item, navigation, previous);
+      } else {
+        useItem(item, navigation);
+      }
+
+      _stackUpItem();
     }
 
     function loadNextItem() {
-      if (!getCurrentItem().hasItem()) {
-        _loadFirstItem();
-      } else {
-        _loadNextItem();
-      }
+      _loadNextItem();
     }
 
     function _loadNextItem() {
@@ -2475,11 +2784,36 @@
       let nextItem = ActivityFacadeService.fetchItemByID(routeToUse.destination);
       let nextNavigation = getCurrentSurvey().getNavigationByOrigin(routeToUse.destination);
       useItem(nextItem, nextNavigation, currentItemNavigation.origin);
+      _stackUpItem();
+    }
+
+    function loadPreviousItem() {
+      if (hasPrevious()) {
+        _stack.back();
+        let item = getPreviousItem();
+        let navigation = getCurrentSurvey().getNavigationByOrigin(item.customID);
+        if (_stack.getCurrentItem().getPrevious()) {
+          useItem(item, navigation, _stack.getCurrentItem().getPrevious().getID());
+        } else {
+          useItem(item, navigation);
+        }
+      }
     }
 
     function useItem(item, navigation, previous) {
       getCurrentItem().setup(item, navigation, previous);
       RouteService.setup(navigation);
+    }
+
+    function _stackUpItem() {
+      let options = {};
+      options.id = getCurrentItem().getItem().customID;
+      options.label = getCurrentItem().getItem().label.ptBR.plainText;
+      options.type = getCurrentItem().getItem().objectType;
+      // options.answer = ;
+      // options.metadata = ;
+
+      _stack.add(NavigationStackItemFactory.create(options));
     }
   }
 }());
@@ -2654,6 +2988,7 @@
         elementRegister.addValidator(validator, reference);
       });
 
+      ValidationService.unregisterElement(elementRegister.id);
       ValidationService.registerElement(elementRegister);
     }
   }

@@ -26,6 +26,7 @@
     self.isItem = isItem;
     self.restoreAll = restoreAll;
     self.update = update;
+    self.pushData = pushData;
     self.destroy = destroy;
     self.updateValidation = updateValidation;
 
@@ -54,8 +55,17 @@
     }
 
     function update(prop, value) {
-      self.filling[prop] = value;
+      if (prop !== 'comment') {
+        self.filling[prop].value = value;
+      } else {
+        self.filling[prop] = value;
+      }
       CurrentItemService.fill(self.filling);
+    }
+
+    function pushData(filling) {
+      self.filling = filling;
+      console.log(filling);
     }
 
     function destroy() {

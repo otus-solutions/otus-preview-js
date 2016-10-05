@@ -3,7 +3,7 @@
 
   angular
     .module('otusjs.player.core.step')
-    .service('otusjs.player.core.step.LoadItemStepService', Service);
+    .service('otusjs.player.core.step.LoadPreviousItemStepService', Service);
 
   Service.$inject = [
     'otusjs.player.data.navigation.NavigationService'
@@ -21,13 +21,9 @@
     function beforeEffect(pipe, flowData) {}
 
     function effect(pipe, flowData) {
-      if (flowData.flowDirection === 'back') {
-        NavigationService.loadPreviousItem();
-      } else {
-        NavigationService.loadNextItem();
-        flowData.answerToEvaluate = {};
-        flowData.answerToEvaluate.data = {};
-      }
+      NavigationService.loadPreviousItem();
+      flowData.answerToEvaluate = {};
+      flowData.answerToEvaluate.data = {};
     }
 
     function afterEffect(pipe, flowData) {}

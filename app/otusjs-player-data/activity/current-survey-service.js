@@ -6,7 +6,7 @@
     .service('otusjs.player.data.activity.CurrentSurveyService', Service);
 
   Service.$inject = [
-    'ActivityFacadeService'
+    'otusjs.model.activity.ActivityFacadeService'
   ];
 
   function Service(ActivityFacadeService) {

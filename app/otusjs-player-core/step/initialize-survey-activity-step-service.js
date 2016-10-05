@@ -6,10 +6,11 @@
     .service('otusjs.player.core.step.InitializeSurveyActivityStepService', Service);
 
   Service.$inject = [
-    'otusjs.player.data.activity.ActivityFacadeService'
+    'otusjs.player.data.activity.ActivityFacadeService',
+    'otusjs.player.data.navigation.NavigationService'
   ];
 
-  function Service(ActivityFacadeService) {
+  function Service(ActivityFacadeService, NavigationService) {
     let self = this;
 
     /* Public methods */
@@ -23,6 +24,9 @@
 
     function effect(pipe, flowData) {
       ActivityFacadeService.initialize();
+      NavigationService.initialize();
+      flowData.answerToEvaluate = {};
+      flowData.answerToEvaluate.data = {};
     }
 
     function afterEffect(pipe, flowData) {

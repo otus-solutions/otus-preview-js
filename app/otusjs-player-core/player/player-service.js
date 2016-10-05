@@ -9,10 +9,11 @@
     'otusjs.player.data.activity.ActivityFacadeService',
     'otusjs.player.data.navigation.NavigationService',
     'otusjs.player.core.phase.PlayActionService',
-    'otusjs.player.core.phase.AheadActionService'
+    'otusjs.player.core.phase.AheadActionService',
+    'otusjs.player.core.phase.BackActionService',
   ];
 
-  function PlayerService(ActivityFacadeService, NavigationService, PlayActionService, AheadActionService) {
+  function PlayerService(ActivityFacadeService, NavigationService, PlayActionService, AheadActionService, BackActionService) {
     var self = this;
     var _nextItems = [];
 
@@ -31,9 +32,7 @@
     }
 
     function goBack() {
-      // PreBackService.execute();
-      // BackService.execute();
-      // PostBackService.execute();
+      BackActionService.execute();
     }
 
     function play() {

@@ -2178,9 +2178,9 @@ describe('Current Question Service', function() {
   }
 
   function mockModelActivityFacadeService($injector) {
-    Mock.surveyActivity = $injector.get('ActivitySurveyFactory').create(Mock.surveyTemplate);
+    Mock.surveyActivity = $injector.get('otusjs.model.activity.ActivitySurveyFactory').create(Mock.surveyTemplate);
 
-    Mock.ActivityFacadeService = $injector.get('ActivityFacadeService');
+    Mock.ActivityFacadeService = $injector.get('otusjs.model.activity.ActivityFacadeService');
     Mock.ActivityFacadeService.surveyActivity = Mock.surveyActivity;
 
     Injections.ActivityFacadeService = Mock.ActivityFacadeService;

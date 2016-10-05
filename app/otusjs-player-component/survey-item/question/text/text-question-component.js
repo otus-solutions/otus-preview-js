@@ -43,6 +43,8 @@
         };
 
         function _init() {
+            self.answer = CurrentItemService.getFilling().answer.value;
+            
             var hasAlphanumeric = CurrentItemService.getFillingRules().alphanumeric;
             var hasSpecials = CurrentItemService.getFillingRules().specials;
 

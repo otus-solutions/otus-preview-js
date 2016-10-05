@@ -6,7 +6,7 @@
     .service('otusjs.player.data.activity.CurrentItemService', Service);
 
   Service.$inject = [
-    'ActivityFacadeService'
+    'otusjs.model.activity.ActivityFacadeService'
   ];
 
   function Service(ActivityFacadeService) {
@@ -46,11 +46,12 @@
     }
 
     function fill(filling) {
-      if (_item.isQuestion()) {
-        _filling.answer.value = filling.answer;
-        _filling.metadata.value = filling.metadata;
-        _filling.comment = filling.comment;
-      }
+      // if (_item.isQuestion()) {
+      //   _filling.answer.value = filling.answer;
+      //   _filling.metadata.value = filling.metadata;
+      //   _filling.comment = filling.comment;
+      // }
+      _filling = filling;
     };
 
     function getFilling() {
@@ -95,6 +96,7 @@
 
     function observerRegistry(observer) {
       _observer = observer;
+      _observer.pushData(_filling);
     };
 
     function setup(item, navigation, previousItem) {
@@ -103,8 +105,12 @@
       _previousItem = previousItem || null;
 
       if (item.isQuestion()) {
-        _filling = ActivityFacadeService.createQuestionFill(_item);
-        _filling.answerType = _item.objectType;
+        _filling = ActivityFacadeService.getFillingByQuestionID(item.customID);
+
+        if (!_filling) {
+          _filling = ActivityFacadeService.createQuestionFill(_item);
+          _filling.answerType = _item.objectType;
+        }
       } else {
         _filling = null;
       }

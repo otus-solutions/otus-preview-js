@@ -6,23 +6,26 @@
     .service('otusjs.player.data.navigation.NavigationService', Service);
 
   Service.$inject = [
+    'otusjs.model.navigation.NavigationStackItemFactory',
     'otusjs.player.data.activity.ActivityFacadeService',
     'otusjs.player.data.navigation.RouteService'
   ];
 
-  function Service(ActivityFacadeService, RouteService) {
-    var self = this;
-    let _item = null;
-    let _itemNavigation = null;
+  function Service(NavigationStackItemFactory, ActivityFacadeService, RouteService) {
+    let self = this;
+    let _stack = null;
 
     /* Public Interface */
     self.getCurrentItem = getCurrentItem;
     self.getCurrentSurvey = getCurrentSurvey;
     self.getNextItems = getNextItems;
     self.getPreviousItem = getPreviousItem;
+    self.getStack = getStack;
     self.hasNext = hasNext;
     self.hasPrevious = hasPrevious;
+    self.initialize = initialize;
     self.loadNextItem = loadNextItem;
+    self.loadPreviousItem = loadPreviousItem;
     self.useItem = useItem;
 
     function getCurrentItem() {
@@ -49,6 +52,10 @@
       }
     }
 
+    function getStack() {
+      return _stack;
+    }
+
     function hasNext() {
       if (getCurrentItem().getNavigation().listRoutes().length) {
         return true;
@@ -65,18 +72,39 @@
       }
     }
 
+    function initialize() {
+      _stack = getCurrentSurvey().getSurvey().getNavigationStack();
+
+      if (_stack.getSize()) {
+        _loadLastVisitedItem();
+      } else {
+        _loadFirstItem();
+      }
+    }
+
     function _loadFirstItem() {
       let item = getCurrentSurvey().getItems()[0];
       let navigation = getCurrentSurvey().getNavigations()[0];
       useItem(item, navigation);
+      _stackUpItem();
+    }
+
+    function _loadLastVisitedItem() {
+      let item = getCurrentSurvey().getItemByCustomID(_stack.getCurrentItem().getID());
+      let navigation = getCurrentSurvey().getNavigationByOrigin(_stack.getCurrentItem().getID());
+
+      if (_stack.getCurrentItem().getPrevious()) {
+        let previous = _stack.getCurrentItem().getPrevious().getID();
+        useItem(item, navigation, previous);
+      } else {
+        useItem(item, navigation);
+      }
+
+      _stackUpItem();
     }
 
     function loadNextItem() {
-      if (!getCurrentItem().hasItem()) {
-        _loadFirstItem();
-      } else {
-        _loadNextItem();
-      }
+      _loadNextItem();
     }
 
     function _loadNextItem() {
@@ -85,11 +113,36 @@
       let nextItem = ActivityFacadeService.fetchItemByID(routeToUse.destination);
       let nextNavigation = getCurrentSurvey().getNavigationByOrigin(routeToUse.destination);
       useItem(nextItem, nextNavigation, currentItemNavigation.origin);
+      _stackUpItem();
+    }
+
+    function loadPreviousItem() {
+      if (hasPrevious()) {
+        _stack.back();
+        let item = getPreviousItem();
+        let navigation = getCurrentSurvey().getNavigationByOrigin(item.customID);
+        if (_stack.getCurrentItem().getPrevious()) {
+          useItem(item, navigation, _stack.getCurrentItem().getPrevious().getID());
+        } else {
+          useItem(item, navigation);
+        }
+      }
     }
 
     function useItem(item, navigation, previous) {
       getCurrentItem().setup(item, navigation, previous);
       RouteService.setup(navigation);
+    }
+
+    function _stackUpItem() {
+      let options = {};
+      options.id = getCurrentItem().getItem().customID;
+      options.label = getCurrentItem().getItem().label.ptBR.plainText;
+      options.type = getCurrentItem().getItem().objectType;
+      // options.answer = ;
+      // options.metadata = ;
+
+      _stack.add(NavigationStackItemFactory.create(options));
     }
   }
 }());
