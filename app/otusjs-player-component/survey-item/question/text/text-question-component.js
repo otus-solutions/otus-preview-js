@@ -1,61 +1,58 @@
 (function() {
-    'use strict';
+  'use strict';
 
-    angular
-        .module('otusjs.player.component')
-        .component('otusTextQuestion', {
-            templateUrl: 'app/otusjs-player-component/survey-item/question/text/text-question-template.html',
-            controller: TextQuestionController,
-            bindings: {
-                itemData: '<',
-                onUpdate: '&'
-            }
-        });
+  angular
+    .module('otusjs.player.component')
+    .component('otusTextQuestion', {
+      templateUrl: 'app/otusjs-player-component/survey-item/question/text/text-question-template.html',
+      controller: Controller,
+      bindings: {
+        itemData: '<',
+        onUpdate: '&'
+      }
+    });
 
-    TextQuestionController.$inject = [
-        '$scope',
-        '$element',
-        'otusjs.player.data.activity.CurrentItemService',
-        'uiSpecialsService',
-        'uiAlphanumericService'
-    ];
+  Controller.$inject = [
+    '$element',
+    'otusjs.player.data.activity.CurrentItemService',
+    'uiSpecialsService',
+    'uiAlphanumericService'
+  ];
 
-    function TextQuestionController($scope, $element, CurrentItemService, uiSpecialsService, uiAlphanumericService) {
-        var self = this;
+  function Controller($element, CurrentItemService, uiSpecialsService, uiAlphanumericService) {
+    var self = this;
 
-        _init();
+    _init();
 
-        self.hasUpperCase = CurrentItemService.getFillingRules().upperCase;
-        self.hasLowerCase = CurrentItemService.getFillingRules().lowerCase;
+    self.hasUpperCase = CurrentItemService.getFillingRules().upperCase;
+    self.hasLowerCase = CurrentItemService.getFillingRules().lowerCase;
 
-        self.update = function() {
-            var answer = self.answer;
-            if (self.hasLowerCase) {
-                answer = answer.toLowerCase();
-            }
-            if (self.hasUpperCase) {
-                answer = answer.toUpperCase();
-            }
-            self.onUpdate({
-                valueType: 'answer',
-                value: answer
-            });
-        };
+    self.update = function() {
+      var answer = self.answer;
+      if (self.hasLowerCase) {
+        answer = answer.toLowerCase();
+      }
+      if (self.hasUpperCase) {
+        answer = answer.toUpperCase();
+      }
+      self.onUpdate({
+        valueType: 'answer',
+        value: answer
+      });
+    };
 
-        function _init() {
-            self.answer = CurrentItemService.getFilling().answer.value;
-            
-            var hasAlphanumeric = CurrentItemService.getFillingRules().alphanumeric;
-            var hasSpecials = CurrentItemService.getFillingRules().specials;
+    function _init() {
+      self.answer = CurrentItemService.getFilling().answer.value;
 
-            if (hasAlphanumeric && hasAlphanumeric.data.reference) {
-                uiAlphanumericService.apply($element);
-            }
-            if (hasSpecials && hasSpecials.data.reference) {
-                uiSpecialsService.apply($element);
-            }
-        }
+      var hasAlphanumeric = CurrentItemService.getFillingRules().alphanumeric;
+      var hasSpecials = CurrentItemService.getFillingRules().specials;
 
+      if (hasAlphanumeric && hasAlphanumeric.data.reference) {
+        uiAlphanumericService.apply($element);
+      }
+      if (hasSpecials && hasSpecials.data.reference) {
+        uiSpecialsService.apply($element);
+      }
     }
-
-})();
+  }
+}());

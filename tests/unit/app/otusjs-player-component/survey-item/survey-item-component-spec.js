@@ -5,6 +5,7 @@ describe('surveyItem component', function() {
   var Mock = {};
 
   beforeEach(function() {
+    module('otusjs.player.data');
     module('otusjs.player.component');
     inject(function(_$componentController_) {
       $componentController = _$componentController_;

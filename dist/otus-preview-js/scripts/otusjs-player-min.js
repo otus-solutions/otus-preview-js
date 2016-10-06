@@ -389,10 +389,14 @@
     }
 
     function update(prop, value) {
-      if (prop !== 'comment') {
-        self.filling[prop].value = value;
+      if (prop) {
+        if (prop !== 'comment') {
+          self.filling[prop].value = value;
+        } else {
+          self.filling[prop] = value;
+        }
       } else {
-        self.filling[prop] = value;
+
       }
       CurrentItemService.fill(self.filling);
     }
@@ -450,59 +454,72 @@
 })();
 
 (function() {
-    'use strict';
+  'use strict';
 
-    angular
-        .module('otusjs.player.component')
-        .component('otusCalendarQuestion', {
-            template:'<md-content layout-padding><div layout=row style="margin-top: 15px"><md-datepicker ng-model=$ctrl.answer ng-change=$ctrl.update() md-placeholder="Insira a data"></md-datepicker></div></md-content>',
-            controller: OtusCalendarQuestionController,
-            bindings: {
-                itemData: '<',
-                onUpdate: '&'
-            }
-        });
+  angular
+    .module('otusjs.player.component')
+    .component('otusCalendarQuestion', {
+      template:'<md-content layout-padding><div layout=row style="margin-top: 15px"><md-datepicker ng-model=$ctrl.answer ng-change=$ctrl.update() md-placeholder="Insira a data"></md-datepicker></div></md-content>',
+      controller: Controller,
+      bindings: {
+        itemData: '<',
+        onUpdate: '&'
+      }
+    });
 
-    function OtusCalendarQuestionController() {
-        var self = this;
+  Controller.$inject = [
+    'otusjs.player.data.activity.CurrentItemService'
+  ];
 
-        self.update = function() {
-            self.onUpdate({
-                valueType: 'answer',
-                value: self.answer
-            });
-        };
+  function Controller(CurrentItemService) {
+    var self = this;
 
-    }
+    self.$onInit = function() {
+      self.answer = CurrentItemService.getFilling().answer.value;
+    };
 
-})();
+    self.update = function() {
+      self.onUpdate({
+        valueType: 'answer',
+        value: self.answer
+      });
+    };
+  }
+}());
 
 (function() {
-    'use strict';
+  'use strict';
 
-    angular
-        .module('otusjs.player.component')
-        .component('otusIntegerQuestion', {
-            template:'<md-content layout-padding><div layout=row><md-input-container md-no-float class=md-block flex-gt-sm=45><input type=number step=1 ng-model=$ctrl.answer ng-change=$ctrl.update() ui-integer placeholder="Insira um valor inteiro"></md-input-container><md-input-container class=md-block flex-gt-sm=45><otus-label item-label=$ctrl.itemData.unit></otus-label></md-input-container></div></md-content>',
-            controller: IntegerQuestionController,
-            bindings: {
-                itemData: '<',
-                onUpdate: '&'
-            }
-        });
+  angular
+    .module('otusjs.player.component')
+    .component('otusIntegerQuestion', {
+      template:'<md-content layout-padding><div layout=row><md-input-container md-no-float class=md-block flex-gt-sm=45><input type=number step=1 ng-model=$ctrl.answer ng-change=$ctrl.update() ui-integer placeholder="Insira um valor inteiro"></md-input-container><md-input-container class=md-block flex-gt-sm=45><otus-label item-label=$ctrl.itemData.unit></otus-label></md-input-container></div></md-content>',
+      controller: Controller,
+      bindings: {
+        itemData: '<',
+        onUpdate: '&'
+      }
+    });
 
-    function IntegerQuestionController() {
-        var self = this;
+  Controller.$inject = [
+    'otusjs.player.data.activity.CurrentItemService'
+  ];
 
-        self.update = function() {
-            self.onUpdate({
-                valueType: 'answer',
-                value: self.answer
-            });
-        };
-    }
+  function Controller(CurrentItemService) {
+    var self = this;
 
-})();
+    self.$onInit = function() {
+      self.answer = CurrentItemService.getFilling().answer.value;
+    };
+
+    self.update = function() {
+      self.onUpdate({
+        valueType: 'answer',
+        value: self.answer
+      });
+    };
+  }
+}());
 
 (function() {
     'use strict';
@@ -562,164 +579,177 @@
 }());
 
 (function() {
-    'use strict';
+  'use strict';
 
-    angular
-        .module('otusjs.player.component')
-        .component('otusDecimalQuestion', {
-            template:'<md-content layout-padding><div layout=row><md-input-container md-no-float class=md-block flex-gt-sm=45><input type=number step=any ng-model=$ctrl.answer ng-change=$ctrl.update() ui-decimal placeholder="Insira um valor decimal"></md-input-container><md-input-container class=md-block flex-gt-sm=45><otus-label item-label=$ctrl.itemData.unit></otus-label></md-input-container></div></md-content>',
-            controller: DecimalQuestionController,
-            bindings: {
-                itemData: '<',
-                onUpdate: '&'
-            }
-        });
+  angular
+    .module('otusjs.player.component')
+    .component('otusDecimalQuestion', {
+      template:'<md-content layout-padding><div layout=row><md-input-container md-no-float class=md-block flex-gt-sm=45><input type=number step=any ng-model=$ctrl.answer ng-change=$ctrl.update() ui-decimal placeholder="Insira um valor decimal"></md-input-container><md-input-container class=md-block flex-gt-sm=45><otus-label item-label=$ctrl.itemData.unit></otus-label></md-input-container></div></md-content>',
+      controller: Controller,
+      bindings: {
+        itemData: '<',
+        onUpdate: '&'
+      }
+    });
 
+  Controller.$inject = [
+    'otusjs.player.data.activity.CurrentItemService'
+  ];
 
-    function DecimalQuestionController() {
-        var self = this;
+  function Controller(CurrentItemService) {
+    var self = this;
 
-        self.update = function() {
-            self.onUpdate({
-                valueType: 'answer',
-                value: self.answer
-            });
-        };
-    }
+    self.$onInit = function() {
+      self.answer = CurrentItemService.getFilling().answer.value;
+    };
 
-})();
-
-(function() {
-    'use strict';
-
-    angular
-        .module('otusjs.player.component')
-        .component('otusSingleSelectionQuestion', {
-            template:'<md-content layout-padding style="margin-left: 10px"><md-radio-group ng-model=$ctrl.answer ng-change=$ctrl.update() layout-padding flex><md-radio-button value={{option.value}} ng-repeat="option in $ctrl.itemData.options" layout=row style="margin: 10px"><otus-label item-label=option.label.ptBR.formattedText></otus-label></md-radio-button></md-radio-group></md-content>',
-            controller: SingleSelectionQuestionController,
-            bindings: {
-                itemData: '<',
-                onUpdate: '&'
-            }
-        });
-
-    function SingleSelectionQuestionController() {
-        var self = this;
-
-        self.update = function() {
-            self.onUpdate({
-                valueType: 'answer',
-                value: self.answer
-            });
-        };
-    }
-
-})();
+    self.update = function() {
+      self.onUpdate({
+        valueType: 'answer',
+        value: self.answer
+      });
+    };
+  }
+}());
 
 (function() {
-    'use strict';
+  'use strict';
 
-    angular
-        .module('otusjs.player.component')
-        .component('otusCheckboxQuestion', {
-            template:'<md-content layout-padding style="margin-top: 12px"><md-content ng-repeat="option in $ctrl.itemData.options track by $index" flex><md-checkbox value=$index ng-model=$ctrl.answerArray[$index].value.state ng-change=$ctrl.update($index) layout=row style="margin: 7px"><otus-label item-label=option.label.ptBR.formattedText></otus-label></md-checkbox></md-content></md-content>',
-            controller: CheckboxQuestionController,
-            bindings: {
-                itemData: '<',
-                onUpdate: '&'
-            }
-        });
+  angular
+    .module('otusjs.player.component')
+    .component('otusSingleSelectionQuestion', {
+      template:'<md-content layout-padding style="margin-left: 10px"><md-radio-group ng-model=$ctrl.answer ng-change=$ctrl.update() layout-padding flex><md-radio-button value={{option.value}} ng-repeat="option in $ctrl.itemData.options" layout=row style="margin: 10px"><otus-label item-label=option.label.ptBR.formattedText></otus-label></md-radio-button></md-radio-group></md-content>',
+      controller: Controller,
+      bindings: {
+        itemData: '<',
+        onUpdate: '&'
+      }
+    });
 
-    function CheckboxQuestionController() {
-        var self = this;
+  Controller.$inject = [
+    'otusjs.player.data.activity.CurrentItemService'
+  ];
 
-        self.$onInit = function() {
-            self.answerArray = [];
-            self.itemData.options.forEach(function(option) {
-                self.answerArray.push(_buildAnswerObject(option.value, false));
-            });
-        };
+  function Controller(CurrentItemService) {
+    var self = this;
 
-        self.update = function() {
-            self.onUpdate({
-                value: self.answerArray
-            });
-        };
+    self.$onInit = function() {
+      self.answer = CurrentItemService.getFilling().answer.value;
+    };
 
-        function _buildAnswerObject(index, value) {
-            return {
-                valueType: 'answer',
-                value: {
-                    option: index,
-                    state: value
-                }
-            };
-        }
-    }
-
-})();
+    self.update = function() {
+      self.onUpdate({
+        valueType: 'answer',
+        value: self.answer
+      });
+    };
+  }
+}());
 
 (function() {
-    'use strict';
+  'use strict';
 
-    angular
-        .module('otusjs.player.component')
-        .component('otusTextQuestion', {
-            template:'<md-content id=text-question layout-padding><div layout=row><md-input-container md-no-float class=md-block flex><textarea ng-class="{lowercase: $ctrl.hasLowerCase, uppercase: $ctrl.hasUpperCase}" ng-model=$ctrl.answer ng-change=$ctrl.update() placeholder="Digite o texto aqui"></textarea></md-input-container></div></md-content>',
-            controller: TextQuestionController,
-            bindings: {
-                itemData: '<',
-                onUpdate: '&'
-            }
+  angular
+    .module('otusjs.player.component')
+    .component('otusCheckboxQuestion', {
+      template:'<md-content layout-padding style="margin-top: 12px"><md-content ng-repeat="option in $ctrl.itemData.options track by $index" flex><md-checkbox value=$index ng-model=$ctrl.answerArray[$index].value.state ng-change=$ctrl.update($index) layout=row style="margin: 7px"><otus-label item-label=option.label.ptBR.formattedText></otus-label></md-checkbox></md-content></md-content>',
+      controller: Controller,
+      bindings: {
+        itemData: '<',
+        onUpdate: '&'
+      }
+    });
+
+  Controller.$inject = [
+    'otusjs.player.data.activity.CurrentItemService'
+  ];
+
+  function Controller(CurrentItemService) {
+    var self = this;
+
+    self.$onInit = function() {
+      self.answerArray = CurrentItemService.getFilling().answer.value || [];
+      if (!self.answerArray) {
+        self.itemData.options.forEach(function(option) {
+          self.answerArray.push(_buildAnswerObject(option));
         });
+      }
+    };
 
-    TextQuestionController.$inject = [
-        '$scope',
-        '$element',
-        'otusjs.player.data.activity.CurrentItemService',
-        'uiSpecialsService',
-        'uiAlphanumericService'
-    ];
+    self.update = function() {
+      self.onUpdate({
+        valueType: 'answer',
+        value: self.answerArray
+      });
+    };
 
-    function TextQuestionController($scope, $element, CurrentItemService, uiSpecialsService, uiAlphanumericService) {
-        var self = this;
-
-        _init();
-
-        self.hasUpperCase = CurrentItemService.getFillingRules().upperCase;
-        self.hasLowerCase = CurrentItemService.getFillingRules().lowerCase;
-
-        self.update = function() {
-            var answer = self.answer;
-            if (self.hasLowerCase) {
-                answer = answer.toLowerCase();
-            }
-            if (self.hasUpperCase) {
-                answer = answer.toUpperCase();
-            }
-            self.onUpdate({
-                valueType: 'answer',
-                value: answer
-            });
-        };
-
-        function _init() {
-            self.answer = CurrentItemService.getFilling().answer.value;
-            
-            var hasAlphanumeric = CurrentItemService.getFillingRules().alphanumeric;
-            var hasSpecials = CurrentItemService.getFillingRules().specials;
-
-            if (hasAlphanumeric && hasAlphanumeric.data.reference) {
-                uiAlphanumericService.apply($element);
-            }
-            if (hasSpecials && hasSpecials.data.reference) {
-                uiSpecialsService.apply($element);
-            }
-        }
-
+    function _buildAnswerObject(option) {
+      return {
+        option: option.customOptionID,
+        state: option.value
+      };
     }
+  }
+}());
 
-})();
+(function() {
+  'use strict';
+
+  angular
+    .module('otusjs.player.component')
+    .component('otusTextQuestion', {
+      template:'<md-content id=text-question layout-padding><div layout=row><md-input-container md-no-float class=md-block flex><textarea ng-class="{lowercase: $ctrl.hasLowerCase, uppercase: $ctrl.hasUpperCase}" ng-model=$ctrl.answer ng-change=$ctrl.update() placeholder="Digite o texto aqui"></textarea></md-input-container></div></md-content>',
+      controller: Controller,
+      bindings: {
+        itemData: '<',
+        onUpdate: '&'
+      }
+    });
+
+  Controller.$inject = [
+    '$element',
+    'otusjs.player.data.activity.CurrentItemService',
+    'uiSpecialsService',
+    'uiAlphanumericService'
+  ];
+
+  function Controller($element, CurrentItemService, uiSpecialsService, uiAlphanumericService) {
+    var self = this;
+
+    _init();
+
+    self.hasUpperCase = CurrentItemService.getFillingRules().upperCase;
+    self.hasLowerCase = CurrentItemService.getFillingRules().lowerCase;
+
+    self.update = function() {
+      var answer = self.answer;
+      if (self.hasLowerCase) {
+        answer = answer.toLowerCase();
+      }
+      if (self.hasUpperCase) {
+        answer = answer.toUpperCase();
+      }
+      self.onUpdate({
+        valueType: 'answer',
+        value: answer
+      });
+    };
+
+    function _init() {
+      self.answer = CurrentItemService.getFilling().answer.value;
+
+      var hasAlphanumeric = CurrentItemService.getFillingRules().alphanumeric;
+      var hasSpecials = CurrentItemService.getFillingRules().specials;
+
+      if (hasAlphanumeric && hasAlphanumeric.data.reference) {
+        uiAlphanumericService.apply($element);
+      }
+      if (hasSpecials && hasSpecials.data.reference) {
+        uiSpecialsService.apply($element);
+      }
+    }
+  }
+}());
 
 (function() {
     'use strict';
@@ -843,91 +873,110 @@
 }());
 
 (function() {
-    'use strict';
+  'use strict';
 
-    angular
-        .module('otusjs.player.component')
-        .component('otusEmailQuestion', {
-            template:'<md-content layout-padding><div layout=row><md-input-container md-no-float class=md-block flex-gt-sm=45><md-icon class=material-icons>email</md-icon><input name=email type=email ng-model=$ctrl.answer ng-change=$ctrl.update() placeholder=email@email.com aria-label={{$ctrl.ariaLabel()}}></md-input-container></div></md-content>',
-            controller: EmailQuestionController,
-            bindings: {
-                itemData: '<',
-                onUpdate: '&'
-            }
-        });
+  angular
+    .module('otusjs.player.component')
+    .component('otusEmailQuestion', {
+      template:'<md-content layout-padding><div layout=row><md-input-container md-no-float class=md-block flex-gt-sm=45><md-icon class=material-icons>email</md-icon><input name=email type=email ng-model=$ctrl.answer ng-change=$ctrl.update() placeholder=email@email.com aria-label={{$ctrl.ariaLabel()}}></md-input-container></div></md-content>',
+      controller: Controller,
+      bindings: {
+        itemData: '<',
+        onUpdate: '&'
+      }
+    });
 
-    EmailQuestionController.$inject = ['$element'];
+  Controller.$inject = [
+    'otusjs.player.data.activity.CurrentItemService'
+  ];
 
-    function EmailQuestionController($element) {
-        var self = this;
+  function Controller(CurrentItemService) {
+    var self = this;
 
-        self.update = function() {
-            self.onUpdate({
-                valueType: 'answer',
-                value: self.answer
-            });
-        };
+    self.$onInit = function() {
+      self.answer = CurrentItemService.getFilling().answer.value;
+    };
 
-        self.ariaLabel = function() {
-            return self.itemData.label.ptBR.plainText;
-        };
-    }
+    self.update = function() {
+      self.onUpdate({
+        valueType: 'answer',
+        value: self.answer
+      });
+    };
 
-})();
-
-(function() {
-    'use strict';
-
-    angular
-        .module('otusjs.player.component')
-        .component('otusTimeQuestion', {
-            template:'<md-content layout-padding><div layout=row><md-input-container class=md-block flex-gt-sm=45><md-icon class=material-icons>access_time</md-icon><input type=time ng-model=$ctrl.answer ng-change=$ctrl.update() aria-label=Tempo min=0 max=4999></md-input-container></div></md-content>',
-            controller: TimeQuestionController,
-            bindings: {
-                itemData: '<',
-                onUpdate: '&'
-            }
-        });
-
-    function TimeQuestionController() {
-        var self = this;
-
-        self.update = function() {
-            self.onUpdate({
-                valueType: 'answer',
-                value: self.answer
-            });
-        };
-    }
-
-})();
+    self.ariaLabel = function() {
+      return self.itemData.label.ptBR.plainText;
+    };
+  }
+}());
 
 (function() {
-    'use strict';
+  'use strict';
 
-    angular
-        .module('otusjs.player.component')
-        .component('otusPhoneQuestion', {
-            template:'<md-content layout-padding><div><md-input-container md-no-float class=md-block flex-gt-sm=45><md-icon class=material-icons>phone</md-icon><input type=text ng-model=$ctrl.answer ng-change=$ctrl.update() placeholder="(XX) XXXXX-XXXX" ui-br-phone-number></md-input-container></div></md-content>',
-            controller: PhoneQuestionController,
-            bindings: {
-                itemData: '<',
-                onUpdate: '&'
-            }
-        });
+  angular
+    .module('otusjs.player.component')
+    .component('otusTimeQuestion', {
+      template:'<md-content layout-padding><div layout=row><md-input-container class=md-block flex-gt-sm=45><md-icon class=material-icons>access_time</md-icon><input type=time ng-model=$ctrl.answer ng-change=$ctrl.update() aria-label=Tempo min=0 max=4999></md-input-container></div></md-content>',
+      controller: Controller,
+      bindings: {
+        itemData: '<',
+        onUpdate: '&'
+      }
+    });
 
-    function PhoneQuestionController() {
-        var self = this;
+  Controller.$inject = [
+    'otusjs.player.data.activity.CurrentItemService'
+  ];
 
-        self.update = function() {
-            self.onUpdate({
-                valueType: 'answer',
-                value: self.answer
-            });
-        };
-    }
+  function Controller(CurrentItemService) {
+    var self = this;
 
-})();
+    self.$onInit = function() {
+      self.answer = CurrentItemService.getFilling().answer.value;
+    };
+
+    self.update = function() {
+      self.onUpdate({
+        valueType: 'answer',
+        value: self.answer
+      });
+    };
+  }
+}());
+
+(function() {
+  'use strict';
+
+  angular
+    .module('otusjs.player.component')
+    .component('otusPhoneQuestion', {
+      template:'<md-content layout-padding><div><md-input-container md-no-float class=md-block flex-gt-sm=45><md-icon class=material-icons>phone</md-icon><input type=text ng-model=$ctrl.answer ng-change=$ctrl.update() placeholder="(XX) XXXXX-XXXX" ui-br-phone-number></md-input-container></div></md-content>',
+      controller: Controller,
+      bindings: {
+        itemData: '<',
+        onUpdate: '&'
+      }
+    });
+
+  Controller.$inject = [
+    'otusjs.player.data.activity.CurrentItemService'
+  ];
+
+  function Controller(CurrentItemService) {
+    var self = this;
+
+    self.$onInit = function() {
+      self.answer = CurrentItemService.getFilling().answer.value;
+    };
+
+    self.update = function() {
+      self.onUpdate({
+        valueType: 'answer',
+        value: self.answer
+      });
+    };
+  }
+}());
 
 (function() {
     'use strict';

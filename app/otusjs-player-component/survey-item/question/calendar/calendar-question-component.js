@@ -1,27 +1,33 @@
 (function() {
-    'use strict';
+  'use strict';
 
-    angular
-        .module('otusjs.player.component')
-        .component('otusCalendarQuestion', {
-            templateUrl: 'app/otusjs-player-component/survey-item/question/calendar/calendar-question-template.html',
-            controller: OtusCalendarQuestionController,
-            bindings: {
-                itemData: '<',
-                onUpdate: '&'
-            }
-        });
+  angular
+    .module('otusjs.player.component')
+    .component('otusCalendarQuestion', {
+      templateUrl: 'app/otusjs-player-component/survey-item/question/calendar/calendar-question-template.html',
+      controller: Controller,
+      bindings: {
+        itemData: '<',
+        onUpdate: '&'
+      }
+    });
 
-    function OtusCalendarQuestionController() {
-        var self = this;
+  Controller.$inject = [
+    'otusjs.player.data.activity.CurrentItemService'
+  ];
 
-        self.update = function() {
-            self.onUpdate({
-                valueType: 'answer',
-                value: self.answer
-            });
-        };
+  function Controller(CurrentItemService) {
+    var self = this;
 
-    }
+    self.$onInit = function() {
+      self.answer = CurrentItemService.getFilling().answer.value;
+    };
 
-})();
+    self.update = function() {
+      self.onUpdate({
+        valueType: 'answer',
+        value: self.answer
+      });
+    };
+  }
+}());

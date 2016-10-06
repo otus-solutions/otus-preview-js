@@ -55,10 +55,14 @@
     }
 
     function update(prop, value) {
-      if (prop !== 'comment') {
-        self.filling[prop].value = value;
+      if (prop) {
+        if (prop !== 'comment') {
+          self.filling[prop].value = value;
+        } else {
+          self.filling[prop] = value;
+        }
       } else {
-        self.filling[prop] = value;
+
       }
       CurrentItemService.fill(self.filling);
     }
