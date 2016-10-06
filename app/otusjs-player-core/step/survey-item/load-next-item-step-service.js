@@ -22,10 +22,15 @@
     function beforeEffect(pipe, flowData) {}
 
     function effect(pipe, flowData) {
-      let navigationData = NavigationService.loadNextItem();
-      CurrentItemService.setup(navigationData);
-      flowData.answerToEvaluate = {};
-      flowData.answerToEvaluate.data = {};
+      let loadData = NavigationService.loadNextItem();
+
+      if (loadData) {
+        CurrentItemService.setup(loadData);
+        flowData.answerToEvaluate = {};
+        flowData.answerToEvaluate.data = {};
+      } else {
+        console.log('goes to closing item');
+      }
     }
 
     function afterEffect(pipe, flowData) {}

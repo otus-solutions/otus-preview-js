@@ -24,7 +24,6 @@
     self.initialize = initialize;
     self.loadNextItem = loadNextItem;
     self.loadPreviousItem = loadPreviousItem;
-    self.useItem = useItem;
 
     function getNextItems() {
       return ActivityFacadeService.getCurrentItem().getNavigation().listRoutes().map((route) => {
@@ -34,7 +33,7 @@
 
     function getPreviousItem() {
       let item = _path.getCurrentItem().getPrevious();
-
+      _path.back();
       if (item) {
         return ActivityFacadeService.getCurrentSurvey().getItemByCustomID(item.getID());
       } else {
@@ -64,88 +63,74 @@
 
     function initialize() {
       _path = ActivityFacadeService.getCurrentSurvey().getSurvey().getNavigationStack();
-
-      if (_path.getSize()) {
-        _loadLastVisitedItem();
-      } else {
-        _loadFirstItem();
-      }
-    }
-
-    function _loadClosingItem() {
-      useItem({isClosingItem: true}, null, ActivityFacadeService.getCurrentItem().getItem().customID);
-    }
-
-    function _loadFirstItem() {
-      let item = ActivityFacadeService.getCurrentSurvey().getItems()[0];
-      let navigation = ActivityFacadeService.getCurrentSurvey().getNavigations()[0];
-      useItem(item, navigation);
-      _pathUpItem();
-    }
-
-    function _loadLastVisitedItem() {
-      let item = ActivityFacadeService.getCurrentSurvey().getItemByCustomID(_path.getCurrentItem().getID());
-      let navigation = ActivityFacadeService.getCurrentSurvey().getNavigationByOrigin(_path.getCurrentItem().getID());
-
-      if (_path.getCurrentItem().getPrevious()) {
-        let previous = _path.getCurrentItem().getPrevious().getID();
-        useItem(item, navigation, previous);
-      } else {
-        useItem(item, navigation);
-      }
-
-      _pathUpItem();
     }
 
     function loadNextItem() {
-      _loadNextItem();
+      if (ActivityFacadeService.getCurrentItem().hasItem()) {
+        return _loadNextItem();
+      } else if (_path.getSize()) {
+        return _loadLastVisitedItem();
+      } else {
+        return _loadFirstItem();
+      }
+    }
+
+    function _loadFirstItem() {
+      return _loadItem();
+    }
+
+    function _loadLastVisitedItem() {
+      return _loadItem(_path.getCurrentItem().getID());
     }
 
     function _loadNextItem() {
       let currentItemNavigation = ActivityFacadeService.getCurrentItem().getNavigation();
 
-      if(!currentItemNavigation) {
-        _loadClosingItem();
-      } else {
+      if(currentItemNavigation) {
         let routeToUse = RouteService.calculateRoute(currentItemNavigation);
-        let nextItem = ActivityFacadeService.fetchItemByID(routeToUse.destination);
-        let nextNavigation = ActivityFacadeService.getCurrentSurvey().getNavigationByOrigin(routeToUse.destination);
-        useItem(nextItem, nextNavigation, currentItemNavigation.origin);
-        _pathUpItem();
+        return _loadItem(routeToUse.destination);
       }
+    }
+
+    function _loadItem(id) {
+      let item = null;
+      let navigation = null;
+
+      if (!id) {
+        item = ActivityFacadeService.getCurrentSurvey().getItems()[0];
+        navigation = ActivityFacadeService.getCurrentSurvey().getNavigations()[0];
+      } else {
+        item = ActivityFacadeService.fetchItemByID(id);
+        navigation = ActivityFacadeService.fetchNavigationByOrigin(id);
+      }
+
+      if (navigation) {
+        RouteService.setup(navigation);
+      }
+      _pathUpItem(item);
+
+      return { item: item, navigation: navigation };
     }
 
     function loadPreviousItem() {
       if (hasPrevious()) {
-        _path.back();
-
         let item = getPreviousItem();
         let navigation = ActivityFacadeService.getCurrentSurvey().getNavigationByOrigin(item.customID);
+        RouteService.setup(navigation);
 
-        if (_path.getCurrentItem().getPrevious()) {
-          useItem(item, navigation, _path.getCurrentItem().getPrevious().getID());
-        } else {
-          useItem(item, navigation);
-        }
+        return { item: item, navigation: navigation };
       }
     }
 
-    function useItem(item, navigation, previous) {
-      ActivityFacadeService.getCurrentItem().setup(item, navigation, previous);
-      RouteService.setup(navigation);
-    }
-
-    function _pathUpItem() {
+    function _pathUpItem(item) {
       let options = {};
-      options.id = ActivityFacadeService.getCurrentItem().getItem().customID;
+      options.id = item.customID;
+      options.type = item.objectType;
 
-      if (ActivityFacadeService.getCurrentItem().getItem().isQuestion()) {
-        options.label = ActivityFacadeService.getCurrentItem().getItem().label.ptBR.plainText;
-        options.type = ActivityFacadeService.getCurrentItem().getItem().objectType;
-        // options.answer = ;
-        // options.metadata = ;
+      if (item.isQuestion()) {
+        options.label = item.label.ptBR.plainText;
       }
-
+      
       _path.add(NavigationStackItemFactory.create(options));
     }
   }

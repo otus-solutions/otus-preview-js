@@ -52,6 +52,7 @@
       PlayerConfigurationService.onPlay(InitializeSurveyActivity);
 
       /* PostPlay Phase */
+      PlayerConfigurationService.onPostPlay(LoadNextItem);
       PlayerConfigurationService.onPostPlay(SetupValidation);
 
       /**************************************************************

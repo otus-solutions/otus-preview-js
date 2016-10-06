@@ -1874,6 +1874,7 @@
       PlayerConfigurationService.onPlay(InitializeSurveyActivity);
 
       /* PostPlay Phase */
+      PlayerConfigurationService.onPostPlay(LoadNextItem);
       PlayerConfigurationService.onPostPlay(SetupValidation);
 
       /**************************************************************
@@ -2293,11 +2294,10 @@
     .service('otusjs.player.core.step.InitializeSurveyActivityStepService', Service);
 
   Service.$inject = [
-    'otusjs.player.data.activity.ActivityFacadeService',
-    'otusjs.player.data.navigation.NavigationService'
+    'otusjs.player.data.activity.ActivityFacadeService'
   ];
 
-  function Service(ActivityFacadeService, NavigationService) {
+  function Service(ActivityFacadeService) {
     let self = this;
 
     /* Public methods */
@@ -2306,18 +2306,15 @@
     self.afterEffect = afterEffect;
     self.getEffectResult = getEffectResult;
 
-    function beforeEffect(pipe, flowData) {
-    }
+    function beforeEffect(pipe, flowData) { }
 
     function effect(pipe, flowData) {
       ActivityFacadeService.initialize();
-      NavigationService.initialize();
       flowData.answerToEvaluate = {};
       flowData.answerToEvaluate.data = {};
     }
 
-    function afterEffect(pipe, flowData) {
-    }
+    function afterEffect(pipe, flowData) { }
 
     function getEffectResult(pipe, flowData) {
       return flowData;
@@ -2385,10 +2382,15 @@
     function beforeEffect(pipe, flowData) {}
 
     function effect(pipe, flowData) {
-      let navigationData = NavigationService.loadNextItem();
-      CurrentItemService.setup(navigationData);
-      flowData.answerToEvaluate = {};
-      flowData.answerToEvaluate.data = {};
+      let loadData = NavigationService.loadNextItem();
+
+      if (loadData) {
+        CurrentItemService.setup(loadData);
+        flowData.answerToEvaluate = {};
+        flowData.answerToEvaluate.data = {};
+      } else {
+        console.log('goes to closing item');
+      }
     }
 
     function afterEffect(pipe, flowData) {}
@@ -2407,10 +2409,11 @@
     .service('otusjs.player.core.step.LoadPreviousItemStepService', Service);
 
   Service.$inject = [
-    'otusjs.player.data.navigation.NavigationService'
+    'otusjs.player.data.navigation.NavigationService',
+    'otusjs.player.data.activity.CurrentItemService'
   ];
 
-  function Service(NavigationService) {
+  function Service(NavigationService, CurrentItemService) {
     let self = this;
 
     /* Public methods */
@@ -2422,9 +2425,13 @@
     function beforeEffect(pipe, flowData) {}
 
     function effect(pipe, flowData) {
-      NavigationService.loadPreviousItem();
-      flowData.answerToEvaluate = {};
-      flowData.answerToEvaluate.data = {};
+      let loadData = NavigationService.loadPreviousItem();
+
+      if (loadData) {
+        CurrentItemService.setup(loadData);
+        flowData.answerToEvaluate = {};
+        flowData.answerToEvaluate.data = {};
+      }
     }
 
     function afterEffect(pipe, flowData) {}
@@ -2703,6 +2710,7 @@
     self.attachItemValidationError = attachItemValidationError;
     self.fetchItemAnswerByCustomID = fetchItemAnswerByCustomID;
     self.fetchItemByID = fetchItemByID;
+    self.fetchNavigationByOrigin = fetchNavigationByOrigin;
     self.getCurrentItem = getCurrentItem;
     self.getCurrentSurvey = getCurrentSurvey;
     self.initialize = initialize;
@@ -2723,6 +2731,10 @@
 
     function fetchItemByID(id) {
       return CurrentSurveyService.getItemByCustomID(id);
+    }
+
+    function fetchNavigationByOrigin(id) {
+      return CurrentSurveyService.getNavigationByOrigin(id);
     }
 
     function getCurrentItem() {
@@ -2763,7 +2775,6 @@
     let _item = null;
     let _filling = null;
     let _navigation = null;
-    let _previousItem = null;
     let _validationError = null;
     let _observer = null;
 
@@ -2773,7 +2784,6 @@
     self.fill = fill;
     self.getFilling = getFilling;
     self.getFillingRules = getFillingRules;
-    self.getPreviousItem = getPreviousItem;
     self.getItem = getItem;
     self.getNavigation = getNavigation;
     self.getValidationError = getValidationError;
@@ -2795,12 +2805,9 @@
     }
 
     function fill(filling) {
-      // if (_item.isQuestion()) {
-      //   _filling.answer.value = filling.answer;
-      //   _filling.metadata.value = filling.metadata;
-      //   _filling.comment = filling.comment;
-      // }
-      _filling = filling;
+      if (_item.isQuestion()) {
+        _filling = filling;
+      }
     };
 
     function getFilling() {
@@ -2810,10 +2817,6 @@
     function getFillingRules() {
       return _item.fillingRules.options;
     };
-
-    function getPreviousItem() {
-      return _previousItem;
-    }
 
     function getItem() {
       return _item;
@@ -2848,13 +2851,12 @@
       _observer.pushData(_filling);
     };
 
-    function setup(item, navigation, previousItem) {
-      _item = item;
-      _navigation = navigation;
-      _previousItem = previousItem || null;
+    function setup(data) {
+      _item = data.item;
+      _navigation = data.navigation;
 
-      if (item.isQuestion()) {
-        _filling = ActivityFacadeService.getFillingByQuestionID(item.customID);
+      if (_item.isQuestion()) {
+        _filling = ActivityFacadeService.getFillingByQuestionID(_item.customID);
 
         if (!_filling) {
           _filling = ActivityFacadeService.createQuestionFill(_item);
@@ -2882,7 +2884,6 @@
     let self = this;
 
     /* Public Interface */
-    self.setup = setup;
     self.getSurvey = getSurvey;
     self.getAnswerByItemID = getAnswerByItemID;
     self.getItems = getItems;
@@ -2890,10 +2891,7 @@
     self.getNavigationByOrigin = getNavigationByOrigin;
     self.getItemByCustomID = getItemByCustomID;
     self.initialize = initialize;
-
-    function setup() {
-      ActivityFacadeService.openActivitySurvey();
-    }
+    self.setup = setup;
 
     function getSurvey() {
       return ActivityFacadeService.surveyActivity;
@@ -2940,6 +2938,10 @@
     function initialize() {
       ActivityFacadeService.initializeActivitySurvey();
     }
+
+    function setup() {
+      ActivityFacadeService.openActivitySurvey();
+    }
   }
 }());
 
@@ -2968,7 +2970,7 @@
 
   function Service(NavigationStackItemFactory, ActivityFacadeService, RouteService) {
     let self = this;
-    let _stack = null;
+    let _path = null;
 
     /* Public Interface */
     self.getNextItems = getNextItems;
@@ -2979,8 +2981,6 @@
     self.initialize = initialize;
     self.loadNextItem = loadNextItem;
     self.loadPreviousItem = loadPreviousItem;
-    self.useItem = useItem;
-
 
     function getNextItems() {
       return ActivityFacadeService.getCurrentItem().getNavigation().listRoutes().map((route) => {
@@ -2989,8 +2989,8 @@
     }
 
     function getPreviousItem() {
-      let item = _stack.getCurrentItem().getPrevious();
-
+      let item = _path.getCurrentItem().getPrevious();
+      _path.back();
       if (item) {
         return ActivityFacadeService.getCurrentSurvey().getItemByCustomID(item.getID());
       } else {
@@ -2999,7 +2999,7 @@
     }
 
     function getStack() {
-      return _stack;
+      return _path;
     }
 
     function hasNext() {
@@ -3011,7 +3011,7 @@
     }
 
     function hasPrevious() {
-      if (ActivityFacadeService.getCurrentItem().getPreviousItem()) {
+      if (_path.getCurrentItem().getPrevious()) {
         return true;
       } else {
         return false;
@@ -3019,90 +3019,76 @@
     }
 
     function initialize() {
-      _stack = ActivityFacadeService.getCurrentSurvey().getSurvey().getNavigationStack();
-
-      if (_stack.getSize()) {
-        _loadLastVisitedItem();
-      } else {
-        _loadFirstItem();
-      }
-    }
-
-    function _loadClosingItem() {
-      useItem({isClosingItem: true}, null, ActivityFacadeService.getCurrentItem().getItem().customID);
-    }
-
-    function _loadFirstItem() {
-      let item = ActivityFacadeService.getCurrentSurvey().getItems()[0];
-      let navigation = ActivityFacadeService.getCurrentSurvey().getNavigations()[0];
-      useItem(item, navigation);
-      _stackUpItem();
-    }
-
-    function _loadLastVisitedItem() {
-      let item = ActivityFacadeService.getCurrentSurvey().getItemByCustomID(_stack.getCurrentItem().getID());
-      let navigation = ActivityFacadeService.getCurrentSurvey().getNavigationByOrigin(_stack.getCurrentItem().getID());
-
-      if (_stack.getCurrentItem().getPrevious()) {
-        let previous = _stack.getCurrentItem().getPrevious().getID();
-        useItem(item, navigation, previous);
-      } else {
-        useItem(item, navigation);
-      }
-
-      _stackUpItem();
+      _path = ActivityFacadeService.getCurrentSurvey().getSurvey().getNavigationStack();
     }
 
     function loadNextItem() {
-      _loadNextItem();
+      if (ActivityFacadeService.getCurrentItem().hasItem()) {
+        return _loadNextItem();
+      } else if (_path.getSize()) {
+        return _loadLastVisitedItem();
+      } else {
+        return _loadFirstItem();
+      }
+    }
+
+    function _loadFirstItem() {
+      return _loadItem();
+    }
+
+    function _loadLastVisitedItem() {
+      return _loadItem(_path.getCurrentItem().getID());
     }
 
     function _loadNextItem() {
       let currentItemNavigation = ActivityFacadeService.getCurrentItem().getNavigation();
 
-      if(!currentItemNavigation) {
-        _loadClosingItem();
-      } else {
+      if(currentItemNavigation) {
         let routeToUse = RouteService.calculateRoute(currentItemNavigation);
-        let nextItem = ActivityFacadeService.fetchItemByID(routeToUse.destination);
-        let nextNavigation = ActivityFacadeService.getCurrentSurvey().getNavigationByOrigin(routeToUse.destination);
-        useItem(nextItem, nextNavigation, currentItemNavigation.origin);
-        _stackUpItem();
+        return _loadItem(routeToUse.destination);
       }
+    }
+
+    function _loadItem(id) {
+      let item = null;
+      let navigation = null;
+
+      if (!id) {
+        item = ActivityFacadeService.getCurrentSurvey().getItems()[0];
+        navigation = ActivityFacadeService.getCurrentSurvey().getNavigations()[0];
+      } else {
+        item = ActivityFacadeService.fetchItemByID(id);
+        navigation = ActivityFacadeService.fetchNavigationByOrigin(id);
+      }
+
+      if (navigation) {
+        RouteService.setup(navigation);
+      }
+      _pathUpItem(item);
+
+      return { item: item, navigation: navigation };
     }
 
     function loadPreviousItem() {
       if (hasPrevious()) {
-        _stack.back();
-
         let item = getPreviousItem();
         let navigation = ActivityFacadeService.getCurrentSurvey().getNavigationByOrigin(item.customID);
+        RouteService.setup(navigation);
 
-        if (_stack.getCurrentItem().getPrevious()) {
-          useItem(item, navigation, _stack.getCurrentItem().getPrevious().getID());
-        } else {
-          useItem(item, navigation);
-        }
+        return { item: item, navigation: navigation };
       }
     }
 
-    function useItem(item, navigation, previous) {
-      ActivityFacadeService.getCurrentItem().setup(item, navigation, previous);
-      RouteService.setup(navigation);
-    }
-
-    function _stackUpItem() {
+    function _pathUpItem(item) {
       let options = {};
-      options.id = ActivityFacadeService.getCurrentItem().getItem().customID;
+      options.id = item.customID;
+      options.type = item.objectType;
 
-      if (ActivityFacadeService.getCurrentItem().getItem().isQuestion()) {
-        options.label = ActivityFacadeService.getCurrentItem().getItem().label.ptBR.plainText;
-        options.type = ActivityFacadeService.getCurrentItem().getItem().objectType;
-        // options.answer = ;
-        // options.metadata = ;
+      if (item.isQuestion()) {
+        options.label = item.label.ptBR.plainText;
       }
-
-      _stack.add(NavigationStackItemFactory.create(options));
+      
+      _path.add(NavigationStackItemFactory.create(options));
     }
   }
 }());
@@ -3129,8 +3115,6 @@
     self.getAlternativeRoutes = getAlternativeRoutes;
     self.getCurrentNavigation = getCurrentNavigation;
     self.getDefaultRoute = getDefaultRoute;
-    self.hasNext = hasNext;
-    self.hasPrevious = hasPrevious;
     self.setup = setup;
 
     function getAlternativeRoutes() {
@@ -3176,22 +3160,6 @@
       return condition.listRules().every(RuleService.isRuleApplicable);
     }
 
-    function hasNext() {
-      if (getCurrentItem().getNavigation().listRoutes().length) {
-        return true;
-      } else {
-        return false;
-      }
-    }
-
-    function hasPrevious() {
-      if (getCurrentItem().getPreviousItem()) {
-        return true;
-      } else {
-        return false;
-      }
-    }
-
     function setup(navigation) {
       let routeList = navigation.listRoutes();
 
@@ -3223,7 +3191,6 @@
       let whenItem = ActivityFacadeService.fetchItemByID(rule.when);
       let itemAnswer = ActivityFacadeService.fetchItemAnswerByCustomID(rule.when);
       return itemAnswer.answer.eval.run(rule, itemAnswer.answer.value);
-      // return RuleTestService.run(rule, itemAnswer.answer.value);
     }
   }
 }());
@@ -3256,17 +3223,10 @@
 
     /* Public methods */
     self.applyValidation = applyValidation;
-    self.finishValidation = finishValidation;
     self.setupValidation = setupValidation;
 
     function applyValidation(item, callback) {
       ValidationService.validateElement(item.customID, callback);
-    }
-
-    function finishValidation() {
-      ValidationService.validateAllElements(function(response) {
-        //TODO
-      });
     }
 
     function setupValidation(item, answer) {

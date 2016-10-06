@@ -1,4 +1,4 @@
-describe('CurrentItemService', () => {
+xdescribe('CurrentItemService', () => {
 
   let UNIT_NAME = 'otusjs.player.data.activity.CurrentItemService';
   let Mock = {};

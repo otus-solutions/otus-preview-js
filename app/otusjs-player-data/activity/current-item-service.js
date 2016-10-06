@@ -90,12 +90,12 @@
       _observer.pushData(_filling);
     };
 
-    function setup(item, navigation) {
-      _item = item;
-      _navigation = navigation;
+    function setup(data) {
+      _item = data.item;
+      _navigation = data.navigation;
 
-      if (item.isQuestion()) {
-        _filling = ActivityFacadeService.getFillingByQuestionID(item.customID);
+      if (_item.isQuestion()) {
+        _filling = ActivityFacadeService.getFillingByQuestionID(_item.customID);
 
         if (!_filling) {
           _filling = ActivityFacadeService.createQuestionFill(_item);

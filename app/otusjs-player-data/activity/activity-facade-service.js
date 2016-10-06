@@ -18,6 +18,7 @@
     self.attachItemValidationError = attachItemValidationError;
     self.fetchItemAnswerByCustomID = fetchItemAnswerByCustomID;
     self.fetchItemByID = fetchItemByID;
+    self.fetchNavigationByOrigin = fetchNavigationByOrigin;
     self.getCurrentItem = getCurrentItem;
     self.getCurrentSurvey = getCurrentSurvey;
     self.initialize = initialize;
@@ -38,6 +39,10 @@
 
     function fetchItemByID(id) {
       return CurrentSurveyService.getItemByCustomID(id);
+    }
+
+    function fetchNavigationByOrigin(id) {
+      return CurrentSurveyService.getNavigationByOrigin(id);
     }
 
     function getCurrentItem() {
