@@ -1,4 +1,4 @@
-describe('ApplyAnswerStepService', function() {
+xdescribe('ApplyAnswerStepService', function() {
 
   var Mock = {};
   var Injections = {};

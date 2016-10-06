@@ -3,14 +3,14 @@
 
   angular
     .module('otusjs.player.core.step')
-    .service('otusjs.player.core.step.ApplyAnswerStepService', Service);
+    .service('otusjs.player.core.step.SetupValidationStepService', Service);
 
   Service.$inject = [
-    'otusjs.player.data.navigation.NavigationService',
-    'otusjs.player.data.activity.ActivityFacadeService'
+    'otusjs.player.data.activity.ActivityFacadeService',
+    'otusjs.player.data.validation.ItemFillingValidatorService'
   ];
 
-  function Service(NavigationService, ActivityFacadeService) {
+  function Service(ActivityFacadeService, ValidationService) {
     let self = this;
     let _currentItem;
 
@@ -21,20 +21,17 @@
     self.getEffectResult = getEffectResult;
 
     function beforeEffect(pipe, flowData) {
-      _currentItem = NavigationService.getCurrentItem();
+      _currentItem = ActivityFacadeService.getCurrentItem();
 
-      if (!_currentItem.shouldApplyAnswer()) {
+      if (_currentItem.shouldIgnoreResponseEvaluation()) {
         pipe.skipStep = true;
       } else {
         pipe.skipStep = false;
       }
-
-      pipe.isFlowing = true;
     }
 
     function effect(pipe, flowData) {
-      ActivityFacadeService.applyAnswer();
-      flowData.answerToEvaluate.data = _currentItem.getFilling().answer.value || {};
+      ValidationService.setupValidation(_currentItem.getItem(), flowData.answerToEvaluate)
     }
 
     function afterEffect(pipe, flowData) {

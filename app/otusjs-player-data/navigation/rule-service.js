@@ -19,7 +19,6 @@
       let whenItem = ActivityFacadeService.fetchItemByID(rule.when);
       let itemAnswer = ActivityFacadeService.fetchItemAnswerByCustomID(rule.when);
       return itemAnswer.answer.eval.run(rule, itemAnswer.answer.value);
-      // return RuleTestService.run(rule, itemAnswer.answer.value);
     }
   }
 }());

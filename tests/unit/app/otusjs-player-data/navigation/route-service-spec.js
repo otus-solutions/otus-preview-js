@@ -1,4 +1,4 @@
-xdescribe('NavigationService', () => {
+describe('NavigationService', () => {
 
   let UNIT_NAME = 'otusjs.player.data.navigation.RouteService';
   let Mock = {};
@@ -19,28 +19,6 @@ xdescribe('NavigationService', () => {
 
       service = _$injector_.get(UNIT_NAME, Injections);
     });
-  });
-
-  describe('setup method', () => {
-
-    it('should keep a reference to a Navigation', () => {
-      service.setup(Mock.navigationCAD1);
-
-      expect(service.getCurrentNavigation()).toEqual(Mock.navigationCAD1);
-    });
-
-    it('should keep a reference to default route of Navigation', () => {
-      service.setup(Mock.navigationCAD1);
-
-      expect(service.getDefaultRoute()).toEqual(Mock.navigationCAD1.routes[0]);
-    });
-
-    it('should keep an array with the alternative routes of Navigation', () => {
-      service.setup(Mock.navigationCAD1);
-
-      expect(service.getAlternativeRoutes()).toEqual(Mock.navigationCAD1.routes.slice(1));
-    });
-
   });
 
   describe('calculateRoute method', () => {
@@ -85,6 +63,28 @@ xdescribe('NavigationService', () => {
 
       });
 
+    });
+
+  });
+
+  describe('setup method', () => {
+
+    it('should keep a reference to a Navigation', () => {
+      service.setup(Mock.navigationCAD1);
+
+      expect(service.getCurrentNavigation()).toEqual(Mock.navigationCAD1);
+    });
+
+    it('should keep a reference to default route of Navigation', () => {
+      service.setup(Mock.navigationCAD1);
+
+      expect(service.getDefaultRoute()).toEqual(Mock.navigationCAD1.routes[0]);
+    });
+
+    it('should keep an array with the alternative routes of Navigation', () => {
+      service.setup(Mock.navigationCAD1);
+
+      expect(service.getAlternativeRoutes()).toEqual(Mock.navigationCAD1.routes.slice(1));
     });
 
   });

@@ -13,7 +13,6 @@
     let self = this;
 
     /* Public Interface */
-    self.setup = setup;
     self.getSurvey = getSurvey;
     self.getAnswerByItemID = getAnswerByItemID;
     self.getItems = getItems;
@@ -21,10 +20,7 @@
     self.getNavigationByOrigin = getNavigationByOrigin;
     self.getItemByCustomID = getItemByCustomID;
     self.initialize = initialize;
-
-    function setup() {
-      ActivityFacadeService.openActivitySurvey();
-    }
+    self.setup = setup;
 
     function getSurvey() {
       return ActivityFacadeService.surveyActivity;
@@ -70,6 +66,10 @@
 
     function initialize() {
       ActivityFacadeService.initializeActivitySurvey();
+    }
+
+    function setup() {
+      ActivityFacadeService.openActivitySurvey();
     }
   }
 }());

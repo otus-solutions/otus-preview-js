@@ -31,9 +31,9 @@
     }
 
     function loadItem() {
-      if ($scope.itemData !== PlayerService.getItem()) {        
+      if ($scope.itemData !== PlayerService.getItemData()) {        
         _destroyCurrentItem();
-        $scope.itemData = PlayerService.getItem();
+        $scope.itemData = PlayerService.getItemData();
         $element.find('section').prepend($compile(SURVEY_ITEM)($scope));
       }
     }

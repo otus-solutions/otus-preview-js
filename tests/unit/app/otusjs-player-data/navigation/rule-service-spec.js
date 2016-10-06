@@ -1,5 +1,6 @@
-xdescribe('RuleService', () => {
+describe('RuleService', () => {
 
+  let UNIT_NAME = 'otusjs.player.data.navigation.RuleService';
   let Mock = {};
   let Injections = {};
   let service = {};
@@ -8,11 +9,14 @@ xdescribe('RuleService', () => {
     module('otusjs.player.data');
 
     inject(function(_$injector_) {
+      /* Test data */
       mockCorrectItemAnswer();
       mockRule(_$injector_);
+
+      /* Injectable mocks */
       mockActivityFacadeService(_$injector_);
-      mockRuleTestService(_$injector_);
-      service = _$injector_.get('otusjs.player.data.navigation.RuleService', Injections);
+
+      service = _$injector_.get(UNIT_NAME, Injections);
     });
   });
 
@@ -37,10 +41,10 @@ xdescribe('RuleService', () => {
         expect(Mock.ActivityFacadeService.fetchItemAnswerByCustomID).toHaveBeenCalledWith(Mock.rule.when);
       });
 
-      it('should test the answer with RuleTestService', () => {
+      it('should test the answer with answer evaluator', () => {
         service.isRuleApplicable(Mock.rule);
 
-        expect(Mock.RuleTestService.run).toHaveBeenCalledWith(Mock.rule, Mock.itemAnswer.answer.value);
+        expect(Mock.itemAnswer.answer.eval.run).toHaveBeenCalledWith(Mock.rule, Mock.itemAnswer.answer.value);
       });
 
     });
@@ -86,30 +90,21 @@ xdescribe('RuleService', () => {
     Injections.ActivityFacadeService = Mock.ActivityFacadeService;
   }
 
-  function mockRuleTestService($injector) {
-    Mock.RuleTestService = $injector.get('otusjs.player.data.navigation.RuleTestService');
-
-    spyOn(Mock.RuleTestService, 'run').and.callThrough();
-
-    Injections.RuleTestService = Mock.RuleTestService;
-  }
-
-  function mockWhenItem() {
-    Mock.rule = {};
-  }
-
   function mockCorrectItemAnswer() {
     Mock.itemAnswer = {
       objectType: "QuestionFill",
       questionID: "CAD4",
       answer: {
         objectType: "AnswerFill",
-        value: "a value"
+        value: "a value",
+        eval: {}
       },
       metadata: {
         objectType: "MetadataFill"
       }
     };
+
+    Mock.itemAnswer.answer.eval.run = jasmine.createSpy('run').and.returnValue(true);
   }
 
   function mockIncorrectItemAnswer() {
@@ -118,11 +113,14 @@ xdescribe('RuleService', () => {
       questionID: "CAD4",
       answer: {
         objectType: "AnswerFill",
-        value: "any value"
+        value: "any value",
+        eval: {}
       },
       metadata: {
         objectType: "MetadataFill"
       }
     };
+
+    Mock.itemAnswer.answer.eval.run = jasmine.createSpy('run').and.returnValue(false);
   }
 });

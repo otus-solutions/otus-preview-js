@@ -1,5 +1,6 @@
 describe('ActivityFacadeService', function() {
 
+  let UNIT_NAME = 'otusjs.player.data.activity.ActivityFacadeService';
   let Mock = {};
   let Injections = {};
   let service = {};
@@ -14,11 +15,16 @@ describe('ActivityFacadeService', function() {
     module('otusjs.player.data');
 
     inject(function(_$injector_) {
+      /* Test data */
       mockSurvey();
       mockAnswerData();
+      mockValidationErrorData();
+
+      /* Injectable mocks */
       mockCurrentSurveyService(_$injector_);
       mockCurrentItemService(_$injector_);
-      service = _$injector_.get('otusjs.player.data.activity.ActivityFacadeService', Injections);
+
+      service = _$injector_.get(UNIT_NAME, Injections);
     });
   });
 
@@ -27,9 +33,6 @@ describe('ActivityFacadeService', function() {
     beforeEach(function() {
       spyOn(Mock.CurrentSurveyService, 'setup');
       service.setup();
-
-      spyOn(Mock.CurrentItemService, 'fill');
-      service.setupAnswer(Mock.answerData);
     })
 
     it('should delegates the filling applies to current question', function() {
@@ -38,6 +41,66 @@ describe('ActivityFacadeService', function() {
       service.applyAnswer(Mock.answerData);
 
       expect(Mock.CurrentItemService.applyFilling).toHaveBeenCalledWith();
+    });
+
+  });
+
+  describe('attachItemValidationError method', function() {
+
+    beforeEach(function() {
+      spyOn(Mock.CurrentSurveyService, 'setup');
+      service.setup();
+    })
+
+    it('should delegates the validation error attachment', function() {
+      spyOn(Mock.CurrentItemService, 'attachValidationError');
+
+      service.attachItemValidationError(Mock.validationErrorData);
+
+      expect(Mock.CurrentItemService.attachValidationError).toHaveBeenCalledWith(Mock.validationErrorData);
+    });
+
+  });
+
+  describe('fetchItemAnswerByCustomID method', function() {
+
+    it('should retrieve the answer of item from survey activity', function() {
+      spyOn(Mock.CurrentSurveyService, 'getAnswerByItemID');
+
+      service.fetchItemAnswerByCustomID(CAD1);
+
+      expect(Mock.CurrentSurveyService.getAnswerByItemID).toHaveBeenCalledWith(CAD1);
+    });
+
+  });
+
+  describe('fetchItemByID method', function() {
+
+    it('should return the item', function() {
+      spyOn(Mock.CurrentSurveyService, 'getItemByCustomID');
+
+      service.fetchItemByID(CAD1);
+
+      expect(Mock.CurrentSurveyService.getItemByCustomID).toHaveBeenCalledWith(CAD1);
+    });
+
+  });
+
+  describe('initialize method', function() {
+
+    beforeEach(function() {
+      spyOn(Mock.CurrentSurveyService, 'setup');
+      service.setup();
+
+      spyOn(Mock.CurrentSurveyService, 'initialize');
+      spyOn(Mock.CurrentSurveyService, 'getItems').and.returnValue(Mock.surveyTemplate.itemContainer);
+      spyOn(Mock.CurrentSurveyService, 'getNavigations').and.returnValue(Mock.surveyTemplate.navigationList);
+    });
+
+    it('should initialize the survey', function() {
+      service.initialize();
+
+      expect(Mock.CurrentSurveyService.initialize).toHaveBeenCalledWith();
     });
 
   });
@@ -71,49 +134,6 @@ describe('ActivityFacadeService', function() {
 
   });
 
-  describe('initialize method', function() {
-
-    beforeEach(function() {
-      spyOn(Mock.CurrentSurveyService, 'setup');
-      service.setup();
-
-      spyOn(Mock.CurrentSurveyService, 'initialize');
-      spyOn(Mock.CurrentSurveyService, 'getItems').and.returnValue(Mock.surveyTemplate.itemContainer);
-      spyOn(Mock.CurrentSurveyService, 'getNavigations').and.returnValue(Mock.surveyTemplate.navigationList);
-    });
-
-    it('should initialize the survey', function() {
-      service.initialize();
-
-      expect(Mock.CurrentSurveyService.initialize).toHaveBeenCalledWith();
-    });
-
-  });
-
-  describe('fetchItemByID method', function() {
-
-    it('should return the item', function() {
-      spyOn(Mock.CurrentSurveyService, 'getItemByCustomID');
-
-      service.fetchItemByID(CAD1);
-
-      expect(Mock.CurrentSurveyService.getItemByCustomID).toHaveBeenCalledWith(CAD1);
-    });
-
-  });
-
-  describe('fetchItemAnswerByCustomID method', function() {
-
-    it('should retrieve the answer of item from survey activity', function() {
-      spyOn(Mock.CurrentSurveyService, 'getAnswerByItemID');
-
-      service.fetchItemAnswerByCustomID(CAD1);
-
-      expect(Mock.CurrentSurveyService.getAnswerByItemID).toHaveBeenCalledWith(CAD1);
-    });
-
-  });
-
   function mockCurrentSurveyService($injector) {
     Mock.CurrentSurveyService = $injector.get('otusjs.player.data.activity.CurrentSurveyService');
     Injections.CurrentSurveyService = Mock.CurrentSurveyService;
@@ -129,6 +149,10 @@ describe('ActivityFacadeService', function() {
     Mock.answerData.answer = ANSWER;
     Mock.answerData.metadata = METADATA;
     Mock.answerData.comment = COMMENT;
+  }
+
+  function mockValidationErrorData() {
+    Mock.validationErrorData = {};
   }
 
   function mockSurvey() {

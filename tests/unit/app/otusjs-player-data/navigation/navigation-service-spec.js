@@ -30,28 +30,84 @@ describe('NavigationService', () => {
     });
   });
 
-  describe('getCurrentItem method', () => {
+  describe('initialize method', () => {
 
-    it('should retrieve the CurrentItemService from ActivityFacadeService', () => {
-      spyOn(Mock.ActivityFacadeService, 'getCurrentItem').and.returnValue(Mock.CurrentItemService);
+    describe('to determinate the navigation state', () => {
 
-      let returned = service.getCurrentItem();
+      beforeEach(() => {
+        spyOn(Mock.CurrentSurveyService, 'getSurvey').and.returnValue(Mock.newSurveyActivity);
+        spyOn(Mock.CurrentSurveyService, 'getItems').and.returnValue([Mock.itemCAD1, Mock.itemCAD2]);
+        spyOn(Mock.CurrentSurveyService, 'getNavigations').and.returnValue([Mock.navigationCAD1, Mock.navigationCAD2]);
+        spyOn(Mock.CurrentItemService, 'setup');
+        spyOn(Mock.CurrentItemService, 'getItem').and.returnValue(Mock.itemCAD1);
+        spyOn(Mock.ActivityFacadeService, 'getCurrentItem').and.returnValue(Mock.CurrentItemService);
+        spyOn(Mock.RouteService, 'setup');
+      });
 
-      expect(returned).toEqual(Mock.CurrentItemService);
-      expect(Mock.ActivityFacadeService.getCurrentItem).toHaveBeenCalledWith();
+      it('should verifiy if activity navigation stack has some item', () => {
+        spyOn(Mock.newStack, 'getSize');
+
+        service.initialize();
+
+        expect(Mock.newStack.getSize).toHaveBeenCalledWith();
+      });
+
     });
 
-  });
+    describe('when is a navigation without previous state saved (does not has item)', () => {
 
-  describe('getCurrentSurvey method', () => {
+      beforeEach(() => {
+        spyOn(Mock.CurrentSurveyService, 'getSurvey').and.returnValue(Mock.newSurveyActivity);
+        spyOn(Mock.CurrentSurveyService, 'getItems').and.returnValue([Mock.itemCAD1, Mock.itemCAD2]);
+        spyOn(Mock.CurrentSurveyService, 'getNavigations').and.returnValue([Mock.navigationCAD1, Mock.navigationCAD2]);
+        spyOn(Mock.CurrentItemService, 'setup');
+        spyOn(Mock.CurrentItemService, 'getItem').and.returnValue(Mock.itemCAD1);
+        spyOn(Mock.ActivityFacadeService, 'getCurrentItem').and.returnValue(Mock.CurrentItemService);
+        spyOn(Mock.RouteService, 'setup');
+      });
 
-    it('should retrieve the CurrentSurveyService from ActivityFacadeService', () => {
-      spyOn(Mock.ActivityFacadeService, 'getCurrentSurvey').and.returnValue(Mock.CurrentSurveyService);
+      it('should just keep a reference to navigation stack', () => {
+        service.initialize();
 
-      let returned = service.getCurrentSurvey();
+        expect(service.getStack()).toEqual(Mock.newStack);
+      });
 
-      expect(returned).toEqual(Mock.CurrentSurveyService);
-      expect(Mock.ActivityFacadeService.getCurrentSurvey).toHaveBeenCalledWith();
+      it('should load the first item of survey', () => {
+        service.initialize();
+
+        expect(Mock.CurrentItemService.setup).toHaveBeenCalledWith(Mock.itemCAD1, Mock.navigationCAD1, undefined);
+        expect(Mock.RouteService.setup).toHaveBeenCalledWith(Mock.navigationCAD1);
+      });
+
+    });
+
+    describe('when is a navigation with previous state saved (has some item)', () => {
+
+      beforeEach(() => {
+        spyOn(Mock.CurrentSurveyService, 'getSurvey').and.returnValue(Mock.savedSurveyActivity);
+        spyOn(Mock.CurrentSurveyService, 'getItems').and.returnValue([Mock.itemCAD1, Mock.itemCAD2]);
+        spyOn(Mock.CurrentSurveyService, 'getNavigations').and.returnValue([Mock.navigationCAD1, Mock.navigationCAD2]);
+        spyOn(Mock.CurrentSurveyService, 'getItemByCustomID').and.returnValue(Mock.itemCAD3);
+        spyOn(Mock.CurrentSurveyService, 'getNavigationByOrigin').and.returnValue(Mock.navigationCAD3);
+        spyOn(Mock.CurrentItemService, 'setup');
+        spyOn(Mock.CurrentItemService, 'getItem').and.returnValue(Mock.itemCAD1);
+        spyOn(Mock.RouteService, 'setup');
+        spyOn(Mock.ActivityFacadeService, 'getCurrentSurvey').and.returnValue(Mock.CurrentSurveyService);
+        spyOn(Mock.ActivityFacadeService, 'getCurrentItem').and.returnValue(Mock.CurrentItemService);
+      });
+
+      it('should setup the CurrentItemService with the item from the top of stack', () => {
+        service.initialize();
+
+        expect(Mock.CurrentItemService.setup).toHaveBeenCalledWith(Mock.itemCAD3, Mock.navigationCAD3, Mock.itemCAD2.customID);
+      });
+
+      it('should setup the RouteService with the navigation of item from the top of stack', () => {
+        service.initialize();
+
+        expect(Mock.CurrentItemService.setup).toHaveBeenCalledWith(Mock.itemCAD3, Mock.navigationCAD3, Mock.itemCAD2.customID);
+      });
+
     });
 
   });
@@ -113,19 +169,32 @@ describe('NavigationService', () => {
 
   });
 
-  describe('getPreviousItem method', () => {
+  xdescribe('getPreviousItem method', () => {
 
     describe('on all cases', () => {
 
       beforeEach(() => {
-        spyOn(Mock.CurrentSurveyService, 'getItemByCustomID');
-        spyOn(Mock.CurrentItemService, 'getPreviousItem');
+        spyOn(Mock.CurrentSurveyService, 'getSurvey').and.returnValue(Mock.savedSurveyActivity);
+        spyOn(Mock.CurrentSurveyService, 'getItems').and.returnValue([Mock.itemCAD1, Mock.itemCAD2]);
+        spyOn(Mock.CurrentSurveyService, 'getNavigations').and.returnValue([Mock.navigationCAD1, Mock.navigationCAD2]);
+        spyOn(Mock.CurrentSurveyService, 'getItemByCustomID').and.returnValue(Mock.itemCAD3);
+        spyOn(Mock.CurrentSurveyService, 'getNavigationByOrigin').and.returnValue(Mock.navigationCAD3);
+        spyOn(Mock.CurrentItemService, 'setup');
+        spyOn(Mock.CurrentItemService, 'getItem').and.returnValue(Mock.itemCAD1);
+        spyOn(Mock.RouteService, 'setup');
+        spyOn(Mock.ActivityFacadeService, 'getCurrentSurvey').and.returnValue(Mock.CurrentSurveyService);
+        spyOn(Mock.ActivityFacadeService, 'getCurrentItem').and.returnValue(Mock.CurrentItemService);
+
+        service.initialize();
       });
 
       it('should request the ID of previous item of current item', () => {
+        spyOn(Mock.savedStack, 'getCurrentItem').and.returnValue(Mock.itemB);
+        spyOn(Mock.itemB, 'getPrevious').and.returnValue(Mock.itemA);
+
         let nextItems = service.getPreviousItem();
 
-        expect(Mock.CurrentItemService.getPreviousItem).toHaveBeenCalledWith();
+        expect(Mock.itemA.getPrevious).toHaveBeenCalledWith();
       });
 
     });
@@ -195,58 +264,9 @@ describe('NavigationService', () => {
 
   });
 
-  describe('initialize method', () => {
+  describe('hasPrevious method', () => {
 
-    describe('to determinate the navigation state', () => {
-
-      beforeEach(() => {
-        spyOn(Mock.CurrentSurveyService, 'getSurvey').and.returnValue(Mock.newSurveyActivity);
-        spyOn(Mock.CurrentSurveyService, 'getItems').and.returnValue([Mock.itemCAD1, Mock.itemCAD2]);
-        spyOn(Mock.CurrentSurveyService, 'getNavigations').and.returnValue([Mock.navigationCAD1, Mock.navigationCAD2]);
-        spyOn(Mock.CurrentItemService, 'setup');
-        spyOn(Mock.CurrentItemService, 'getItem').and.returnValue(Mock.itemCAD1);
-        spyOn(Mock.ActivityFacadeService, 'getCurrentItem').and.returnValue(Mock.CurrentItemService);
-        spyOn(Mock.RouteService, 'setup');
-      });
-
-      it('should verifiy if activity navigation stack has some item', () => {
-        spyOn(Mock.newStack, 'getSize').and.returnValue(0);
-
-        service.initialize();
-
-        expect(Mock.newStack.getSize).toHaveBeenCalledWith();
-      });
-
-    });
-
-    describe('when is a navigation without previous state saved (does not has item)', () => {
-
-      beforeEach(() => {
-        spyOn(Mock.CurrentSurveyService, 'getSurvey').and.returnValue(Mock.newSurveyActivity);
-        spyOn(Mock.CurrentSurveyService, 'getItems').and.returnValue([Mock.itemCAD1, Mock.itemCAD2]);
-        spyOn(Mock.CurrentSurveyService, 'getNavigations').and.returnValue([Mock.navigationCAD1, Mock.navigationCAD2]);
-        spyOn(Mock.CurrentItemService, 'setup');
-        spyOn(Mock.CurrentItemService, 'getItem').and.returnValue(Mock.itemCAD1);
-        spyOn(Mock.ActivityFacadeService, 'getCurrentItem').and.returnValue(Mock.CurrentItemService);
-        spyOn(Mock.RouteService, 'setup');
-      });
-
-      it('should just keep a reference to navigation stack', () => {
-        service.initialize();
-
-        expect(service.getStack()).toEqual(Mock.newStack);
-      });
-
-      it('should load the first item of survey', () => {
-        service.initialize();
-
-        expect(Mock.CurrentItemService.setup).toHaveBeenCalledWith(Mock.itemCAD1, Mock.navigationCAD1, undefined);
-        expect(Mock.RouteService.setup).toHaveBeenCalledWith(Mock.navigationCAD1);
-      });
-
-    });
-
-    describe('when is a navigation with previous state saved (has some item)', () => {
+    describe('when exists previous item', () => {
 
       beforeEach(() => {
         spyOn(Mock.CurrentSurveyService, 'getSurvey').and.returnValue(Mock.savedSurveyActivity);
@@ -259,33 +279,14 @@ describe('NavigationService', () => {
         spyOn(Mock.RouteService, 'setup');
         spyOn(Mock.ActivityFacadeService, 'getCurrentSurvey').and.returnValue(Mock.CurrentSurveyService);
         spyOn(Mock.ActivityFacadeService, 'getCurrentItem').and.returnValue(Mock.CurrentItemService);
-      });
 
-      it('should setup the CurrentItemService with the item from the top of stack', () => {
         service.initialize();
-
-        expect(Mock.CurrentItemService.setup).toHaveBeenCalledWith(Mock.itemCAD3, Mock.navigationCAD3, Mock.itemCAD2.customID);
-      });
-
-      it('should setup the RouteService with the navigation of item from the top of stack', () => {
-        service.initialize();
-
-        expect(Mock.CurrentItemService.setup).toHaveBeenCalledWith(Mock.itemCAD3, Mock.navigationCAD3, Mock.itemCAD2.customID);
-      });
-
-    });
-
-  });
-
-  describe('hasPrevious method', () => {
-
-    describe('when exists previous item', () => {
-
-      beforeEach(() => {
-        spyOn(Mock.CurrentItemService, 'getPreviousItem').and.returnValue(CAD1);
       });
 
       it('should return true', () => {
+        spyOn(Mock.savedStack, 'getCurrentItem').and.returnValue(Mock.itemB);
+        spyOn(Mock.itemB, 'getPrevious').and.returnValue(Mock.itemA);
+
         expect(service.hasPrevious()).toBe(true);
       });
 
@@ -294,10 +295,24 @@ describe('NavigationService', () => {
     describe('when not exists previous item', () => {
 
       beforeEach(() => {
-        spyOn(Mock.CurrentItemService, 'getPreviousItem').and.returnValue(null);
+        spyOn(Mock.CurrentSurveyService, 'getSurvey').and.returnValue(Mock.savedSurveyActivity);
+        spyOn(Mock.CurrentSurveyService, 'getItems').and.returnValue([Mock.itemCAD1, Mock.itemCAD2]);
+        spyOn(Mock.CurrentSurveyService, 'getNavigations').and.returnValue([Mock.navigationCAD1, Mock.navigationCAD2]);
+        spyOn(Mock.CurrentSurveyService, 'getItemByCustomID').and.returnValue(Mock.itemCAD3);
+        spyOn(Mock.CurrentSurveyService, 'getNavigationByOrigin').and.returnValue(Mock.navigationCAD3);
+        spyOn(Mock.CurrentItemService, 'setup');
+        spyOn(Mock.CurrentItemService, 'getItem').and.returnValue(Mock.itemCAD1);
+        spyOn(Mock.RouteService, 'setup');
+        spyOn(Mock.ActivityFacadeService, 'getCurrentSurvey').and.returnValue(Mock.CurrentSurveyService);
+        spyOn(Mock.ActivityFacadeService, 'getCurrentItem').and.returnValue(Mock.CurrentItemService);
+
+        service.initialize();
       });
 
       it('should return false', () => {
+        spyOn(Mock.savedStack, 'getCurrentItem').and.returnValue(Mock.itemA);
+        spyOn(Mock.itemA, 'getPrevious').and.returnValue(null);
+
         expect(service.hasPrevious()).toBe(false);
       });
 
@@ -368,7 +383,7 @@ describe('NavigationService', () => {
   });
 
   function mockNavigationStackItemFactory($injector) {
-    Mock.NavigationStackItemFactory = $injector.get('otusjs.model.navigation.NavigationStackItemFactory');
+    Mock.NavigationStackItemFactory = $injector.get('otusjs.model.navigation.NavigationPathItemFactory');
 
     let options = {};
     options.id = Mock.itemCAD1.customID;
@@ -696,7 +711,9 @@ describe('NavigationService', () => {
         }
       }
     };
-    Mock.itemCAD3.isQuestion = jasmine.createSpy('isQuestion');
+    Mock.itemCAD1.isQuestion = jasmine.createSpy('isQuestion').and.returnValue(true);
+    Mock.itemCAD2.isQuestion = jasmine.createSpy('isQuestion').and.returnValue(true);
+    Mock.itemCAD3.isQuestion = jasmine.createSpy('isQuestion').and.returnValue(true);
   }
 
   function mockNavigationData() {
@@ -768,10 +785,10 @@ describe('NavigationService', () => {
   }
 
   function mockNavigationStackData($injector) {
-    Mock.newStack = $injector.get('otusjs.model.navigation.NavigationStackFactory').create();
-    Mock.savedStack = $injector.get('otusjs.model.navigation.NavigationStackFactory').create();
+    Mock.newStack = $injector.get('otusjs.model.navigation.NavigationPathFactory').create();
+    Mock.savedStack = $injector.get('otusjs.model.navigation.NavigationPathFactory').create();
 
-    itemFactory = $injector.get('otusjs.model.navigation.NavigationStackItemFactory');
+    itemFactory = $injector.get('otusjs.model.navigation.NavigationPathItemFactory');
     let options = { id: 'CAD1', label: 'Label', type: 'IntegerQuestion', answer: 'Label da resposta', metadata: 'Label do metdado.' };
     Mock.itemA = itemFactory.create(options);
     options = { id: 'CAD2', label: 'Label', type: 'IntegerQuestion', answer: 'Label da resposta', metadata: 'Label do metdado.' };

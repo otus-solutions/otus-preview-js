@@ -1,4 +1,4 @@
-xdescribe('ItemFillingValidatorService', function() {
+describe('ItemFillingValidatorService', function() {
 
   let UNIT_NAME = 'otusjs.player.data.validation.ItemFillingValidatorService';
   let Mock = {};
@@ -9,17 +9,34 @@ xdescribe('ItemFillingValidatorService', function() {
     module('otusjs.player.data');
 
     inject(function(_$injector_) {
+      /* Test data */
       mockItemData();
+
+      /* Injectable mocks */
       mockElementRegisterFactory(_$injector_);
       mockValidationService(_$injector_);
+
       service = _$injector_.get(UNIT_NAME, Injections);
     });
   });
 
-  describe('whatever', function() {
+  describe('applyValidation method', function() {
 
-    it('should do whatever', function() {
-      service.setValidation(Mock.question, {});
+    it('should execute element validation upon question', function() {
+      spyOn(Mock.ValidationService, 'validateElement');
+      let callback = jasmine.any(Function);
+
+      service.applyValidation(Mock.question, callback);
+
+      expect(Mock.ValidationService.validateElement).toHaveBeenCalledWith(Mock.question.customID, callback);
+    });
+
+  });
+
+  describe('setupValidation method', function() {
+
+    xit('', function() {
+      // TODO
     });
 
   });

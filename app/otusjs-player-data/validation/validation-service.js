@@ -16,17 +16,10 @@
 
     /* Public methods */
     self.applyValidation = applyValidation;
-    self.finishValidation = finishValidation;
     self.setupValidation = setupValidation;
 
     function applyValidation(item, callback) {
       ValidationService.validateElement(item.customID, callback);
-    }
-
-    function finishValidation() {
-      ValidationService.validateAllElements(function(response) {
-        //TODO
-      });
     }
 
     function setupValidation(item, answer) {

@@ -20,8 +20,6 @@
     self.getAlternativeRoutes = getAlternativeRoutes;
     self.getCurrentNavigation = getCurrentNavigation;
     self.getDefaultRoute = getDefaultRoute;
-    self.hasNext = hasNext;
-    self.hasPrevious = hasPrevious;
     self.setup = setup;
 
     function getAlternativeRoutes() {
@@ -65,22 +63,6 @@
 
     function _conditionIsApplicable(condition) {
       return condition.listRules().every(RuleService.isRuleApplicable);
-    }
-
-    function hasNext() {
-      if (getCurrentItem().getNavigation().listRoutes().length) {
-        return true;
-      } else {
-        return false;
-      }
-    }
-
-    function hasPrevious() {
-      if (getCurrentItem().getPreviousItem()) {
-        return true;
-      } else {
-        return false;
-      }
     }
 
     function setup(navigation) {

@@ -7,24 +7,24 @@
 
   PlayerService.$inject = [
     'otusjs.player.data.activity.ActivityFacadeService',
-    'otusjs.player.data.navigation.NavigationService',
+    'otusjs.player.core.phase.PlayerStartActionService',
     'otusjs.player.core.phase.PlayActionService',
     'otusjs.player.core.phase.AheadActionService',
     'otusjs.player.core.phase.BackActionService',
   ];
 
-  function PlayerService(ActivityFacadeService, NavigationService, PlayActionService, AheadActionService, BackActionService) {
+  function PlayerService(ActivityFacadeService, PlayerStartActionService, PlayActionService, AheadActionService, BackActionService) {
     var self = this;
     var _nextItems = [];
 
-    self.getItem = getItem;
+    self.getItemData = getItemData;
     self.goAhead = goAhead;
     self.goBack = goBack;
     self.play = play;
     self.setup = setup;
 
-    function getItem() {
-      return NavigationService.getCurrentItem().getItem();
+    function getItemData() {
+      return ActivityFacadeService.getCurrentItem().getItem();
     }
 
     function goAhead() {
@@ -40,7 +40,7 @@
     }
 
     function setup() {
-      ActivityFacadeService.setup();
+      PlayerStartActionService.execute();
     }
   }
 })();

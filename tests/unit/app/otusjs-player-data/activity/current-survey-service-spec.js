@@ -1,5 +1,6 @@
 describe('Current Question Service', function() {
 
+  let UNIT_NAME = 'otusjs.player.data.activity.CurrentSurveyService';
   let Mock = {};
   let Injections = {};
   let service;
@@ -11,22 +12,14 @@ describe('Current Question Service', function() {
     module('otusjs.player.data');
 
     inject(function(_$injector_) {
+      /* Test data */
       mockSurvey();
+
+      /* Injectable mocks */
       mockModelActivityFacadeService(_$injector_);
-      service = _$injector_.get('otusjs.player.data.activity.CurrentSurveyService', Injections);
+
+      service = _$injector_.get(UNIT_NAME, Injections);
     });
-  });
-
-  describe('setup method', function() {
-
-    it('should open the survey activity', function() {
-      spyOn(Mock.ActivityFacadeService, 'openActivitySurvey');
-
-      service.setup();
-
-      expect(Mock.ActivityFacadeService.openActivitySurvey).toHaveBeenCalledWith();
-    });
-
   });
 
   describe('getAnswerByItemID method', function() {
@@ -135,6 +128,18 @@ describe('Current Question Service', function() {
       service.initialize();
 
       expect(Mock.ActivityFacadeService.initializeActivitySurvey).toHaveBeenCalledWith();
+    });
+
+  });
+
+  describe('setup method', function() {
+
+    it('should open the survey activity', function() {
+      spyOn(Mock.ActivityFacadeService, 'openActivitySurvey');
+
+      service.setup();
+
+      expect(Mock.ActivityFacadeService.openActivitySurvey).toHaveBeenCalledWith();
     });
 
   });

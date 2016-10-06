@@ -10,6 +10,11 @@ describe('PlayerConfigurationService', function() {
     inject(function(_$injector_) {
       mockChainLink(_$injector_);
 
+      mockPlayerStartActionService(_$injector_);
+      mockPrePlayerStartActionService(_$injector_);
+      mockExecutionPlayerStartActionService(_$injector_);
+      mockPostPlayerStartActionService(_$injector_);
+
       mockPlayActionService(_$injector_);
       mockPrePlayActionService(_$injector_);
       mockExecutionPlayActionService(_$injector_);
@@ -19,43 +24,43 @@ describe('PlayerConfigurationService', function() {
       mockPreAheadActionService(_$injector_);
       mockExecutionAheadActionService(_$injector_);
       mockPostAheadActionService(_$injector_);
-      
+
       service = _$injector_.get('otusjs.player.core.player.PlayerConfigurationService', Injections);
     });
   });
 
-  describe('onPreAhead method', function() {
+  describe('onPrePlayerStart method', function() {
 
-    it('should pipe the step on PreAheadActionService', function() {
-      spyOn(Mock.PreAheadActionService, 'pipe');
+    it('should pipe the step on PrePlayerStartActionService', function() {
+      spyOn(Mock.PrePlayerStartActionService, 'pipe');
 
-      service.onPreAhead(Mock.step);
+      service.onPrePlayerStart(Mock.step);
 
-      expect(Mock.PreAheadActionService.pipe).toHaveBeenCalledWith(Mock.step);
+      expect(Mock.PrePlayerStartActionService.pipe).toHaveBeenCalledWith(Mock.step);
     });
 
   });
 
-  describe('onAhead method', function() {
+  describe('onPlayerStart method', function() {
 
-    it('should pipe the step on ExecutionAheadActionService', function() {
-      spyOn(Mock.ExecutionAheadActionService, 'pipe');
+    it('should pipe the step on ExecutionPlayerStartActionService', function() {
+      spyOn(Mock.ExecutionPlayerStartActionService, 'pipe');
 
-      service.onAhead(Mock.step);
+      service.onPlayerStart(Mock.step);
 
-      expect(Mock.ExecutionAheadActionService.pipe).toHaveBeenCalledWith(Mock.step);
+      expect(Mock.ExecutionPlayerStartActionService.pipe).toHaveBeenCalledWith(Mock.step);
     });
 
   });
 
-  describe('onPostAhead method', function() {
+  describe('onPostPlayerStart method', function() {
 
-    it('should pipe the step on PostAheadActionService', function() {
-      spyOn(Mock.PostAheadActionService, 'pipe');
+    it('should pipe the step on PostPlayerStartActionService', function() {
+      spyOn(Mock.PostPlayerStartActionService, 'pipe');
 
-      service.onPostAhead(Mock.step);
+      service.onPostPlayerStart(Mock.step);
 
-      expect(Mock.PostAheadActionService.pipe).toHaveBeenCalledWith(Mock.step);
+      expect(Mock.PostPlayerStartActionService.pipe).toHaveBeenCalledWith(Mock.step);
     });
 
   });
@@ -95,6 +100,62 @@ describe('PlayerConfigurationService', function() {
     });
 
   });
+
+  describe('onPreAhead method', function() {
+
+    it('should pipe the step on PreAheadActionService', function() {
+      spyOn(Mock.PreAheadActionService, 'pipe');
+
+      service.onPreAhead(Mock.step);
+
+      expect(Mock.PreAheadActionService.pipe).toHaveBeenCalledWith(Mock.step);
+    });
+
+  });
+
+  describe('onAhead method', function() {
+
+    it('should pipe the step on ExecutionAheadActionService', function() {
+      spyOn(Mock.ExecutionAheadActionService, 'pipe');
+
+      service.onAhead(Mock.step);
+
+      expect(Mock.ExecutionAheadActionService.pipe).toHaveBeenCalledWith(Mock.step);
+    });
+
+  });
+
+  describe('onPostAhead method', function() {
+
+    it('should pipe the step on PostAheadActionService', function() {
+      spyOn(Mock.PostAheadActionService, 'pipe');
+
+      service.onPostAhead(Mock.step);
+
+      expect(Mock.PostAheadActionService.pipe).toHaveBeenCalledWith(Mock.step);
+    });
+
+  });
+
+  function mockPlayerStartActionService($injector) {
+    Mock.PlayerStartActionService = $injector.get('otusjs.player.core.phase.PlayerStartActionService');
+    Injections.PlayerStartActionService = Mock.PlayerStartActionService;
+  }
+
+  function mockPrePlayerStartActionService($injector) {
+    Mock.PrePlayerStartActionService = $injector.get('otusjs.player.core.phase.PrePlayerStartActionService');
+    Injections.PrePlayerStartActionService = Mock.PrePlayerStartActionService;
+  }
+
+  function mockExecutionPlayerStartActionService($injector) {
+    Mock.ExecutionPlayerStartActionService = $injector.get('otusjs.player.core.phase.ExecutionPlayerStartActionService');
+    Injections.ExecutionPlayerStartActionService = Mock.ExecutionPlayerStartActionService;
+  }
+
+  function mockPostPlayerStartActionService($injector) {
+    Mock.PostPlayerStartActionService = $injector.get('otusjs.player.core.phase.PostPlayerStartActionService');
+    Injections.PostPlayerStartActionService = Mock.PostPlayerStartActionService;
+  }
 
   function mockPlayActionService($injector) {
     Mock.PlayActionService = $injector.get('otusjs.player.core.phase.PlayActionService');

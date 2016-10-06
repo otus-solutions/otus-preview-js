@@ -21,7 +21,7 @@
     self.getEffectResult = getEffectResult;
 
     function beforeEffect(pipe, flowData) {
-      _currentItem = NavigationService.getCurrentItem();
+      _currentItem = ActivityFacadeService.getCurrentItem();
 
       if (_currentItem.shouldIgnoreResponseEvaluation()) {
         pipe.skipStep = true;

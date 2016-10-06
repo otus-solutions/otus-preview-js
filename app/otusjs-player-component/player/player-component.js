@@ -5,10 +5,7 @@
     .module('otusjs.player.component')
     .component('otusPlayer', {
       templateUrl: 'app/otusjs-player-component/player/player-template.html',
-      controller: Controller,
-      bindings: {
-        surveyActivity: '<'
-      }
+      controller: Controller
     });
 
   Controller.$inject = [
@@ -37,8 +34,7 @@
       }
     }
 
-    function eject() {
-    }
+    function eject() {}
 
     function goAhead() {
       self.playerDisplay.loadItem();
@@ -48,23 +44,19 @@
       self.playerDisplay.loadItem();
     }
 
-    function pause() {
-    }
+    function pause() {}
 
     function play() {
       self.playerDisplay.loadItem();
     }
 
-    function stop() {
-    }
+    function stop() {}
 
     function onInit() {
-      self.identity = self.surveyActivity.template.identity;
-
       /*
        * These objects are initialized by child components of Player
-       * See player-commander-componente.js (onInit method)
-       * See player-display-componente.js (onInit method)
+       * See player-commander-component.js (onInit method)
+       * See player-display-component.js (onInit method)
        */
       self.playerCommander = {};
       self.playerDisplay = {};

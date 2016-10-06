@@ -9,6 +9,7 @@
       'otusjs.player.core.step.InitializeSurveyActivityStepService',
       'otusjs.player.core.step.LoadPreviousItemStepService',
       'otusjs.player.core.step.LoadNextItemStepService',
+      'otusjs.player.core.step.LoadSurveyActivityStepService',
       'otusjs.player.core.step.ReadValidationErrorStepService',
       'otusjs.player.core.step.RunValidationStepService',
       'otusjs.player.core.step.SetupValidationStepService',
@@ -16,7 +17,25 @@
       run
     ]);
 
-    function run(PlayerConfigurationService, ApplyAnswer, InitializeSurveyActivity, LoadPreviousItem, LoadNextItem, ReadValidationError, RunValidation, SetupValidation, HandleValidationError) {
+    function run(PlayerConfigurationService, ApplyAnswer, InitializeSurveyActivity, LoadPreviousItem, LoadNextItem, LoadSurveyActivity, ReadValidationError, RunValidation, SetupValidation, HandleValidationError) {
+      /**************************************************************
+       * Player Start Phase
+       *
+       * Here we put the configurations that will affect the phase
+       * where the player is itself starting.
+       * This phase is divided in three sub-phases and each one can be
+       * configured separately.
+       *
+       **************************************************************/
+      /* PreStart Phase */
+      // PlayerConfigurationService.onPrePlayerStart();
+
+      /* ExecutionStart Phase */
+      PlayerConfigurationService.onPlayerStart(LoadSurveyActivity);
+
+      /* PostStart Phase */
+      // PlayerConfigurationService.onPostPlayerStart();
+
       /**************************************************************
        * Play Phase
        *

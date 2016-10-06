@@ -14,7 +14,6 @@
     let _item = null;
     let _filling = null;
     let _navigation = null;
-    let _previousItem = null;
     let _validationError = null;
     let _observer = null;
 
@@ -24,7 +23,6 @@
     self.fill = fill;
     self.getFilling = getFilling;
     self.getFillingRules = getFillingRules;
-    self.getPreviousItem = getPreviousItem;
     self.getItem = getItem;
     self.getNavigation = getNavigation;
     self.getValidationError = getValidationError;
@@ -46,12 +44,9 @@
     }
 
     function fill(filling) {
-      // if (_item.isQuestion()) {
-      //   _filling.answer.value = filling.answer;
-      //   _filling.metadata.value = filling.metadata;
-      //   _filling.comment = filling.comment;
-      // }
-      _filling = filling;
+      if (_item.isQuestion()) {
+        _filling = filling;
+      }
     };
 
     function getFilling() {
@@ -61,10 +56,6 @@
     function getFillingRules() {
       return _item.fillingRules.options;
     };
-
-    function getPreviousItem() {
-      return _previousItem;
-    }
 
     function getItem() {
       return _item;
@@ -99,10 +90,9 @@
       _observer.pushData(_filling);
     };
 
-    function setup(item, navigation, previousItem) {
+    function setup(item, navigation) {
       _item = item;
       _navigation = navigation;
-      _previousItem = previousItem || null;
 
       if (item.isQuestion()) {
         _filling = ActivityFacadeService.getFillingByQuestionID(item.customID);

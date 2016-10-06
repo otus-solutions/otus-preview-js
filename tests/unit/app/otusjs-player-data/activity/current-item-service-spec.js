@@ -1,4 +1,4 @@
-xdescribe('CurrentItemService', () => {
+describe('CurrentItemService', () => {
 
   let UNIT_NAME = 'otusjs.player.data.activity.CurrentItemService';
   let Mock = {};
@@ -30,8 +30,9 @@ xdescribe('CurrentItemService', () => {
   describe('applyFilling method', () => {
 
     beforeEach(() => {
+      Mock.ActivityFacadeService.getFillingByQuestionID = jasmine.createSpy('getFillingByQuestionID').and.returnValue(Mock.filling);
       service.setup(Mock.itemVAL1, Mock.navigation);
-      service.fill(Mock.rawFilling);
+      service.fill(Mock.filling);
     });
 
     it('should apply the answer to SurveyActivity model', () => {
@@ -45,9 +46,10 @@ xdescribe('CurrentItemService', () => {
   describe('attachValidationError method', () => {
 
     beforeEach(() => {
+      Mock.ActivityFacadeService.getFillingByQuestionID = jasmine.createSpy('getFillingByQuestionID').and.returnValue(Mock.filling);
       service.setup(Mock.itemVAL1, Mock.navigation);
       service.observerRegistry(Mock.itemObserver);
-      service.fill(Mock.rawFilling);
+      service.fill(Mock.filling);
     });
 
     it('should keep the validation error data', () => {
@@ -69,20 +71,21 @@ xdescribe('CurrentItemService', () => {
     describe('when the item is a question', () => {
 
       beforeEach(() => {
+        Mock.ActivityFacadeService.getFillingByQuestionID = jasmine.createSpy('getFillingByQuestionID').and.returnValue(Mock.filling);
         service.setup(Mock.itemVAL1, Mock.navigation);
-        service.fill(Mock.rawFilling);
+        service.fill(Mock.filling);
       });
 
       it('should keep the answer value', () => {
-        expect(service.getFilling().answer.value).toBe(Mock.rawFilling.answer);
+        expect(service.getFilling().answer.value).toBe(Mock.filling.answer.value);
       });
 
       it('should keep the metadata value', () => {
-        expect(service.getFilling().metadata.value).toBe(Mock.rawFilling.metadata);
+        expect(service.getFilling().metadata.value).toBe(Mock.filling.metadata.value);
       });
 
       it('should keep the comment value', () => {
-        expect(service.getFilling().comment).toBe(Mock.rawFilling.comment);
+        expect(service.getFilling().comment).toBe(Mock.filling.comment);
       });
 
     });
@@ -94,7 +97,8 @@ xdescribe('CurrentItemService', () => {
       });
 
       it('should not change the filling value', () => {
-        service.fill(Mock.rawFilling);
+        service.fill(Mock.filling);
+
         expect(service.getFilling()).toBe(null);
       })
 
@@ -107,6 +111,7 @@ xdescribe('CurrentItemService', () => {
     describe('when an item has been setted', () => {
 
       beforeEach(() => {
+        Mock.ActivityFacadeService.getFillingByQuestionID = jasmine.createSpy('getFillingByQuestionID').and.returnValue(Mock.filling);
         service.setup(Mock.itemVAL1, Mock.navigation);
       });
 
@@ -131,6 +136,7 @@ xdescribe('CurrentItemService', () => {
     describe('when item is a question', () => {
 
       beforeEach(() => {
+        Mock.ActivityFacadeService.getFillingByQuestionID = jasmine.createSpy('getFillingByQuestionID').and.returnValue(Mock.filling);
         service.setup(Mock.itemVAL1, Mock.navigation);
       });
 
@@ -159,6 +165,7 @@ xdescribe('CurrentItemService', () => {
     describe('when item is a question', () => {
 
       beforeEach(() => {
+        Mock.ActivityFacadeService.getFillingByQuestionID = jasmine.createSpy('getFillingByQuestionID').and.returnValue(Mock.filling);
         service.setup(Mock.itemVAL1, Mock.navigation);
       });
 
@@ -186,6 +193,10 @@ xdescribe('CurrentItemService', () => {
 
     describe('on all cases', () => {
 
+      beforeEach(() => {
+        Mock.ActivityFacadeService.getFillingByQuestionID = jasmine.createSpy('getFillingByQuestionID').and.returnValue(Mock.filling);
+      });
+
       it('should keep a reference to the item in use', () => {
         service.setup(Mock.itemVAL1);
 
@@ -200,10 +211,33 @@ xdescribe('CurrentItemService', () => {
 
       describe('when item is a question', () => {
 
-        it('should create a QuestionFill and keep it', () => {
-          service.setup(Mock.itemVAL1, Mock.navigation);
+        describe('and exists a filling to question', () => {
 
-          expect(service.getFilling()).toEqual(Mock.filling);
+          beforeEach(() => {
+            Mock.ActivityFacadeService.getFillingByQuestionID = jasmine.createSpy('getFillingByQuestionID').and.returnValue(Mock.filling);
+          });
+
+          it('should not create a QuestionFill and keep the existent data', () => {
+            service.setup(Mock.itemVAL1, Mock.navigation);
+
+            expect(service.getFilling()).toEqual(Mock.filling);
+          });
+
+        });
+
+        describe('and not exists a filling to question', () => {
+
+          beforeEach(() => {
+            Mock.ActivityFacadeService.getFillingByQuestionID = jasmine.createSpy('getFillingByQuestionID').and.returnValue(null);
+            Mock.ActivityFacadeService.createQuestionFill = jasmine.createSpy('createQuestionFill').and.returnValue(Mock.filling);
+          });
+
+          it('should create a QuestionFill and keep it', () => {
+            service.setup(Mock.itemVAL1, Mock.navigation);
+
+            expect(service.getFilling()).toEqual(Mock.filling);
+          });
+
         });
 
       });
@@ -220,31 +254,12 @@ xdescribe('CurrentItemService', () => {
 
     });
 
-    describe('when the current item has not a previous item', () => {
-
-      it('should keep a null value', () => {
-        service.setup(Mock.itemVAL1, Mock.navigation);
-
-        expect(service.getPreviousItem()).toBe(null);
-      });
-
-    });
-
-    describe('when the current item has a previous item', () => {
-
-      it('should keep the customID of previous item', () => {
-        service.setup(Mock.itemVAL1, Mock.navigation, VAL2);
-
-        expect(service.getPreviousItem()).toEqual(VAL2);
-      });
-
-    });
-
   });
 
   function mockItemObserver() {
     Mock.itemObserver = {};
     Mock.itemObserver.updateValidation = jasmine.createSpy('updateValidation');
+    Mock.itemObserver.pushData = jasmine.createSpy('pushData');
   }
 
   function mockValidationError() {
@@ -446,8 +461,9 @@ xdescribe('CurrentItemService', () => {
 
   function mockActivityFacadeService($injector) {
     Mock.ActivityFacadeService = $injector.get('otusjs.model.activity.ActivityFacadeService');
+
     Mock.ActivityFacadeService.fillQuestion = jasmine.createSpy('fillQuestion');
-    Mock.ActivityFacadeService.createQuestionFill = jasmine.createSpy('createQuestionFill').and.returnValue(Mock.filling);
+
     Injections.ActivityFacadeService = Mock.ActivityFacadeService;
   }
 });
