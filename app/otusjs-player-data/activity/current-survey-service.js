@@ -65,11 +65,11 @@
     }
 
     function initialize() {
-      ActivityFacadeService.initializeActivitySurvey();
+      ActivityFacadeService.openActivitySurvey();
     }
 
     function setup() {
-      ActivityFacadeService.openActivitySurvey();
+      ActivityFacadeService.initializeActivitySurvey();
     }
   }
 }());

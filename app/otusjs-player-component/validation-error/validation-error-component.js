@@ -16,7 +16,6 @@
     function otusValidationErrorController(CurrentItemService, $filter) {
         var self = this;
         self.$onInit = function() {
-          console.log(self.$error);
         };
 
         self.referenceAsDate = function(type) {

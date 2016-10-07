@@ -62,6 +62,7 @@
     }
 
     function setup() {
+      CurrentItemService.clearData();
       CurrentSurveyService.setup();
     }
   }

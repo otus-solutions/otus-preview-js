@@ -23,14 +23,6 @@ describe('ExecutionPlayActionService', function() {
       expect(Mock.ChainLinkFactory.create).toHaveBeenCalledWith();
     });
 
-    it('should setup the flow data catch procedure', function() {
-      spyOn(Mock.stepLink, 'catchFlowData');
-
-      service.pipe(Mock.step);
-
-      expect(Mock.stepLink.catchFlowData).toHaveBeenCalledWith(Mock.step.catchPreData);
-    });
-
     it('should setup the pre execution procedure', function() {
       spyOn(Mock.stepLink, 'setPreExecute');
 
@@ -85,7 +77,6 @@ describe('ExecutionPlayActionService', function() {
 
   function mockStep() {
     Mock.step = {};
-    Mock.step.catchPreData = function() {};
     Mock.step.beforeEffect = function() {};
     Mock.step.effect = function() {};
     Mock.step.afterEffect = function() {};

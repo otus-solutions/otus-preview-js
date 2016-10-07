@@ -7,10 +7,11 @@
 
   Service.$inject = [
     'otusjs.player.data.navigation.NavigationService',
-    'otusjs.player.data.activity.CurrentItemService'
+    'otusjs.player.data.activity.CurrentItemService',
+    'otusjs.player.core.player.PlayerService',
   ];
 
-  function Service(NavigationService, CurrentItemService) {
+  function Service(NavigationService, CurrentItemService, PlayerService) {
     let self = this;
 
     /* Public methods */
@@ -29,7 +30,8 @@
         flowData.answerToEvaluate = {};
         flowData.answerToEvaluate.data = {};
       } else {
-        console.log('goes to closing item');
+        CurrentItemService.clearData();
+        PlayerService.end();
       }
     }
 

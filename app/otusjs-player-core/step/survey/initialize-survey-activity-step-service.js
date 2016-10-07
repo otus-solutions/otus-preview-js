@@ -22,8 +22,6 @@
 
     function effect(pipe, flowData) {
       ActivityFacadeService.initialize();
-      flowData.answerToEvaluate = {};
-      flowData.answerToEvaluate.data = {};
     }
 
     function afterEffect(pipe, flowData) { }

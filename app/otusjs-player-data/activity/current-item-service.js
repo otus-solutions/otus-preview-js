@@ -20,6 +20,7 @@
     /* Public Interface */
     self.applyFilling = applyFilling;
     self.attachValidationError = attachValidationError;
+    self.clearData = clearData;
     self.fill = fill;
     self.getFilling = getFilling;
     self.getFillingRules = getFillingRules;
@@ -41,6 +42,14 @@
     function attachValidationError(validationError) {
       _validationError = validationError;
       _observer.updateValidation(validationError);
+    }
+
+    function clearData() {
+      _item = null;
+      _filling = null;
+      _navigation = null;
+      _validationError = null;
+      _observer = null;
     }
 
     function fill(filling) {
@@ -78,11 +87,11 @@
     }
 
     function shouldApplyAnswer() {
-      return _item.isQuestion();
+      return _item && _item.isQuestion();
     }
 
     function shouldIgnoreResponseEvaluation() {
-      return !_item.isQuestion();
+      return !_item || !_item.isQuestion();
     }
 
     function observerRegistry(observer) {

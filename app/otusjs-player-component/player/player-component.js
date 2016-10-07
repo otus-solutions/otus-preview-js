@@ -24,6 +24,8 @@
     self.pause = pause;
     self.play = play;
     self.stop = stop;
+    self.showBack = showBack;
+    self.showCover = showCover;
     self.$onInit = onInit;
 
     function catchMouseWheel($event) {
@@ -37,22 +39,42 @@
     function eject() {}
 
     function goAhead() {
-      self.playerDisplay.loadItem();
+      PlayerService.goAhead();
+      _loadItem();
     }
 
     function goBack() {
-      self.playerDisplay.loadItem();
+      PlayerService.goBack();
+      _loadItem();
     }
 
     function pause() {}
 
     function play() {
-      self.playerDisplay.loadItem();
+      self.showBackCover = false;
+      self.showCover = false;
+      self.showActivity = true;
+      PlayerService.play();
+      _loadItem();
     }
 
     function stop() {}
 
+    function showCover() {
+      self.playerCover.show();
+    }
+
+    function showBack() {
+      self.showBackCover = true;
+      self.showCover = false;
+      self.showActivity = false;
+    }
+
     function onInit() {
+      self.showBackCover = false;
+      self.showCover = true;
+      self.showActivity = false;
+
       /*
        * These objects are initialized by child components of Player
        * See player-commander-component.js (onInit method)
@@ -60,8 +82,15 @@
        */
       self.playerCommander = {};
       self.playerDisplay = {};
+      self.playerCover = {};
 
-      PlayerService.setup();
+      PlayerService.bindComponent(self);
+    }
+
+    function _loadItem() {
+      if (PlayerService.getItemData()) {
+        self.playerDisplay.loadItem(PlayerService.getItemData());
+      }
     }
   }
 }());

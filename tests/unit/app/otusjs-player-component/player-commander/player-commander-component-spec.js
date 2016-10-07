@@ -1,5 +1,6 @@
 describe('otusPlayerCommander component', function() {
 
+  let UNIT_NAME = 'otusPlayerCommander';
   let Mock = {};
   let Injections = {};
   let Bindings = {};
@@ -9,60 +10,86 @@ describe('otusPlayerCommander component', function() {
     module('otusjs.player.core');
     module('otusjs.player.component');
 
-    inject(function(_$componentController_, _$injector_) {
+    inject(function(_$componentController_, $rootScope) {
+      /* Injectable mocks */
       mockBindings();
-      mockPlayerService(_$injector_);
-      component = _$componentController_('otusPlayerCommander', Injections, Bindings);
+      mockScope($rootScope);
+
+      component = _$componentController_(UNIT_NAME, Injections, Bindings);
     });
   });
 
   describe('goAhead method', function() {
 
-    it('should call PlayerService.goAhead', function() {
-      spyOn(Mock.PlayerService, 'goAhead');
+    it('should output an onGoAhead', function() {
+      spyOn(component, 'onGoAhead');
 
       component.goAhead();
 
-      expect(Mock.PlayerService.goAhead).toHaveBeenCalledWith();
+      expect(component.onGoAhead).toHaveBeenCalledWith();
     });
 
   });
 
   describe('goBack method', function() {
 
-    it('should call PlayerService.goBack', function() {
-      spyOn(Mock.PlayerService, 'goBack');
+    it('should output an onGoBack', function() {
+      spyOn(component, 'onGoBack');
 
       component.goBack();
 
-      expect(Mock.PlayerService.goBack).toHaveBeenCalledWith();
+      expect(component.onGoBack).toHaveBeenCalledWith();
     });
 
   });
 
-  describe('play method', function() {
+  describe('pause method', function() {
 
-    it('should call PlayerService.play', function() {
-      spyOn(Mock.PlayerService, 'play');
+    it('should output an onPause', function() {
+      spyOn(component, 'onPause');
 
-      component.play();
+      component.pause();
 
-      expect(Mock.PlayerService.play).toHaveBeenCalledWith();
+      expect(component.onPause).toHaveBeenCalledWith();
     });
 
   });
 
-  function mockPlayerService($injector) {
-    Mock.PlayerService = $injector.get('otusjs.player.core.player.PlayerService')
-    Injections.PlayerService = Mock.PlayerService;
-  }
+  describe('stop method', function() {
 
-  function mockBindings($injector) {
-    Bindings.onEject = () => {};
+    it('should output an onStop', function() {
+      spyOn(component, 'onStop');
+
+      component.stop();
+
+      expect(component.onStop).toHaveBeenCalledWith();
+    });
+
+  });
+
+  describe('onInit method', function() {
+
+    it('should initialize the playerCommander attribute from parent controller with itself', function() {
+      component.$onInit();
+
+      expect(Mock.$scope.$parent.$ctrl.playerCommander).toEqual(component);
+    });
+
+  });
+
+  function mockBindings() {
     Bindings.onGoAhead = () => {};
     Bindings.onGoBack = () => {};
     Bindings.onPause = () => {};
     Bindings.onPlay = () => {};
     Bindings.onStop = () => {};
+  }
+
+  function mockScope($rootScope) {
+    Mock.$scope = $rootScope.$new();
+
+    Mock.$scope.$parent.$ctrl = {};
+
+    Injections.$scope = Mock.$scope;
   }
 });

@@ -16,12 +16,19 @@
   function PlayerService(ActivityFacadeService, PlayerStartActionService, PlayActionService, AheadActionService, BackActionService) {
     var self = this;
     var _nextItems = [];
+    var _component = null;
 
+    self.bindComponent = bindComponent;
     self.getItemData = getItemData;
     self.goAhead = goAhead;
     self.goBack = goBack;
     self.play = play;
     self.setup = setup;
+    self.end = end;
+
+    function bindComponent(component) {
+      _component = component;
+    }
 
     function getItemData() {
       return ActivityFacadeService.getCurrentItem().getItem();
@@ -41,6 +48,10 @@
 
     function setup() {
       PlayerStartActionService.execute();
+    }
+
+    function end() {
+      _component.showBack();
     }
   }
 })();

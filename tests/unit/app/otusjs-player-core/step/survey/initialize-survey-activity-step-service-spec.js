@@ -14,7 +14,7 @@ describe('InitializeSurveyActivityStepService', function() {
 
       /* Injectable mocks */
       mockActivityFacadeService(_$injector_);
-      mockNavigationService(_$injector_);
+
       service = _$injector_.get('otusjs.player.core.step.InitializeSurveyActivityStepService', Injections);
     });
   });
@@ -23,11 +23,10 @@ describe('InitializeSurveyActivityStepService', function() {
 
     it('should call ActivityFacadeService.applyAnswer', function() {
       spyOn(Mock.ActivityFacadeService, 'initialize');
-      spyOn(Mock.NavigationService, 'initialize');
 
       service.effect(Mock.pipe, Mock.flowData);
 
-      expect(Mock.ActivityFacadeService.initialize).toHaveBeenCalled();
+      expect(Mock.ActivityFacadeService.initialize).toHaveBeenCalledWith();
     });
 
   });
@@ -43,10 +42,5 @@ describe('InitializeSurveyActivityStepService', function() {
   function mockActivityFacadeService($injector) {
     Mock.ActivityFacadeService = $injector.get('otusjs.player.data.activity.ActivityFacadeService');
     Injections.ActivityFacadeService = Mock.ActivityFacadeService;
-  }
-
-  function mockNavigationService($injector) {
-    Mock.NavigationService = $injector.get('otusjs.player.data.navigation.NavigationService');
-    Injections.NavigationService = Mock.NavigationService;
   }
 });

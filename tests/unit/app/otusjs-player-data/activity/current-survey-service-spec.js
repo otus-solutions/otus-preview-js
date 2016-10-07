@@ -122,24 +122,24 @@ describe('Current Question Service', function() {
 
   describe('initialize method', function() {
 
-    it('should initialize the survey activity', function() {
-      spyOn(Mock.ActivityFacadeService, 'initializeActivitySurvey');
+    it('should open the survey activity', function() {
+      spyOn(Mock.ActivityFacadeService, 'openActivitySurvey');
 
       service.initialize();
 
-      expect(Mock.ActivityFacadeService.initializeActivitySurvey).toHaveBeenCalledWith();
+      expect(Mock.ActivityFacadeService.openActivitySurvey).toHaveBeenCalledWith();
     });
 
   });
 
   describe('setup method', function() {
 
-    it('should open the survey activity', function() {
-      spyOn(Mock.ActivityFacadeService, 'openActivitySurvey');
+    it('should initialize the survey activity', function() {
+      spyOn(Mock.ActivityFacadeService, 'initializeActivitySurvey');
 
       service.setup();
 
-      expect(Mock.ActivityFacadeService.openActivitySurvey).toHaveBeenCalledWith();
+      expect(Mock.ActivityFacadeService.initializeActivitySurvey).toHaveBeenCalledWith();
     });
 
   });

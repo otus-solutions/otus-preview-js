@@ -23,7 +23,6 @@
 
     function pipe(step) {
       let link = ChainLinkFactory.create();
-      link.catchFlowData(step.catchPreData);
       link.setPreExecute(step.beforeEffect);
       link.setExecute(step.effect);
       link.setPostExecute(step.afterEffect);

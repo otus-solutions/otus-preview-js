@@ -10,6 +10,7 @@
       'otusjs.player.core.step.LoadPreviousItemStepService',
       'otusjs.player.core.step.LoadNextItemStepService',
       'otusjs.player.core.step.LoadSurveyActivityStepService',
+      'otusjs.player.core.step.LoadSurveyActivityCoverStepService',
       'otusjs.player.core.step.ReadValidationErrorStepService',
       'otusjs.player.core.step.RunValidationStepService',
       'otusjs.player.core.step.SetupValidationStepService',
@@ -17,7 +18,19 @@
       run
     ]);
 
-    function run(PlayerConfigurationService, ApplyAnswer, InitializeSurveyActivity, LoadPreviousItem, LoadNextItem, LoadSurveyActivity, ReadValidationError, RunValidation, SetupValidation, HandleValidationError) {
+    function run(
+      PlayerConfigurationService,
+      ApplyAnswer,
+      InitializeSurveyActivity,
+      LoadPreviousItem,
+      LoadNextItem,
+      LoadSurveyActivity,
+      LoadSurveyActivityCover,
+      ReadValidationError,
+      RunValidation,
+      SetupValidation,
+      HandleValidationError) {
+
       /**************************************************************
        * Player Start Phase
        *
@@ -34,7 +47,7 @@
       PlayerConfigurationService.onPlayerStart(LoadSurveyActivity);
 
       /* PostStart Phase */
-      // PlayerConfigurationService.onPostPlayerStart();
+      // PlayerConfigurationService.onPostPlayerStart(LoadSurveyActivityCover);
 
       /**************************************************************
        * Play Phase

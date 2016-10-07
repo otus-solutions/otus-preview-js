@@ -11,35 +11,49 @@
   Controller.$inject = [
     '$scope',
     '$element',
-    '$compile',
-    'otusjs.player.core.player.PlayerService'
+    '$compile'
   ];
 
-  function Controller($scope, $element, $compile, PlayerService) {
-    var self = this;
+  function Controller($scope, $element, $compile) {
+    let self = this;
 
-    var SURVEY_ITEM = '<otus-survey-item item-data="itemData" />';
+    let SURVEY_ITEM = '<otus-survey-item item-data="itemData" />';
+    let SURVEY_COVER = '<otus-cover />';
 
     /* Public methods */
     self.loadItem = loadItem;
+    self.showCover = showCover;
     self.$onInit = onInit;
 
     function _destroyCurrentItem() {
-      if (self.currentChild) {
-        self.currentChild.destroy();
+      if (self.currentItem) {
+        self.currentItem.destroy();
       }
     }
 
-    function loadItem() {
-      if ($scope.itemData !== PlayerService.getItemData()) {        
+    function loadItem(itemData) {
+      if (_shouldLoadItem(itemData)) {
         _destroyCurrentItem();
-        $scope.itemData = PlayerService.getItemData();
-        $element.find('section').prepend($compile(SURVEY_ITEM)($scope));
+        $scope.itemData = itemData;
+        let $section = $element.find('section');
+        let $otusSurveyItem = $compile(SURVEY_ITEM)($scope);
+        $section.prepend($otusSurveyItem);
       }
+    }
+
+    function showCover() {
+      _destroyCurrentItem();
+      $element.find('section').prepend($compile(SURVEY_COVER)($scope));
     }
 
     function onInit() {
       $scope.$parent.$ctrl.playerDisplay = self;
+      $scope.itemData = {};
+      $scope.itemData.customID = '';
+    }
+
+    function _shouldLoadItem(itemData) {
+      return $scope.itemData.customID !== itemData.customID;
     }
   }
 }());

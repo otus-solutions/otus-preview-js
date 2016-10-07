@@ -3,14 +3,13 @@
 
   angular
     .module('otusjs.player.core.step')
-    .service('otusjs.player.core.step.LoadSurveyActivityStepService', Service);
+    .service('otusjs.player.core.step.LoadSurveyActivityCoverStepService', Service);
 
   Service.$inject = [
-    'otusjs.player.data.activity.ActivityFacadeService',
-    'otusjs.player.data.navigation.NavigationService'
+    'otusjs.player.core.player.PlayerService'
   ];
 
-  function Service(ActivityFacadeService, NavigationService) {
+  function Service(PlayerService) {
     let self = this;
 
     /* Public methods */
@@ -21,10 +20,7 @@
 
     function beforeEffect(pipe, flowData) { }
 
-    function effect(pipe, flowData) {
-      ActivityFacadeService.setup();
-      NavigationService.initialize();
-    }
+    function effect(pipe, flowData) { }
 
     function afterEffect(pipe, flowData) { }
 

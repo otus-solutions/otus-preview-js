@@ -33,7 +33,7 @@
     self.$onInit = function() {
       self.filling = {};
       self.filling.questionID = self.itemData.templateID;
-      $scope.$parent.$ctrl.currentChild = self;
+      $scope.$parent.$ctrl.currentItem = self;
       CurrentItemService.observerRegistry(self);
       self.$error = {};
     };
@@ -51,7 +51,6 @@
     }
 
     function restoreAll() {
-      console.log(self.itemData);
     }
 
     function update(prop, value) {
@@ -69,7 +68,6 @@
 
     function pushData(filling) {
       self.filling = filling;
-      console.log(filling);
     }
 
     function destroy() {
