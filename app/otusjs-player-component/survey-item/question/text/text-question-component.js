@@ -26,34 +26,33 @@
     self.hasUpperCase = CurrentItemService.getFillingRules().upperCase;
     self.hasLowerCase = CurrentItemService.getFillingRules().lowerCase;
 
-        var keycode = event.which;
+    var keycode = event.which;
 
-        self.update = function() {
-            var answer = self.answer;
-            if (self.hasLowerCase) {
-                answer = answer.toLowerCase();
-            }
-            if (self.hasUpperCase) {
-                answer = answer.toUpperCase();
-            }
+    self.update = function() {
+      var answer = self.answer;
+      if (self.hasLowerCase) {
+        answer = answer.toLowerCase();
+      }
+      if (self.hasUpperCase) {
+        answer = answer.toUpperCase();
+      }
 
-            if (self.hasAlphanumeric && self.hasAlphanumeric.data.reference) {
-              answer = uiFormatedService.apply($element, self.answer);
-            }
-            if (self.hasSpecials && self.hasSpecials.data.reference) {
-              answer = uiFormatedService.apply($element, self.answer);
-            }
-            self.onUpdate({
-                valueType: 'answer',
-                value: answer
-            });
-        };
+      if (self.hasAlphanumeric && self.hasAlphanumeric.data.reference) {
+        answer = uiFormatedService.apply($element, self.answer);
+      }
+      if (self.hasSpecials && self.hasSpecials.data.reference) {
+        answer = uiFormatedService.apply($element, self.answer);
+      }
+      self.onUpdate({
+        valueType: 'answer',
+        value: answer
+      });
+    };
 
-        function _init() {
-          self.hasAlphanumeric = CurrentItemService.getFillingRules().alphanumeric;
-          self.hasSpecials = CurrentItemService.getFillingRules().specials;
-        }
-
+    function _init() {
+      self.hasAlphanumeric = CurrentItemService.getFillingRules().alphanumeric;
+      self.hasSpecials = CurrentItemService.getFillingRules().specials;
     }
+
   }
 }());
