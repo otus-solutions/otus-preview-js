@@ -134,7 +134,7 @@
   angular
     .module('otusjs.player.component')
     .component('otusPlayer', {
-      template:'<md-content msd-wheel=$ctrl.catchMouseWheel($event)><otus-survey-cover on-play=$ctrl.play() ng-show=$ctrl.showCover></otus-survey-cover><otus-player-commander ng-show=$ctrl.showActivity on-eject=$ctrl.eject() on-go-ahead=$ctrl.goAhead() on-go-back=$ctrl.goBack() on-pause=$ctrl.pause() on-stop=$ctrl.stop()></otus-player-commander><otus-survey-header survey-identity=$ctrl.identity ng-show=$ctrl.showActivity></otus-survey-header><otus-player-display ng-show=$ctrl.showActivity></otus-player-display><otus-survey-back-cover ng-show=$ctrl.showBackCover></otus-survey-back-cover></md-content>',
+      template:'<md-content msd-wheel=$ctrl.catchMouseWheel($event)><otus-survey-cover on-play=$ctrl.play() ng-show=$ctrl.showCover layout-align="center center" layout=column flex style="background-color: #F9F9F9; margin-top: 5%"></otus-survey-cover><otus-player-commander ng-show=$ctrl.showActivity on-eject=$ctrl.eject() on-go-ahead=$ctrl.goAhead() on-go-back=$ctrl.goBack() on-pause=$ctrl.pause() on-stop=$ctrl.stop()></otus-player-commander><otus-survey-header survey-identity=$ctrl.identity ng-show=$ctrl.showActivity></otus-survey-header><otus-player-display ng-show=$ctrl.showActivity></otus-player-display><otus-survey-back-cover ng-show=$ctrl.showBackCover layout-align="center center" layout=column flex style="background-color: #F9F9F9; margin-top: 5%"></otus-survey-back-cover></md-content>',
       controller: Controller
     });
 
@@ -213,6 +213,7 @@
       self.playerCommander = {};
       self.playerDisplay = {};
       self.playerCover = {};
+      self.playerBackCover = {};
 
       PlayerService.bindComponent(self);
     }
@@ -231,7 +232,7 @@
   angular
     .module('otusjs.player.component')
     .component('otusPlayerCommander', {
-      template:'<md-content layout-padding layout=row><md-toolbar style="border-radius: 3px" class=md-whiteframe-2dp><div class=md-toolbar-tools layout-align="space-around center"><md-button class=md-icon-button aria-label=Voltar ng-click=$ctrl.goBack() ng-disabled=$ctrl.isGoBackDisabled><md-icon md-font-set=material-icons>skip_previous</md-icon></md-button><md-button class=md-icon-button aria-label=Salvar ng-click=$ctrl.pause()><md-icon md-font-set=material-icons>pause</md-icon></md-button><md-button class=md-icon-button aria-label=Cancelar ng-click=$ctrl.stop()><md-icon md-font-set=material-icons>stop</md-icon></md-button><md-button class=md-icon-button aria-label=Avançar ng-click=$ctrl.goAhead() ng-disabled=$ctrl.isGoAheadDisabled><md-icon md-font-set=material-icons>skip_next</md-icon></md-button></div></md-toolbar></md-content>',
+      template:'<md-content layout-padding layout=row><md-toolbar style="border-radius: 3px" class=md-whiteframe-2dp><div class=md-toolbar-tools layout-align="space-around center"><md-button class=md-icon-button aria-label=Voltar ng-click=$ctrl.goBack() ng-disabled=$ctrl.isGoBackDisabled><md-icon md-font-set=material-icons>skip_previous</md-icon></md-button><md-button class=md-icon-button aria-label=Salvar ng-click=$ctrl.pause() ng-show=false><md-icon md-font-set=material-icons>save</md-icon></md-button><md-button class=md-icon-button aria-label=Cancelar ng-click=$ctrl.stop() ng-show=false><md-icon md-font-set=material-icons>close</md-icon></md-button><md-button class=md-icon-button aria-label=Avançar ng-click=$ctrl.goAhead() ng-disabled=$ctrl.isGoAheadDisabled><md-icon md-font-set=material-icons>skip_next</md-icon></md-button></div></md-toolbar></md-content>',
       controller: Controller,
       bindings: {
         onGoAhead: '&',
@@ -343,13 +344,28 @@
   angular
     .module('otusjs.player.component')
     .component('otusSurveyBackCover', {
-      template:'<md-content><section><h2>Acabou. É tetra.</h2></section></md-content>',
+      template:'<md-content layout-align="center center" layout=row flex style="background-color: #F9F9F9"><div layout=column flex><section><h2>{{ $ctrl.title }}</h2></section><md-button class="md-raised md-primary" aria-label=Finalizar ng-click=$ctrl.play()><md-icon md-font-set=material-icons>assignment_turned_in</md-icon>Finalizar</md-button></div></md-content>',
       controller: Controller
     });
 
-  // Controller.$inject = [];
+    Controller.$inject = [
+      '$scope',
+      'otusjs.player.data.activity.ActivityFacadeService'
+    ];
 
-  function Controller() { }
+
+  function Controller($scope, ActivityFacadeService) {
+    let self = this;
+
+    /* Public methods */
+    self.$onInit = onInit;
+
+    function onInit() {
+      $scope.$parent.$ctrl.playerBackCover = self;
+      let activity = ActivityFacadeService.getCurrentSurvey().getSurvey();
+      self.title = activity.template.identity.name;
+    }
+  }
 }());
 
 (function() {
@@ -358,7 +374,7 @@
   angular
     .module('otusjs.player.component')
     .component('otusSurveyCover', {
-      template:'<md-content><md-button class=md-icon-button aria-label=Play ng-click=$ctrl.play()><md-icon md-font-set=material-icons>play_arrow</md-icon></md-button><section><h2>{{ $ctrl.title }}</h2></section></md-content>',
+      template:'<md-content layout-align="center center" layout=row flex style="background-color: #F9F9F9"><div layout=column flex><section><h2>{{ $ctrl.title }}</h2></section><md-button class="md-raised md-primary" aria-label=Iniciar ng-click=$ctrl.play()><md-icon md-font-set=material-icons>assignment</md-icon>Iniciar</md-button></div></md-content>',
       controller: Controller,
       bindings: {
         onPlay: '&'
@@ -397,22 +413,34 @@
 }());
 
 (function() {
-    'use strict';
+  'use strict';
 
-    angular
-        .module('otusjs.player.component')
-        .component('otusSurveyHeader', {
-            template:'<md-card><md-card-content><div layout=row><div layout=row layout-align="start center"><md-chips><md-chip>{{$ctrl.surveyIdentity.acronym}}</md-chip></md-chips><span class=md-subhead>{{$ctrl.surveyIdentity.name}}</span></div><span flex></span><div layout=row layout-align="start down"><md-input-container><label>Realização</label> <input ng-model=$ctrl.realizationDate disabled></md-input-container><md-input-container><label>Entrevistador(a)</label> <input ng-model=$ctrl.interviewer disabled></md-input-container></div></div><div layout=row><span class=md-body-1>{{$ctrl.surveyIdentity.description}}</span></div></md-card-content></md-card>',
-            controller: OtusSurveyHeaderController,
-            bindings: {
-                surveyIdentity: '<'
-            }
-        });
+  angular
+    .module('otusjs.player.component')
+    .component('otusSurveyHeader', {
+      template:'<md-card><md-card-content><div layout=row><div layout=row layout-align="start center"><md-chips><md-chip>{{$ctrl.surveyIdentity.acronym}}</md-chip></md-chips><span class=md-subhead>{{$ctrl.surveyIdentity.name}}</span></div><span flex></span><div layout=row layout-align="start down"><md-input-container><label>Realização</label> <input ng-model=$ctrl.realizationDate disabled></md-input-container><md-input-container><label>Entrevistador(a)</label> <input ng-model=$ctrl.interviewer disabled></md-input-container></div></div><div layout=row><span class=md-body-1>{{$ctrl.surveyIdentity.description}}</span></div></md-card-content></md-card>',
+      controller: Controller,
+      bindings: {
+        surveyIdentity: '<'
+      }
+    });
 
-    function OtusSurveyHeaderController() {
-        var self = this;
+  Controller.$inject = [
+    'otusjs.player.data.activity.ActivityFacadeService'
+  ];
+
+  function Controller(ActivityFacadeService) {
+    var self = this;
+
+    /* Public methods */
+    self.$onInit = onInit;
+
+    function onInit() {
+      let activity = ActivityFacadeService.getCurrentSurvey().getSurvey();
+      self.title = activity.template.identity.name;
+      self.surveyIdentity = activity.template.identity;
     }
-
+  }
 }());
 
 (function() {

@@ -83,6 +83,7 @@
       self.playerCommander = {};
       self.playerDisplay = {};
       self.playerCover = {};
+      self.playerBackCover = {};
 
       PlayerService.bindComponent(self);
     }

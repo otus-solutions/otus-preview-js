@@ -1,8 +1,11 @@
-<md-content>
-  <md-button class="md-icon-button" aria-label="Play" ng-click="$ctrl.play()">
-    <md-icon md-font-set="material-icons">play_arrow</md-icon>
-  </md-button>
-  <section>
-    <h2>{{ $ctrl.title }}</h2>
-  </section>
+<md-content layout-align="center center" layout="row" flex style="background-color: #F9F9F9">
+  <div layout="column" flex>
+    <section>
+      <h2>{{ $ctrl.title }}</h2>
+    </section>
+    <md-button class="md-raised md-primary" aria-label="Iniciar" ng-click="$ctrl.play()">
+      <md-icon md-font-set="material-icons">assignment</md-icon>
+      Iniciar
+    </md-button>
+  </div>
 </md-content>
