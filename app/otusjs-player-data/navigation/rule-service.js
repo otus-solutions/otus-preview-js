@@ -18,7 +18,12 @@
     function isRuleApplicable(rule) {
       let whenItem = ActivityFacadeService.fetchItemByID(rule.when);
       let itemAnswer = ActivityFacadeService.fetchItemAnswerByCustomID(rule.when);
-      return itemAnswer.answer.eval.run(rule, itemAnswer.answer.value);
+
+      if (rule.isMetadata) {
+        return itemAnswer.answer.eval.run(rule, itemAnswer.metadata.value);
+      } else {
+        return itemAnswer.answer.eval.run(rule, itemAnswer.answer.value);
+      }
     }
   }
 }());

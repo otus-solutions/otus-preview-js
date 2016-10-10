@@ -15,30 +15,34 @@
     self.afterEffect = afterEffect;
     self.getEffectResult = getEffectResult;
 
-    function beforeEffect(pipe, flowData) {
-    }
+    function beforeEffect(pipe, flowData) { }
 
     function effect(pipe, flowData) {
-      _validationResult = {};
-      _validationResult.hasError = false;
+      let mandatoryResults = [];
+      let otherResults = [];
+      flowData.validationResult = {};
 
       flowData.validationResponse.validatorsResponse.map((validator) => {
-        _validationResult[validator.name] = !validator.result;
-        validator.result = validator.result;
-        if (!validator.result) {
-          _validationResult.hasError = true
+        if (validator.name === 'mandatory' || validator.data.reference) {
+          flowData.validationResult[validator.name] = !validator.result && (angular.equals(flowData.metadataToEvaluate.data, {}));
+        } else {
+          flowData.validationResult[validator.name] = !validator.result;
         }
       });
 
-      // delete flowData.validationResponse;
-      flowData.validationResult = _validationResult;
+      flowData.validationResult.hasError = _hasError(flowData);
     }
 
-    function afterEffect(pipe, flowData) {
-    }
+    function afterEffect(pipe, flowData) { }
 
     function getEffectResult(pipe, flowData) {
       return flowData;
+    }
+
+    function _hasError(flowData) {
+      return Object.keys(flowData.validationResult).some((validator) => {
+        return flowData.validationResult[validator];
+      });
     }
   }
 })();

@@ -2547,6 +2547,8 @@
         CurrentItemService.setup(loadData);
         flowData.answerToEvaluate = {};
         flowData.answerToEvaluate.data = {};
+        flowData.metadataToEvaluate = {};
+        flowData.metadataToEvaluate.data = {};
       } else {
         CurrentItemService.clearData();
         PlayerService.end();
@@ -2638,6 +2640,7 @@
     function effect(pipe, flowData) {
       ActivityFacadeService.applyAnswer();
       flowData.answerToEvaluate.data = _currentItem.getFilling().answer.value || {};
+      flowData.metadataToEvaluate.data = _currentItem.getFilling().metadata.value || {};
     }
 
     function afterEffect(pipe, flowData) {
@@ -2706,30 +2709,34 @@
     self.afterEffect = afterEffect;
     self.getEffectResult = getEffectResult;
 
-    function beforeEffect(pipe, flowData) {
-    }
+    function beforeEffect(pipe, flowData) { }
 
     function effect(pipe, flowData) {
-      _validationResult = {};
-      _validationResult.hasError = false;
+      let mandatoryResults = [];
+      let otherResults = [];
+      flowData.validationResult = {};
 
       flowData.validationResponse.validatorsResponse.map((validator) => {
-        _validationResult[validator.name] = !validator.result;
-        validator.result = validator.result;
-        if (!validator.result) {
-          _validationResult.hasError = true
+        if (validator.name === 'mandatory' || validator.data.reference) {
+          flowData.validationResult[validator.name] = !validator.result && (angular.equals(flowData.metadataToEvaluate.data, {}));
+        } else {
+          flowData.validationResult[validator.name] = !validator.result;
         }
       });
 
-      // delete flowData.validationResponse;
-      flowData.validationResult = _validationResult;
+      flowData.validationResult.hasError = _hasError(flowData);
     }
 
-    function afterEffect(pipe, flowData) {
-    }
+    function afterEffect(pipe, flowData) { }
 
     function getEffectResult(pipe, flowData) {
       return flowData;
+    }
+
+    function _hasError(flowData) {
+      return Object.keys(flowData.validationResult).some((validator) => {
+        return flowData.validationResult[validator];
+      });
     }
   }
 })();
@@ -2817,7 +2824,8 @@
     }
 
     function effect(pipe, flowData) {
-      ValidationService.setupValidation(_currentItem.getItem(), flowData.answerToEvaluate)
+      ValidationService.setupValidation(_currentItem.getItem(), flowData.answerToEvaluate);
+      ValidationService.setupValidation(_currentItem.getItem(), flowData.metadataToEvaluate);
     }
 
     function afterEffect(pipe, flowData) {
@@ -3360,7 +3368,12 @@
     function isRuleApplicable(rule) {
       let whenItem = ActivityFacadeService.fetchItemByID(rule.when);
       let itemAnswer = ActivityFacadeService.fetchItemAnswerByCustomID(rule.when);
-      return itemAnswer.answer.eval.run(rule, itemAnswer.answer.value);
+
+      if (rule.isMetadata) {
+        return itemAnswer.answer.eval.run(rule, itemAnswer.metadata.value);
+      } else {
+        return itemAnswer.answer.eval.run(rule, itemAnswer.answer.value);
+      }
     }
   }
 }());

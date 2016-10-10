@@ -29,6 +29,8 @@
         CurrentItemService.setup(loadData);
         flowData.answerToEvaluate = {};
         flowData.answerToEvaluate.data = {};
+        flowData.metadataToEvaluate = {};
+        flowData.metadataToEvaluate.data = {};
       } else {
         CurrentItemService.clearData();
         PlayerService.end();
