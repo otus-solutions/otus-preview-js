@@ -15,6 +15,7 @@ module.exports = function(config) {
         // list of files / patterns to load in the browser
         files: [
             /* External dependencies */
+            NODE_MODULES_ROOT_PATH + 'jquery/dist/jquery.min.js',
             NODE_MODULES_ROOT_PATH + 'angular/angular.min.js',
             NODE_MODULES_ROOT_PATH + 'angular-animate/angular-animate.min.js',
             NODE_MODULES_ROOT_PATH + 'angular-aria/angular-aria.min.js',
@@ -24,7 +25,7 @@ module.exports = function(config) {
             NODE_MODULES_ROOT_PATH + 'angular-messages/angular-messages.min.js',
             NODE_MODULES_ROOT_PATH + 'angular-mocks/angular-mocks.js',
             NODE_MODULES_ROOT_PATH + 'angular-ui-router/release/angular-ui-router.min.js',
-            NODE_MODULES_ROOT_PATH + 'otus-model-js/dist/otus-model-min.js',
+            NODE_MODULES_ROOT_PATH + 'otus-model-js/dist/otus-model.js',
             NODE_MODULES_ROOT_PATH + 'otus-model-js/dist/st-utils-min.js',
             NODE_MODULES_ROOT_PATH + 'otus-validation-js/dist/otus-validation-min.js',
 

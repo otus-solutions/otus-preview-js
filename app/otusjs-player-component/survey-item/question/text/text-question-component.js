@@ -1,31 +1,30 @@
 (function() {
-    'use strict';
+  'use strict';
 
-    angular
-        .module('otusjs.player.component')
-        .component('otusTextQuestion', {
-            templateUrl: 'app/otusjs-player-component/survey-item/question/text/text-question-template.html',
-            controller: TextQuestionController,
-            bindings: {
-                itemData: '<',
-                onUpdate: '&'
-            }
-        });
+  angular
+    .module('otusjs.player.component')
+    .component('otusTextQuestion', {
+      templateUrl: 'app/otusjs-player-component/survey-item/question/text/text-question-template.html',
+      controller: Controller,
+      bindings: {
+        itemData: '<',
+        onUpdate: '&'
+      }
+    });
 
-    TextQuestionController.$inject = [
-        '$scope',
-        '$element',
-        'otusjs.player.core.CurrentQuestion',
-        'uiFormatedService'
-    ];
+  Controller.$inject = [
+    '$element',
+    'otusjs.player.data.activity.CurrentItemService',
+    'uiFormatedService'
+  ];
 
-    function TextQuestionController($scope, $element, CurrentQuestion, uiFormatedService) {
-        var self = this;
+  function Controller($element, CurrentItemService, uiFormatedService) {
+    var self = this;
 
-        _init();
+    _init();
 
-        self.hasUpperCase = CurrentQuestion.getFillingRules().upperCase;
-        self.hasLowerCase = CurrentQuestion.getFillingRules().lowerCase;
+    self.hasUpperCase = CurrentItemService.getFillingRules().upperCase;
+    self.hasLowerCase = CurrentItemService.getFillingRules().lowerCase;
 
         var keycode = event.which;
 
@@ -51,10 +50,10 @@
         };
 
         function _init() {
-          self.hasAlphanumeric = CurrentQuestion.getFillingRules().alphanumeric;
-          self.hasSpecials = CurrentQuestion.getFillingRules().specials;
+          self.hasAlphanumeric = CurrentItemService.getFillingRules().alphanumeric;
+          self.hasSpecials = CurrentItemService.getFillingRules().specials;
         }
 
     }
-
-})();
+  }
+}());

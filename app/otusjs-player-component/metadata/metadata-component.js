@@ -12,8 +12,16 @@
             }
         });
 
-    function MetadataGroupController() {
+    MetadataGroupController.$inject = [
+        'otusjs.player.data.activity.CurrentItemService'
+    ];
+
+    function MetadataGroupController(CurrentItemService) {
         var self = this;
+
+        self.$onInit = function() {
+          self.metadata = CurrentItemService.getFilling().metadata.value;
+        };
 
         self.update = function() {
             self.onUpdate({

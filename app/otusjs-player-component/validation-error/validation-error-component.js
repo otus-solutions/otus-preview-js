@@ -9,18 +9,17 @@
             }
         });
     otusValidationErrorController.$inject = [
-        'otusjs.player.core.CurrentQuestion',
+        'otusjs.player.data.activity.CurrentItemService',
         '$filter'
     ];
 
-    function otusValidationErrorController(CurrentQuestion, $filter) {
+    function otusValidationErrorController(CurrentItemService, $filter) {
         var self = this;
         self.$onInit = function() {
-
         };
 
         self.referenceAsDate = function(type) {
-            var reference = CurrentQuestion.getFillingRules()[type].data.reference;
+            var reference = CurrentItemService.getFillingRules()[type].data.reference;
             var date;
             if (type === 'rangeDate') {
                 date = {
@@ -34,12 +33,12 @@
         };
 
         self.referenceAsTime = function(type) {
-            var reference = CurrentQuestion.getFillingRules()[type].data.reference;
+            var reference = CurrentItemService.getFillingRules()[type].data.reference;
             return $filter('date')(new Date(reference), 'hh:mm:ss');
         };
 
         self.reference = function(type) {
-            var reference = CurrentQuestion.getFillingRules()[type].data.reference;
+            var reference = CurrentItemService.getFillingRules()[type].data.reference;
             return reference;
         };
     }

@@ -1,4 +1,4 @@
-<ng-messages layout = "column" layout-align="end start" for="$ctrl.$error" layout-padding ng-messages-multiple role="alert">
+<ng-messages layout="column" layout-align="end start" for="$ctrl.$error" layout-padding ng-messages-multiple role="alert">
     <ng-message class="md-button md-warn" when="mandatory" > <md-icon md-font-set="material-icons">info</md-icon> Questão de preenchimento obrigatório</ng-message>
     <ng-message class="md-button md-warn" when="distinct"> <md-icon md-font-set="material-icons">info</md-icon> Insira um valor diferente de {{ $ctrl.reference('distinct') }}</ng-message>
     <ng-message class="md-button md-warn" when="lowerLimit"> <md-icon md-font-set="material-icons">info</md-icon> O valor deve ser maior que {{ $ctrl.reference('lowerLimit') }}</ng-message>

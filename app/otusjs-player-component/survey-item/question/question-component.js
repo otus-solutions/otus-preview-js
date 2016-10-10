@@ -15,9 +15,12 @@
             }
         });
 
-    OtusQuestionController.$inject = ['TagComponentBuilderService'];
+    OtusQuestionController.$inject = [
+      'otusjs.player.core.renderer.TagComponentBuilderService',
+      'otusjs.player.data.activity.CurrentItemService',
+    ];
 
-    function OtusQuestionController(TagComponentBuilderService) {
+    function OtusQuestionController(TagComponentBuilderService, CurrentItemService) {
         var self = this;
 
         self.$onInit = function() {

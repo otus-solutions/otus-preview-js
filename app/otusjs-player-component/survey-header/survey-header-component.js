@@ -1,18 +1,30 @@
 (function() {
-    'use strict';
+  'use strict';
 
-    angular
-        .module('otusjs.player.component')
-        .component('otusSurveyHeader', {
-            templateUrl: 'app/otusjs-player-component/survey-header/survey-header-template.html',
-            controller: OtusSurveyHeaderController,
-            bindings: {
-                surveyIdentity: '<'
-            }
-        });
+  angular
+    .module('otusjs.player.component')
+    .component('otusSurveyHeader', {
+      templateUrl: 'app/otusjs-player-component/survey-header/survey-header-template.html',
+      controller: Controller,
+      bindings: {
+        surveyIdentity: '<'
+      }
+    });
 
-    function OtusSurveyHeaderController() {
-        var self = this;
+  Controller.$inject = [
+    'otusjs.player.data.activity.ActivityFacadeService'
+  ];
+
+  function Controller(ActivityFacadeService) {
+    var self = this;
+
+    /* Public methods */
+    self.$onInit = onInit;
+
+    function onInit() {
+      let activity = ActivityFacadeService.getCurrentSurvey().getSurvey();
+      self.title = activity.template.identity.name;
+      self.surveyIdentity = activity.template.identity;
     }
-
+  }
 }());

@@ -1,205 +1,109 @@
-xdescribe('PlayerService', function() {
+describe('PlayerService', function() {
 
-    var Mock = {};
-    var service;
-    var items = [1, 2, 3];
+  let UNIT_NAME = 'otusjs.player.core.player.PlayerService';
+  let Mock = {};
+  let Injections = {};
+  let service = {};
 
-    beforeEach(function() {
-        module('otusjs.player.core');
+  beforeEach(function() {
+    module('otusjs.player.core');
 
-        inject(function(_$injector_) {
-            service = _$injector_.get('otusjs.player.core.PlayerService', {
-                ItemManagerService: mockItemManagerService(_$injector_),
-                CurrentQuestion: mockCurrentQuestion(_$injector_)
-            });
-        });
+    inject(function(_$injector_) {
+      /* Injectable mocks */
+      mockActivityFacadeService(_$injector_);
+      mockPlayerStartActionService(_$injector_);
+      mockPlayActionService(_$injector_);
+      mockAheadActionService(_$injector_);
+      mockBackActionService(_$injector_);
+
+      service = _$injector_.get(UNIT_NAME, Injections);
+    });
+  });
+
+  describe('getItemData method', function() {
+
+    it('should retrieve the current item from activity', function() {
+      let itemData = service.getItemData();
+
+      expect(itemData).toEqual(Mock.itemData);
     });
 
-    describe('play method', function() {
+  });
 
-        beforeEach(function() {
-            service.play(items);
-        });
+  describe('goAhead method', function() {
 
-        it('should call ItemManagerService.init with item list', function() {
-            expect(Mock.ItemManagerService.init).toHaveBeenCalledWith(items);
-        });
+    it('should execute the AheadActionService', function() {
+      spyOn(Mock.AheadActionService, 'execute');
 
+      service.goAhead();
+
+      expect(Mock.AheadActionService.execute).toHaveBeenCalled();
     });
 
-    describe('getNext method', function() {
+  });
 
-        beforeEach(function() {
-            service.play(items);
-        });
+  describe('goBack method', function() {
 
-        it('should call ItemManagerService.hasNext method', function() {
-            spyOn(Mock.ItemManagerService, 'hasNext');
+    it('should execute the AheadActionService', function() {
+      spyOn(Mock.BackActionService, 'execute');
 
-            service.getNext();
+      service.goBack();
 
-            expect(Mock.ItemManagerService.hasNext).toHaveBeenCalled();
-        });
-
-        it('should call ItemManagerService.next method', function() {
-            spyOn(Mock.ItemManagerService, 'next');
-
-            service.getNext();
-
-            expect(Mock.ItemManagerService.next).toHaveBeenCalled();
-        });
-
-        it('should return an item when it exists', function() {
-            spyOn(Mock.ItemManagerService, 'hasNext').and.returnValue(true);
-
-            expect(service.getNext()).toBeDefined();
-        });
-
-        it('should return an item when it not exists', function() {
-            spyOn(Mock.ItemManagerService, 'hasNext').and.returnValue(false);
-
-            expect(service.getNext()).toBeUndefined();
-        });
-
+      expect(Mock.BackActionService.execute).toHaveBeenCalled();
     });
 
-    describe('getPrevious method', function() {
+  });
 
-        beforeEach(function() {
-            service.play(items);
-        });
+  describe('play method', function() {
 
-        it('should call ItemManagerService.hasPrevious method', function() {
-            spyOn(Mock.ItemManagerService, 'hasPrevious');
+    it('should execute the PlayActionService', function() {
+      spyOn(Mock.PlayActionService, 'execute');
 
-            service.getPrevious();
+      service.play();
 
-            expect(Mock.ItemManagerService.hasPrevious).toHaveBeenCalled();
-        });
-
-        it('should call ItemManagerService.previous method', function() {
-            spyOn(Mock.ItemManagerService, 'hasPrevious').and.returnValue(true);
-            spyOn(Mock.ItemManagerService, 'previous');
-
-            service.getPrevious();
-
-            expect(Mock.ItemManagerService.previous).toHaveBeenCalled();
-        });
-
-        it('should return an item when it exists', function() {
-            spyOn(Mock.ItemManagerService, 'hasPrevious').and.returnValue(true);
-            spyOn(Mock.ItemManagerService, 'previous').and.returnValue(items[0]);
-
-            expect(service.getPrevious()).toBeDefined();
-        });
-
-        it('should return an item when it not exists', function() {
-            spyOn(Mock.ItemManagerService, 'hasPrevious').and.returnValue(false);
-
-            expect(service.getPrevious()).toBeUndefined();
-        });
-
+      expect(Mock.PlayActionService.execute).toHaveBeenCalledWith();
     });
 
-    describe('hasNext method', function() {
+  });
 
-        beforeEach(function() {
-            service.play(items);
-        });
+  describe('setup method', function() {
 
-        it('should call ItemManagerService.hasNext', function() {
-            spyOn(Mock.ItemManagerService, 'hasNext');
+    it('should execute the PlayerStartActionService', function() {
+      spyOn(Mock.PlayerStartActionService, 'execute');
 
-            service.hasNext();
+      service.setup();
 
-            expect(Mock.ItemManagerService.hasNext).toHaveBeenCalled();
-        });
-
+      expect(Mock.PlayerStartActionService.execute).toHaveBeenCalledWith();
     });
 
-    describe('hasPrevious method', function() {
+  });
 
-        beforeEach(function() {
-            service.play(items);
-        });
+  function mockActivityFacadeService($injector) {
+    Mock.ActivityFacadeService = $injector.get('otusjs.player.data.activity.ActivityFacadeService');
+    Injections.ActivityFacadeService = Mock.ActivityFacadeService;
+  }
 
-        it('should call ItemManagerService.hasPrevious', function() {
-            spyOn(Mock.ItemManagerService, 'hasPrevious');
+  function mockPlayerStartActionService($injector) {
+    Mock.PlayerStartActionService = $injector.get('otusjs.player.core.phase.PlayerStartActionService');
+    Mock.itemData = { customID: 'VAL1' };
+    Mock.itemService = {};
+    Mock.itemService.getItem = jasmine.createSpy('getItem').and.returnValue(Mock.itemData);
+    spyOn(Mock.ActivityFacadeService, 'getCurrentItem').and.returnValue(Mock.itemService);
+    Injections.PlayerStartActionService = Mock.PlayerStartActionService;
+  }
 
-            service.hasPrevious();
+  function mockPlayActionService($injector) {
+    Mock.PlayActionService = $injector.get('otusjs.player.core.phase.PlayActionService');
+    Injections.PlayActionService = Mock.PlayActionService;
+  }
 
-            expect(Mock.ItemManagerService.hasPrevious).toHaveBeenCalled();
-        });
+  function mockAheadActionService($injector) {
+    Mock.AheadActionService = $injector.get('otusjs.player.core.phase.AheadActionService');
+    Injections.AheadActionService = Mock.AheadActionService;
+  }
 
-    });
-
-    describe('canWeGo method - an button blocker for next and back', function() {
-        beforeEach(function() {
-            service.play(items);
-        });
-
-        it('should call hasPrevious method when asked if can go ahead', function() {
-          spyOn(Mock.ItemManagerService, 'hasPrevious');
-          service.canWeGo('back');
-
-          expect(Mock.ItemManagerService.hasPrevious).toHaveBeenCalled();
-        });
-        it('should call hasNext method when asked if can go ahead', function() {
-            spyOn(Mock.ItemManagerService, 'hasNext');
-            service.canWeGo('ahead');
-
-            expect(Mock.ItemManagerService.hasNext).toHaveBeenCalled();
-        });
-        it('should call allValidationsOk method when asked if can go ahead', function() {
-            spyOn(Mock.CurrentQuestion, 'allValidationsOk');
-            service.canWeGo('ahead');
-
-            expect(Mock.CurrentQuestion.allValidationsOk).toHaveBeenCalled();
-        });
-        it('should call ignoreValidation method when asked if can go ahead', function() {
-            spyOn(Mock.CurrentQuestion, 'ignoreValidation');
-            service.canWeGo('ahead');
-            expect(Mock.CurrentQuestion.ignoreValidation).toHaveBeenCalled();
-        });
-
-        it('should set canWeGo to false when some validation fails and has no metadata acceptance returns false', function() {
-          Mock.CurrentQuestion.allValidationsOk = function() {
-            return false;
-          };
-          Mock.CurrentQuestion.ignoreValidation = function() {
-            return false;
-          };
-          canWeGo = service.canWeGo('ahead');
-
-          expect(canWeGo).toBe(false);
-
-        });
-
-        it('should set canWeGo to true when some validation fails but ignoreValidation returns true', function() {
-          Mock.CurrentQuestion.allValidationsOk = function() {
-            return false;
-          };
-          Mock.CurrentQuestion.ignoreValidation = function() {
-            return true;
-          };
-          canWeGo = service.canWeGo('ahead');
-          expect(canWeGo).toBe(true);
-
-        });
-    });
-
-    function mockItemManagerService($injector) {
-        Mock.ItemManagerService = $injector.get('otusjs.player.core.ItemManagerService');
-
-        spyOn(Mock.ItemManagerService, 'init').and.callThrough();
-
-        return Mock.ItemManagerService;
-    }
-
-    function mockCurrentQuestion($injector) {
-        Mock.CurrentQuestion = $injector.get('otusjs.player.core.CurrentQuestion');
-
-        return Mock.CurrentQuestion;
-    }
-
+  function mockBackActionService($injector) {
+    Mock.BackActionService = $injector.get('otusjs.player.core.phase.BackActionService');
+    Injections.BackActionService = Mock.BackActionService;
+  }
 });

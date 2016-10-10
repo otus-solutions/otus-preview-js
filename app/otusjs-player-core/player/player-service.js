@@ -1,76 +1,57 @@
 (function() {
-    'use strict';
+  'use strict';
 
-    angular
-        .module('otusjs.player.core')
-        .service('otusjs.player.core.PlayerService', PlayerService);
+  angular
+    .module('otusjs.player.core.player')
+    .service('otusjs.player.core.player.PlayerService', PlayerService);
 
-    PlayerService.$inject = [
-        'otusjs.player.core.ItemManagerService',
-        'otusjs.player.core.CurrentQuestion'
-    ];
+  PlayerService.$inject = [
+    'otusjs.player.data.activity.ActivityFacadeService',
+    'otusjs.player.core.phase.PlayerStartActionService',
+    'otusjs.player.core.phase.PlayActionService',
+    'otusjs.player.core.phase.AheadActionService',
+    'otusjs.player.core.phase.BackActionService',
+  ];
 
-    function PlayerService(ItemManagerService, CurrentQuestion) {
-        var self = this;
+  function PlayerService(ActivityFacadeService, PlayerStartActionService, PlayActionService, AheadActionService, BackActionService) {
+    var self = this;
+    var _nextItems = [];
+    var _component = null;
 
-        self.play = play;
-        self.getNext = getNext;
-        self.getPrevious = getPrevious;
-        self.hasNext = hasNext;
-        self.hasPrevious = hasPrevious;
-        self.canWeGo = canWeGo;
+    self.bindComponent = bindComponent;
+    self.getItemData = getItemData;
+    self.goAhead = goAhead;
+    self.goBack = goBack;
+    self.play = play;
+    self.setup = setup;
+    self.end = end;
 
-        function play(items) {
-            ItemManagerService.init(items);
-        }
-
-        function getNext() {
-            if (hasNext()) {
-                return ItemManagerService.next();
-            }
-        }
-
-        function getPrevious() {
-            if (hasPrevious()) {
-                return ItemManagerService.previous();
-            }
-        }
-
-        function hasNext() {
-            return ItemManagerService.hasNext();
-        }
-
-        function hasPrevious() {
-            return ItemManagerService.hasPrevious();
-        }
-
-        function canWeGo(where) {
-            var ignoreValidation = CurrentQuestion.ignoreValidation();
-            var directions = {
-                'ahead': function() {
-                    CurrentQuestion.validateQuestion(); //updates getValidationError
-                    var validationOk = !CurrentQuestion.getValidationError();
-                    var conditions = [
-                        hasNext(),
-                        (validationOk || ignoreValidation)
-
-
-                    ];
-                    return conditions.indexOf(false, conditions) === -1;
-                },
-                'back': function() {
-                    var conditions = [
-                        hasPrevious(),
-
-
-                    ];
-                    return conditions.indexOf(false, conditions) === -1;
-                }
-            };
-            return directions[where]();
-        }
-
-
+    function bindComponent(component) {
+      _component = component;
     }
 
+    function getItemData() {
+      return ActivityFacadeService.getCurrentItem().getItem();
+    }
+
+    function goAhead() {
+      AheadActionService.execute();
+    }
+
+    function goBack() {
+      BackActionService.execute();
+    }
+
+    function play() {
+      PlayActionService.execute();
+    }
+
+    function setup() {
+      PlayerStartActionService.execute();
+    }
+
+    function end() {
+      _component.showBack();
+    }
+  }
 })();

@@ -12,8 +12,16 @@
             }
         });
 
-    function OtusCommentController() {
+    OtusCommentController.$inject = [
+        'otusjs.player.data.activity.CurrentItemService'
+    ];
+
+    function OtusCommentController(CurrentItemService) {
         var self = this;
+
+        self.$onInit = function() {
+          self.comment = CurrentItemService.getFilling().comment;
+        };
 
         self.update = function() {
             self.onUpdate({

@@ -1,32 +1,37 @@
 (function() {
-    'use strict';
+  'use strict';
 
-    angular
-        .module('otusjs.player.component')
-        .component('otusEmailQuestion', {
-            templateUrl: 'app/otusjs-player-component/survey-item/question/email/email-question-template.html',
-            controller: EmailQuestionController,
-            bindings: {
-                itemData: '<',
-                onUpdate: '&'
-            }
-        });
+  angular
+    .module('otusjs.player.component')
+    .component('otusEmailQuestion', {
+      templateUrl: 'app/otusjs-player-component/survey-item/question/email/email-question-template.html',
+      controller: Controller,
+      bindings: {
+        itemData: '<',
+        onUpdate: '&'
+      }
+    });
 
-    EmailQuestionController.$inject = ['$element'];
+  Controller.$inject = [
+    'otusjs.player.data.activity.CurrentItemService'
+  ];
 
-    function EmailQuestionController($element) {
-        var self = this;
+  function Controller(CurrentItemService) {
+    var self = this;
 
-        self.update = function() {
-            self.onUpdate({
-                valueType: 'answer',
-                value: self.answer
-            });
-        };
+    self.$onInit = function() {
+      self.answer = CurrentItemService.getFilling().answer.value;
+    };
 
-        self.ariaLabel = function() {
-            return self.itemData.label.ptBR.plainText;
-        };
-    }
+    self.update = function() {
+      self.onUpdate({
+        valueType: 'answer',
+        value: self.answer
+      });
+    };
 
-})();
+    self.ariaLabel = function() {
+      return self.itemData.label.ptBR.plainText;
+    };
+  }
+}());
