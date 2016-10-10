@@ -1,4 +1,4 @@
-describe('ReadValidationErrorStepService', function() {
+xdescribe('ReadValidationErrorStepService', function() {
 
   let Mock = {};
   let Injections = {};

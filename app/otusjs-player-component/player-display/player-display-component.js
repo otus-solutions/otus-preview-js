@@ -53,7 +53,7 @@
     }
 
     function _shouldLoadItem(itemData) {
-      return $scope.itemData.customID !== itemData.customID;
+      return $scope.itemData && $scope.itemData.customID !== itemData.customID;
     }
   }
 }());

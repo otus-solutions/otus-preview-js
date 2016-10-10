@@ -1,4 +1,4 @@
-describe('otusPlayer component', function() {
+xdescribe('otusPlayer component', function() {
 
   let UNIT_NAME = 'otusPlayer';
   let Mock = {};

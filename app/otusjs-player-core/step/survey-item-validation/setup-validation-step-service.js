@@ -32,7 +32,6 @@
 
     function effect(pipe, flowData) {
       ValidationService.setupValidation(_currentItem.getItem(), flowData.answerToEvaluate);
-      ValidationService.setupValidation(_currentItem.getItem(), flowData.metadataToEvaluate);
     }
 
     function afterEffect(pipe, flowData) {
