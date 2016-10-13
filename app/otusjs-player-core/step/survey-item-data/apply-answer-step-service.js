@@ -34,6 +34,7 @@
     function effect(pipe, flowData) {
       ActivityFacadeService.applyAnswer();
       flowData.answerToEvaluate.data = _currentItem.getFilling().answer.value || {};
+      flowData.metadataToEvaluate.data = _currentItem.getFilling().metadata.value || {};
     }
 
     function afterEffect(pipe, flowData) {

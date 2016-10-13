@@ -24,7 +24,7 @@
     angular
         .module('otusjs.player.component')
         .component('otusComment', {
-            template:'<md-content layout-padding><div layout=row><md-input-container md-no-float class=md-block flex><textarea ng-model=$ctrl.comment ng-change=$ctrl.update() placeholder="Digite o texto aqui"></textarea></md-input-container></div></md-content>',
+            template:'<md-content layout-padding><div layout="row"><md-input-container md-no-float class="md-block" flex><textarea ng-model="$ctrl.comment" ng-change="$ctrl.update()" placeholder="Digite o texto aqui"></textarea></md-input-container></div></md-content>',
             controller: OtusCommentController,
             bindings: {
                 itemData : '<',
@@ -99,7 +99,7 @@
     angular
         .module('otusjs.player.component')
         .component('metadataGroup', {
-            template:'<md-content layout-padding style="margin-left: 10px"><md-radio-group ng-model=$ctrl.metadata ng-change=$ctrl.update() layout-padding flex><md-content value={{option.value}} ng-repeat="option in $ctrl.itemData.metadata.options" layout=row style="margin: 10px"><md-radio-button aria-label={{option.label}} value={{option.value}} flex><otus-label item-label=option.label.ptBR.formattedText></otus-label></md-radio-button></md-content></md-radio-group></md-content>',
+            template:'<md-content layout-padding style="margin-left: 10px"><md-radio-group ng-model="$ctrl.metadata" ng-change="$ctrl.update()" layout-padding flex><md-content value="{{option.value}}" ng-repeat="option in $ctrl.itemData.metadata.options" layout="row" style="margin: 10px"><md-radio-button aria-label="{{option.label}}" value="{{option.value}}" flex><otus-label item-label="option.label.ptBR.formattedText"></otus-label></md-radio-button></md-content></md-radio-group></md-content>',
             controller: MetadataGroupController,
             bindings: {
                 itemData : '<',
@@ -134,7 +134,7 @@
   angular
     .module('otusjs.player.component')
     .component('otusPlayer', {
-      template:'<md-content msd-wheel=$ctrl.catchMouseWheel($event)><otus-survey-cover on-play=$ctrl.play() ng-show=$ctrl.showCover layout-align="center center" layout=column flex style="background-color: #F9F9F9; margin-top: 5%"></otus-survey-cover><otus-player-commander ng-show=$ctrl.showActivity on-eject=$ctrl.eject() on-go-ahead=$ctrl.goAhead() on-go-back=$ctrl.goBack() on-pause=$ctrl.pause() on-stop=$ctrl.stop()></otus-player-commander><otus-survey-header survey-identity=$ctrl.identity ng-show=$ctrl.showActivity></otus-survey-header><otus-player-display ng-show=$ctrl.showActivity></otus-player-display><otus-survey-back-cover ng-show=$ctrl.showBackCover layout-align="center center" layout=column flex style="background-color: #F9F9F9; margin-top: 5%"></otus-survey-back-cover></md-content>',
+      template:'<md-content msd-wheel="$ctrl.catchMouseWheel($event)"><otus-survey-cover on-play="$ctrl.play()" ng-show="$ctrl.showCover" layout-align="center center" layout="column" flex style="background-color: #F9F9F9; margin-top: 5%"></otus-survey-cover><otus-player-commander ng-show="$ctrl.showActivity" on-eject="$ctrl.eject()" on-go-ahead="$ctrl.goAhead()" on-go-back="$ctrl.goBack()" on-pause="$ctrl.pause()" on-stop="$ctrl.stop()"></otus-player-commander><otus-survey-header survey-identity="$ctrl.identity" ng-show="$ctrl.showActivity"></otus-survey-header><otus-player-display ng-show="$ctrl.showActivity"></otus-player-display><otus-survey-back-cover ng-show="$ctrl.showBackCover" layout-align="center center" layout="column" flex style="background-color: #F9F9F9; margin-top: 5%"></otus-survey-back-cover></md-content>',
       controller: Controller
     });
 
@@ -232,7 +232,7 @@
   angular
     .module('otusjs.player.component')
     .component('otusPlayerCommander', {
-      template:'<md-content layout-padding layout=row><md-toolbar style="border-radius: 3px" class=md-whiteframe-2dp><div class=md-toolbar-tools layout-align="space-around center"><md-button class=md-icon-button aria-label=Voltar ng-click=$ctrl.goBack() ng-disabled=$ctrl.isGoBackDisabled><md-icon md-font-set=material-icons>skip_previous</md-icon></md-button><md-button class=md-icon-button aria-label=Salvar ng-click=$ctrl.pause() ng-show=false><md-icon md-font-set=material-icons>save</md-icon></md-button><md-button class=md-icon-button aria-label=Cancelar ng-click=$ctrl.stop() ng-show=false><md-icon md-font-set=material-icons>close</md-icon></md-button><md-button class=md-icon-button aria-label=Avançar ng-click=$ctrl.goAhead() ng-disabled=$ctrl.isGoAheadDisabled><md-icon md-font-set=material-icons>skip_next</md-icon></md-button></div></md-toolbar></md-content>',
+      template:'<md-content layout-padding layout="row"><md-toolbar style="border-radius: 3px" class="md-whiteframe-2dp"><div class="md-toolbar-tools" layout-align="space-around center"><md-button class="md-icon-button" aria-label="Voltar" ng-click="$ctrl.goBack()" ng-disabled="$ctrl.isGoBackDisabled"><md-icon md-font-set="material-icons">skip_previous</md-icon></md-button><md-button class="md-icon-button" aria-label="Salvar" ng-click="$ctrl.pause()" ng-show="false"><md-icon md-font-set="material-icons">save</md-icon></md-button><md-button class="md-icon-button" aria-label="Cancelar" ng-click="$ctrl.stop()" ng-show="false"><md-icon md-font-set="material-icons">close</md-icon></md-button><md-button class="md-icon-button" aria-label="Avançar" ng-click="$ctrl.goAhead()" ng-disabled="$ctrl.isGoAheadDisabled"><md-icon md-font-set="material-icons">skip_next</md-icon></md-button></div></md-toolbar></md-content>',
       controller: Controller,
       bindings: {
         onGoAhead: '&',
@@ -344,7 +344,7 @@
   angular
     .module('otusjs.player.component')
     .component('otusSurveyBackCover', {
-      template:'<md-content layout-align="center center" layout=row flex style="background-color: #F9F9F9"><div layout=column flex><section><h2>{{ $ctrl.title }}</h2></section><md-button class="md-raised md-primary" aria-label=Finalizar ng-click=$ctrl.play()><md-icon md-font-set=material-icons>assignment_turned_in</md-icon>Finalizar</md-button></div></md-content>',
+      template:'<md-content layout-align="center center" layout="row" flex style="background-color: #F9F9F9"><div layout="column" flex><section><h2>{{ $ctrl.title }}</h2></section><md-button class="md-raised md-primary" aria-label="Finalizar" ng-click="$ctrl.play()"><md-icon md-font-set="material-icons">assignment_turned_in</md-icon>Finalizar</md-button></div></md-content>',
       controller: Controller
     });
 
@@ -374,7 +374,7 @@
   angular
     .module('otusjs.player.component')
     .component('otusSurveyCover', {
-      template:'<md-content layout-align="center center" layout=row flex style="background-color: #F9F9F9"><div layout=column flex><section><h2>{{ $ctrl.title }}</h2></section><md-button class="md-raised md-primary" aria-label=Iniciar ng-click=$ctrl.play()><md-icon md-font-set=material-icons>assignment</md-icon>Iniciar</md-button></div></md-content>',
+      template:'<md-content layout-align="center center" layout="row" flex style="background-color: #F9F9F9"><div layout="column" flex><section><h2>{{ $ctrl.title }}</h2></section><md-button class="md-raised md-primary" aria-label="Iniciar" ng-click="$ctrl.play()"><md-icon md-font-set="material-icons">assignment</md-icon>Iniciar</md-button></div></md-content>',
       controller: Controller,
       bindings: {
         onPlay: '&'
@@ -418,7 +418,7 @@
   angular
     .module('otusjs.player.component')
     .component('otusSurveyHeader', {
-      template:'<md-card><md-card-content><div layout=row><div layout=row layout-align="start center"><md-chips><md-chip>{{$ctrl.surveyIdentity.acronym}}</md-chip></md-chips><span class=md-subhead>{{$ctrl.surveyIdentity.name}}</span></div><span flex></span><div layout=row layout-align="start down"><md-input-container><label>Realização</label> <input ng-model=$ctrl.realizationDate disabled></md-input-container><md-input-container><label>Entrevistador(a)</label> <input ng-model=$ctrl.interviewer disabled></md-input-container></div></div><div layout=row><span class=md-body-1>{{$ctrl.surveyIdentity.description}}</span></div></md-card-content></md-card>',
+      template:'<md-card><md-card-content><div layout="row"><div layout="row" layout-align="start center"><md-chips><md-chip>{{$ctrl.surveyIdentity.acronym}}</md-chip></md-chips><span class="md-subhead">{{$ctrl.surveyIdentity.name}}</span></div><span flex></span><div layout="row" layout-align="start down"><md-input-container><label>Realização</label> <input ng-model="$ctrl.realizationDate" disabled></md-input-container><md-input-container><label>Entrevistador(a)</label> <input ng-model="$ctrl.interviewer" disabled></md-input-container></div></div><div layout="row"><span class="md-body-1">{{$ctrl.surveyIdentity.description}}</span></div></md-card-content></md-card>',
       controller: Controller,
       bindings: {
         surveyIdentity: '<'
@@ -449,7 +449,7 @@
   angular
     .module('otusjs.player.component')
     .component('otusSurveyItem', {
-      template:'<md-card flex><md-card-title><md-card-title-text layout=column flex><div layout=row><otus-label class=md-headline item-label=$ctrl.itemData.label.ptBR.formattedText flex layout-padding></otus-label></div></md-card-title-text></md-card-title><md-card-content layout=row layout-align=space-between><otus-question ng-if=$ctrl.isQuestion() on-update="$ctrl.update(valueType, value)" item-data=$ctrl.itemData layout=column flex></otus-question><otus-misc-item ng-if=$ctrl.isItem() item-data=$ctrl.itemData layout=column flex></otus-misc-item></md-card-content><otus-validation-error error=$ctrl.$error></otus-validation-error></md-card>',
+      template:'<md-card flex><md-card-title><md-card-title-text layout="column" flex><div layout="row"><otus-label class="md-headline" item-label="$ctrl.itemData.label.ptBR.formattedText" flex layout-padding></otus-label></div></md-card-title-text></md-card-title><md-card-content layout="row" layout-align="space-between"><otus-question ng-if="$ctrl.isQuestion()" on-update="$ctrl.update(valueType, value)" item-data="$ctrl.itemData" layout="column" flex></otus-question><otus-misc-item ng-if="$ctrl.isItem()" item-data="$ctrl.itemData" layout="column" flex></otus-misc-item></md-card-content><otus-validation-error error="$ctrl.$error"></otus-validation-error></md-card>',
       controller: OtusSurveyItemController,
       bindings: {
         itemData: '<'
@@ -528,7 +528,7 @@
     angular
         .module('otusjs.player.component')
         .component('otusQuestion', {
-            template:'<md-content layout=column><md-tabs><md-tab label=Resposta><md-content bind-html-compile=$ctrl.template></md-content></md-tab><md-tab label=Metadado><metadata-group on-update="$ctrl.update(valueType, value)" item-data=$ctrl.itemData></metadata-group></md-tab><md-tab label=Comentário><otus-comment on-update="$ctrl.update(valueType, value)" item-data=$ctrl.itemData></otus-comment></md-tab></md-tabs></md-content>',
+            template:'<md-content layout="column"><md-tabs><md-tab label="Resposta"><md-content bind-html-compile="$ctrl.template"></md-content></md-tab><md-tab label="Metadado"><metadata-group on-update="$ctrl.update(valueType, value)" item-data="$ctrl.itemData"></metadata-group></md-tab><md-tab label="Comentário"><otus-comment on-update="$ctrl.update(valueType, value)" item-data="$ctrl.itemData"></otus-comment></md-tab></md-tabs></md-content>',
             controller: OtusQuestionController,
             bindings: {
                 itemData: '<',
@@ -568,7 +568,7 @@
   angular
     .module('otusjs.player.component')
     .component('otusCalendarQuestion', {
-      template:'<md-content layout-padding><div layout=row style="margin-top: 15px"><md-datepicker ng-model=$ctrl.answer ng-change=$ctrl.update() md-placeholder="Insira a data"></md-datepicker></div></md-content>',
+      template:'<md-content layout-padding><div layout="row" style="margin-top: 15px"><md-datepicker ng-model="$ctrl.answer" ng-change="$ctrl.update()" md-placeholder="Insira a data"></md-datepicker></div></md-content>',
       controller: Controller,
       bindings: {
         itemData: '<',
@@ -602,7 +602,7 @@
   angular
     .module('otusjs.player.component')
     .component('otusIntegerQuestion', {
-      template:'<md-content layout-padding><div layout=row><md-input-container md-no-float class=md-block flex-gt-sm=45><input type=number step=1 ng-model=$ctrl.answer ng-change=$ctrl.update() ui-integer placeholder="Insira um valor inteiro"></md-input-container><md-input-container class=md-block flex-gt-sm=45><otus-label item-label=$ctrl.itemData.unit></otus-label></md-input-container></div></md-content>',
+      template:'<md-content layout-padding><div layout="row"><md-input-container md-no-float class="md-block" flex-gt-sm="45"><input type="number" step="1" ng-model="$ctrl.answer" ng-change="$ctrl.update()" ui-integer placeholder="Insira um valor inteiro"></md-input-container><md-input-container class="md-block" flex-gt-sm="45"><otus-label item-label="$ctrl.itemData.unit"></otus-label></md-input-container></div></md-content>',
       controller: Controller,
       bindings: {
         itemData: '<',
@@ -693,7 +693,7 @@
   angular
     .module('otusjs.player.component')
     .component('otusDecimalQuestion', {
-      template:'<md-content layout-padding><div layout=row><md-input-container md-no-float class=md-block flex-gt-sm=45><input type=number step=any ng-model=$ctrl.answer ng-change=$ctrl.update() ui-decimal placeholder="Insira um valor decimal"></md-input-container><md-input-container class=md-block flex-gt-sm=45><otus-label item-label=$ctrl.itemData.unit></otus-label></md-input-container></div></md-content>',
+      template:'<md-content layout-padding><div layout="row"><md-input-container md-no-float class="md-block" flex-gt-sm="45"><input type="number" step="any" ng-model="$ctrl.answer" ng-change="$ctrl.update()" ui-decimal placeholder="Insira um valor decimal"></md-input-container><md-input-container class="md-block" flex-gt-sm="45"><otus-label item-label="$ctrl.itemData.unit"></otus-label></md-input-container></div></md-content>',
       controller: Controller,
       bindings: {
         itemData: '<',
@@ -727,7 +727,7 @@
   angular
     .module('otusjs.player.component')
     .component('otusSingleSelectionQuestion', {
-      template:'<md-content layout-padding style="margin-left: 10px"><md-radio-group ng-model=$ctrl.answer ng-change=$ctrl.update() layout-padding flex><md-radio-button value={{option.value}} ng-repeat="option in $ctrl.itemData.options" layout=row style="margin: 10px"><otus-label item-label=option.label.ptBR.formattedText></otus-label></md-radio-button></md-radio-group></md-content>',
+      template:'<md-content layout-padding style="margin-left: 10px"><md-radio-group ng-model="$ctrl.answer" ng-change="$ctrl.update()" layout-padding flex><md-radio-button value="{{option.value}}" ng-repeat="option in $ctrl.itemData.options" layout="row" style="margin: 10px"><otus-label item-label="option.label.ptBR.formattedText"></otus-label></md-radio-button></md-radio-group></md-content>',
       controller: Controller,
       bindings: {
         itemData: '<',
@@ -761,7 +761,7 @@
   angular
     .module('otusjs.player.component')
     .component('otusCheckboxQuestion', {
-      template:'<md-content layout-padding style="margin-top: 12px"><md-content ng-repeat="option in $ctrl.itemData.options track by $index" flex><md-checkbox value=$index ng-model=$ctrl.answerArray[$index].value.state ng-change=$ctrl.update($index) layout=row style="margin: 7px"><otus-label item-label=option.label.ptBR.formattedText></otus-label></md-checkbox></md-content></md-content>',
+      template:'<md-content layout-padding style="margin-top: 12px"><md-content ng-repeat="option in $ctrl.itemData.options track by $index" flex><md-checkbox value="$index" ng-model="$ctrl.answerArray[$index].value.state" ng-change="$ctrl.update($index)" layout="row" style="margin: 7px"><otus-label item-label="option.label.ptBR.formattedText"></otus-label></md-checkbox></md-content></md-content>',
       controller: Controller,
       bindings: {
         itemData: '<',
@@ -807,7 +807,7 @@
   angular
     .module('otusjs.player.component')
     .component('otusTextQuestion', {
-      template:'<md-content id=text-question layout-padding><div layout=row><md-input-container md-no-float class=md-block flex><textarea ng-class="{lowercase: $ctrl.hasLowerCase, uppercase: $ctrl.hasUpperCase}" ng-model=$ctrl.answer ng-change=$ctrl.update() placeholder="Digite o texto aqui"></textarea></md-input-container></div></md-content>',
+      template:'<md-content id="text-question" layout-padding><div layout="row"><md-input-container md-no-float class="md-block" flex><textarea ng-class="{lowercase: $ctrl.hasLowerCase, uppercase: $ctrl.hasUpperCase}" ng-model="$ctrl.answer" ng-change="$ctrl.update()" placeholder="Digite o texto aqui"></textarea></md-input-container></div></md-content>',
       controller: Controller,
       bindings: {
         itemData: '<',
@@ -824,74 +824,68 @@
   function Controller($element, CurrentItemService, uiFormatedService) {
     var self = this;
 
-    _init();
-
-    self.hasUpperCase = CurrentItemService.getFillingRules().upperCase;
-    self.hasLowerCase = CurrentItemService.getFillingRules().lowerCase;
-
-    var keycode = event.which;
-
-    self.update = function() {
-      var answer = self.answer;
-      if (self.hasLowerCase) {
-        answer = answer.toLowerCase();
-      }
-      if (self.hasUpperCase) {
-        answer = answer.toUpperCase();
-      }
-
-      if (self.hasAlphanumeric && self.hasAlphanumeric.data.reference) {
-        answer = uiFormatedService.apply($element, self.answer);
-      }
-      if (self.hasSpecials && self.hasSpecials.data.reference) {
-        answer = uiFormatedService.apply($element, self.answer);
-      }
-      self.onUpdate({
-        valueType: 'answer',
-        value: answer
-      });
-    };
-
-    function _init() {
+    self.$onInit = function() {
+      self.answer = CurrentItemService.getFilling().answer.value;
       self.hasAlphanumeric = CurrentItemService.getFillingRules().alphanumeric;
       self.hasSpecials = CurrentItemService.getFillingRules().specials;
-    }
+      self.hasUpperCase = CurrentItemService.getFillingRules().upperCase;
+      self.hasLowerCase = CurrentItemService.getFillingRules().lowerCase;
+    };
+
+    self.update = function() {
+      if (self.hasLowerCase) {
+        self.answer.value.toLowerCase();
+      }
+      if (self.hasUpperCase) {
+        self.answer.value.toUpperCase();
+      }
+
+      if ((self.hasAlphanumeric && self.hasAlphanumeric.data.reference) ||
+        (self.hasSpecials && self.hasSpecials.data.reference)) {
+        uiFormatedService.apply($element, self.answer);
+      }
+
+      self.onUpdate({
+        valueType: 'answer',
+        value: self.answer
+      });
+    };
 
   }
 }());
 
 (function() {
-    'use strict';
+  'use strict';
 
-    angular
-        .module("otusjs.player.component")
-        .service('uiFormatedService', uiFormatedService);
+  angular
+    .module("otusjs.player.component")
+    .service('uiFormatedService', uiFormatedService);
 
-    function uiFormatedService() {
+  function uiFormatedService() {
 
-        var self = this;
+    var self = this;
 
-        self.apply = apply;
+    self.apply = apply;
 
-        function apply($element, answer) {
-            var lastValidValue;
+    function apply($element, answer) {
+      var lastValidValue;
 
-            var element = $element.find('textarea');
-            var key = answer[answer.length - 1];
-            if (isValidKey(key)) {
-                return answer;
-            } else {
-                var formatedAnswer = answer.slice(0, -1);
-                $element.find('textarea')[0].value = formatedAnswer;
-                return formatedAnswer;
-            }
+      var element = $element.find('textarea');
+      var key = answer[answer.length - 1];
+      if (isValidKey(key)) {
+        return answer;
+      } else {
+        var formatedAnswer = answer.slice(0, -1);
+        $element.find('textarea')[0].value = formatedAnswer;
+        return formatedAnswer;
+      }
 
-            function isValidKey(key) {
-                var reg = /^[a-záàâãéèêíïóòôõöúùçA-ZÁÀÂÃÉÈÊÍÓÒÔÕÚÙÇ0-9 .,]*$/;
-                return (reg.test(key)) ? true : false;
-            }
-        }
+      function isValidKey(key) {
+        var reg = /^[a-záàâãéèêíïóòôõöúùçA-ZÁÀÂÃÉÈÊÍÓÒÔÕÚÙÇ0-9 .,]*$/;
+        return (reg.test(key)) ? true : false;
+      }
     }
+  }
 }());
 
 (function() {
@@ -900,7 +894,7 @@
   angular
     .module('otusjs.player.component')
     .component('otusEmailQuestion', {
-      template:'<md-content layout-padding><div layout=row><md-input-container md-no-float class=md-block flex-gt-sm=45><md-icon class=material-icons>email</md-icon><input name=email type=email ng-model=$ctrl.answer ng-change=$ctrl.update() placeholder=email@email.com aria-label={{$ctrl.ariaLabel()}}></md-input-container></div></md-content>',
+      template:'<md-content layout-padding><div layout="row"><md-input-container md-no-float class="md-block" flex-gt-sm="45"><md-icon class="material-icons">email</md-icon><input name="email" type="email" ng-model="$ctrl.answer" ng-change="$ctrl.update()" placeholder="email@email.com" aria-label="{{$ctrl.ariaLabel()}}"></md-input-container></div></md-content>',
       controller: Controller,
       bindings: {
         itemData: '<',
@@ -938,7 +932,7 @@
   angular
     .module('otusjs.player.component')
     .component('otusTimeQuestion', {
-      template:'<md-content layout-padding><div layout=row><md-input-container class=md-block flex-gt-sm=45><md-icon class=material-icons>access_time</md-icon><input type=time ng-model=$ctrl.answer ng-change=$ctrl.update() aria-label=Tempo min=0 max=4999></md-input-container></div></md-content>',
+      template:'<md-content layout-padding><div layout="row"><md-input-container class="md-block" flex-gt-sm="45"><md-icon class="material-icons">access_time</md-icon><input type="time" ng-model="$ctrl.answer" ng-change="$ctrl.update()" aria-label="Tempo" min="0" max="4999"></md-input-container></div></md-content>',
       controller: Controller,
       bindings: {
         itemData: '<',
@@ -972,7 +966,7 @@
   angular
     .module('otusjs.player.component')
     .component('otusPhoneQuestion', {
-      template:'<md-content layout-padding><div><md-input-container md-no-float class=md-block flex-gt-sm=45><md-icon class=material-icons>phone</md-icon><input type=text ng-model=$ctrl.answer ng-change=$ctrl.update() placeholder="(XX) XXXXX-XXXX" ui-br-phone-number></md-input-container></div></md-content>',
+      template:'<md-content layout-padding><div><md-input-container md-no-float class="md-block" flex-gt-sm="45"><md-icon class="material-icons">phone</md-icon><input type="text" ng-model="$ctrl.answer" ng-change="$ctrl.update()" placeholder="(XX) XXXXX-XXXX" ui-br-phone-number></md-input-container></div></md-content>',
       controller: Controller,
       bindings: {
         itemData: '<',
@@ -1006,7 +1000,7 @@
     angular
         .module('otusjs.player.component')
         .component('otusMiscItem', {
-            template:'<md-content layout=column layout-align="center center"><otus-image-item ng-if=$ctrl.isImageItem() item-data=$ctrl.itemData></otus-image-item><otus-text-item ng-if=$ctrl.isTextItem() item-data=$ctrl.itemData></otus-text-item></md-content>',
+            template:'<md-content layout="column" layout-align="center center"><otus-image-item ng-if="$ctrl.isImageItem()" item-data="$ctrl.itemData"></otus-image-item><otus-text-item ng-if="$ctrl.isTextItem()" item-data="$ctrl.itemData"></otus-text-item></md-content>',
             controller: OtusMiscItemController,
             bindings: {
                 itemData : '<'
@@ -1038,7 +1032,7 @@
     angular
         .module('otusjs.player.component')
         .component('otusImageItem', {
-            template:'<img ng-src={{$ctrl.itemData.url}} layout=row><otus-label class=md-headline item-label=$ctrl.itemData.footer.ptBR.formattedText></otus-label>',
+            template:'<img ng-src="{{$ctrl.itemData.url}}" layout="row"><otus-label class="md-headline" item-label="$ctrl.itemData.footer.ptBR.formattedText"></otus-label>',
             controller: ImageItemController,
             bindings: {
                 itemData : '<'
@@ -1078,7 +1072,7 @@
     angular
         .module('otusjs.player.component')
         .component('otusValidationError', {
-            template:'<ng-messages layout=column layout-align="end start" for=$ctrl.$error layout-padding ng-messages-multiple role=alert><ng-message class="md-button md-warn" when=mandatory><md-icon md-font-set=material-icons>info</md-icon>Questão de preenchimento obrigatório</ng-message><ng-message class="md-button md-warn" when=distinct><md-icon md-font-set=material-icons>info</md-icon>Insira um valor diferente de {{ $ctrl.reference(\'distinct\') }}</ng-message><ng-message class="md-button md-warn" when=lowerLimit><md-icon md-font-set=material-icons>info</md-icon>O valor deve ser maior que {{ $ctrl.reference(\'lowerLimit\') }}</ng-message><ng-message class="md-button md-warn" when=upperLimit><md-icon md-font-set=material-icons>info</md-icon>O valor deve ser menor que {{ $ctrl.reference(\'upperLimit\') }}</ng-message><ng-message class="md-button md-warn" when=rangeDate><md-icon md-font-set=material-icons>info</md-icon>O valor deve ser maior que {{ $ctrl.referenceAsDate(\'rangeDate\').initial }} e menor que {{ $ctrl.referenceAsDate(\'rangeDate\').end }}</ng-message><ng-message class="md-button md-warn" when=maxDate><md-icon md-font-set=material-icons>info</md-icon>A data deve ser menor que {{ $ctrl.referenceAsDate(\'maxDate\')}}</ng-message><ng-message class="md-button md-warn" when=minDate><md-icon md-font-set=material-icons>info</md-icon>A data deve ser maior que {{ $ctrl.referenceAsDate(\'minDate\') }}</ng-message><ng-message class="md-button md-warn" when=pastDate><md-icon md-font-set=material-icons>info</md-icon>A data deve ser anterior à data corrente</ng-message><ng-message class="md-button md-warn" when=futureDate><md-icon md-font-set=material-icons>info</md-icon>A data deve ser posterior à data corrente</ng-message><ng-message class="md-button md-warn" when=minLength><md-icon md-font-set=material-icons>info</md-icon>Resposta deve ter mais que {{ $ctrl.reference(\'minLength\') }} caracteres</ng-message><ng-message class="md-button md-warn" when=maxLength><md-icon md-font-set=material-icons>info</md-icon>Resposta deve ter mais que {{ $ctrl.reference(\'maxLength\') }} caracteres</ng-message><ng-message class="md-button md-warn" when=in><md-icon md-font-set=material-icons>info</md-icon>O valor deve ser maior que {{ $ctrl.reference(\'in\').initial }} e menor que {{ $ctrl.reference(\'in\').end }}</ng-message><ng-message class="md-button md-warn" when=precision><md-icon md-font-set=material-icons>info</md-icon>Resposta deve conter exatamente {{ $ctrl.reference(\'precision\') }} dígitos</ng-message><ng-message class="md-button md-warn" when=scale><md-icon md-font-set=material-icons>info</md-icon>Resposta deve conter exatamente {{ $ctrl.reference(\'scale\') }} casas decimais</ng-message><ng-message class="md-button md-warn" when=maxTime><md-icon md-font-set=material-icons>info</md-icon>Hora máxima permitida: {{ $ctrl.referenceAsTime(\'maxTime\') }}</ng-message><ng-message class="md-button md-warn" when=minTime><md-icon md-font-set=material-icons>info</md-icon>Hora mínima permitida: {{ $ctrl.referenceAsTime(\'minTime\') }}</ng-message></ng-messages>',
+            template:'<ng-messages layout="column" layout-align="end start" for="$ctrl.$error" layout-padding ng-messages-multiple role="alert"><ng-message class="md-button md-warn" when="mandatory"><md-icon md-font-set="material-icons">info</md-icon>Questão de preenchimento obrigatório</ng-message><ng-message class="md-button md-warn" when="distinct"><md-icon md-font-set="material-icons">info</md-icon>Insira um valor diferente de {{ $ctrl.reference(\'distinct\') }}</ng-message><ng-message class="md-button md-warn" when="lowerLimit"><md-icon md-font-set="material-icons">info</md-icon>O valor deve ser maior que {{ $ctrl.reference(\'lowerLimit\') }}</ng-message><ng-message class="md-button md-warn" when="upperLimit"><md-icon md-font-set="material-icons">info</md-icon>O valor deve ser menor que {{ $ctrl.reference(\'upperLimit\') }}</ng-message><ng-message class="md-button md-warn" when="rangeDate"><md-icon md-font-set="material-icons">info</md-icon>O valor deve ser maior que {{ $ctrl.referenceAsDate(\'rangeDate\').initial }} e menor que {{ $ctrl.referenceAsDate(\'rangeDate\').end }}</ng-message><ng-message class="md-button md-warn" when="maxDate"><md-icon md-font-set="material-icons">info</md-icon>A data deve ser menor que {{ $ctrl.referenceAsDate(\'maxDate\')}}</ng-message><ng-message class="md-button md-warn" when="minDate"><md-icon md-font-set="material-icons">info</md-icon>A data deve ser maior que {{ $ctrl.referenceAsDate(\'minDate\') }}</ng-message><ng-message class="md-button md-warn" when="pastDate"><md-icon md-font-set="material-icons">info</md-icon>A data deve ser anterior à data corrente</ng-message><ng-message class="md-button md-warn" when="futureDate"><md-icon md-font-set="material-icons">info</md-icon>A data deve ser posterior à data corrente</ng-message><ng-message class="md-button md-warn" when="minLength"><md-icon md-font-set="material-icons">info</md-icon>Resposta deve ter mais que {{ $ctrl.reference(\'minLength\') }} caracteres</ng-message><ng-message class="md-button md-warn" when="maxLength"><md-icon md-font-set="material-icons">info</md-icon>Resposta deve ter mais que {{ $ctrl.reference(\'maxLength\') }} caracteres</ng-message><ng-message class="md-button md-warn" when="in"><md-icon md-font-set="material-icons">info</md-icon>O valor deve ser maior que {{ $ctrl.reference(\'in\').initial }} e menor que {{ $ctrl.reference(\'in\').end }}</ng-message><ng-message class="md-button md-warn" when="precision"><md-icon md-font-set="material-icons">info</md-icon>Resposta deve conter exatamente {{ $ctrl.reference(\'precision\') }} dígitos</ng-message><ng-message class="md-button md-warn" when="scale"><md-icon md-font-set="material-icons">info</md-icon>Resposta deve conter exatamente {{ $ctrl.reference(\'scale\') }} casas decimais</ng-message><ng-message class="md-button md-warn" when="maxTime"><md-icon md-font-set="material-icons">info</md-icon>Hora máxima permitida: {{ $ctrl.referenceAsTime(\'maxTime\') }}</ng-message><ng-message class="md-button md-warn" when="minTime"><md-icon md-font-set="material-icons">info</md-icon>Hora mínima permitida: {{ $ctrl.referenceAsTime(\'minTime\') }}</ng-message></ng-messages>',
             controller: otusValidationErrorController,
             bindings: {
                 $error: '=error'
@@ -2553,6 +2547,7 @@
     function effect(pipe, flowData) {
       ActivityFacadeService.applyAnswer();
       flowData.answerToEvaluate.data = _currentItem.getFilling().answer.value || {};
+      flowData.metadataToEvaluate.data = _currentItem.getFilling().metadata.value || {};
     }
 
     function afterEffect(pipe, flowData) {
