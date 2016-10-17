@@ -1,7 +1,7 @@
 describe('ChainLinkFactory', function() {
 
-  let Mock = {};
-  let chainLink = {};
+  var Mock = {};
+  var chainLink = {};
 
   beforeEach(function() {
     module('otusjs.player.core');
@@ -10,7 +10,7 @@ describe('ChainLinkFactory', function() {
       mockChainFactory();
       mockLinkClient();
       mockChainLink(_$injector_);
-      let factory = _$injector_.get('otusjs.player.core.scaffold.ChainLinkFactory');
+      var factory = _$injector_.get('otusjs.player.core.scaffold.ChainLinkFactory');
       chainLink = factory.create();
     });
 

@@ -1,11 +1,11 @@
 describe('NavigationService', () => {
 
-  let UNIT_NAME = 'otusjs.player.data.navigation.NavigationService';
-  let Mock = {};
-  let Injections = {};
-  let service = {};
-  let CAD1 = 'CAD1';
-  let CAD2 = 'CAD2';
+  var UNIT_NAME = 'otusjs.player.data.navigation.NavigationService';
+  var Mock = {};
+  var Injections = {};
+  var service = {};
+  var CAD1 = 'CAD1';
+  var CAD2 = 'CAD2';
 
   beforeEach(() => {
     module('otusjs.player.data');
@@ -55,13 +55,13 @@ describe('NavigationService', () => {
       });
 
       it('should request the routes of current item from current navigation', () => {
-        let nextItems = service.getNextItems();
+        var nextItems = service.getNextItems();
 
         expect(Mock.navigationCAD1.listRoutes).toHaveBeenCalledWith();
       });
 
       it('should retrieve the respective item of each current item route destination', () => {
-        let nextItems = service.getNextItems();
+        var nextItems = service.getNextItems();
 
         expect(Mock.CurrentSurveyService.getItemByCustomID).toHaveBeenCalledWith(CAD2);
       });
@@ -77,7 +77,7 @@ describe('NavigationService', () => {
       });
 
       it('should return an array with the next items from current item', () => {
-        let nextItems = service.getNextItems();
+        var nextItems = service.getNextItems();
 
         expect(nextItems[0].extents).toEqual('SurveyItem');
       });
@@ -92,7 +92,7 @@ describe('NavigationService', () => {
       });
 
       it('should return an empty array', () => {
-        let nextItems = service.getNextItems();
+        var nextItems = service.getNextItems();
 
         expect(nextItems.length).toBe(0);
       });
@@ -124,7 +124,7 @@ describe('NavigationService', () => {
         spyOn(Mock.savedStack, 'getCurrentItem').and.returnValue(Mock.itemB);
         spyOn(Mock.itemB, 'getPrevious').and.returnValue(Mock.itemA);
 
-        let nextItems = service.getPreviousItem();
+        var nextItems = service.getPreviousItem();
 
         expect(Mock.itemA.getPrevious).toHaveBeenCalledWith();
       });
@@ -139,13 +139,13 @@ describe('NavigationService', () => {
       });
 
       it('should retrieve the respective item of previous item ID', () => {
-        let nextItems = service.getPreviousItem();
+        var nextItems = service.getPreviousItem();
 
         expect(Mock.CurrentSurveyService.getItemByCustomID).toHaveBeenCalledWith(CAD1);
       });
 
       it('should return the item that precedes the current item', () => {
-        let item = service.getPreviousItem();
+        var item = service.getPreviousItem();
 
         expect(item.extents).toEqual('SurveyItem');
       });
@@ -159,7 +159,7 @@ describe('NavigationService', () => {
       });
 
       it('should return null', () => {
-        let item = service.getPreviousItem();
+        var item = service.getPreviousItem();
 
         expect(item).toBe(null);
       });
@@ -347,7 +347,7 @@ describe('NavigationService', () => {
   function mockNavigationStackItemFactory($injector) {
     Mock.NavigationStackItemFactory = $injector.get('otusjs.model.navigation.NavigationPathItemFactory');
 
-    let options = {};
+    var options = {};
     options.id = Mock.itemCAD1.customID;
     options.label = Mock.itemCAD1.label.ptBR.plainText;
     options.type = Mock.itemCAD1.objectType;
@@ -751,7 +751,7 @@ describe('NavigationService', () => {
     Mock.savedStack = $injector.get('otusjs.model.navigation.NavigationPathFactory').create();
 
     itemFactory = $injector.get('otusjs.model.navigation.NavigationPathItemFactory');
-    let options = { id: 'CAD1', label: 'Label', type: 'IntegerQuestion', answer: 'Label da resposta', metadata: 'Label do metdado.' };
+    var options = { id: 'CAD1', label: 'Label', type: 'IntegerQuestion', answer: 'Label da resposta', metadata: 'Label do metdado.' };
     Mock.itemA = itemFactory.create(options);
     options = { id: 'CAD2', label: 'Label', type: 'IntegerQuestion', answer: 'Label da resposta', metadata: 'Label do metdado.' };
     Mock.itemB = itemFactory.create(options);

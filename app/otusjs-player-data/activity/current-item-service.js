@@ -10,12 +10,12 @@
   ];
 
   function Service(ActivityFacadeService) {
-    let self = this;
-    let _item = null;
-    let _filling = null;
-    let _navigation = null;
-    let _validationError = null;
-    let _observer = null;
+    var self = this;
+    var _item = null;
+    var _filling = null;
+    var _navigation = null;
+    var _validationError = null;
+    var _observer = null;
 
     /* Public Interface */
     self.applyFilling = applyFilling;

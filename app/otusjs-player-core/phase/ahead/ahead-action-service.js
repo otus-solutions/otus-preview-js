@@ -13,7 +13,7 @@
   ];
 
   function Service(ActionPipeService, PreAheadActionService, ExecutionAheadActionService, PostAheadActionService) {
-    let self = this;
+    var self = this;
 
     /* Public methods */
     self.PreAheadActionService = PreAheadActionService;
@@ -23,7 +23,7 @@
 
     function execute() {
       ActionPipeService.flowData.flowDirection = 'ahead';
-      let phaseData = PreAheadActionService.execute(ActionPipeService.flowData);
+      var phaseData = PreAheadActionService.execute(ActionPipeService.flowData);
       phaseData = ExecutionAheadActionService.execute(phaseData);
       phaseData = PostAheadActionService.execute(phaseData);
     }

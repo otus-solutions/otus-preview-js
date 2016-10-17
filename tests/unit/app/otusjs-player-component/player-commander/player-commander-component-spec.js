@@ -1,10 +1,10 @@
 describe('otusPlayerCommander component', function() {
 
-  let UNIT_NAME = 'otusPlayerCommander';
-  let Mock = {};
-  let Injections = {};
-  let Bindings = {};
-  let component = {};
+  var UNIT_NAME = 'otusPlayerCommander';
+  var Mock = {};
+  var Injections = {};
+  var Bindings = {};
+  var component = {};
 
   beforeEach(function() {
     module('otusjs.player.core');

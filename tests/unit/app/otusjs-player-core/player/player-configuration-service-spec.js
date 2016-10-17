@@ -198,7 +198,7 @@ describe('PlayerConfigurationService', function() {
   }
 
   function mockChain($injector) {
-    let factory = $injector.get('otusjs.player.core.scaffold.ChainFactory');
+    var factory = $injector.get('otusjs.player.core.scaffold.ChainFactory');
     Mock.chain = factory.create();
     Injections.ChainFactory = factory;
     spyOn(Injections.ChainFactory, 'create').and.returnValue(Mock.chain);

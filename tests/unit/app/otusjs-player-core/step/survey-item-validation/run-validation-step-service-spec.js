@@ -1,9 +1,9 @@
 xdescribe('RunValidationStepService', function() {
 
-  let Mock = {};
-  let Injections = {};
-  let service = {};
-  let CAD1 = 'CAD1';
+  var Mock = {};
+  var Injections = {};
+  var service = {};
+  var CAD1 = 'CAD1';
 
   beforeEach(function() {
     module('otusjs.player.core');

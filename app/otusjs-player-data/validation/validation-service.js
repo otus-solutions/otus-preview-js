@@ -23,10 +23,10 @@
     }
 
     function setupValidation(item, answer) {
-      let elementRegister = ElementRegisterFactory.create(item.customID, answer);
+      var elementRegister = ElementRegisterFactory.create(item.customID, answer);
 
       Object.keys(item.fillingRules.options).map((validator) => {
-        let reference = item.fillingRules.options[validator].data;
+        var reference = item.fillingRules.options[validator].data;
         elementRegister.addValidator(validator, reference);
       });
 

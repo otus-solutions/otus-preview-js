@@ -9,7 +9,7 @@
     'otusjs.player.core.scaffold.ChainLinkFactory'
   ];
 
-  let Inject = {};
+  var Inject = {};
 
   function Factory(ChainLinkFactory) {
     var self = this;

@@ -1,9 +1,9 @@
 xdescribe('SetupValidationStepService', function() {
 
-  let Mock = {};
-  let Injections = {};
-  let service = {};
-  let CAD1 = 'CAD1';
+  var Mock = {};
+  var Injections = {};
+  var service = {};
+  var CAD1 = 'CAD1';
 
   beforeEach(function() {
     module('otusjs.player.core');
@@ -148,7 +148,7 @@ xdescribe('SetupValidationStepService', function() {
   function mockNavigationService($injector) {
     Mock.NavigationService = $injector.get('otusjs.player.data.navigation.NavigationService');
 
-    let currentItem = {};
+    var currentItem = {};
     currentItem.getItem = () => { return Mock.itemData; };
     currentItem.shouldIgnoreResponseEvaluation = () => { return false; };
     spyOn(Mock.NavigationService, 'getCurrentItem').and.returnValue(currentItem);

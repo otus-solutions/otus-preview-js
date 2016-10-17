@@ -12,7 +12,7 @@
   ];
 
   function Service(NavigationService, CurrentItemService, PlayerService) {
-    let self = this;
+    var self = this;
 
     /* Public methods */
     self.beforeEffect = beforeEffect;
@@ -23,7 +23,7 @@
     function beforeEffect(pipe, flowData) {}
 
     function effect(pipe, flowData) {
-      let loadData = NavigationService.loadNextItem();
+      var loadData = NavigationService.loadNextItem();
 
       if (loadData) {
         CurrentItemService.setup(loadData);

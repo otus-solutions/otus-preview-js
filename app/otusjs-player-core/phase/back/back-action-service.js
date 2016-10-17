@@ -13,7 +13,7 @@
   ];
 
   function Service(ActionPipeService, PreBackActionService, ExecutionBackActionService, PostBackActionService) {
-    let self = this;
+    var self = this;
 
     /* Public methods */
     self.PreBackActionService = PreBackActionService;
@@ -23,7 +23,7 @@
 
     function execute() {
       ActionPipeService.flowData.flowDirection = 'back';
-      let phaseData = PreBackActionService.execute(ActionPipeService.flowData);
+      var phaseData = PreBackActionService.execute(ActionPipeService.flowData);
       phaseData = ExecutionBackActionService.execute(phaseData);
       phaseData = PostBackActionService.execute(phaseData);
     }

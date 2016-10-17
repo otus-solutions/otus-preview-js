@@ -1,12 +1,12 @@
 describe('Current Question Service', function() {
 
-  let UNIT_NAME = 'otusjs.player.data.activity.CurrentSurveyService';
-  let Mock = {};
-  let Injections = {};
-  let service;
-  let CAD1 = 'CAD1';
-  let CAD2 = 'CAD2';
-  let CAD90 = 'CAD90';
+  var UNIT_NAME = 'otusjs.player.data.activity.CurrentSurveyService';
+  var Mock = {};
+  var Injections = {};
+  var service;
+  var CAD1 = 'CAD1';
+  var CAD2 = 'CAD2';
+  var CAD90 = 'CAD90';
 
   beforeEach(function() {
     module('otusjs.player.data');
@@ -59,7 +59,7 @@ describe('Current Question Service', function() {
     describe('when exists an item', function() {
 
       it('should return the item', function() {
-        let item = service.getItemByCustomID(CAD2);
+        var item = service.getItemByCustomID(CAD2);
 
         expect(item.customID).toEqual(CAD2);
       });
@@ -69,7 +69,7 @@ describe('Current Question Service', function() {
     describe('when not exists an item', function() {
 
       it('should return null', function() {
-        let item = service.getItemByCustomID(CAD90);
+        var item = service.getItemByCustomID(CAD90);
 
         expect(item).toBe(null);
       });
@@ -85,7 +85,7 @@ describe('Current Question Service', function() {
     });
 
     it('should return the list of navigations of current survey', function() {
-      let value = service.getNavigations();
+      var value = service.getNavigations();
 
       expect(value).toEqual(Mock.surveyTemplate.navigationList);
     });
@@ -101,7 +101,7 @@ describe('Current Question Service', function() {
     describe('when exists a navigation', function() {
 
       it('should return the navigation of origin', function() {
-        let navigation = service.getNavigationByOrigin(CAD1);
+        var navigation = service.getNavigationByOrigin(CAD1);
 
         expect(navigation.origin).toEqual(CAD1);
       });
@@ -111,7 +111,7 @@ describe('Current Question Service', function() {
     describe('when not exists a navigation', function() {
 
       it('should return null', function() {
-        let navigation = service.getNavigationByOrigin(CAD90);
+        var navigation = service.getNavigationByOrigin(CAD90);
 
         expect(navigation).toEqual(null);
       });

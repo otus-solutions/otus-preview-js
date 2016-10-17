@@ -11,7 +11,7 @@
   ];
 
   function Service(CurrentSurveyService, CurrentItemService) {
-    let self = this;
+    var self = this;
 
     /* Public Interface */
     self.applyAnswer = applyAnswer;

@@ -1,15 +1,15 @@
 describe('ActivityFacadeService', function() {
 
-  let UNIT_NAME = 'otusjs.player.data.activity.ActivityFacadeService';
-  let Mock = {};
-  let Injections = {};
-  let service = {};
-  let CAD1 = 'CAD1';
-  let CAD2 = 'CAD2';
-  let CAD100 = 'CAD100';
-  let ANSWER = 'ANSWER';
-  let METADATA = 'METADATA';
-  let COMMENT = 'COMMENT';
+  var UNIT_NAME = 'otusjs.player.data.activity.ActivityFacadeService';
+  var Mock = {};
+  var Injections = {};
+  var service = {};
+  var CAD1 = 'CAD1';
+  var CAD2 = 'CAD2';
+  var CAD100 = 'CAD100';
+  var ANSWER = 'ANSWER';
+  var METADATA = 'METADATA';
+  var COMMENT = 'COMMENT';
 
   beforeEach(function() {
     module('otusjs.player.data');

@@ -1,11 +1,11 @@
 describe('NavigationService', () => {
 
-  let UNIT_NAME = 'otusjs.player.data.navigation.RouteService';
-  let Mock = {};
-  let Injections = {};
-  let service = {};
-  let CAD1 = 'CAD1';
-  let CAD2 = 'CAD2';
+  var UNIT_NAME = 'otusjs.player.data.navigation.RouteService';
+  var Mock = {};
+  var Injections = {};
+  var service = {};
+  var CAD1 = 'CAD1';
+  var CAD2 = 'CAD2';
 
   beforeEach(() => {
     module('otusjs.player.data');

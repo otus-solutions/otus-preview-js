@@ -1,15 +1,15 @@
 describe('PreGoAheadStage', function() {
 
-  let Mock = {};
-  let Injections = {};
-  let chain = {};
+  var Mock = {};
+  var Injections = {};
+  var chain = {};
 
   beforeEach(function() {
     module('otusjs.player.core');
 
     inject(function(_$injector_) {
       mockChainLink(_$injector_);
-      let factory = _$injector_.get('otusjs.player.core.scaffold.ChainFactory', Injections);
+      var factory = _$injector_.get('otusjs.player.core.scaffold.ChainFactory', Injections);
       chain = factory.create();
     });
   });
@@ -25,7 +25,7 @@ describe('PreGoAheadStage', function() {
     });
 
     it('should add a link at end of link chain', function() {
-      let link = chain.getChainHead();
+      var link = chain.getChainHead();
       expect(link).not.toEqual(Mock.linkA);
 
       link = link.getNext();
@@ -75,7 +75,7 @@ describe('PreGoAheadStage', function() {
   });
 
   function mockChainLink($injector) {
-    let factory = $injector.get('otusjs.player.core.scaffold.ChainLinkFactory');
+    var factory = $injector.get('otusjs.player.core.scaffold.ChainLinkFactory');
 
     Mock.linkA = factory.create();
     spyOn(Mock.linkA, 'execute').and.callThrough();

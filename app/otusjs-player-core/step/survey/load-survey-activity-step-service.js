@@ -11,7 +11,7 @@
   ];
 
   function Service(ActivityFacadeService, NavigationService) {
-    let self = this;
+    var self = this;
 
     /* Public methods */
     self.beforeEffect = beforeEffect;

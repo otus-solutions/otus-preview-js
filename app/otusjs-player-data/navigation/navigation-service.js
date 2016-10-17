@@ -12,8 +12,8 @@
   ];
 
   function Service(NavigationStackItemFactory, ActivityFacadeService, RouteService) {
-    let self = this;
-    let _path = null;
+    var self = this;
+    var _path = null;
 
     /* Public Interface */
     self.getNextItems = getNextItems;
@@ -32,7 +32,7 @@
     }
 
     function getPreviousItem() {
-      let item = _path.getCurrentItem().getPrevious();
+      var item = _path.getCurrentItem().getPrevious();
       _path.back();
       if (item) {
         return ActivityFacadeService.getCurrentSurvey().getItemByCustomID(item.getID());
@@ -84,17 +84,17 @@
     }
 
     function _loadNextItem() {
-      let currentItemNavigation = ActivityFacadeService.getCurrentItem().getNavigation();
+      var currentItemNavigation = ActivityFacadeService.getCurrentItem().getNavigation();
 
       if(currentItemNavigation) {
-        let routeToUse = RouteService.calculateRoute(currentItemNavigation);
+        var routeToUse = RouteService.calculateRoute(currentItemNavigation);
         return _loadItem(routeToUse.destination);
       }
     }
 
     function _loadItem(id) {
-      let item = null;
-      let navigation = null;
+      var item = null;
+      var navigation = null;
 
       if (!id) {
         item = ActivityFacadeService.getCurrentSurvey().getItems()[0];
@@ -114,8 +114,8 @@
 
     function loadPreviousItem() {
       if (hasPrevious()) {
-        let item = getPreviousItem();
-        let navigation = ActivityFacadeService.getCurrentSurvey().getNavigationByOrigin(item.customID);
+        var item = getPreviousItem();
+        var navigation = ActivityFacadeService.getCurrentSurvey().getNavigationByOrigin(item.customID);
         RouteService.setup(navigation);
 
         return { item: item, navigation: navigation };
@@ -123,7 +123,7 @@
     }
 
     function _pathUpItem(item) {
-      let options = {};
+      var options = {};
       options.id = item.customID;
       options.type = item.objectType;
 

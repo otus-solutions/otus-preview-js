@@ -22,7 +22,7 @@
     self.$onInit = onInit;
 
     function onInit() {
-      let activity = ActivityFacadeService.getCurrentSurvey().getSurvey();
+      var activity = ActivityFacadeService.getCurrentSurvey().getSurvey();
       self.title = activity.template.identity.name;
       self.surveyIdentity = activity.template.identity;
     }

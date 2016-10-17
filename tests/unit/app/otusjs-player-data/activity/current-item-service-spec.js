@@ -1,11 +1,11 @@
 xdescribe('CurrentItemService', () => {
 
-  let UNIT_NAME = 'otusjs.player.data.activity.CurrentItemService';
-  let Mock = {};
-  let Injections = {};
-  let service;
-  let VAL1 = 'VAL1';
-  let VAL2 = 'VAL2';
+  var UNIT_NAME = 'otusjs.player.data.activity.CurrentItemService';
+  var Mock = {};
+  var Injections = {};
+  var service;
+  var VAL1 = 'VAL1';
+  var VAL2 = 'VAL2';
 
   beforeEach(() => {
     module('otusjs.player.data');

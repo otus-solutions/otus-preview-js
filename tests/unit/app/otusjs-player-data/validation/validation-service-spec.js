@@ -1,9 +1,9 @@
 describe('ItemFillingValidatorService', function() {
 
-  let UNIT_NAME = 'otusjs.player.data.validation.ItemFillingValidatorService';
-  let Mock = {};
-  let Injections = {};
-  let service;
+  var UNIT_NAME = 'otusjs.player.data.validation.ItemFillingValidatorService';
+  var Mock = {};
+  var Injections = {};
+  var service;
 
   beforeEach(function() {
     module('otusjs.player.data');
@@ -24,7 +24,7 @@ describe('ItemFillingValidatorService', function() {
 
     it('should execute element validation upon question', function() {
       spyOn(Mock.ValidationService, 'validateElement');
-      let callback = jasmine.any(Function);
+      var callback = jasmine.any(Function);
 
       service.applyValidation(Mock.question, callback);
 

@@ -19,13 +19,13 @@
   }
 
   function ChainLink() {
-    let self = this;
-    let _next = null;
-    let _catchFlowData = null;
-    let _preExecute = null;
-    let _execute = null;
-    let _postExecute = null;
-    let _getFlowData = null;
+    var self = this;
+    var _next = null;
+    var _catchFlowData = null;
+    var _preExecute = null;
+    var _execute = null;
+    var _postExecute = null;
+    var _getFlowData = null;
 
     /* Public methods */
     self.getNext = getNext;

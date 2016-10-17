@@ -45,7 +45,7 @@ xdescribe('ApplyAnswerStepService', function() {
   function mockNavigationService($injector) {
     Mock.NavigationService = $injector.get('otusjs.player.data.navigation.NavigationService');
 
-    let currentItem = {};
+    var currentItem = {};
     currentItem.getItem = () => { return Mock.itemData; };
     currentItem.shouldIgnoreResponseEvaluation = () => { return false; };
     currentItem.getFilling = () => { return Mock.itemFilling; };

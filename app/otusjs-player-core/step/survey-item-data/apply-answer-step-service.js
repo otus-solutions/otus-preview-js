@@ -10,8 +10,8 @@
   ];
 
   function Service(ActivityFacadeService) {
-    let self = this;
-    let _currentItem;
+    var self = this;
+    var _currentItem;
 
     /* Public methods */
     self.beforeEffect = beforeEffect;
