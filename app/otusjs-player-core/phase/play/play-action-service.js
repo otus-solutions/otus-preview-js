@@ -13,7 +13,7 @@
   ];
 
   function Service(ActionPipeService, PrePlayActionService, ExecutionPlayActionService, PostPlayActionService) {
-    let self = this;
+    var self = this;
 
     /* Public methods */
     self.PrePlayActionService = PrePlayActionService;
@@ -22,7 +22,7 @@
     self.execute = execute;
 
     function execute() {
-      let phaseData = PrePlayActionService.execute(ActionPipeService.flowData);
+      var phaseData = PrePlayActionService.execute(ActionPipeService.flowData);
       phaseData = ExecutionPlayActionService.execute(phaseData);
       phaseData = PostPlayActionService.execute(phaseData);
     }

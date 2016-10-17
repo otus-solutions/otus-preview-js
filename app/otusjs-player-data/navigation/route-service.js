@@ -11,9 +11,9 @@
 
   function Service(RuleService) {
     var self = this;
-    let _navigation = null;
-    let _defaultRoute = null;
-    let _alternativeRoutes = [];
+    var _navigation = null;
+    var _defaultRoute = null;
+    var _alternativeRoutes = [];
 
     /* Public Interface */
     self.calculateRoute = calculateRoute;
@@ -35,7 +35,7 @@
     }
 
     function calculateRoute() {
-      let alternativeRoute = _findAlternativeRoute();
+      var alternativeRoute = _findAlternativeRoute();
 
       if (alternativeRoute) {
         return alternativeRoute;
@@ -45,7 +45,7 @@
     }
 
     function _findAlternativeRoute() {
-      let alternativeRoute = null;
+      var alternativeRoute = null;
 
       _alternativeRoutes.some((route) => {
         if (_routeCanBeUsed(route)) {
@@ -66,7 +66,7 @@
     }
 
     function setup(navigation) {
-      let routeList = navigation.listRoutes();
+      var routeList = navigation.listRoutes();
 
       _navigation = navigation;
       _defaultRoute = routeList[0];

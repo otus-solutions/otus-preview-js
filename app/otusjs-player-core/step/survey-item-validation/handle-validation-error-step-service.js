@@ -10,7 +10,7 @@
   ];
 
   function Service(ActivityFacadeService) {
-    let self = this;
+    var self = this;
 
     /* Public methods */
     self.beforeEffect = beforeEffect;

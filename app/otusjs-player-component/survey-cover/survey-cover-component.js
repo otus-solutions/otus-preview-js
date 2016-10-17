@@ -27,7 +27,7 @@
 
     function onInit() {
       $scope.$parent.$ctrl.playerCover = self;
-      let activity = ActivityFacadeService.getCurrentSurvey().getSurvey();
+      var activity = ActivityFacadeService.getCurrentSurvey().getSurvey();
       self.title = activity.template.identity.name;
     }
 
@@ -36,7 +36,7 @@
     }
 
     function show() {
-      let activity = ActivityFacadeService.getCurrentSurvey().getSurvey();
+      var activity = ActivityFacadeService.getCurrentSurvey().getSurvey();
       self.title = activity.template.identity.name;
     }
   }

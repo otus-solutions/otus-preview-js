@@ -15,10 +15,10 @@
   ];
 
   function Controller($scope, $element, $compile) {
-    let self = this;
+    var self = this;
 
-    let SURVEY_ITEM = '<otus-survey-item item-data="itemData" />';
-    let SURVEY_COVER = '<otus-cover />';
+    var SURVEY_ITEM = '<otus-survey-item item-data="itemData" />';
+    var SURVEY_COVER = '<otus-cover />';
 
     /* Public methods */
     self.loadItem = loadItem;
@@ -35,8 +35,8 @@
       if (_shouldLoadItem(itemData)) {
         _destroyCurrentItem();
         $scope.itemData = itemData;
-        let $section = $element.find('section');
-        let $otusSurveyItem = $compile(SURVEY_ITEM)($scope);
+        var $section = $element.find('section');
+        var $otusSurveyItem = $compile(SURVEY_ITEM)($scope);
         $section.prepend($otusSurveyItem);
       }
     }

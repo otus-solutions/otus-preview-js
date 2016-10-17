@@ -10,8 +10,8 @@
   ];
 
   function Service(ActivityFacadeService) {
-    let self = this;
-    let _currentItem;
+    var self = this;
+    var _currentItem;
 
     /* Public methods */
     self.beforeEffect = beforeEffect;
@@ -34,6 +34,7 @@
     function effect(pipe, flowData) {
       ActivityFacadeService.applyAnswer();
       flowData.answerToEvaluate.data = _currentItem.getFilling().answer.value || {};
+      flowData.metadataToEvaluate.data = _currentItem.getFilling().metadata.value || {};
     }
 
     function afterEffect(pipe, flowData) {

@@ -11,7 +11,7 @@
   ];
 
   function Service(NavigationService, CurrentItemService) {
-    let self = this;
+    var self = this;
 
     /* Public methods */
     self.beforeEffect = beforeEffect;
@@ -22,7 +22,7 @@
     function beforeEffect(pipe, flowData) {}
 
     function effect(pipe, flowData) {
-      let loadData = NavigationService.loadPreviousItem();
+      var loadData = NavigationService.loadPreviousItem();
 
       if (loadData) {
         CurrentItemService.setup(loadData);

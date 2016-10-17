@@ -143,8 +143,8 @@
   ];
 
   function Controller(PlayerService) {
-    let SURVEY_ITEM = '<otus-survey-item item-data="itemData" />';
-    let self = this;
+    var SURVEY_ITEM = '<otus-survey-item item-data="itemData" />';
+    var self = this;
 
     /* Public methods */
     self.catchMouseWheel = catchMouseWheel;
@@ -295,10 +295,10 @@
   ];
 
   function Controller($scope, $element, $compile) {
-    let self = this;
+    var self = this;
 
-    let SURVEY_ITEM = '<otus-survey-item item-data="itemData" />';
-    let SURVEY_COVER = '<otus-cover />';
+    var SURVEY_ITEM = '<otus-survey-item item-data="itemData" />';
+    var SURVEY_COVER = '<otus-cover />';
 
     /* Public methods */
     self.loadItem = loadItem;
@@ -315,8 +315,8 @@
       if (_shouldLoadItem(itemData)) {
         _destroyCurrentItem();
         $scope.itemData = itemData;
-        let $section = $element.find('section');
-        let $otusSurveyItem = $compile(SURVEY_ITEM)($scope);
+        var $section = $element.find('section');
+        var $otusSurveyItem = $compile(SURVEY_ITEM)($scope);
         $section.prepend($otusSurveyItem);
       }
     }
@@ -355,14 +355,14 @@
 
 
   function Controller($scope, ActivityFacadeService) {
-    let self = this;
+    var self = this;
 
     /* Public methods */
     self.$onInit = onInit;
 
     function onInit() {
       $scope.$parent.$ctrl.playerBackCover = self;
-      let activity = ActivityFacadeService.getCurrentSurvey().getSurvey();
+      var activity = ActivityFacadeService.getCurrentSurvey().getSurvey();
       self.title = activity.template.identity.name;
     }
   }
@@ -397,7 +397,7 @@
 
     function onInit() {
       $scope.$parent.$ctrl.playerCover = self;
-      let activity = ActivityFacadeService.getCurrentSurvey().getSurvey();
+      var activity = ActivityFacadeService.getCurrentSurvey().getSurvey();
       self.title = activity.template.identity.name;
     }
 
@@ -406,7 +406,7 @@
     }
 
     function show() {
-      let activity = ActivityFacadeService.getCurrentSurvey().getSurvey();
+      var activity = ActivityFacadeService.getCurrentSurvey().getSurvey();
       self.title = activity.template.identity.name;
     }
   }
@@ -436,7 +436,7 @@
     self.$onInit = onInit;
 
     function onInit() {
-      let activity = ActivityFacadeService.getCurrentSurvey().getSurvey();
+      var activity = ActivityFacadeService.getCurrentSurvey().getSurvey();
       self.title = activity.template.identity.name;
       self.surveyIdentity = activity.template.identity;
     }
@@ -824,74 +824,68 @@
   function Controller($element, CurrentItemService, uiFormatedService) {
     var self = this;
 
-    _init();
-
-    self.hasUpperCase = CurrentItemService.getFillingRules().upperCase;
-    self.hasLowerCase = CurrentItemService.getFillingRules().lowerCase;
-
-    var keycode = event.which;
-
-    self.update = function() {
-      var answer = self.answer;
-      if (self.hasLowerCase) {
-        answer = answer.toLowerCase();
-      }
-      if (self.hasUpperCase) {
-        answer = answer.toUpperCase();
-      }
-
-      if (self.hasAlphanumeric && self.hasAlphanumeric.data.reference) {
-        answer = uiFormatedService.apply($element, self.answer);
-      }
-      if (self.hasSpecials && self.hasSpecials.data.reference) {
-        answer = uiFormatedService.apply($element, self.answer);
-      }
-      self.onUpdate({
-        valueType: 'answer',
-        value: answer
-      });
-    };
-
-    function _init() {
+    self.$onInit = function() {
+      self.answer = CurrentItemService.getFilling().answer.value;
       self.hasAlphanumeric = CurrentItemService.getFillingRules().alphanumeric;
       self.hasSpecials = CurrentItemService.getFillingRules().specials;
-    }
+      self.hasUpperCase = CurrentItemService.getFillingRules().upperCase;
+      self.hasLowerCase = CurrentItemService.getFillingRules().lowerCase;
+    };
+
+    self.update = function() {
+      if (self.hasLowerCase) {
+        self.answer.value.toLowerCase();
+      }
+      if (self.hasUpperCase) {
+        self.answer.value.toUpperCase();
+      }
+
+      if ((self.hasAlphanumeric && self.hasAlphanumeric.data.reference) ||
+        (self.hasSpecials && self.hasSpecials.data.reference)) {
+        uiFormatedService.apply($element, self.answer);
+      }
+
+      self.onUpdate({
+        valueType: 'answer',
+        value: self.answer
+      });
+    };
 
   }
 }());
 
 (function() {
-    'use strict';
+  'use strict';
 
-    angular
-        .module("otusjs.player.component")
-        .service('uiFormatedService', uiFormatedService);
+  angular
+    .module("otusjs.player.component")
+    .service('uiFormatedService', uiFormatedService);
 
-    function uiFormatedService() {
+  function uiFormatedService() {
 
-        var self = this;
+    var self = this;
 
-        self.apply = apply;
+    self.apply = apply;
 
-        function apply($element, answer) {
-            var lastValidValue;
+    function apply($element, answer) {
+      var lastValidValue;
 
-            var element = $element.find('textarea');
-            var key = answer[answer.length - 1];
-            if (isValidKey(key)) {
-                return answer;
-            } else {
-                var formatedAnswer = answer.slice(0, -1);
-                $element.find('textarea')[0].value = formatedAnswer;
-                return formatedAnswer;
-            }
+      var element = $element.find('textarea');
+      var key = answer[answer.length - 1];
+      if (isValidKey(key)) {
+        return answer;
+      } else {
+        var formatedAnswer = answer.slice(0, -1);
+        $element.find('textarea')[0].value = formatedAnswer;
+        return formatedAnswer;
+      }
 
-            function isValidKey(key) {
-                var reg = /^[a-záàâãéèêíïóòôõöúùçA-ZÁÀÂÃÉÈÊÍÓÒÔÕÚÙÇ0-9 .,]*$/;
-                return (reg.test(key)) ? true : false;
-            }
-        }
+      function isValidKey(key) {
+        var reg = /^[a-záàâãéèêíïóòôõöúùçA-ZÁÀÂÃÉÈÊÍÓÒÔÕÚÙÇ0-9 .,]*$/;
+        return (reg.test(key)) ? true : false;
+      }
     }
+  }
 }());
 
 (function() {
@@ -1151,7 +1145,7 @@
     .service('otusjs.player.core.phase.ActionPipeService', Service);
 
   function Service() {
-    let self = this;
+    var self = this;
     self.pipe = {};
     self.flowData = {}
 
@@ -1174,7 +1168,7 @@
   ];
 
   function Service(ActionPipeService, PreAheadActionService, ExecutionAheadActionService, PostAheadActionService) {
-    let self = this;
+    var self = this;
 
     /* Public methods */
     self.PreAheadActionService = PreAheadActionService;
@@ -1184,7 +1178,7 @@
 
     function execute() {
       ActionPipeService.flowData.flowDirection = 'ahead';
-      let phaseData = PreAheadActionService.execute(ActionPipeService.flowData);
+      var phaseData = PreAheadActionService.execute(ActionPipeService.flowData);
       phaseData = ExecutionAheadActionService.execute(phaseData);
       phaseData = PostAheadActionService.execute(phaseData);
     }
@@ -1204,8 +1198,8 @@
   ];
 
   function Service(ChainFactory, ChainLinkFactory) {
-    let self = this;
-    let _stepChain = ChainFactory.create();
+    var self = this;
+    var _stepChain = ChainFactory.create();
 
     self.isFlowing = true;
 
@@ -1215,7 +1209,7 @@
     self.stopFlow = stopFlow;
 
     function pipe(step) {
-      let link = ChainLinkFactory.create();
+      var link = ChainLinkFactory.create();
       link.setPreExecute(step.beforeEffect);
       link.setExecute(step.effect);
       link.setPostExecute(step.afterEffect);
@@ -1252,8 +1246,8 @@
   ];
 
   function Service(ChainFactory, ChainLinkFactory) {
-    let self = this;
-    let _stepChain = ChainFactory.create();
+    var self = this;
+    var _stepChain = ChainFactory.create();
 
     self.isFlowing = true;
 
@@ -1263,7 +1257,7 @@
     self.stopFlow = stopFlow;
 
     function pipe(step) {
-      let link = ChainLinkFactory.create();
+      var link = ChainLinkFactory.create();
       link.setPreExecute(step.beforeEffect);
       link.setExecute(step.effect);
       link.setPostExecute(step.afterEffect);
@@ -1300,8 +1294,8 @@
   ];
 
   function Service(ChainFactory, ChainLinkFactory) {
-    let self = this;
-    let _stepChain = ChainFactory.create();
+    var self = this;
+    var _stepChain = ChainFactory.create();
 
     /* Public methods */
     self.pipe = pipe;
@@ -1309,7 +1303,7 @@
     self.stopFlow = stopFlow;
 
     function pipe(step) {
-      let link = ChainLinkFactory.create();
+      var link = ChainLinkFactory.create();
       link.setPreExecute(step.beforeEffect);
       link.setExecute(step.effect);
       link.setPostExecute(step.afterEffect);
@@ -1343,7 +1337,7 @@
   ];
 
   function Service(ActionPipeService, PreBackActionService, ExecutionBackActionService, PostBackActionService) {
-    let self = this;
+    var self = this;
 
     /* Public methods */
     self.PreBackActionService = PreBackActionService;
@@ -1353,7 +1347,7 @@
 
     function execute() {
       ActionPipeService.flowData.flowDirection = 'back';
-      let phaseData = PreBackActionService.execute(ActionPipeService.flowData);
+      var phaseData = PreBackActionService.execute(ActionPipeService.flowData);
       phaseData = ExecutionBackActionService.execute(phaseData);
       phaseData = PostBackActionService.execute(phaseData);
     }
@@ -1373,8 +1367,8 @@
   ];
 
   function Service(ChainFactory, ChainLinkFactory) {
-    let self = this;
-    let _stepChain = ChainFactory.create();
+    var self = this;
+    var _stepChain = ChainFactory.create();
 
     self.isFlowing = true;
 
@@ -1384,7 +1378,7 @@
     self.stopFlow = stopFlow;
 
     function pipe(step) {
-      let link = ChainLinkFactory.create();
+      var link = ChainLinkFactory.create();
       link.setPreExecute(step.beforeEffect);
       link.setExecute(step.effect);
       link.setPostExecute(step.afterEffect);
@@ -1421,8 +1415,8 @@
   ];
 
   function Service(ChainFactory, ChainLinkFactory) {
-    let self = this;
-    let _stepChain = ChainFactory.create();
+    var self = this;
+    var _stepChain = ChainFactory.create();
 
     self.isFlowing = true;
 
@@ -1432,7 +1426,7 @@
     self.stopFlow = stopFlow;
 
     function pipe(step) {
-      let link = ChainLinkFactory.create();
+      var link = ChainLinkFactory.create();
       link.setPreExecute(step.beforeEffect);
       link.setExecute(step.effect);
       link.setPostExecute(step.afterEffect);
@@ -1469,8 +1463,8 @@
   ];
 
   function Service(ChainFactory, ChainLinkFactory) {
-    let self = this;
-    let _stepChain = ChainFactory.create();
+    var self = this;
+    var _stepChain = ChainFactory.create();
 
     /* Public methods */
     self.pipe = pipe;
@@ -1478,7 +1472,7 @@
     self.stopFlow = stopFlow;
 
     function pipe(step) {
-      let link = ChainLinkFactory.create();
+      var link = ChainLinkFactory.create();
       link.setPreExecute(step.beforeEffect);
       link.setExecute(step.effect);
       link.setPostExecute(step.afterEffect);
@@ -1512,7 +1506,7 @@
   ];
 
   function Service(ActionPipeService, PrePlayActionService, ExecutionPlayActionService, PostPlayActionService) {
-    let self = this;
+    var self = this;
 
     /* Public methods */
     self.PrePlayActionService = PrePlayActionService;
@@ -1521,7 +1515,7 @@
     self.execute = execute;
 
     function execute() {
-      let phaseData = PrePlayActionService.execute(ActionPipeService.flowData);
+      var phaseData = PrePlayActionService.execute(ActionPipeService.flowData);
       phaseData = ExecutionPlayActionService.execute(phaseData);
       phaseData = PostPlayActionService.execute(phaseData);
     }
@@ -1541,8 +1535,8 @@
   ];
 
   function Service(ChainFactory, ChainLinkFactory) {
-    let self = this;
-    let _stepChain = ChainFactory.create();
+    var self = this;
+    var _stepChain = ChainFactory.create();
 
     self.isFlowing = true;
 
@@ -1552,7 +1546,7 @@
     self.stopFlow = stopFlow;
 
     function pipe(step) {
-      let link = ChainLinkFactory.create();
+      var link = ChainLinkFactory.create();
       link.setPreExecute(step.beforeEffect);
       link.setExecute(step.effect);
       link.setPostExecute(step.afterEffect);
@@ -1589,8 +1583,8 @@
   ];
 
   function Service(ChainFactory, ChainLinkFactory) {
-    let self = this;
-    let _stepChain = ChainFactory.create();
+    var self = this;
+    var _stepChain = ChainFactory.create();
 
     self.isFlowing = true;
 
@@ -1600,7 +1594,7 @@
     self.stopFlow = stopFlow;
 
     function pipe(step) {
-      let link = ChainLinkFactory.create();
+      var link = ChainLinkFactory.create();
       link.setPreExecute(step.beforeEffect);
       link.setExecute(step.effect);
       link.setPostExecute(step.afterEffect);
@@ -1637,8 +1631,8 @@
   ];
 
   function Service(ChainFactory, ChainLinkFactory) {
-    let self = this;
-    let _stepChain = ChainFactory.create();
+    var self = this;
+    var _stepChain = ChainFactory.create();
 
     self.isFlowing = true;
 
@@ -1648,7 +1642,7 @@
     self.stopFlow = stopFlow;
 
     function pipe(step) {
-      let link = ChainLinkFactory.create();
+      var link = ChainLinkFactory.create();
       link.setPreExecute(step.beforeEffect);
       link.setExecute(step.effect);
       link.setPostExecute(step.afterEffect);
@@ -1680,8 +1674,8 @@
   ];
 
   function Service(ChainFactory, ChainLinkFactory) {
-    let self = this;
-    let _stepChain = ChainFactory.create();
+    var self = this;
+    var _stepChain = ChainFactory.create();
 
     self.isFlowing = true;
 
@@ -1691,7 +1685,7 @@
     self.stopFlow = stopFlow;
 
     function pipe(step) {
-      let link = ChainLinkFactory.create();
+      var link = ChainLinkFactory.create();
       link.setPreExecute(step.beforeEffect);
       link.setExecute(step.effect);
       link.setPostExecute(step.afterEffect);
@@ -1730,7 +1724,7 @@
   ];
 
   function Service(ActionPipeService, PrePlayerStartActionService, ExecutionPlayerStartActionService, PostPlayerStartActionService) {
-    let self = this;
+    var self = this;
 
     /* Public methods */
     self.PrePlayerStartActionService = PrePlayerStartActionService;
@@ -1739,7 +1733,7 @@
     self.execute = execute;
 
     function execute() {
-      let phaseData = PrePlayerStartActionService.execute(ActionPipeService.flowData);
+      var phaseData = PrePlayerStartActionService.execute(ActionPipeService.flowData);
       phaseData = ExecutionPlayerStartActionService.execute(phaseData);
       phaseData = PostPlayerStartActionService.execute(phaseData);
     }
@@ -1759,8 +1753,8 @@
   ];
 
   function Service(ChainFactory, ChainLinkFactory) {
-    let self = this;
-    let _stepChain = ChainFactory.create();
+    var self = this;
+    var _stepChain = ChainFactory.create();
 
     self.isFlowing = true;
 
@@ -1770,7 +1764,7 @@
     self.stopFlow = stopFlow;
 
     function pipe(step) {
-      let link = ChainLinkFactory.create();
+      var link = ChainLinkFactory.create();
       link.setPreExecute(step.beforeEffect);
       link.setExecute(step.effect);
       link.setPostExecute(step.afterEffect);
@@ -1807,8 +1801,8 @@
   ];
 
   function Service(ChainFactory, ChainLinkFactory) {
-    let self = this;
-    let _stepChain = ChainFactory.create();
+    var self = this;
+    var _stepChain = ChainFactory.create();
 
     self.isFlowing = true;
 
@@ -1818,7 +1812,7 @@
     self.stopFlow = stopFlow;
 
     function pipe(step) {
-      let link = ChainLinkFactory.create();
+      var link = ChainLinkFactory.create();
       link.setPreExecute(step.beforeEffect);
       link.setExecute(step.effect);
       link.setPostExecute(step.afterEffect);
@@ -2177,7 +2171,7 @@
     'otusjs.player.core.scaffold.ChainLinkFactory'
   ];
 
-  let Inject = {};
+  var Inject = {};
 
   function Factory(ChainLinkFactory) {
     var self = this;
@@ -2245,13 +2239,13 @@
   }
 
   function ChainLink() {
-    let self = this;
-    let _next = null;
-    let _catchFlowData = null;
-    let _preExecute = null;
-    let _execute = null;
-    let _postExecute = null;
-    let _getFlowData = null;
+    var self = this;
+    var _next = null;
+    var _catchFlowData = null;
+    var _preExecute = null;
+    var _execute = null;
+    var _postExecute = null;
+    var _getFlowData = null;
 
     /* Public methods */
     self.getNext = getNext;
@@ -2339,7 +2333,7 @@
   ];
 
   function Service(ActivityFacadeService) {
-    let self = this;
+    var self = this;
 
     /* Public methods */
     self.beforeEffect = beforeEffect;
@@ -2374,7 +2368,7 @@
   ];
 
   function Service(ActivityFacadeService, NavigationService) {
-    let self = this;
+    var self = this;
 
     /* Public methods */
     self.beforeEffect = beforeEffect;
@@ -2409,7 +2403,7 @@
   ];
 
   function Service(PlayerService) {
-    let self = this;
+    var self = this;
 
     /* Public methods */
     self.beforeEffect = beforeEffect;
@@ -2443,7 +2437,7 @@
   ];
 
   function Service(NavigationService, CurrentItemService, PlayerService) {
-    let self = this;
+    var self = this;
 
     /* Public methods */
     self.beforeEffect = beforeEffect;
@@ -2454,7 +2448,7 @@
     function beforeEffect(pipe, flowData) {}
 
     function effect(pipe, flowData) {
-      let loadData = NavigationService.loadNextItem();
+      var loadData = NavigationService.loadNextItem();
 
       if (loadData) {
         CurrentItemService.setup(loadData);
@@ -2489,7 +2483,7 @@
   ];
 
   function Service(NavigationService, CurrentItemService) {
-    let self = this;
+    var self = this;
 
     /* Public methods */
     self.beforeEffect = beforeEffect;
@@ -2500,7 +2494,7 @@
     function beforeEffect(pipe, flowData) {}
 
     function effect(pipe, flowData) {
-      let loadData = NavigationService.loadPreviousItem();
+      var loadData = NavigationService.loadPreviousItem();
 
       if (loadData) {
         CurrentItemService.setup(loadData);
@@ -2529,8 +2523,8 @@
   ];
 
   function Service(ActivityFacadeService) {
-    let self = this;
-    let _currentItem;
+    var self = this;
+    var _currentItem;
 
     /* Public methods */
     self.beforeEffect = beforeEffect;
@@ -2553,6 +2547,7 @@
     function effect(pipe, flowData) {
       ActivityFacadeService.applyAnswer();
       flowData.answerToEvaluate.data = _currentItem.getFilling().answer.value || {};
+      flowData.metadataToEvaluate.data = _currentItem.getFilling().metadata.value || {};
     }
 
     function afterEffect(pipe, flowData) {
@@ -2576,7 +2571,7 @@
   ];
 
   function Service(ActivityFacadeService) {
-    let self = this;
+    var self = this;
 
     /* Public methods */
     self.beforeEffect = beforeEffect;
@@ -2612,8 +2607,8 @@
     .service('otusjs.player.core.step.ReadValidationErrorStepService', Service);
 
   function Service() {
-    let self = this;
-    let _validationResult = {};
+    var self = this;
+    var _validationResult = {};
 
     /* Public methods */
     self.beforeEffect = beforeEffect;
@@ -2624,8 +2619,8 @@
     function beforeEffect(pipe, flowData) { }
 
     function effect(pipe, flowData) {
-      let mandatoryResults = [];
-      let otherResults = [];
+      var mandatoryResults = [];
+      var otherResults = [];
       flowData.validationResult = {};
 
       flowData.validationResponse.validatorsResponse.map((validator) => {
@@ -2666,8 +2661,8 @@
   ];
 
   function Service(ActivityFacadeService, ValidationService) {
-    let self = this;
-    let _currentItem;
+    var self = this;
+    var _currentItem;
 
     /* Public methods */
     self.beforeEffect = beforeEffect;
@@ -2716,8 +2711,8 @@
   ];
 
   function Service(ActivityFacadeService, ValidationService) {
-    let self = this;
-    let _currentItem;
+    var self = this;
+    var _currentItem;
 
     /* Public methods */
     self.beforeEffect = beforeEffect;
@@ -2782,7 +2777,7 @@
   ];
 
   function Service(CurrentSurveyService, CurrentItemService) {
-    let self = this;
+    var self = this;
 
     /* Public Interface */
     self.applyAnswer = applyAnswer;
@@ -2851,12 +2846,12 @@
   ];
 
   function Service(ActivityFacadeService) {
-    let self = this;
-    let _item = null;
-    let _filling = null;
-    let _navigation = null;
-    let _validationError = null;
-    let _observer = null;
+    var self = this;
+    var _item = null;
+    var _filling = null;
+    var _navigation = null;
+    var _validationError = null;
+    var _observer = null;
 
     /* Public Interface */
     self.applyFilling = applyFilling;
@@ -2970,7 +2965,7 @@
   ];
 
   function Service(ActivityFacadeService) {
-    let self = this;
+    var self = this;
 
     /* Public Interface */
     self.getSurvey = getSurvey;
@@ -2995,7 +2990,7 @@
     }
 
     function getItemByCustomID(customID) {
-      let fetchedItem = null;
+      var fetchedItem = null;
 
       getItems().some((item) => {
         if (item.customID === customID) {
@@ -3012,7 +3007,7 @@
     }
 
     function getNavigationByOrigin(origin) {
-      let fetchedNavigation = null;
+      var fetchedNavigation = null;
 
       getNavigations().some((navigation) => {
         if (navigation.origin === origin) {
@@ -3058,8 +3053,8 @@
   ];
 
   function Service(NavigationStackItemFactory, ActivityFacadeService, RouteService) {
-    let self = this;
-    let _path = null;
+    var self = this;
+    var _path = null;
 
     /* Public Interface */
     self.getNextItems = getNextItems;
@@ -3078,7 +3073,7 @@
     }
 
     function getPreviousItem() {
-      let item = _path.getCurrentItem().getPrevious();
+      var item = _path.getCurrentItem().getPrevious();
       _path.back();
       if (item) {
         return ActivityFacadeService.getCurrentSurvey().getItemByCustomID(item.getID());
@@ -3130,17 +3125,17 @@
     }
 
     function _loadNextItem() {
-      let currentItemNavigation = ActivityFacadeService.getCurrentItem().getNavigation();
+      var currentItemNavigation = ActivityFacadeService.getCurrentItem().getNavigation();
 
       if(currentItemNavigation) {
-        let routeToUse = RouteService.calculateRoute(currentItemNavigation);
+        var routeToUse = RouteService.calculateRoute(currentItemNavigation);
         return _loadItem(routeToUse.destination);
       }
     }
 
     function _loadItem(id) {
-      let item = null;
-      let navigation = null;
+      var item = null;
+      var navigation = null;
 
       if (!id) {
         item = ActivityFacadeService.getCurrentSurvey().getItems()[0];
@@ -3160,8 +3155,8 @@
 
     function loadPreviousItem() {
       if (hasPrevious()) {
-        let item = getPreviousItem();
-        let navigation = ActivityFacadeService.getCurrentSurvey().getNavigationByOrigin(item.customID);
+        var item = getPreviousItem();
+        var navigation = ActivityFacadeService.getCurrentSurvey().getNavigationByOrigin(item.customID);
         RouteService.setup(navigation);
 
         return { item: item, navigation: navigation };
@@ -3169,7 +3164,7 @@
     }
 
     function _pathUpItem(item) {
-      let options = {};
+      var options = {};
       options.id = item.customID;
       options.type = item.objectType;
 
@@ -3195,9 +3190,9 @@
 
   function Service(RuleService) {
     var self = this;
-    let _navigation = null;
-    let _defaultRoute = null;
-    let _alternativeRoutes = [];
+    var _navigation = null;
+    var _defaultRoute = null;
+    var _alternativeRoutes = [];
 
     /* Public Interface */
     self.calculateRoute = calculateRoute;
@@ -3219,7 +3214,7 @@
     }
 
     function calculateRoute() {
-      let alternativeRoute = _findAlternativeRoute();
+      var alternativeRoute = _findAlternativeRoute();
 
       if (alternativeRoute) {
         return alternativeRoute;
@@ -3229,7 +3224,7 @@
     }
 
     function _findAlternativeRoute() {
-      let alternativeRoute = null;
+      var alternativeRoute = null;
 
       _alternativeRoutes.some((route) => {
         if (_routeCanBeUsed(route)) {
@@ -3250,7 +3245,7 @@
     }
 
     function setup(navigation) {
-      let routeList = navigation.listRoutes();
+      var routeList = navigation.listRoutes();
 
       _navigation = navigation;
       _defaultRoute = routeList[0];
@@ -3277,8 +3272,8 @@
     self.isRuleApplicable = isRuleApplicable;
 
     function isRuleApplicable(rule) {
-      let whenItem = ActivityFacadeService.fetchItemByID(rule.when);
-      let itemAnswer = ActivityFacadeService.fetchItemAnswerByCustomID(rule.when);
+      var whenItem = ActivityFacadeService.fetchItemByID(rule.when);
+      var itemAnswer = ActivityFacadeService.fetchItemAnswerByCustomID(rule.when);
 
       if (rule.isMetadata) {
         return itemAnswer.answer.eval.run(rule, itemAnswer.metadata.value);
@@ -3324,10 +3319,10 @@
     }
 
     function setupValidation(item, answer) {
-      let elementRegister = ElementRegisterFactory.create(item.customID, answer);
+      var elementRegister = ElementRegisterFactory.create(item.customID, answer);
 
       Object.keys(item.fillingRules.options).map((validator) => {
-        let reference = item.fillingRules.options[validator].data;
+        var reference = item.fillingRules.options[validator].data;
         elementRegister.addValidator(validator, reference);
       });
 

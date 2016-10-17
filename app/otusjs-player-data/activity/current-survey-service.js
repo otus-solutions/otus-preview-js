@@ -10,7 +10,7 @@
   ];
 
   function Service(ActivityFacadeService) {
-    let self = this;
+    var self = this;
 
     /* Public Interface */
     self.getSurvey = getSurvey;
@@ -35,7 +35,7 @@
     }
 
     function getItemByCustomID(customID) {
-      let fetchedItem = null;
+      var fetchedItem = null;
 
       getItems().some((item) => {
         if (item.customID === customID) {
@@ -52,7 +52,7 @@
     }
 
     function getNavigationByOrigin(origin) {
-      let fetchedNavigation = null;
+      var fetchedNavigation = null;
 
       getNavigations().some((navigation) => {
         if (navigation.origin === origin) {

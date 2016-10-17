@@ -1,9 +1,9 @@
 xdescribe('ReadValidationErrorStepService', function() {
 
-  let Mock = {};
-  let Injections = {};
-  let service = {};
-  let CAD1 = 'CAD1';
+  var Mock = {};
+  var Injections = {};
+  var service = {};
+  var CAD1 = 'CAD1';
 
   beforeEach(function() {
     module('otusjs.player.core');
@@ -24,7 +24,7 @@ xdescribe('ReadValidationErrorStepService', function() {
     })
 
     it('should build an object with all validator results', function() {
-      let flowData = service.getEffectResult(Mock.pipe, Mock.flowData);
+      var flowData = service.getEffectResult(Mock.pipe, Mock.flowData);
 
       expect(flowData.validationResult.mandatory).toBeDefined();
       expect(flowData.validationResult.rangeDate).toBeDefined();
@@ -49,7 +49,7 @@ xdescribe('ReadValidationErrorStepService', function() {
       })
 
       it('should return the flag hasError equal to true', function() {
-        let flowData = service.getEffectResult(Mock.pipe, Mock.flowData);
+        var flowData = service.getEffectResult(Mock.pipe, Mock.flowData);
 
         expect(flowData.validationResult.hasError).toBe(true);
       });
@@ -64,7 +64,7 @@ xdescribe('ReadValidationErrorStepService', function() {
       })
 
       it('should return the flag hasError equal to false', function() {
-        let flowData = service.getEffectResult(Mock.pipe, Mock.flowData);
+        var flowData = service.getEffectResult(Mock.pipe, Mock.flowData);
 
         expect(flowData.validationResult.hasError).toBe(false);
       });

@@ -1,9 +1,9 @@
 describe('RuleService', () => {
 
-  let UNIT_NAME = 'otusjs.player.data.navigation.RuleService';
-  let Mock = {};
-  let Injections = {};
-  let service = {};
+  var UNIT_NAME = 'otusjs.player.data.navigation.RuleService';
+  var Mock = {};
+  var Injections = {};
+  var service = {};
 
   beforeEach(() => {
     module('otusjs.player.data');

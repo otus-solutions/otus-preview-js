@@ -6,7 +6,7 @@
     .service('otusjs.player.core.phase.ActionPipeService', Service);
 
   function Service() {
-    let self = this;
+    var self = this;
     self.pipe = {};
     self.flowData = {}
 

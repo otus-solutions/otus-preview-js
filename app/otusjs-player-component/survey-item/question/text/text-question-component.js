@@ -21,38 +21,32 @@
   function Controller($element, CurrentItemService, uiFormatedService) {
     var self = this;
 
-    _init();
-
-    self.hasUpperCase = CurrentItemService.getFillingRules().upperCase;
-    self.hasLowerCase = CurrentItemService.getFillingRules().lowerCase;
-
-    var keycode = event.which;
-
-    self.update = function() {
-      var answer = self.answer;
-      if (self.hasLowerCase) {
-        answer = answer.toLowerCase();
-      }
-      if (self.hasUpperCase) {
-        answer = answer.toUpperCase();
-      }
-
-      if (self.hasAlphanumeric && self.hasAlphanumeric.data.reference) {
-        answer = uiFormatedService.apply($element, self.answer);
-      }
-      if (self.hasSpecials && self.hasSpecials.data.reference) {
-        answer = uiFormatedService.apply($element, self.answer);
-      }
-      self.onUpdate({
-        valueType: 'answer',
-        value: answer
-      });
-    };
-
-    function _init() {
+    self.$onInit = function() {
+      self.answer = CurrentItemService.getFilling().answer.value;
       self.hasAlphanumeric = CurrentItemService.getFillingRules().alphanumeric;
       self.hasSpecials = CurrentItemService.getFillingRules().specials;
-    }
+      self.hasUpperCase = CurrentItemService.getFillingRules().upperCase;
+      self.hasLowerCase = CurrentItemService.getFillingRules().lowerCase;
+    };
+
+    self.update = function() {
+      if (self.hasLowerCase) {
+        self.answer.value.toLowerCase();
+      }
+      if (self.hasUpperCase) {
+        self.answer.value.toUpperCase();
+      }
+
+      if ((self.hasAlphanumeric && self.hasAlphanumeric.data.reference) ||
+        (self.hasSpecials && self.hasSpecials.data.reference)) {
+        uiFormatedService.apply($element, self.answer);
+      }
+
+      self.onUpdate({
+        valueType: 'answer',
+        value: self.answer
+      });
+    };
 
   }
 }());

@@ -13,8 +13,8 @@
   ];
 
   function Controller(PlayerService) {
-    let SURVEY_ITEM = '<otus-survey-item item-data="itemData" />';
-    let self = this;
+    var SURVEY_ITEM = '<otus-survey-item item-data="itemData" />';
+    var self = this;
 
     /* Public methods */
     self.catchMouseWheel = catchMouseWheel;

@@ -15,14 +15,14 @@
 
 
   function Controller($scope, ActivityFacadeService) {
-    let self = this;
+    var self = this;
 
     /* Public methods */
     self.$onInit = onInit;
 
     function onInit() {
       $scope.$parent.$ctrl.playerBackCover = self;
-      let activity = ActivityFacadeService.getCurrentSurvey().getSurvey();
+      var activity = ActivityFacadeService.getCurrentSurvey().getSurvey();
       self.title = activity.template.identity.name;
     }
   }

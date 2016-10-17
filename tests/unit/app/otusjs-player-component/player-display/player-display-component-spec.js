@@ -1,11 +1,11 @@
 xdescribe('otusPlayerDisplay component', function() {
 
-  let UNIT_NAME = 'otusPlayerDisplay';
-  let SURVEY_ITEM = '<otus-survey-item item-data="itemData" />';
-  let Mock = {};
-  let Injections = {};
-  let Bindings = {};
-  let component = {};
+  var UNIT_NAME = 'otusPlayerDisplay';
+  var SURVEY_ITEM = '<otus-survey-item item-data="itemData" />';
+  var Mock = {};
+  var Injections = {};
+  var Bindings = {};
+  var component = {};
 
   beforeEach(function() {
     module('otusjs.player.core');

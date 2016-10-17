@@ -6,8 +6,8 @@
     .service('otusjs.player.core.step.ReadValidationErrorStepService', Service);
 
   function Service() {
-    let self = this;
-    let _validationResult = {};
+    var self = this;
+    var _validationResult = {};
 
     /* Public methods */
     self.beforeEffect = beforeEffect;
@@ -18,8 +18,8 @@
     function beforeEffect(pipe, flowData) { }
 
     function effect(pipe, flowData) {
-      let mandatoryResults = [];
-      let otherResults = [];
+      var mandatoryResults = [];
+      var otherResults = [];
       flowData.validationResult = {};
 
       flowData.validationResponse.validatorsResponse.map((validator) => {

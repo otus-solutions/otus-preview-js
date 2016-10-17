@@ -22,7 +22,7 @@ describe('LoadItemStepService', function() {
 
   describe('effect method', function() {
 
-    let navigationData = {};
+    var navigationData = {};
 
     beforeEach(function() {
       navigationData = {item: {}, navigation: {}, previous: {}};

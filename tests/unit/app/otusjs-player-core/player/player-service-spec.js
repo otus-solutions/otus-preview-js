@@ -1,9 +1,9 @@
 describe('PlayerService', function() {
 
-  let UNIT_NAME = 'otusjs.player.core.player.PlayerService';
-  let Mock = {};
-  let Injections = {};
-  let service = {};
+  var UNIT_NAME = 'otusjs.player.core.player.PlayerService';
+  var Mock = {};
+  var Injections = {};
+  var service = {};
 
   beforeEach(function() {
     module('otusjs.player.core');
@@ -23,7 +23,7 @@ describe('PlayerService', function() {
   describe('getItemData method', function() {
 
     it('should retrieve the current item from activity', function() {
-      let itemData = service.getItemData();
+      var itemData = service.getItemData();
 
       expect(itemData).toEqual(Mock.itemData);
     });

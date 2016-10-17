@@ -11,8 +11,8 @@
   ];
 
   function Service(ChainFactory, ChainLinkFactory) {
-    let self = this;
-    let _stepChain = ChainFactory.create();
+    var self = this;
+    var _stepChain = ChainFactory.create();
 
     /* Public methods */
     self.pipe = pipe;
@@ -20,7 +20,7 @@
     self.stopFlow = stopFlow;
 
     function pipe(step) {
-      let link = ChainLinkFactory.create();
+      var link = ChainLinkFactory.create();
       link.setPreExecute(step.beforeEffect);
       link.setExecute(step.effect);
       link.setPostExecute(step.afterEffect);
