@@ -31,7 +31,7 @@
     }
 
     function effect(pipe, flowData) {
-      ValidationService.applyValidation(_currentItem.getItem(), (validationResponse) => {
+      ValidationService.applyValidation(_currentItem.getItem(), function(validationResponse) {
         flowData.validationResponse = validationResponse[0];
       });
     }

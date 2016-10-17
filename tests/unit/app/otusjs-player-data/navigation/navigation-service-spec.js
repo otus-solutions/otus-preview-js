@@ -1,4 +1,4 @@
-describe('NavigationService', () => {
+describe('NavigationService', function() {
 
   var UNIT_NAME = 'otusjs.player.data.navigation.NavigationService';
   var Mock = {};
@@ -7,7 +7,7 @@ describe('NavigationService', () => {
   var CAD1 = 'CAD1';
   var CAD2 = 'CAD2';
 
-  beforeEach(() => {
+  beforeEach(function() {
     module('otusjs.player.data');
 
     inject(function(_$injector_) {
@@ -30,13 +30,13 @@ describe('NavigationService', () => {
     });
   });
 
-  describe('initialize method', () => {
+  describe('initialize method', function() {
 
-    beforeEach(() => {
+    beforeEach(function() {
       spyOn(Mock.CurrentSurveyService, 'getSurvey').and.returnValue(Mock.newSurveyActivity);
     });
 
-    it('should just keep a reference to navigation stack', () => {
+    it('should just keep a reference to navigation stack', function() {
       service.initialize();
 
       expect(service.getStack()).toEqual(Mock.newStack);
@@ -44,23 +44,23 @@ describe('NavigationService', () => {
 
   });
 
-  describe('getNextItems method', () => {
+  describe('getNextItems method', function() {
 
-    describe('on all cases', () => {
+    describe('on all cases', function() {
 
-      beforeEach(() => {
+      beforeEach(function() {
         spyOn(Mock.CurrentItemService, 'getNavigation').and.returnValue(Mock.navigationCAD1);
         spyOn(Mock.ActivityFacadeService, 'getCurrentItem').and.returnValue(Mock.CurrentItemService);
         spyOn(Mock.CurrentSurveyService, 'getItemByCustomID');
       });
 
-      it('should request the routes of current item from current navigation', () => {
+      it('should request the routes of current item from current navigation', function() {
         var nextItems = service.getNextItems();
 
         expect(Mock.navigationCAD1.listRoutes).toHaveBeenCalledWith();
       });
 
-      it('should retrieve the respective item of each current item route destination', () => {
+      it('should retrieve the respective item of each current item route destination', function() {
         var nextItems = service.getNextItems();
 
         expect(Mock.CurrentSurveyService.getItemByCustomID).toHaveBeenCalledWith(CAD2);
@@ -68,15 +68,15 @@ describe('NavigationService', () => {
 
     });
 
-    describe('when exists next items', () => {
+    describe('when exists next items', function() {
 
-      beforeEach(() => {
+      beforeEach(function() {
         spyOn(Mock.CurrentItemService, 'getNavigation').and.returnValue(Mock.navigationCAD1);
         spyOn(Mock.ActivityFacadeService, 'getCurrentItem').and.returnValue(Mock.CurrentItemService);
         spyOn(Mock.CurrentSurveyService, 'getItemByCustomID').and.returnValue(Mock.itemCAD2);
       });
 
-      it('should return an array with the next items from current item', () => {
+      it('should return an array with the next items from current item', function() {
         var nextItems = service.getNextItems();
 
         expect(nextItems[0].extents).toEqual('SurveyItem');
@@ -84,14 +84,14 @@ describe('NavigationService', () => {
 
     });
 
-    describe('when not exists next items', () => {
+    describe('when not exists next items', function() {
 
-      beforeEach(() => {
+      beforeEach(function() {
         spyOn(Mock.CurrentItemService, 'getNavigation').and.returnValue(Mock.navigationCAD2);
         spyOn(Mock.ActivityFacadeService, 'getCurrentItem').and.returnValue(Mock.CurrentItemService);
       });
 
-      it('should return an empty array', () => {
+      it('should return an empty array', function() {
         var nextItems = service.getNextItems();
 
         expect(nextItems.length).toBe(0);
@@ -101,11 +101,11 @@ describe('NavigationService', () => {
 
   });
 
-  xdescribe('getPreviousItem method', () => {
+  xdescribe('getPreviousItem method', function() {
 
-    describe('on all cases', () => {
+    describe('on all cases', function() {
 
-      beforeEach(() => {
+      beforeEach(function() {
         spyOn(Mock.CurrentSurveyService, 'getSurvey').and.returnValue(Mock.savedSurveyActivity);
         spyOn(Mock.CurrentSurveyService, 'getItems').and.returnValue([Mock.itemCAD1, Mock.itemCAD2]);
         spyOn(Mock.CurrentSurveyService, 'getNavigations').and.returnValue([Mock.navigationCAD1, Mock.navigationCAD2]);
@@ -120,7 +120,7 @@ describe('NavigationService', () => {
         service.initialize();
       });
 
-      it('should request the ID of previous item of current item', () => {
+      it('should request the ID of previous item of current item', function() {
         spyOn(Mock.savedStack, 'getCurrentItem').and.returnValue(Mock.itemB);
         spyOn(Mock.itemB, 'getPrevious').and.returnValue(Mock.itemA);
 
@@ -131,20 +131,20 @@ describe('NavigationService', () => {
 
     });
 
-    describe('when exists a previous item', () => {
+    describe('when exists a previous item', function() {
 
-      beforeEach(() => {
+      beforeEach(function() {
         spyOn(Mock.CurrentSurveyService, 'getItemByCustomID').and.returnValue(Mock.itemCAD1);
         spyOn(Mock.CurrentItemService, 'getPreviousItem').and.returnValue(CAD1);
       });
 
-      it('should retrieve the respective item of previous item ID', () => {
+      it('should retrieve the respective item of previous item ID', function() {
         var nextItems = service.getPreviousItem();
 
         expect(Mock.CurrentSurveyService.getItemByCustomID).toHaveBeenCalledWith(CAD1);
       });
 
-      it('should return the item that precedes the current item', () => {
+      it('should return the item that precedes the current item', function() {
         var item = service.getPreviousItem();
 
         expect(item.extents).toEqual('SurveyItem');
@@ -152,13 +152,13 @@ describe('NavigationService', () => {
 
     });
 
-    describe('when not exists a previous item', () => {
+    describe('when not exists a previous item', function() {
 
-      beforeEach(() => {
+      beforeEach(function() {
         spyOn(Mock.CurrentItemService, 'getPreviousItem').and.returnValue(null);
       });
 
-      it('should return null', () => {
+      it('should return null', function() {
         var item = service.getPreviousItem();
 
         expect(item).toBe(null);
@@ -168,27 +168,27 @@ describe('NavigationService', () => {
 
   });
 
-  describe('hasNext method', () => {
+  describe('hasNext method', function() {
 
-    describe('when exists next item', () => {
+    describe('when exists next item', function() {
 
-      beforeEach(() => {
+      beforeEach(function() {
         spyOn(Mock.CurrentItemService, 'getNavigation').and.returnValue(Mock.navigationCAD1);
       });
 
-      it('should return true', () => {
+      it('should return true', function() {
         expect(service.hasNext()).toBe(true);
       });
 
     });
 
-    describe('when not exists next item', () => {
+    describe('when not exists next item', function() {
 
-      beforeEach(() => {
+      beforeEach(function() {
         spyOn(Mock.CurrentItemService, 'getNavigation').and.returnValue(Mock.navigationCAD2);
       });
 
-      it('should return false', () => {
+      it('should return false', function() {
         expect(service.hasNext()).toBe(false);
       });
 
@@ -196,11 +196,11 @@ describe('NavigationService', () => {
 
   });
 
-  describe('hasPrevious method', () => {
+  describe('hasPrevious method', function() {
 
-    describe('when exists previous item', () => {
+    describe('when exists previous item', function() {
 
-      beforeEach(() => {
+      beforeEach(function() {
         spyOn(Mock.CurrentSurveyService, 'getSurvey').and.returnValue(Mock.savedSurveyActivity);
         spyOn(Mock.CurrentSurveyService, 'getItems').and.returnValue([Mock.itemCAD1, Mock.itemCAD2]);
         spyOn(Mock.CurrentSurveyService, 'getNavigations').and.returnValue([Mock.navigationCAD1, Mock.navigationCAD2]);
@@ -215,7 +215,7 @@ describe('NavigationService', () => {
         service.initialize();
       });
 
-      it('should return true', () => {
+      it('should return true', function() {
         spyOn(Mock.savedStack, 'getCurrentItem').and.returnValue(Mock.itemB);
         spyOn(Mock.itemB, 'getPrevious').and.returnValue(Mock.itemA);
 
@@ -224,9 +224,9 @@ describe('NavigationService', () => {
 
     });
 
-    describe('when not exists previous item', () => {
+    describe('when not exists previous item', function() {
 
-      beforeEach(() => {
+      beforeEach(function() {
         spyOn(Mock.CurrentSurveyService, 'getSurvey').and.returnValue(Mock.savedSurveyActivity);
         spyOn(Mock.CurrentSurveyService, 'getItems').and.returnValue([Mock.itemCAD1, Mock.itemCAD2]);
         spyOn(Mock.CurrentSurveyService, 'getNavigations').and.returnValue([Mock.navigationCAD1, Mock.navigationCAD2]);
@@ -241,7 +241,7 @@ describe('NavigationService', () => {
         service.initialize();
       });
 
-      it('should return false', () => {
+      it('should return false', function() {
         spyOn(Mock.savedStack, 'getCurrentItem').and.returnValue(Mock.itemA);
         spyOn(Mock.itemA, 'getPrevious').and.returnValue(null);
 
@@ -252,9 +252,9 @@ describe('NavigationService', () => {
 
   });
 
-  describe('loadNextItem method', () => {
+  describe('loadNextItem method', function() {
 
-    beforeEach(() => {
+    beforeEach(function() {
       spyOn(Mock.CurrentSurveyService, 'getSurvey').and.returnValue(Mock.newSurveyActivity);
       spyOn(Mock.CurrentSurveyService, 'getItems').and.returnValue([Mock.itemCAD1, Mock.itemCAD2]);
       spyOn(Mock.CurrentSurveyService, 'getNavigations').and.returnValue([Mock.navigationCAD1, Mock.navigationCAD2]);
@@ -276,37 +276,37 @@ describe('NavigationService', () => {
       service.initialize();
     });
 
-    describe('when already exists a current item', () => {
+    describe('when already exists a current item', function() {
 
-      it('should retrieve the navigation of current item', () => {
+      it('should retrieve the navigation of current item', function() {
         service.loadNextItem();
 
         expect(Mock.CurrentItemService.getNavigation).toHaveBeenCalledWith();
       });
 
-      it('should retrieve the route to be used by navigation', () => {
+      it('should retrieve the route to be used by navigation', function() {
         service.loadNextItem();
 
         expect(Mock.RouteService.calculateRoute).toHaveBeenCalledWith(Mock.navigationCAD1);
       });
 
-      it('should retrieve the item that corresponds to route destination', () => {
+      it('should retrieve the item that corresponds to route destination', function() {
         service.loadNextItem();
 
         expect(Mock.RouteService.calculateRoute).toHaveBeenCalledWith(Mock.navigationCAD1);
       });
 
-      it('should retrieve the navigation that corresponds to route destination', () => {
+      it('should retrieve the navigation that corresponds to route destination', function() {
         service.loadNextItem();
 
         expect(Mock.CurrentSurveyService.getNavigationByOrigin).toHaveBeenCalledWith(Mock.routeToCAD3.destination);
       });
 
-      it('should load a next item', () => {
+      it('should load a next item', function() {
 
       });
 
-      it('should stack up the next item', () => {
+      it('should stack up the next item', function() {
         service.loadNextItem();
 
         expect(Mock.newStack.add).toHaveBeenCalledWith(Mock.stackItem);
@@ -314,13 +314,13 @@ describe('NavigationService', () => {
 
     });
 
-    describe('when does not exists a current item but a saved path to continue', () => {
+    describe('when does not exists a current item but a saved path to continue', function() {
 
-      it('should load the last visited item of path', () => {
+      it('should load the last visited item of path', function() {
 
       });
 
-      it('should stack up the next item', () => {
+      it('should stack up the next item', function() {
         service.loadNextItem();
 
         expect(Mock.newStack.add).toHaveBeenCalledWith(Mock.stackItem);
@@ -328,13 +328,13 @@ describe('NavigationService', () => {
 
     });
 
-    describe('when does not exists neither a current item or a saved path to continue', () => {
+    describe('when does not exists neither a current item or a saved path to continue', function() {
 
-      it('should load the first item of activity', () => {
+      it('should load the first item of activity', function() {
 
       });
 
-      it('should stack up the next item', () => {
+      it('should stack up the next item', function() {
         service.loadNextItem();
 
         expect(Mock.newStack.add).toHaveBeenCalledWith(Mock.stackItem);

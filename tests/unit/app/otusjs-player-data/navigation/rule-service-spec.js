@@ -1,11 +1,11 @@
-describe('RuleService', () => {
+describe('RuleService', function() {
 
   var UNIT_NAME = 'otusjs.player.data.navigation.RuleService';
   var Mock = {};
   var Injections = {};
   var service = {};
 
-  beforeEach(() => {
+  beforeEach(function() {
     module('otusjs.player.data');
 
     inject(function(_$injector_) {
@@ -20,28 +20,28 @@ describe('RuleService', () => {
     });
   });
 
-  describe('isRuleApplicable method', () => {
+  describe('isRuleApplicable method', function() {
 
-    describe('for all cases', () => {
+    describe('for all cases', function() {
 
-      beforeEach(() => {
+      beforeEach(function() {
         mockCorrectItemAnswer();
         spyOn(Mock.ActivityFacadeService, 'fetchItemAnswerByCustomID').and.returnValue(Mock.itemAnswer);
       });
 
-      it('should retrieve the item that corresponds to "when item" of rule', () => {
+      it('should retrieve the item that corresponds to "when item" of rule', function() {
         service.isRuleApplicable(Mock.rule);
 
         expect(Mock.ActivityFacadeService.fetchItemByID).toHaveBeenCalledWith(Mock.rule.when);
       });
 
-      it('should retrieve the "when item" answer', () => {
+      it('should retrieve the "when item" answer', function() {
         service.isRuleApplicable(Mock.rule);
 
         expect(Mock.ActivityFacadeService.fetchItemAnswerByCustomID).toHaveBeenCalledWith(Mock.rule.when);
       });
 
-      it('should test the answer with answer evaluator', () => {
+      it('should test the answer with answer evaluator', function() {
         service.isRuleApplicable(Mock.rule);
 
         expect(Mock.itemAnswer.answer.eval.run).toHaveBeenCalledWith(Mock.rule, Mock.itemAnswer.answer.value);
@@ -49,27 +49,27 @@ describe('RuleService', () => {
 
     });
 
-    describe('when rule is applicable', () => {
+    describe('when rule is applicable', function() {
 
-      beforeEach(() => {
+      beforeEach(function() {
         mockCorrectItemAnswer();
         spyOn(Mock.ActivityFacadeService, 'fetchItemAnswerByCustomID').and.returnValue(Mock.itemAnswer);
       });
 
-      it('should return true', () => {
+      it('should return true', function() {
         expect(service.isRuleApplicable(Mock.rule)).toBe(true);
       });
 
     });
 
-    describe('when rule is not applicable', () => {
+    describe('when rule is not applicable', function() {
 
-      beforeEach(() => {
+      beforeEach(function() {
         mockIncorrectItemAnswer();
         spyOn(Mock.ActivityFacadeService, 'fetchItemAnswerByCustomID').and.returnValue(Mock.itemAnswer);
       });
 
-      it('should return false', () => {
+      it('should return false', function() {
         expect(service.isRuleApplicable(Mock.rule)).toBe(false);
       });
 
