@@ -86,7 +86,7 @@
     function _loadNextItem() {
       var currentItemNavigation = ActivityFacadeService.getCurrentItem().getNavigation();
 
-      if(currentItemNavigation) {
+      if (currentItemNavigation) {
         var routeToUse = RouteService.calculateRoute(currentItemNavigation);
         return _loadItem(routeToUse.destination);
       }
@@ -109,7 +109,10 @@
       }
       _pathUpItem(item);
 
-      return { item: item, navigation: navigation };
+      return {
+        item: item,
+        navigation: navigation
+      };
     }
 
     function loadPreviousItem() {
@@ -118,7 +121,10 @@
         var navigation = ActivityFacadeService.getCurrentSurvey().getNavigationByOrigin(item.customID);
         RouteService.setup(navigation);
 
-        return { item: item, navigation: navigation };
+        return {
+          item: item,
+          navigation: navigation
+        };
       }
     }
 
