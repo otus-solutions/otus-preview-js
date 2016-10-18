@@ -78,11 +78,11 @@ describe('otusPlayerCommander component', function() {
   });
 
   function mockBindings() {
-    Bindings.onGoAhead = () => {};
-    Bindings.onGoBack = () => {};
-    Bindings.onPause = () => {};
-    Bindings.onPlay = () => {};
-    Bindings.onStop = () => {};
+    Bindings.onGoAhead = function() {};
+    Bindings.onGoBack = function() {};
+    Bindings.onPause = function() {};
+    Bindings.onPlay = function() {};
+    Bindings.onStop = function() {};
   }
 
   function mockScope($rootScope) {

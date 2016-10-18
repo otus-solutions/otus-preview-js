@@ -149,8 +149,8 @@ xdescribe('SetupValidationStepService', function() {
     Mock.NavigationService = $injector.get('otusjs.player.data.navigation.NavigationService');
 
     var currentItem = {};
-    currentItem.getItem = () => { return Mock.itemData; };
-    currentItem.shouldIgnoreResponseEvaluation = () => { return false; };
+    currentItem.getItem = function() { return Mock.itemData; };
+    currentItem.shouldIgnoreResponseEvaluation = function() { return false; };
     spyOn(Mock.NavigationService, 'getCurrentItem').and.returnValue(currentItem);
 
     Injections.NavigationService = Mock.NavigationService;

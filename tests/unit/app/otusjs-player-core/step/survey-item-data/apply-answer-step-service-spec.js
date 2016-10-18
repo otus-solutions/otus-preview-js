@@ -46,10 +46,10 @@ xdescribe('ApplyAnswerStepService', function() {
     Mock.NavigationService = $injector.get('otusjs.player.data.navigation.NavigationService');
 
     var currentItem = {};
-    currentItem.getItem = () => { return Mock.itemData; };
-    currentItem.shouldIgnoreResponseEvaluation = () => { return false; };
-    currentItem.getFilling = () => { return Mock.itemFilling; };
-    currentItem.shouldApplyAnswer = () => { return true; };
+    currentItem.getItem = function() { return Mock.itemData; };
+    currentItem.shouldIgnoreResponseEvaluation = function() { return false; };
+    currentItem.getFilling = function() { return Mock.itemFilling; };
+    currentItem.shouldApplyAnswer = function() { return true; };
     spyOn(Mock.NavigationService, 'getCurrentItem').and.returnValue(currentItem);
 
     Injections.NavigationService = Mock.NavigationService;

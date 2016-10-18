@@ -25,7 +25,7 @@
     function setupValidation(item, answer) {
       var elementRegister = ElementRegisterFactory.create(item.customID, answer);
 
-      Object.keys(item.fillingRules.options).map((validator) => {
+      Object.keys(item.fillingRules.options).map(function(validator) {
         var reference = item.fillingRules.options[validator].data;
         elementRegister.addValidator(validator, reference);
       });

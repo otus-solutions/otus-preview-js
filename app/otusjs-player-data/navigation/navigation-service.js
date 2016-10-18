@@ -26,7 +26,7 @@
     self.loadPreviousItem = loadPreviousItem;
 
     function getNextItems() {
-      return ActivityFacadeService.getCurrentItem().getNavigation().listRoutes().map((route) => {
+      return ActivityFacadeService.getCurrentItem().getNavigation().listRoutes().map(function(route) {
         return ActivityFacadeService.getCurrentSurvey().getItemByCustomID(route.destination);
       });
     }
@@ -130,7 +130,7 @@
       if (item.isQuestion()) {
         options.label = item.label.ptBR.plainText;
       }
-      
+
       _path.add(NavigationStackItemFactory.create(options));
     }
   }

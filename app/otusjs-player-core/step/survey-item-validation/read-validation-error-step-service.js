@@ -22,7 +22,7 @@
       var otherResults = [];
       flowData.validationResult = {};
 
-      flowData.validationResponse.validatorsResponse.map((validator) => {
+      flowData.validationResponse.validatorsResponse.map(function(validator) {
         if (validator.name === 'mandatory' || validator.data.reference) {
           flowData.validationResult[validator.name] = !validator.result && (angular.equals(flowData.metadataToEvaluate.data, {}));
         } else {
@@ -40,7 +40,7 @@
     }
 
     function _hasError(flowData) {
-      return Object.keys(flowData.validationResult).some((validator) => {
+      return Object.keys(flowData.validationResult).some(function(validator) {
         return flowData.validationResult[validator];
       });
     }

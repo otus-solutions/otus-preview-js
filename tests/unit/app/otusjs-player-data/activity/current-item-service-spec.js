@@ -1,4 +1,4 @@
-xdescribe('CurrentItemService', () => {
+xdescribe('CurrentItemService', function() {
 
   var UNIT_NAME = 'otusjs.player.data.activity.CurrentItemService';
   var Mock = {};
@@ -7,7 +7,7 @@ xdescribe('CurrentItemService', () => {
   var VAL1 = 'VAL1';
   var VAL2 = 'VAL2';
 
-  beforeEach(() => {
+  beforeEach(function() {
     module('otusjs.player.data');
 
     inject(function(_$injector_) {
@@ -27,15 +27,15 @@ xdescribe('CurrentItemService', () => {
     });
   });
 
-  describe('applyFilling method', () => {
+  describe('applyFilling method', function() {
 
-    beforeEach(() => {
+    beforeEach(function() {
       Mock.ActivityFacadeService.getFillingByQuestionID = jasmine.createSpy('getFillingByQuestionID').and.returnValue(Mock.filling);
       service.setup(Mock.itemVAL1, Mock.navigation);
       service.fill(Mock.filling);
     });
 
-    it('should apply the answer to SurveyActivity model', () => {
+    it('should apply the answer to SurveyActivity model', function() {
       service.applyFilling();
 
       expect(Mock.ActivityFacadeService.fillQuestion).toHaveBeenCalledWith(Mock.filling);
@@ -43,22 +43,22 @@ xdescribe('CurrentItemService', () => {
 
   });
 
-  describe('attachValidationError method', () => {
+  describe('attachValidationError method', function() {
 
-    beforeEach(() => {
+    beforeEach(function() {
       Mock.ActivityFacadeService.getFillingByQuestionID = jasmine.createSpy('getFillingByQuestionID').and.returnValue(Mock.filling);
       service.setup(Mock.itemVAL1, Mock.navigation);
       service.observerRegistry(Mock.itemObserver);
       service.fill(Mock.filling);
     });
 
-    it('should keep the validation error data', () => {
+    it('should keep the validation error data', function() {
       service.attachValidationError(Mock.validationError);
 
       expect(service.getValidationError()).toEqual(Mock.validationError);
     });
 
-    it('should notify the observer', () => {
+    it('should notify the observer', function() {
       service.attachValidationError(Mock.validationError);
 
       expect(Mock.itemObserver.updateValidation).toHaveBeenCalledWith(Mock.validationError);
@@ -66,37 +66,37 @@ xdescribe('CurrentItemService', () => {
 
   });
 
-  describe('fill method', () => {
+  describe('fill method', function() {
 
-    describe('when the item is a question', () => {
+    describe('when the item is a question', function() {
 
-      beforeEach(() => {
+      beforeEach(function() {
         Mock.ActivityFacadeService.getFillingByQuestionID = jasmine.createSpy('getFillingByQuestionID').and.returnValue(Mock.filling);
         service.setup(Mock.itemVAL1, Mock.navigation);
         service.fill(Mock.filling);
       });
 
-      it('should keep the answer value', () => {
+      it('should keep the answer value', function() {
         expect(service.getFilling().answer.value).toBe(Mock.filling.answer.value);
       });
 
-      it('should keep the metadata value', () => {
+      it('should keep the metadata value', function() {
         expect(service.getFilling().metadata.value).toBe(Mock.filling.metadata.value);
       });
 
-      it('should keep the comment value', () => {
+      it('should keep the comment value', function() {
         expect(service.getFilling().comment).toBe(Mock.filling.comment);
       });
 
     });
 
-    describe('when the item is not a question', () => {
+    describe('when the item is not a question', function() {
 
-      beforeEach(() => {
+      beforeEach(function() {
         service.setup(Mock.itemVAL3, Mock.navigation);
       });
 
-      it('should not change the filling value', () => {
+      it('should not change the filling value', function() {
         service.fill(Mock.filling);
 
         expect(service.getFilling()).toBe(null);
@@ -106,24 +106,24 @@ xdescribe('CurrentItemService', () => {
 
   });
 
-  describe('hasItem method', () => {
+  describe('hasItem method', function() {
 
-    describe('when an item has been setted', () => {
+    describe('when an item has been setted', function() {
 
-      beforeEach(() => {
+      beforeEach(function() {
         Mock.ActivityFacadeService.getFillingByQuestionID = jasmine.createSpy('getFillingByQuestionID').and.returnValue(Mock.filling);
         service.setup(Mock.itemVAL1, Mock.navigation);
       });
 
-      it('should return true', () => {
+      it('should return true', function() {
         expect(service.hasItem()).toBe(true);
       });
 
     });
 
-    describe('when an item not has been setted', () => {
+    describe('when an item not has been setted', function() {
 
-      it('should return false', () => {
+      it('should return false', function() {
         expect(service.hasItem()).toBe(false);
       });
 
@@ -131,28 +131,28 @@ xdescribe('CurrentItemService', () => {
 
   });
 
-  describe('shouldApplyAnswer method', () => {
+  describe('shouldApplyAnswer method', function() {
 
-    describe('when item is a question', () => {
+    describe('when item is a question', function() {
 
-      beforeEach(() => {
+      beforeEach(function() {
         Mock.ActivityFacadeService.getFillingByQuestionID = jasmine.createSpy('getFillingByQuestionID').and.returnValue(Mock.filling);
         service.setup(Mock.itemVAL1, Mock.navigation);
       });
 
-      it('should return true', () => {
+      it('should return true', function() {
         expect(service.shouldApplyAnswer()).toBe(true);
       });
 
     });
 
-    describe('when item is not a question', () => {
+    describe('when item is not a question', function() {
 
-      beforeEach(() => {
+      beforeEach(function() {
         service.setup(Mock.itemVAL3, Mock.navigation);
       });
 
-      it('should return false', () => {
+      it('should return false', function() {
         expect(service.shouldApplyAnswer()).toBe(false);
       });
 
@@ -160,28 +160,28 @@ xdescribe('CurrentItemService', () => {
 
   });
 
-  describe('shouldIgnoreResponseEvaluation method', () => {
+  describe('shouldIgnoreResponseEvaluation method', function() {
 
-    describe('when item is a question', () => {
+    describe('when item is a question', function() {
 
-      beforeEach(() => {
+      beforeEach(function() {
         Mock.ActivityFacadeService.getFillingByQuestionID = jasmine.createSpy('getFillingByQuestionID').and.returnValue(Mock.filling);
         service.setup(Mock.itemVAL1, Mock.navigation);
       });
 
-      it('should return false', () => {
+      it('should return false', function() {
         expect(service.shouldIgnoreResponseEvaluation()).toBe(false);
       });
 
     });
 
-    describe('when item is not a question', () => {
+    describe('when item is not a question', function() {
 
-      beforeEach(() => {
+      beforeEach(function() {
         service.setup(Mock.itemVAL3, Mock.navigation);
       });
 
-      it('should return true', () => {
+      it('should return true', function() {
         expect(service.shouldIgnoreResponseEvaluation()).toBe(true);
       });
 
@@ -189,35 +189,35 @@ xdescribe('CurrentItemService', () => {
 
   });
 
-  describe('setup method', () => {
+  describe('setup method', function() {
 
-    describe('on all cases', () => {
+    describe('on all cases', function() {
 
-      beforeEach(() => {
+      beforeEach(function() {
         Mock.ActivityFacadeService.getFillingByQuestionID = jasmine.createSpy('getFillingByQuestionID').and.returnValue(Mock.filling);
       });
 
-      it('should keep a reference to the item in use', () => {
+      it('should keep a reference to the item in use', function() {
         service.setup(Mock.itemVAL1);
 
         expect(service.getItem()).toEqual(Mock.itemVAL1);
       });
 
-      it('should keep a reference to navigation of the item in use', () => {
+      it('should keep a reference to navigation of the item in use', function() {
         service.setup(Mock.itemVAL1, Mock.navigation);
 
         expect(service.getNavigation()).toEqual(Mock.navigation);
       });
 
-      describe('when item is a question', () => {
+      describe('when item is a question', function() {
 
-        describe('and exists a filling to question', () => {
+        describe('and exists a filling to question', function() {
 
-          beforeEach(() => {
+          beforeEach(function() {
             Mock.ActivityFacadeService.getFillingByQuestionID = jasmine.createSpy('getFillingByQuestionID').and.returnValue(Mock.filling);
           });
 
-          it('should not create a QuestionFill and keep the existent data', () => {
+          it('should not create a QuestionFill and keep the existent data', function() {
             service.setup(Mock.itemVAL1, Mock.navigation);
 
             expect(service.getFilling()).toEqual(Mock.filling);
@@ -225,14 +225,14 @@ xdescribe('CurrentItemService', () => {
 
         });
 
-        describe('and not exists a filling to question', () => {
+        describe('and not exists a filling to question', function() {
 
-          beforeEach(() => {
+          beforeEach(function() {
             Mock.ActivityFacadeService.getFillingByQuestionID = jasmine.createSpy('getFillingByQuestionID').and.returnValue(null);
             Mock.ActivityFacadeService.createQuestionFill = jasmine.createSpy('createQuestionFill').and.returnValue(Mock.filling);
           });
 
-          it('should create a QuestionFill and keep it', () => {
+          it('should create a QuestionFill and keep it', function() {
             service.setup(Mock.itemVAL1, Mock.navigation);
 
             expect(service.getFilling()).toEqual(Mock.filling);
@@ -242,9 +242,9 @@ xdescribe('CurrentItemService', () => {
 
       });
 
-      describe('when item is not a question', () => {
+      describe('when item is not a question', function() {
 
-        it('should not create a QuestionFill and keep a null to these data', () => {
+        it('should not create a QuestionFill and keep a null to these data', function() {
           service.setup(Mock.itemVAL3, Mock.navigation);
 
           expect(service.getFilling()).toEqual(null);

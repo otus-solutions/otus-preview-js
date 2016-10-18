@@ -37,7 +37,7 @@
     function getItemByCustomID(customID) {
       var fetchedItem = null;
 
-      getItems().some((item) => {
+      getItems().some(function(item) {
         if (item.customID === customID) {
           fetchedItem = item;
           return true;
@@ -54,7 +54,7 @@
     function getNavigationByOrigin(origin) {
       var fetchedNavigation = null;
 
-      getNavigations().some((navigation) => {
+      getNavigations().some(function(navigation) {
         if (navigation.origin === origin) {
           fetchedNavigation = navigation;
           return true;

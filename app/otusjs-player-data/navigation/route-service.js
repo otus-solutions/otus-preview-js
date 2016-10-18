@@ -47,7 +47,7 @@
     function _findAlternativeRoute() {
       var alternativeRoute = null;
 
-      _alternativeRoutes.some((route) => {
+      _alternativeRoutes.some(function(route) {
         if (_routeCanBeUsed(route)) {
           alternativeRoute = route;
           return true;
