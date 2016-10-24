@@ -7,7 +7,7 @@
 
   Service.$inject = [
     'ElementRegisterFactory',
-    'ValidationService',
+    'otusjs.validation.api.ValidationService',
   ];
 
   function Service(ElementRegisterFactory, ValidationService) {

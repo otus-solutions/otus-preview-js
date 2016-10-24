@@ -157,7 +157,7 @@ xdescribe('SetupValidationStepService', function() {
   }
 
   function mockValidationService($injector) {
-    Mock.ValidationService = $injector.get('ValidationService');
+    Mock.ValidationService = $injector.get('otusjs.validation.api.ValidationService');
     Injections.ValidationService = Mock.ValidationService;
   }
 
