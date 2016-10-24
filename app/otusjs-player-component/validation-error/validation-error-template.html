@@ -15,4 +15,7 @@
     <ng-message class="md-button md-warn" when="scale"> <md-icon md-font-set="material-icons">info</md-icon> Resposta deve conter exatamente {{ $ctrl.reference('scale') }} casas decimais</ng-message>
     <ng-message class="md-button md-warn" when="maxTime"> <md-icon md-font-set="material-icons">info</md-icon> Hora máxima permitida: {{ $ctrl.referenceAsTime('maxTime') }}</ng-message>
     <ng-message class="md-button md-warn" when="minTime"> <md-icon md-font-set="material-icons">info</md-icon> Hora mínima permitida: {{ $ctrl.referenceAsTime('minTime') }}</ng-message>
+    <ng-message class="md-button md-warn" when="quantity"> <md-icon md-font-set="material-icons">info</md-icon> Quantidade selecionada deve ser igual a {{ $ctrl.reference('quantity') }}</ng-message>
+    <ng-message class="md-button md-warn" when="minSelected"> <md-icon md-font-set="material-icons">info</md-icon> Quantidade mínima selecionada deve ser {{ $ctrl.reference('minSelected') }}</ng-message>
+    <ng-message class="md-button md-warn" when="maxSelected"> <md-icon md-font-set="material-icons">info</md-icon> Quantidade máxima selecionada deve ser {{ $ctrl.reference('maxSelected') }}</ng-message>
 </ng-messages>
