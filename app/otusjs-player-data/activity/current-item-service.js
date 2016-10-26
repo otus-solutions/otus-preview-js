@@ -56,23 +56,23 @@
       if (_item.isQuestion()) {
         _filling = filling;
       }
-    };
+    }
 
     function getFilling() {
       return _filling;
-    };
+    }
 
     function getFillingRules() {
       return _item.fillingRules.options;
-    };
+    }
 
     function getItem() {
       return _item;
-    };
+    }
 
     function getNavigation() {
       return _navigation;
-    };
+    }
 
     function getValidationError() {
       return _validationError;
@@ -97,9 +97,10 @@
     function observerRegistry(observer) {
       _observer = observer;
       _observer.pushData(_filling);
-    };
+    }
 
     function setup(data) {
+      clearData();
       _item = data.item;
       _navigation = data.navigation;
 
