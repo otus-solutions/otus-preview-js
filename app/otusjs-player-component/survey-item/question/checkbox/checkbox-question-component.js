@@ -31,10 +31,6 @@
     };
 
     self.update = function(index) {
-      // if (!self.answerArray[index].state) {
-      //   self.answerArray.splice(index,1);
-      // }
-      //console.log(self.answerArray);
       self.onUpdate({
         valueType: 'answer',
         value: self.answerArray
