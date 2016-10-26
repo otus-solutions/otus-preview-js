@@ -20,15 +20,21 @@
     var self = this;
 
     self.$onInit = function() {
-      self.answerArray = CurrentItemService.getFilling().answer.value || [];
+      self.answerArray = CurrentItemService.getFilling().answer.value;
+
       if (!self.answerArray) {
+        self.answerArray = [];
         self.itemData.options.forEach(function(option) {
           self.answerArray.push(_buildAnswerObject(option));
         });
       }
     };
 
-    self.update = function() {
+    self.update = function(index) {
+      // if (!self.answerArray[index].state) {
+      //   self.answerArray.splice(index,1);
+      // }
+      //console.log(self.answerArray);
       self.onUpdate({
         valueType: 'answer',
         value: self.answerArray
@@ -42,4 +48,5 @@
       };
     }
   }
+
 }());
