@@ -32,7 +32,6 @@
         flowData.metadataToEvaluate = {};
         flowData.metadataToEvaluate.data = {};
       } else {
-        CurrentItemService.clearData();
         PlayerService.end();
       }
     }
