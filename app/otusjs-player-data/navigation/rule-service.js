@@ -19,10 +19,14 @@
       var whenItem = ActivityFacadeService.fetchItemByID(rule.when);
       var itemAnswer = ActivityFacadeService.fetchItemAnswerByCustomID(rule.when);
 
-      if (rule.isMetadata) {
-        return itemAnswer.answer.eval.run(rule, itemAnswer.metadata.value);
+      if (itemAnswer) {
+        if (rule.isMetadata) {
+          return itemAnswer.answer.eval.run(rule, itemAnswer.metadata.value);
+        } else {
+          return itemAnswer.answer.eval.run(rule, itemAnswer.answer.value);
+        }
       } else {
-        return itemAnswer.answer.eval.run(rule, itemAnswer.answer.value);
+        return false;
       }
     }
   }
