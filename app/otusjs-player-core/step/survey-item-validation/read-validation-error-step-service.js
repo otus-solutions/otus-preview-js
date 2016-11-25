@@ -5,8 +5,13 @@
     .module('otusjs.player.core.step')
     .service('otusjs.player.core.step.ReadValidationErrorStepService', Service);
 
-  function Service() {
+  Service.$inject = [
+    'otusjs.player.data.activity.ActivityFacadeService'
+  ];
+
+  function Service(ActivityFacadeService) {
     var self = this;
+    var _currentItem;
     var _validationResult = {};
 
     /* Public methods */
@@ -15,20 +20,23 @@
     self.afterEffect = afterEffect;
     self.getEffectResult = getEffectResult;
 
-    function beforeEffect(pipe, flowData) {}
+    function beforeEffect(pipe, flowData) {
+      _currentItem = ActivityFacadeService.getCurrentItem();
+    }
 
     function effect(pipe, flowData) {
       var mandatoryResults = [];
       var otherResults = [];
       flowData.validationResult = {};
-
-      flowData.validationResponse.validatorsResponse.map(function(validator) {
-        if (validator.name === 'mandatory' || validator.data.reference) {
-          flowData.validationResult[validator.name] = !validator.result && (angular.equals(flowData.metadataToEvaluate.data, {}));
-        } else {
-          flowData.validationResult[validator.name] = !validator.result;
-        }
-      });
+      if (_currentItem.getItem().isQuestion()) {
+        flowData.validationResponse.validatorsResponse.map(function(validator) {
+          if (validator.name === 'mandatory' || validator.data.reference) {
+            flowData.validationResult[validator.name] = !validator.result && (angular.equals(flowData.metadataToEvaluate.data, {}));
+          } else {
+            flowData.validationResult[validator.name] = !validator.result;
+          }
+        });
+      }
 
       flowData.validationResult.hasError = _hasError(flowData);
     }
