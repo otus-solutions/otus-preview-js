@@ -9,6 +9,9 @@
       bindings: {
         itemData: '<',
         onUpdate: '&'
+      },
+      require : {
+        otusQuestion: '^otusQuestion'
       }
     });
 
@@ -27,6 +30,7 @@
       self.hasSpecials = CurrentItemService.getFillingRules().specials;
       self.hasUpperCase = CurrentItemService.getFillingRules().upperCase;
       self.hasLowerCase = CurrentItemService.getFillingRules().lowerCase;
+      self.otusQuestion.item = self;
     };
 
     self.update = function() {
@@ -47,6 +51,11 @@
         value: self.answer
       });
     };
+
+    self.clear = function() {
+      CurrentItemService.getFilling().answer.clear();
+      delete self.answer;
+    }
 
   }
 }());

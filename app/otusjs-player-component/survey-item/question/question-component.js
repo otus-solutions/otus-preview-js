@@ -8,7 +8,8 @@
             controller: OtusQuestionController,
             bindings: {
                 itemData: '<',
-                onUpdate: '&'
+                onUpdate: '&',
+                onClear: '&'
             },
             require: {
                 otusSurveyItem: '^otusSurveyItem'
@@ -25,6 +26,9 @@
 
         self.$onInit = function() {
             self.template = TagComponentBuilderService.createTagElement(self.itemData.objectType);
+            self.otusSurveyItem.questionComponent = self;
+            self.item = {};
+            self.metadata = {};
         };
 
         self.update = function(prop, value) {
@@ -32,6 +36,21 @@
                 valueType: prop,
                 value: value
             });
+        };
+
+        self.clear = function(prop, value) {
+            self.onClear({
+                valueType: prop,
+                value: value
+            });
+        };
+
+        self.clearAnswer = function() {
+          self.item.clear();
+        };
+
+        self.clearMetadataAnswer = function() {
+          self.metadata.clear();
         };
 
     }

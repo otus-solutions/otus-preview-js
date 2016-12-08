@@ -9,6 +9,9 @@
       bindings: {
         itemData: '<',
         onUpdate: '&'
+      },
+      require : {
+        otusQuestion: '^otusQuestion'
       }
     });
 
@@ -21,7 +24,7 @@
 
     self.$onInit = function() {
       self.answerArray = CurrentItemService.getFilling().answer.value;
-
+      self.otusQuestion.item = self;
       if (!self.answerArray) {
         self.answerArray = [];
         self.itemData.options.forEach(function(option) {
@@ -42,6 +45,11 @@
         option: option.customOptionID,
         state: option.value
       };
+    }
+
+    self.clear = function() {
+      CurrentItemService.getFilling().answer.clear();
+      delete self.answerArray;
     }
   }
 

@@ -26,6 +26,7 @@
     self.isItem = isItem;
     self.restoreAll = restoreAll;
     self.update = update;
+    self.clear = clear;
     self.pushData = pushData;
     self.destroy = destroy;
     self.updateValidation = updateValidation;
@@ -36,6 +37,7 @@
       $scope.$parent.$ctrl.currentItem = self;
       CurrentItemService.observerRegistry(self);
       self.$error = {};
+      self.questionComponent = {};
     };
 
     function updateValidation(validationMap) {
@@ -50,20 +52,32 @@
       return (self.itemData.objectType === 'ImageItem') || (self.itemData.objectType === 'TextItem') ? true : false;
     }
 
-    function restoreAll() {
-    }
+    function restoreAll() {}
 
     function update(prop, value) {
       if (prop) {
-        if (prop !== 'comment') {
-          self.filling[prop].value = value;
-        } else {
+        if (prop === 'comment') {
           self.filling[prop] = value;
+        } else {
+          clear(prop, value);
+          self.filling[prop].value = value;
         }
       } else {
 
       }
       CurrentItemService.fill(self.filling);
+    }
+
+    function clear(prop, value) {
+      if (prop) {
+          if (prop === 'metadata') {
+            self.questionComponent.clearAnswer();
+          } else if (prop === 'answer') {
+            self.questionComponent.clearMetadataAnswer();
+          }
+      } else {
+
+      }
     }
 
     function pushData(filling) {

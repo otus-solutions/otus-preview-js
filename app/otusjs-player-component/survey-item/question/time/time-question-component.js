@@ -9,6 +9,9 @@
       bindings: {
         itemData: '<',
         onUpdate: '&'
+      },
+      require : {
+        otusQuestion: '^otusQuestion'
       }
     });
 
@@ -21,6 +24,7 @@
 
     self.$onInit = function() {
       self.answer = CurrentItemService.getFilling().answer.value;
+      self.otusQuestion.item = self;
     };
 
     self.update = function() {
@@ -29,5 +33,10 @@
         value: self.answer
       });
     };
+
+    self.clear = function() {
+      CurrentItemService.getFilling().answer.clear();
+      delete self.answer;
+    }
   }
 }());
