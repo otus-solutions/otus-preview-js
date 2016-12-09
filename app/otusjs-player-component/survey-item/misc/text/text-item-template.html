@@ -1,4 +1,4 @@
 <md-content>
     <br />
-    <label>{{$ctrl.itemData.value.ptBR.formattedText}}</label>
+    <label ng-bind-html="$ctrl.trustedHtml($ctrl.itemData.value.ptBR.formattedText)"></label>
 </md-content>
