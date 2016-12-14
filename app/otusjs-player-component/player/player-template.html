@@ -1,5 +1,6 @@
 <md-content msd-wheel="$ctrl.catchMouseWheel($event)">
   <otus-survey-cover on-play="$ctrl.play()" ng-show="$ctrl.showCover" layout-align="center center" layout="column" flex style="background-color: #F9F9F9; margin-top: 5%"></otus-survey-cover>
+  <otus-survey-header survey-identity="$ctrl.identity" ng-show="$ctrl.showActivity"></otus-survey-header>
   <otus-player-commander ng-show="$ctrl.showActivity"
     on-eject="$ctrl.eject()"
     on-go-ahead="$ctrl.goAhead()"
@@ -7,7 +8,6 @@
     on-pause="$ctrl.pause()"
     on-stop="$ctrl.stop()">
   </otus-player-commander>
-  <otus-survey-header survey-identity="$ctrl.identity" ng-show="$ctrl.showActivity"></otus-survey-header>
   <otus-player-display ng-show="$ctrl.showActivity"></otus-player-display>
   <otus-survey-back-cover ng-show="$ctrl.showBackCover" layout-align="center center" layout="column" flex style="background-color: #F9F9F9; margin-top: 5%"></otus-survey-back-cover>
 </md-content>
