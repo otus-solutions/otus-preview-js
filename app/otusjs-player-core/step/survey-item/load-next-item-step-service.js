@@ -25,7 +25,7 @@
     function effect(pipe, flowData) {
       var loadData = NavigationService.loadNextItem();
 
-      if (loadData) {
+      if (loadData && loadData !== 'END NODE') {
         CurrentItemService.setup(loadData);
         flowData.answerToEvaluate = {};
         flowData.answerToEvaluate.data = {};

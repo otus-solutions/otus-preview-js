@@ -93,12 +93,15 @@
     }
 
     function _loadItem(id) {
+      if (id === 'END NODE') {
+        return id;
+      }
       var item = null;
       var navigation = null;
 
       if (!id) {
         item = ActivityFacadeService.getCurrentSurvey().getItems()[0];
-        navigation = ActivityFacadeService.getCurrentSurvey().getNavigations()[0];
+        navigation = ActivityFacadeService.getCurrentSurvey().getNavigations()[2];
       } else {
         item = ActivityFacadeService.fetchItemByID(id);
         navigation = ActivityFacadeService.fetchNavigationByOrigin(id);
