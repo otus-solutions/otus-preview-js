@@ -70,11 +70,11 @@
 
     function clear(prop, value) {
       if (prop) {
-          if (prop === 'metadata') {
-            self.questionComponent.clearAnswer();
-          } else if (prop === 'answer') {
-            self.questionComponent.clearMetadataAnswer();
-          }
+        if (prop === 'metadata') {
+          self.questionComponent.clearAnswer();
+        } else if (prop === 'answer') {
+          self.questionComponent.clearMetadataAnswer();
+        }
       } else {
 
       }
