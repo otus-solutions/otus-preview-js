@@ -1,14 +1,18 @@
 <md-content layout="column">
   <div layout="row">
-    <md-tabs layout="column" flex=95>
+    <md-tabs md-dynamic-height layout="column" flex=95>
       <md-tab label="Resposta">
-        <md-content bind-html-compile="$ctrl.template"></md-content>
+        <md-content class="md-padding" bind-html-compile="$ctrl.template"></md-content>
       </md-tab>
       <md-tab label="Metadado">
-        <metadata-group on-update="$ctrl.update(valueType, value)" item-data="$ctrl.itemData"></metadata-group>
+        <md-content class="md-padding">
+          <metadata-group on-update="$ctrl.update(valueType, value)" item-data="$ctrl.itemData"></metadata-group>
+        </md-content>
       </md-tab>
       <md-tab label="Comentário">
-        <otus-comment on-update="$ctrl.update(valueType, value)" item-data="$ctrl.itemData"></otus-comment>
+        <md-content class="md-padding">
+          <otus-comment on-update="$ctrl.update(valueType, value)" item-data="$ctrl.itemData"></otus-comment>
+        </md-content>
       </md-tab>
     </md-tabs>
     <div layout="column">
