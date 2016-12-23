@@ -19,6 +19,7 @@
     self.getNavigations = getNavigations;
     self.getNavigationByOrigin = getNavigationByOrigin;
     self.getItemByCustomID = getItemByCustomID;
+    self.getItemByTemplateID = getItemByTemplateID;
     self.initialize = initialize;
     self.setup = setup;
 
@@ -39,6 +40,19 @@
 
       getItems().some(function(item) {
         if (item.customID === customID) {
+          fetchedItem = item;
+          return true;
+        }
+      });
+
+      return fetchedItem;
+    }
+
+    function getItemByTemplateID(templateID) {
+      var fetchedItem = null;
+
+      getItems().some(function(item) {
+        if (item.templateID === templateID) {
           fetchedItem = item;
           return true;
         }

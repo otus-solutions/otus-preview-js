@@ -38,7 +38,7 @@
     }
 
     function fetchItemByID(id) {
-      return CurrentSurveyService.getItemByCustomID(id);
+      return CurrentSurveyService.getItemByTemplateID(id);
     }
 
     function fetchNavigationByOrigin(id) {
