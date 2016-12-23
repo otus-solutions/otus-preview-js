@@ -51,7 +51,7 @@ describe('NavigationService', function() {
       beforeEach(function() {
         spyOn(Mock.CurrentItemService, 'getNavigation').and.returnValue(Mock.navigationCAD1);
         spyOn(Mock.ActivityFacadeService, 'getCurrentItem').and.returnValue(Mock.CurrentItemService);
-        spyOn(Mock.CurrentSurveyService, 'getItemByCustomID');
+        spyOn(Mock.CurrentSurveyService, 'getItemByTemplateID');
       });
 
       it('should request the routes of current item from current navigation', function() {
@@ -63,7 +63,7 @@ describe('NavigationService', function() {
       it('should retrieve the respective item of each current item route destination', function() {
         var nextItems = service.getNextItems();
 
-        expect(Mock.CurrentSurveyService.getItemByCustomID).toHaveBeenCalledWith(CAD2);
+        expect(Mock.CurrentSurveyService.getItemByTemplateID).toHaveBeenCalledWith(CAD2);
       });
 
     });
@@ -73,7 +73,7 @@ describe('NavigationService', function() {
       beforeEach(function() {
         spyOn(Mock.CurrentItemService, 'getNavigation').and.returnValue(Mock.navigationCAD1);
         spyOn(Mock.ActivityFacadeService, 'getCurrentItem').and.returnValue(Mock.CurrentItemService);
-        spyOn(Mock.CurrentSurveyService, 'getItemByCustomID').and.returnValue(Mock.itemCAD2);
+        spyOn(Mock.CurrentSurveyService, 'getItemByTemplateID').and.returnValue(Mock.itemCAD2);
       });
 
       it('should return an array with the next items from current item', function() {
@@ -109,7 +109,7 @@ describe('NavigationService', function() {
         spyOn(Mock.CurrentSurveyService, 'getSurvey').and.returnValue(Mock.savedSurveyActivity);
         spyOn(Mock.CurrentSurveyService, 'getItems').and.returnValue([Mock.itemCAD1, Mock.itemCAD2]);
         spyOn(Mock.CurrentSurveyService, 'getNavigations').and.returnValue([Mock.navigationCAD1, Mock.navigationCAD2]);
-        spyOn(Mock.CurrentSurveyService, 'getItemByCustomID').and.returnValue(Mock.itemCAD3);
+        spyOn(Mock.CurrentSurveyService, 'getItemByTemplateID').and.returnValue(Mock.itemCAD3);
         spyOn(Mock.CurrentSurveyService, 'getNavigationByOrigin').and.returnValue(Mock.navigationCAD3);
         spyOn(Mock.CurrentItemService, 'setup');
         spyOn(Mock.CurrentItemService, 'getItem').and.returnValue(Mock.itemCAD1);
@@ -134,14 +134,14 @@ describe('NavigationService', function() {
     describe('when exists a previous item', function() {
 
       beforeEach(function() {
-        spyOn(Mock.CurrentSurveyService, 'getItemByCustomID').and.returnValue(Mock.itemCAD1);
+        spyOn(Mock.CurrentSurveyService, 'getItemByTemplateID').and.returnValue(Mock.itemCAD1);
         spyOn(Mock.CurrentItemService, 'getPreviousItem').and.returnValue(CAD1);
       });
 
       it('should retrieve the respective item of previous item ID', function() {
         var nextItems = service.getPreviousItem();
 
-        expect(Mock.CurrentSurveyService.getItemByCustomID).toHaveBeenCalledWith(CAD1);
+        expect(Mock.CurrentSurveyService.getItemByTemplateID).toHaveBeenCalledWith(CAD1);
       });
 
       it('should return the item that precedes the current item', function() {
@@ -204,7 +204,7 @@ describe('NavigationService', function() {
         spyOn(Mock.CurrentSurveyService, 'getSurvey').and.returnValue(Mock.savedSurveyActivity);
         spyOn(Mock.CurrentSurveyService, 'getItems').and.returnValue([Mock.itemCAD1, Mock.itemCAD2]);
         spyOn(Mock.CurrentSurveyService, 'getNavigations').and.returnValue([Mock.navigationCAD1, Mock.navigationCAD2]);
-        spyOn(Mock.CurrentSurveyService, 'getItemByCustomID').and.returnValue(Mock.itemCAD3);
+        spyOn(Mock.CurrentSurveyService, 'getItemByTemplateID').and.returnValue(Mock.itemCAD3);
         spyOn(Mock.CurrentSurveyService, 'getNavigationByOrigin').and.returnValue(Mock.navigationCAD3);
         spyOn(Mock.CurrentItemService, 'setup');
         spyOn(Mock.CurrentItemService, 'getItem').and.returnValue(Mock.itemCAD1);
@@ -230,7 +230,7 @@ describe('NavigationService', function() {
         spyOn(Mock.CurrentSurveyService, 'getSurvey').and.returnValue(Mock.savedSurveyActivity);
         spyOn(Mock.CurrentSurveyService, 'getItems').and.returnValue([Mock.itemCAD1, Mock.itemCAD2]);
         spyOn(Mock.CurrentSurveyService, 'getNavigations').and.returnValue([Mock.navigationCAD1, Mock.navigationCAD2]);
-        spyOn(Mock.CurrentSurveyService, 'getItemByCustomID').and.returnValue(Mock.itemCAD3);
+        spyOn(Mock.CurrentSurveyService, 'getItemByTemplateID').and.returnValue(Mock.itemCAD3);
         spyOn(Mock.CurrentSurveyService, 'getNavigationByOrigin').and.returnValue(Mock.navigationCAD3);
         spyOn(Mock.CurrentItemService, 'setup');
         spyOn(Mock.CurrentItemService, 'getItem').and.returnValue(Mock.itemCAD1);

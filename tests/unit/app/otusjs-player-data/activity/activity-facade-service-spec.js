@@ -77,11 +77,11 @@ describe('ActivityFacadeService', function() {
   describe('fetchItemByID method', function() {
 
     it('should return the item', function() {
-      spyOn(Mock.CurrentSurveyService, 'getItemByCustomID');
+      spyOn(Mock.CurrentSurveyService, 'getItemByTemplateID');
 
       service.fetchItemByID(CAD1);
 
-      expect(Mock.CurrentSurveyService.getItemByCustomID).toHaveBeenCalledWith(CAD1);
+      expect(Mock.CurrentSurveyService.getItemByTemplateID).toHaveBeenCalledWith(CAD1);
     });
 
   });
