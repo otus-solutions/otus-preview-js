@@ -78,6 +78,40 @@ describe('Current Question Service', function() {
 
   });
 
+  describe('getItemByTemplateID method', function() {
+
+    beforeEach(function() {
+      service.setup(Mock.ActivityFacadeService.surveyActivity);
+    });
+
+    describe('when exists an item', function() {
+
+      it('should return the item', function() {
+        var item = service.getItemByTemplateID(CAD2);
+
+        expect(item.customID).toEqual(CAD2);
+      });
+
+    });
+
+    describe('when not exists an item', function() {
+
+      it('should return null', function() {
+        var item = service.getItemByTemplateID(CAD90);
+
+        expect(item).toBe(null);
+      });
+
+      it('should return null', function() {
+        var item = service.getItemByTemplateID();
+
+        expect(item).toBe(null);
+      });
+
+    });
+
+  });
+
   describe('getNavigations method', function() {
 
     beforeEach(function() {

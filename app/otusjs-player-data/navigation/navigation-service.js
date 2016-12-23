@@ -27,7 +27,7 @@
 
     function getNextItems() {
       return ActivityFacadeService.getCurrentItem().getNavigation().listRoutes().map(function(route) {
-        return ActivityFacadeService.getCurrentSurvey().getItemByCustomID(route.destination);
+        return ActivityFacadeService.getCurrentSurvey().getItemByTemplateID(route.destination);
       });
     }
 
@@ -35,7 +35,7 @@
       var item = _path.getCurrentItem().getPrevious();
       _path.back();
       if (item) {
-        return ActivityFacadeService.getCurrentSurvey().getItemByCustomID(item.getID());
+        return ActivityFacadeService.getCurrentSurvey().getItemByTemplateID(item.getID());
       } else {
         return null;
       }
@@ -121,7 +121,7 @@
     function loadPreviousItem() {
       if (hasPrevious()) {
         var item = getPreviousItem();
-        var navigation = ActivityFacadeService.getCurrentSurvey().getNavigationByOrigin(item.customID);
+        var navigation = ActivityFacadeService.getCurrentSurvey().getNavigationByOrigin(item.templateID);
         RouteService.setup(navigation);
 
         return {
@@ -133,13 +133,12 @@
 
     function _pathUpItem(item) {
       var options = {};
-      options.id = item.customID;
+      options.id = item.templateID;
       options.type = item.objectType;
 
       if (item.isQuestion()) {
         options.label = item.label.ptBR.plainText;
       }
-
       _path.add(NavigationStackItemFactory.create(options));
     }
   }
