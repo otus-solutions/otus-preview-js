@@ -33,8 +33,14 @@ module.exports = function(config) {
             APP_ROOT_PATH + '**/*-module.js',
             APP_ROOT_PATH + '**/*.js', {
                 pattern: 'tests/unit/**/*-spec.js',
+                pattern: 'tests/unit/**/example.js',
                 included: true
             }
+        ],
+
+        // list of files to exclude
+        exclude: [
+          'tests/unit/**/*-spec.js'
         ],
 
         // preprocess matching files before serving them to the browser

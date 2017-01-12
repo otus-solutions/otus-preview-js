@@ -1,4 +1,4 @@
-describe('ItemFillingValidatorService', function() {
+xdescribe('ItemFillingValidatorService', function() {
 
   var UNIT_NAME = 'otusjs.player.data.validation.ItemFillingValidatorService';
   var Mock = {};

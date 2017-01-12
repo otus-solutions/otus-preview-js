@@ -1,4 +1,4 @@
-describe('RuleService', function() {
+xdescribe('RuleService', function() {
 
   var UNIT_NAME = 'otusjs.player.data.navigation.RuleService';
   var Mock = {};
