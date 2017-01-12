@@ -24,11 +24,12 @@
     self.$onInit = onInit;
     self.play = play;
     self.show = show;
+    self.remove = remove;
 
     function onInit() {
       $scope.$parent.$ctrl.playerCover = self;
       var activity = ActivityFacadeService.getCurrentSurvey().getSurvey();
-      self.title = activity.template.identity.name;
+      self.title = activity.surveyForm.surveyTemplate.identity.name;
     }
 
     function play() {
@@ -37,7 +38,11 @@
 
     function show() {
       var activity = ActivityFacadeService.getCurrentSurvey().getSurvey();
-      self.title = activity.template.identity.name;
+      self.title = activity.surveyForm.surveyTemplate.identity.name;
+    }
+
+    function remove() {
+      $element.remove();
     }
   }
 }());

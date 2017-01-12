@@ -1,13 +1,13 @@
-<md-content msd-wheel="$ctrl.catchMouseWheel($event)">
-  <otus-survey-cover on-play="$ctrl.play()" ng-show="$ctrl.showCover" layout-align="center center" layout="column" flex class="player-cover"></otus-survey-cover>
-  <otus-survey-header survey-identity="$ctrl.identity" ng-show="$ctrl.showActivity"></otus-survey-header>
-  <otus-player-commander ng-show="$ctrl.showActivity"
-    on-eject="$ctrl.eject()"
-    on-go-ahead="$ctrl.goAhead()"
+<otus-survey-cover on-play="$ctrl.play()" ng-show="$ctrl.showCover" layout-align="center center" layout="column" flex class="player-cover"></otus-survey-cover>
+<md-content layout="column" flex ng-show="$ctrl.showActivity">
+  <otus-survey-header layout="row" flex="21"></otus-survey-header>
+  <otus-player-commander layout="row" flex="10"
     on-go-back="$ctrl.goBack()"
     on-pause="$ctrl.pause()"
-    on-stop="$ctrl.stop()">
+    on-stop="$ctrl.stop()"
+    on-go-ahead="$ctrl.goAhead()"
+    on-eject="$ctrl.eject()">
   </otus-player-commander>
-  <otus-player-display ng-show="$ctrl.showActivity"></otus-player-display>
-  <otus-survey-back-cover ng-show="$ctrl.showBackCover" layout-align="center center" layout="column" flex class="player-back-cover"></otus-survey-back-cover>
+  <otus-player-display layout="row" flex style="overflow: hidden !important; position: relative !important"></otus-player-display>
 </md-content>
+<otus-survey-back-cover on-finalize="$ctrl.eject()" ng-show="$ctrl.showBackCover" layout-align="center center" layout="column" flex class="player-back-cover"></otus-survey-back-cover>

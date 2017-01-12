@@ -21,6 +21,8 @@
     self.getItemByCustomID = getItemByCustomID;
     self.getItemByTemplateID = getItemByTemplateID;
     self.initialize = initialize;
+    self.finalize = finalize;
+    self.save = save;
     self.setup = setup;
 
     function getSurvey() {
@@ -32,7 +34,7 @@
     }
 
     function getItems() {
-      return ActivityFacadeService.surveyActivity.template.SurveyItemManager.getItemList();
+      return ActivityFacadeService.surveyActivity.surveyForm.surveyTemplate.SurveyItemManager.getItemList();
     }
 
     function getItemByCustomID(customID) {
@@ -62,7 +64,7 @@
     }
 
     function getNavigations() {
-      return ActivityFacadeService.surveyActivity.template.NavigationManager.getNavigationList();
+      return ActivityFacadeService.surveyActivity.surveyForm.surveyTemplate.NavigationManager.getNavigationList();
     }
 
     function getNavigationByOrigin(origin) {
@@ -79,11 +81,19 @@
     }
 
     function initialize() {
-      ActivityFacadeService.openActivitySurvey();
+      ActivityFacadeService.initializeActivitySurvey();
+    }
+
+    function finalize() {
+      ActivityFacadeService.finalizeActivitySurvey();
+    }
+
+    function save() {
+      ActivityFacadeService.saveActivitySurvey();
     }
 
     function setup() {
-      ActivityFacadeService.initializeActivitySurvey();
+      // ActivityFacadeService.openActivitySurvey();
     }
   }
 }());

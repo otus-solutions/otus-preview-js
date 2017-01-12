@@ -14,11 +14,10 @@
   OtusSurveyItemController.$inject = [
     '$scope',
     '$element',
-    'otusjs.player.data.activity.CurrentItemService',
-    '$filter'
+    'otusjs.player.data.activity.CurrentItemService'
   ];
 
-  function OtusSurveyItemController($scope, $element, CurrentItemService, $filter) {
+  function OtusSurveyItemController($scope, $element, CurrentItemService) {
     var self = this;
 
     /* Public methods */
@@ -34,14 +33,21 @@
     self.$onInit = function() {
       self.filling = {};
       self.filling.questionID = self.itemData.templateID;
+
       $scope.$parent.$ctrl.currentItem = self;
       CurrentItemService.observerRegistry(self);
+
       self.$error = {};
       self.questionComponent = {};
+      self.errorComponent = {};
     };
 
     function updateValidation(validationMap) {
       self.$error = validationMap;
+
+      if (self.$error.hasError) {
+        self.errorComponent.focus();
+      }
     }
 
     function isQuestion() {
@@ -63,12 +69,12 @@
           self.filling[prop].value = value;
         }
       } else {
-
+        throw new Error('Cannot determine property type to update', 72, 'survey-item-component.js');
       }
       CurrentItemService.fill(self.filling);
     }
 
-    function clear(prop, value) {
+    function clear(prop) {
       if (prop) {
         if (prop === 'metadata') {
           self.questionComponent.clearAnswer();
@@ -76,7 +82,7 @@
           self.questionComponent.clearMetadataAnswer();
         }
       } else {
-
+        throw new Error('Cannot determine property type to clear', 85, 'survey-item-component.js');
       }
     }
 

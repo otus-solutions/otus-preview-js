@@ -22,6 +22,8 @@
     self.getCurrentItem = getCurrentItem;
     self.getCurrentSurvey = getCurrentSurvey;
     self.initialize = initialize;
+    self.finalize = finalize;
+    self.save = save;
     self.setupAnswer = setupAnswer;
     self.setup = setup;
 
@@ -55,6 +57,14 @@
 
     function initialize() {
       CurrentSurveyService.initialize();
+    }
+
+    function finalize() {
+      CurrentSurveyService.finalize();
+    }
+
+    function save() {
+      CurrentSurveyService.save();
     }
 
     function setupAnswer(answerData) {

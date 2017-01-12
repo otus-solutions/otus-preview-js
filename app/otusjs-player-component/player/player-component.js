@@ -36,7 +36,9 @@
       }
     }
 
-    function eject() {}
+    function eject() {
+      PlayerService.eject();
+    }
 
     function goAhead() {
       PlayerService.goAhead();
@@ -48,7 +50,9 @@
       _loadItem();
     }
 
-    function pause() {}
+    function pause() {
+      PlayerService.save();
+    }
 
     function play() {
       self.showBackCover = false;
@@ -58,15 +62,18 @@
       _loadItem();
     }
 
-    function stop() {}
+    function stop() {
+      PlayerService.stop();
+    }
 
     function showCover() {
       self.playerCover.show();
     }
 
     function showBack() {
+      self.playerCover.remove();
+      self.playerDisplay.remove();
       self.showBackCover = true;
-      self.showCover = false;
       self.showActivity = false;
     }
 

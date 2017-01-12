@@ -1,13 +1,13 @@
-<md-content layout-padding layout="row">
-  <md-toolbar style="border-radius: 3px" class="md-whiteframe-2dp">
+<md-content layout-padding layout="column" flex style="padding-top: 0 !important; padding-bottom: 0 !important">
+  <md-toolbar style="border-radius: 3px" class="md-whiteframe-1dp">
     <div class="md-toolbar-tools" layout-align="space-around center">
       <md-button class="md-icon-button" aria-label="Voltar" ng-click="$ctrl.goBack()" ng-disabled="$ctrl.isGoBackDisabled">
         <md-icon md-font-set="material-icons">skip_previous</md-icon>
       </md-button>
-      <md-button class="md-icon-button" aria-label="Salvar" ng-click="$ctrl.pause()" ng-show="false">
+      <md-button class="md-icon-button" aria-label="Salvar" ng-click="$ctrl.pause()">
         <md-icon md-font-set="material-icons">save</md-icon>
       </md-button>
-      <md-button class="md-icon-button" aria-label="Cancelar" ng-click="$ctrl.stop()" ng-show="false">
+      <md-button class="md-icon-button" aria-label="Cancelar" ng-click="$ctrl.stop()">
         <md-icon md-font-set="material-icons">close</md-icon>
       </md-button>
       <md-button class="md-icon-button" aria-label="Avançar" ng-click="$ctrl.goAhead()" ng-disabled="$ctrl.isGoAheadDisabled">

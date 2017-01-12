@@ -26,6 +26,7 @@
     self.goAhead = goAhead;
     self.pause = pause;
     self.stop = stop;
+    self.remove = remove;
     self.$onInit = onInit;
 
     function goAhead() {
@@ -42,6 +43,10 @@
 
     function stop() {
       self.onStop();
+    }
+
+    function remove() {
+      $element.remove();
     }
 
     function onInit() {

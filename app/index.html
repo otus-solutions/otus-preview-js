@@ -17,7 +17,7 @@
     <title>OtusJS Player Standalone</title>
   </head>
 
-  <body layout="column" flex md-theme="layoutTheme">
+  <body layout="column" flex>
     <div ui-view layout="row" flex layout-align="center start"></div>
 
     <!-- OTUSJS PLAYER STANDALONE APP DEPENDECIES -->
@@ -114,15 +114,30 @@
     <script src="app/otusjs-player-core/phase/back/post-back-action-service.js"></script>
     <script src="app/otusjs-player-core/phase/back/pre-back-action-service.js"></script>
 
+    <script src="app/otusjs-player-core/phase/eject/eject-action-service.js"></script>
+    <script src="app/otusjs-player-core/phase/eject/execution-eject-action-service.js"></script>
+    <script src="app/otusjs-player-core/phase/eject/post-eject-action-service.js"></script>
+    <script src="app/otusjs-player-core/phase/eject/pre-eject-action-service.js"></script>
+
     <script src="app/otusjs-player-core/phase/play/play-action-service.js"></script>
     <script src="app/otusjs-player-core/phase/play/execution-play-action-service.js"></script>
     <script src="app/otusjs-player-core/phase/play/post-play-action-service.js"></script>
     <script src="app/otusjs-player-core/phase/play/pre-play-action-service.js"></script>
 
+    <script src="app/otusjs-player-core/phase/save/save-action-service.js"></script>
+    <script src="app/otusjs-player-core/phase/save/execution-save-action-service.js"></script>
+    <script src="app/otusjs-player-core/phase/save/post-save-action-service.js"></script>
+    <script src="app/otusjs-player-core/phase/save/pre-save-action-service.js"></script>
+
     <script src="app/otusjs-player-core/phase/start/execution-player-start-action-service.js"></script>
     <script src="app/otusjs-player-core/phase/start/player-start-action-service.js"></script>
     <script src="app/otusjs-player-core/phase/start/post-player-start-action-service.js"></script>
     <script src="app/otusjs-player-core/phase/start/pre-player-start-action-service.js"></script>
+
+    <script src="app/otusjs-player-core/phase/stop/execution-stop-action-service.js"></script>
+    <script src="app/otusjs-player-core/phase/stop/stop-action-service.js"></script>
+    <script src="app/otusjs-player-core/phase/stop/post-stop-action-service.js"></script>
+    <script src="app/otusjs-player-core/phase/stop/pre-stop-action-service.js"></script>
     <!-- /PHASE -->
 
     <!-- PLAYER -->
@@ -146,6 +161,8 @@
     <!-- STEP -->
     <script src="app/otusjs-player-core/step/step-module.js"></script>
     <script src="app/otusjs-player-core/step/survey/initialize-survey-activity-step-service.js"></script>
+    <script src="app/otusjs-player-core/step/survey/finalize-survey-activity-step-service.js"></script>
+    <script src="app/otusjs-player-core/step/survey/save-survey-activity-step-service.js"></script>
     <script src="app/otusjs-player-core/step/survey/load-survey-activity-step-service.js"></script>
     <script src="app/otusjs-player-core/step/survey/load-survey-activity-cover-step-service.js"></script>
     <script src="app/otusjs-player-core/step/survey-item/load-next-item-step-service.js"></script>

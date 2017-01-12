@@ -17,12 +17,13 @@
   function Controller($scope, $element, $compile) {
     var self = this;
 
-    var SURVEY_ITEM = '<otus-survey-item item-data="itemData" />';
+    var SURVEY_ITEM = '<otus-survey-item item-data="itemData" flex style="overflow: auto; position: relative; margin-right: -15px;"/>';
     var SURVEY_COVER = '<otus-cover />';
 
     /* Public methods */
     self.loadItem = loadItem;
     self.showCover = showCover;
+    self.remove = remove;
     self.$onInit = onInit;
 
     function _destroyCurrentItem() {
@@ -35,15 +36,19 @@
       if (_shouldLoadItem(itemData)) {
         _destroyCurrentItem();
         $scope.itemData = itemData;
-        var $section = $element.find('section');
-        var $otusSurveyItem = $compile(SURVEY_ITEM)($scope);
-        $section.prepend($otusSurveyItem);
+        $element.empty();
+        $element.append($compile(SURVEY_ITEM)($scope));
       }
     }
 
     function showCover() {
       _destroyCurrentItem();
-      $element.find('section').prepend($compile(SURVEY_COVER)($scope));
+      $element.empty();
+      $element.append($compile(SURVEY_COVER)($scope));
+    }
+
+    function remove() {
+      $element.remove();
     }
 
     function onInit() {

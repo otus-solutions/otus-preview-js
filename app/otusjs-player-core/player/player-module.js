@@ -7,6 +7,8 @@
       'otusjs.player.core.player.PlayerConfigurationService',
       'otusjs.player.core.step.ApplyAnswerStepService',
       'otusjs.player.core.step.InitializeSurveyActivityStepService',
+      'otusjs.player.core.step.FinalizeSurveyActivityStepService',
+      'otusjs.player.core.step.SaveSurveyActivityStepService',
       'otusjs.player.core.step.LoadPreviousItemStepService',
       'otusjs.player.core.step.LoadNextItemStepService',
       'otusjs.player.core.step.LoadSurveyActivityStepService',
@@ -22,6 +24,8 @@
       PlayerConfigurationService,
       ApplyAnswer,
       InitializeSurveyActivity,
+      FinalizeSurveyActivity,
+      SaveSurveyActivity,
       LoadPreviousItem,
       LoadNextItem,
       LoadSurveyActivity,
@@ -103,9 +107,57 @@
       // PlayerConfigurationService.onPreBack();
 
       /* ExecutionBack Phase */
-      PlayerConfigurationService.onPostBack(LoadPreviousItem);
+      PlayerConfigurationService.onBack(LoadPreviousItem);
 
       /* PostBack Phase */
       PlayerConfigurationService.onPostBack(SetupValidation);
+
+      /**************************************************************
+       * Save Phase
+       *
+       * Here we put the configurations that will affect the phase
+       * where the player is saving the current state of SurveyActiviy.
+       * This phase is divided in three sub-phases and each one can be
+       * configured separately.
+       *
+       **************************************************************/
+      /* PreSave Phase */
+
+      /* ExecutionSave Phase */
+      PlayerConfigurationService.onSave(SaveSurveyActivity);
+
+      /* PostSave Phase */
+
+      /**************************************************************
+       * Stop Phase
+       *
+       * Here we put the configurations that will affect the phase
+       * where the player is stoping the current SurveyActiviy.
+       * This phase is divided in three sub-phases and each one can be
+       * configured separately.
+       *
+       **************************************************************/
+      /* PreBack Phase */
+
+      /* ExecutionStop Phase */
+
+      /* PostStop Phase */
+
+      /**************************************************************
+       * Eject Phase
+       *
+       * Here we put the configurations that will affect the phase
+       * where the player is ejecting (finalizing) the current
+       * SurveyActiviy.
+       * This phase is divided in three sub-phases and each one can be
+       * configured separately.
+       *
+       **************************************************************/
+      /* PreBack Phase */
+
+      /* ExecutionStop Phase */
+      PlayerConfigurationService.onEject(FinalizeSurveyActivity);
+
+      /* PostStop Phase */
     }
 }());

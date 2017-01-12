@@ -1,33 +1,27 @@
-<md-card>
-    <md-card-content>
-        <div layout="row">
-            <div layout="row" layout-align="start center">
-                <md-chips>
-                    <md-chip>{{$ctrl.surveyIdentity.acronym}}</md-chip>
-                </md-chips>
-                <span class="md-subhead">
-                    {{$ctrl.surveyIdentity.name}}
-                </span>
-            </div>
-
-            <span flex></span>
-
-            <div layout="row" layout-align="start down">
-                <md-input-container >
-                    <label>Realização</label>
-                    <input ng-model="$ctrl.realizationDate" disabled>
-                </md-input-container>
-
-                <md-input-container>
-                    <label>Entrevistador(a)</label>
-                    <input ng-model="$ctrl.interviewer" disabled>
-                </md-input-container>
-            </div>
-        </div>
-        <div layout="row">
-            <span class="md-body-1">
-                    {{$ctrl.surveyIdentity.description}}
-            </span>
-        </div>
-    </md-card-content>
-</md-card>
+<md-content layout="column" flex>
+  <!-- SurveyActivity data -->
+  <md-content layout="row">
+    <md-chips layout="column" layout-padding layout-align="center center" style="padding: 0 !important; padding-left: 10px !important">
+      <md-chip style="margin: 0 !important">{{ $ctrl.surveyIdentity.acronym }}</md-chip>
+    </md-chips>
+    <md-content layout="column" flex layout-padding style="padding: 0 !important" layout-align="center start">
+      <div><span class="md-display-1">{{ $ctrl.surveyIdentity.name }}</span></div>
+    </md-content>
+  </md-content>
+  <!-- Participant data -->
+  <md-content layout="row" style="padding-left: 10px !important; padding-right: 10px !important">
+    <div layout="column" layout-padding layout-align="center start">
+      <label class="md-subhead" style="padding: 0 !important">Participante</label>
+      <span style="padding: 0 !important">{{ $ctrl.participantData.name }}</span>
+    </div>
+    <div layout="column" layout-padding layout-align="center start">
+      <label class="md-subhead" style="padding: 0 !important">Número de Recrutamento</label>
+      <span style="padding: 0 !important">{{ $ctrl.participantData.recruitmentNumber }}</span>
+    </div>
+    <div layout-padding flex></div>
+    <!-- <div layout="column" layout-padding layout-align="center start">
+      <label class="md-subhead" style="padding: 0 !important">Entrevistador(a)</label>
+      <span style="padding: 0 !important">{{ $ctrl.interviewer.name || 'Não definido' }}</span>
+    </div> -->
+  </md-content>
+</md-content>
