@@ -407,7 +407,7 @@
     function onInit() {
       $scope.$parent.$ctrl.playerBackCover = self;
       var activity = ActivityFacadeService.getCurrentSurvey().getSurvey();
-      self.title = activity.surveyForm.surveyTemplate.identity.name;
+      self.title = activity.surveyForm.identity.name;
     }
   }
 }());
@@ -443,7 +443,7 @@
     function onInit() {
       $scope.$parent.$ctrl.playerCover = self;
       var activity = ActivityFacadeService.getCurrentSurvey().getSurvey();
-      self.title = activity.surveyForm.surveyTemplate.identity.name;
+      self.title = activity.surveyForm.identity.name;
     }
 
     function play() {
@@ -452,7 +452,7 @@
 
     function show() {
       var activity = ActivityFacadeService.getCurrentSurvey().getSurvey();
-      self.title = activity.surveyForm.surveyTemplate.identity.name;
+      self.title = activity.surveyForm.identity.name;
     }
 
     function remove() {
@@ -486,7 +486,7 @@
 
     function onInit() {
       self.activity = ActivityFacadeService.getCurrentSurvey().getSurvey();
-      self.surveyIdentity = self.activity.surveyForm.surveyTemplate.identity;
+      self.surveyIdentity = self.activity.surveyForm.identity;
       self.participantData = self.activity.participantData;
 
       if (self.activity.interviews.length) {
@@ -1328,7 +1328,7 @@
   angular
     .module('otusjs.player.component')
     .component('otusQuestionMenu', {
-      template:'<md-fab-speed-dial style="position:absolute; top:50px; right:0; transform: translate(0%, 0%);" md-direction="left" class="md-scale"><md-fab-trigger><md-button class="md-fab md-mini md-raised" aria-label="Limpar Resposta"><md-icon>delete</md-icon><md-tooltip md-direction="down">Limpar</md-tooltip></md-button></md-fab-trigger><md-fab-actions><md-button ng-click="$ctrl.clear(\'comment\')" class="md-fab md-raised md-mini" aria-label="Comentario"><md-icon>comment</md-icon><md-tooltip md-direction="down">Limpar comentário</md-tooltip></md-button><md-button ng-click="$ctrl.clear(\'metadata\')" class="md-fab md-raised md-mini" aria-label="Metadado"><md-icon>label</md-icon><md-tooltip md-direction="down">Limpar metadata</md-tooltip></md-button><md-button ng-click="$ctrl.clear(\'answer\')" class="md-fab md-raised md-mini" aria-label="Questão"><md-icon>question_answer</md-icon><md-tooltip md-direction="down">Limpar resposta</md-tooltip></md-button></md-fab-actions></md-fab-speed-dial>',
+      template:'<md-fab-speed-dial style="position:absolute; top:50px; right:0; transform: translate(0%, 0%);" md-direction="left" class="md-scale"><md-fab-trigger><md-button class="md-fab md-mini md-raised" aria-label="Limpar Resposta"><md-icon>delete</md-icon><md-tooltip md-direction="down">Limpar</md-tooltip></md-button></md-fab-trigger><md-fab-actions><md-button ng-click="$ctrl.clear(\'comment\')" class="md-fab md-raised md-mini" aria-label="Comentario"><md-icon>comment</md-icon><md-tooltip md-direction="down">Limpar comentário</md-tooltip></md-button><md-button ng-click="$ctrl.clear(\'metadata\')" class="md-fab md-raised md-mini" aria-label="Metadado"><md-icon>label</md-icon><md-tooltip md-direction="down">Limpar metadata</md-tooltip></md-button><md-button ng-click="$ctrl.clear(\'answer\')" class="md-fab md-raised md-mini" aria-label="Questão"><md-icon>question_answer</md-icon><md-tooltip md-direction="down">Limpar resposta</md-tooltip></md-button></md-fab-actions></md-fab-speed-dial><md-fab-trigger><md-button class="md-fab md-mini md-raised" aria-label="Aceitar resposta"><md-icon>check</md-icon><md-tooltip md-direction="down">Aceitar resposta</md-tooltip></md-button></md-fab-trigger>',
       controller: OtusSurveyMenuController,
       bindings: {
         onClear: '&'
@@ -3951,7 +3951,7 @@
     }
 
     function getItems() {
-      return ActivityFacadeService.surveyActivity.surveyForm.surveyTemplate.SurveyItemManager.getItemList();
+      return ActivityFacadeService.surveyActivity.surveyForm.SurveyItemManager.getItemList();
     }
 
     function getItemByCustomID(customID) {
@@ -3981,7 +3981,7 @@
     }
 
     function getNavigations() {
-      return ActivityFacadeService.surveyActivity.surveyForm.surveyTemplate.NavigationManager.getNavigationList();
+      return ActivityFacadeService.surveyActivity.surveyForm.NavigationManager.getNavigationList();
     }
 
     function getNavigationByOrigin(origin) {

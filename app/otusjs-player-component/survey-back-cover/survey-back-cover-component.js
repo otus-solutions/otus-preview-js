@@ -33,7 +33,7 @@
     function onInit() {
       $scope.$parent.$ctrl.playerBackCover = self;
       var activity = ActivityFacadeService.getCurrentSurvey().getSurvey();
-      self.title = activity.surveyForm.surveyTemplate.identity.name;
+      self.title = activity.surveyForm.identity.name;
     }
   }
 }());
