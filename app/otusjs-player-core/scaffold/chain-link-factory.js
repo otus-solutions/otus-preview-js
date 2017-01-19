@@ -53,7 +53,9 @@
         _execute(pipe, flowData);
       }
 
-      if (_postExecute) _postExecute(pipe, flowData);
+      if (_postExecute && !pipe.skipStep) {
+        _postExecute(pipe, flowData);
+      }
 
       if (pipe.isFlowing) {
         pipe.skipStep = false;

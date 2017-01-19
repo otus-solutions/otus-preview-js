@@ -11,6 +11,7 @@
 
   function Service(ActivityFacadeService) {
     var self = this;
+    var _currentItem;
 
     /* Public methods */
     self.beforeEffect = beforeEffect;
@@ -19,6 +20,13 @@
     self.getEffectResult = getEffectResult;
 
     function beforeEffect(pipe, flowData) {
+      _currentItem = ActivityFacadeService.getCurrentItem();
+
+      if (_currentItem.shouldIgnoreResponseEvaluation()) {
+        pipe.skipStep = true;
+      } else {
+        pipe.skipStep = false;
+      }
     }
 
     function effect(pipe, flowData) {

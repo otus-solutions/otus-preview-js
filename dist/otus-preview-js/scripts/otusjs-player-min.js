@@ -561,7 +561,7 @@
 
     function update(prop, value) {
       if (prop) {
-        if (prop === 'comment') {
+        if (prop === 'comment' || prop === 'forceAnswer') {
           self.filling[prop] = value;
         } else {
           clear(prop, value);
@@ -602,7 +602,7 @@
   angular
     .module('otusjs.player.component')
     .component('otusQuestion', {
-      template:'<md-content layout="column"><div layout="row"><md-tabs md-dynamic-height layout="column" flex="95"><md-tab label="Resposta"><md-content class="md-padding" bind-html-compile="$ctrl.template"></md-content></md-tab><md-tab label="Metadado"><md-content class="md-padding"><metadata-group on-update="$ctrl.update(valueType, value)" item-data="$ctrl.itemData"></metadata-group></md-content></md-tab><md-tab label="Comentário"><md-content class="md-padding"><otus-comment on-update="$ctrl.update(valueType, value)" item-data="$ctrl.itemData"></otus-comment></md-content></md-tab></md-tabs><div layout="column"><otus-question-menu on-clear="$ctrl.clear(value)"></otus-question-menu></div></div></md-content>',
+      template:'<md-content layout="column"><div layout="row"><md-tabs md-dynamic-height layout="column" flex="95"><md-tab label="Resposta"><md-content class="md-padding" bind-html-compile="$ctrl.template"></md-content></md-tab><md-tab label="Metadado"><md-content class="md-padding"><metadata-group on-update="$ctrl.update(valueType, value)" item-data="$ctrl.itemData"></metadata-group></md-content></md-tab><md-tab label="Comentário"><md-content class="md-padding"><otus-comment on-update="$ctrl.update(valueType, value)" item-data="$ctrl.itemData"></otus-comment></md-content></md-tab></md-tabs><div layout="column"><otus-question-menu on-clear="$ctrl.clear(value)" on-accept="$ctrl.forceAnswer()"></otus-question-menu></div></div></md-content>',
       controller: OtusQuestionController,
       bindings: {
         itemData: '<',
@@ -635,6 +635,13 @@
       self.onUpdate({
         valueType: prop,
         value: value
+      });
+    };
+
+    self.forceAnswer = function() {
+      self.onUpdate({
+        valueType: 'forceAnswer',
+        value: true
       });
     };
 
@@ -1328,21 +1335,37 @@
   angular
     .module('otusjs.player.component')
     .component('otusQuestionMenu', {
-      template:'<md-fab-speed-dial style="position:absolute; top:50px; right:0; transform: translate(0%, 0%);" md-direction="left" class="md-scale"><md-fab-trigger><md-button class="md-fab md-mini md-raised" aria-label="Limpar Resposta"><md-icon>delete</md-icon><md-tooltip md-direction="down">Limpar</md-tooltip></md-button></md-fab-trigger><md-fab-actions><md-button ng-click="$ctrl.clear(\'comment\')" class="md-fab md-raised md-mini" aria-label="Comentario"><md-icon>comment</md-icon><md-tooltip md-direction="down">Limpar comentário</md-tooltip></md-button><md-button ng-click="$ctrl.clear(\'metadata\')" class="md-fab md-raised md-mini" aria-label="Metadado"><md-icon>label</md-icon><md-tooltip md-direction="down">Limpar metadata</md-tooltip></md-button><md-button ng-click="$ctrl.clear(\'answer\')" class="md-fab md-raised md-mini" aria-label="Questão"><md-icon>question_answer</md-icon><md-tooltip md-direction="down">Limpar resposta</md-tooltip></md-button></md-fab-actions></md-fab-speed-dial><md-fab-trigger><md-button class="md-fab md-mini md-raised" aria-label="Aceitar resposta"><md-icon>check</md-icon><md-tooltip md-direction="down">Aceitar resposta</md-tooltip></md-button></md-fab-trigger>',
+      template:'<md-fab-speed-dial style="position:absolute; top:50px; right:0; transform: translate(0%, 0%);" md-direction="left" class="md-scale"><md-fab-trigger><md-button class="md-fab md-mini md-raised" aria-label="Limpar Resposta"><md-icon>delete</md-icon><md-tooltip md-direction="down">Limpar</md-tooltip></md-button></md-fab-trigger><md-fab-actions><md-button ng-click="$ctrl.clear(\'comment\')" class="md-fab md-raised md-mini" aria-label="Comentario"><md-icon>comment</md-icon><md-tooltip md-direction="down">Limpar comentário</md-tooltip></md-button><md-button ng-click="$ctrl.clear(\'metadata\')" class="md-fab md-raised md-mini" aria-label="Metadado"><md-icon>label</md-icon><md-tooltip md-direction="down">Limpar metadata</md-tooltip></md-button><md-button ng-click="$ctrl.clear(\'answer\')" class="md-fab md-raised md-mini" aria-label="Questão"><md-icon>question_answer</md-icon><md-tooltip md-direction="down">Limpar resposta</md-tooltip></md-button></md-fab-actions></md-fab-speed-dial><md-fab-trigger><md-button ng-click="$ctrl.showConfirm($event)" class="md-fab md-mini md-raised" aria-label="Aceitar resposta"><md-icon>check</md-icon><md-tooltip md-direction="down">Aceitar resposta</md-tooltip></md-button></md-fab-trigger>',
       controller: OtusSurveyMenuController,
       bindings: {
-        onClear: '&'
+        onClear: '&',
+        onAccept: '&'
       },
       require: {
         otusQuestion: '^otusQuestion'
       }
     });
 
-  function OtusSurveyMenuController() {
+  OtusSurveyMenuController.$inject = [
+    '$mdDialog',
+    '$mdMedia'
+  ];
+
+  function OtusSurveyMenuController($mdDialog, $mdMedia) {
     var self = this;
 
     self.$onInit = function() {
       self.otusQuestion.menuComponent = self;
+      self.dialogSettings = {
+        parent: angular.element(document.body),
+        template:'<div class="md-padding" ng-cloak><h3 class="md-title"><span>Você deseja aceitar a resposta?</span></h3><div class="dialog-demo-content" layout="row" layout-wrap layout-margin layout-align="center"><md-button class="md-raised" ng-click="controller.cancel({ action: \'cancel\' })">Cancelar</md-button><md-button class="md-primary md-raised" ng-click="controller.accept({ action: \'accept\' })">Aceitar</md-button></div></div>',
+        controller: DialogController,
+        controllerAs: 'controller',
+        openFrom: '#system-toolbar',
+        closeTo: {
+          bottom: 0
+        }
+      };
     };
 
     self.clear = function(value) {
@@ -1350,6 +1373,45 @@
         value: value
       });
     };
+
+    self.showConfirm = function(ev) {
+      $mdDialog
+        .show(self.dialogSettings)
+        .then(
+          forwardSuccessfulExecution,
+          forwardUnsuccessfulExecution
+        );
+
+      return {
+        onConfirm: function(callback) {
+          self.callback = callback;
+        }
+      };
+    };
+
+    function forwardSuccessfulExecution(response) {
+      self.onAccept({
+        value: true
+      });
+    }
+
+    function forwardUnsuccessfulExecution(error) {}
+  }
+
+  function DialogController($mdDialog) {
+    var self = this;
+
+    /* Public interface */
+    self.cancel = cancel;
+    self.accept = accept;
+
+    function cancel(response) {
+      $mdDialog.hide(response);
+    }
+
+    function accept(response) {
+      $mdDialog.hide(response);
+    }
   }
 
 })();
@@ -3149,7 +3211,9 @@
         _execute(pipe, flowData);
       }
 
-      if (_postExecute) _postExecute(pipe, flowData);
+      if (_postExecute && !pipe.skipStep) {
+        _postExecute(pipe, flowData);
+      }
 
       if (pipe.isFlowing) {
         pipe.skipStep = false;
@@ -3515,6 +3579,7 @@
 
   function Service(ActivityFacadeService) {
     var self = this;
+    var _currentItem;
 
     /* Public methods */
     self.beforeEffect = beforeEffect;
@@ -3523,6 +3588,13 @@
     self.getEffectResult = getEffectResult;
 
     function beforeEffect(pipe, flowData) {
+      _currentItem = ActivityFacadeService.getCurrentItem();
+
+      if (_currentItem.shouldIgnoreResponseEvaluation()) {
+        pipe.skipStep = true;
+      } else {
+        pipe.skipStep = false;
+      }
     }
 
     function effect(pipe, flowData) {
@@ -3566,6 +3638,12 @@
 
     function beforeEffect(pipe, flowData) {
       _currentItem = ActivityFacadeService.getCurrentItem();
+
+      if (_currentItem.shouldIgnoreResponseEvaluation()) {
+        pipe.skipStep = true;
+      } else {
+        pipe.skipStep = false;
+      }
     }
 
     function effect(pipe, flowData) {
@@ -3888,7 +3966,7 @@
     }
 
     function shouldIgnoreResponseEvaluation() {
-      return !_item || !_item.isQuestion();
+      return !_item || !_item.isQuestion() || _filling.forceAnswer;
     }
 
     function observerRegistry(observer) {

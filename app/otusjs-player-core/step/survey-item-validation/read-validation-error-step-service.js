@@ -22,6 +22,12 @@
 
     function beforeEffect(pipe, flowData) {
       _currentItem = ActivityFacadeService.getCurrentItem();
+
+      if (_currentItem.shouldIgnoreResponseEvaluation()) {
+        pipe.skipStep = true;
+      } else {
+        pipe.skipStep = false;
+      }
     }
 
     function effect(pipe, flowData) {

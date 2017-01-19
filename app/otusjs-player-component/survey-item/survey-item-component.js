@@ -62,7 +62,7 @@
 
     function update(prop, value) {
       if (prop) {
-        if (prop === 'comment') {
+        if (prop === 'comment' || prop === 'forceAnswer') {
           self.filling[prop] = value;
         } else {
           clear(prop, value);
