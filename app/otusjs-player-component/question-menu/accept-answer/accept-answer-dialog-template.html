@@ -1,13 +1,10 @@
-<div class="md-padding" ng-cloak>
-  <h3 class="md-title">
-      <span>Você deseja aceitar a resposta?</span>
-  </h3>
-  <div class="dialog-demo-content" layout="row" layout-wrap layout-margin layout-align="center">
-    <md-button class="md-raised" ng-click="controller.cancel({ action: 'cancel' })">
-      Cancelar
-    </md-button>
-    <md-button class="md-primary md-raised" ng-click="controller.accept({ action: 'accept' })">
-      Aceitar
-    </md-button>
-  </div>
+<div md-theme="layoutTheme" class="md-padding" ng-cloak>
+  <md-dialog-content>
+    <h2 class="md-title">Questão fora dos limites estabelecidos</h2>
+    <p class="md-body-1">Você deseja ignorar a validação e aceitar a resposta?</p>
+  </md-dialog-content>
+  <md-dialog-actions>
+    <md-button class="md-raised" ng-click="controller.cancel({ action: 'cancel' })">Cancelar</md-button>
+    <md-button class="md-raised md-primary" aria-label="Aceitar resposta" ng-click="controller.accept({ action: 'accept' })">Aceitar</md-button>
+  </md-dialog-actions>
 </div>
