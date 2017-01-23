@@ -46,7 +46,7 @@
       self.$error = validationMap;
 
       if (self.$error.hasError) {
-        self.errorComponent.focus();
+        self.questionComponent.setError();
       }
     }
 

@@ -545,7 +545,7 @@
       self.$error = validationMap;
 
       if (self.$error.hasError) {
-        self.errorComponent.focus();
+        self.questionComponent.setError();
       }
     }
 
@@ -629,6 +629,7 @@
       self.metadata = {};
       self.comment = {};
       self.menuComponent = {};
+      self.menuComponent.error = false;
     };
 
     self.update = function(prop, value) {
@@ -668,6 +669,10 @@
     self.clearCommentAnswer = function() {
       self.comment.clear();
     };
+
+    self.setError = function() {
+      self.menuComponent.error = true;
+    }
   }
 
 })();
@@ -1335,7 +1340,7 @@
   angular
     .module('otusjs.player.component')
     .component('otusQuestionMenu', {
-      template:'<md-fab-speed-dial style="position:absolute; top:90px; right:0; transform: translate(0%, 0%);" md-direction="left" class="md-scale"><md-fab-trigger><md-button class="md-fab md-mini md-raised" aria-label="Limpar Resposta"><md-icon>delete</md-icon><md-tooltip md-direction="down">Limpar</md-tooltip></md-button></md-fab-trigger><md-fab-actions><md-button ng-click="$ctrl.clear(\'comment\')" class="md-fab md-raised md-mini" aria-label="Comentario"><md-icon>comment</md-icon><md-tooltip md-direction="down">Limpar comentário</md-tooltip></md-button><md-button ng-click="$ctrl.clear(\'metadata\')" class="md-fab md-raised md-mini" aria-label="Metadado"><md-icon>label</md-icon><md-tooltip md-direction="down">Limpar metadata</md-tooltip></md-button><md-button ng-click="$ctrl.clear(\'answer\')" class="md-fab md-raised md-mini" aria-label="Questão"><md-icon>question_answer</md-icon><md-tooltip md-direction="down">Limpar resposta</md-tooltip></md-button></md-fab-actions></md-fab-speed-dial><md-fab-trigger style="position:absolute; top:30px; right:0; transform: translate(0%, 0%);" md-direction="left" class="md-scale"><md-button ng-click="$ctrl.showConfirm($event)" class="md-fab md-mini md-raised" aria-label="Aceitar resposta"><md-icon>check</md-icon><md-tooltip md-direction="down">Aceitar resposta</md-tooltip></md-button></md-fab-trigger>',
+      template:'<md-fab-speed-dial style="position:absolute; top:90px; right:0; transform: translate(0%, 0%);" md-direction="left" class="md-scale"><md-fab-trigger><md-button class="md-fab md-mini md-raised" aria-label="Limpar Resposta"><md-icon>delete</md-icon><md-tooltip md-direction="down">Limpar</md-tooltip></md-button></md-fab-trigger><md-fab-actions><md-button ng-click="$ctrl.clear(\'comment\')" class="md-fab md-raised md-mini" aria-label="Comentario"><md-icon>comment</md-icon><md-tooltip md-direction="down">Limpar comentário</md-tooltip></md-button><md-button ng-click="$ctrl.clear(\'metadata\')" class="md-fab md-raised md-mini" aria-label="Metadado"><md-icon>label</md-icon><md-tooltip md-direction="down">Limpar metadata</md-tooltip></md-button><md-button ng-click="$ctrl.clear(\'answer\')" class="md-fab md-raised md-mini" aria-label="Questão"><md-icon>question_answer</md-icon><md-tooltip md-direction="down">Limpar resposta</md-tooltip></md-button></md-fab-actions></md-fab-speed-dial><md-button style="position:absolute; top:30px; right:0; transform: translate(0%, 0%);" ng-click="$ctrl.showConfirm($event)" ng-show="$ctrl.error" class="md-fab md-mini md-raised" aria-label="Aceitar resposta"><md-icon>check</md-icon><md-tooltip md-direction="down">Aceitar resposta</md-tooltip></md-button>',
       controller: OtusSurveyMenuController,
       bindings: {
         onClear: '&',

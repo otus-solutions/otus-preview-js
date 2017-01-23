@@ -31,6 +31,7 @@
       self.metadata = {};
       self.comment = {};
       self.menuComponent = {};
+      self.menuComponent.error = false;
     };
 
     self.update = function(prop, value) {
@@ -70,6 +71,10 @@
     self.clearCommentAnswer = function() {
       self.comment.clear();
     };
+
+    self.setError = function() {
+      self.menuComponent.error = true;
+    }
   }
 
 })();
