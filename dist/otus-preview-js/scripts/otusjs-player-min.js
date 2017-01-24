@@ -671,7 +671,8 @@
     };
 
     self.setError = function() {
-      self.menuComponent.error = true;
+      if (self.item.itemData.isQuestion() && self.item.itemData.fillingRules.options.accept !== undefined)
+        self.menuComponent.error = true;
     }
   }
 
