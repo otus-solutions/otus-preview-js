@@ -545,7 +545,7 @@
       self.$error = validationMap;
 
       if (self.$error.hasError) {
-        self.questionComponent.setError();
+        self.questionComponent.setError(self.$error);
       }
     }
 
@@ -670,10 +670,14 @@
       self.comment.clear();
     };
 
-    self.setError = function() {
+    self.setError = function(error) {
       if (self.item.itemData.isQuestion()) {
-        if (self.item.itemData.fillingRules.options.accept !== undefined && self.item.itemData.fillingRules.options.mandatory == undefined) {
-          self.menuComponent.error = true;
+        if (self.item.itemData.fillingRules.options.accept !== undefined) {
+          if (!error.mandatory) {
+            self.menuComponent.error = true;
+          } else {
+            self.menuComponent.error = false;
+          }
         }
       }
     }
