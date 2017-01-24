@@ -671,8 +671,11 @@
     };
 
     self.setError = function() {
-      if (self.item.itemData.isQuestion() && self.item.itemData.fillingRules.options.accept !== undefined)
-        self.menuComponent.error = true;
+      if (self.item.itemData.isQuestion()) {
+        if (self.item.itemData.fillingRules.options.accept !== undefined && self.item.itemData.fillingRules.options.mandatory == undefined) {
+          self.menuComponent.error = true;
+        }
+      }
     }
   }
 
