@@ -91,7 +91,7 @@
     }
 
     function shouldIgnoreResponseEvaluation() {
-      return !_item || !_item.isQuestion() || _filling.forceAnswer;
+      return !_item || !_item.isQuestion();
     }
 
     function observerRegistry(observer) {
