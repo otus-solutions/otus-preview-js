@@ -12,26 +12,45 @@
 
   function Service(ElementRegisterFactory, ValidationService) {
     var self = this;
-    var elementRegister;
+    var _elementRegister;
+    var _answer = {};
 
     /* Public methods */
     self.applyValidation = applyValidation;
     self.setupValidation = setupValidation;
 
-    function applyValidation(item, callback) {
-      ValidationService.validateElement(item.customID, callback);
+    function applyValidation(currentItemService, callback) {
+      if (currentItemService.getFilling().forceAnswer) {
+        ValidationService.unregisterElement(_elementRegister.id);
+        setupValidation(currentItemService, _answer);
+      }
+      
+      ValidationService.validateElement(currentItemService.getItem().customID, callback);
     }
 
-    function setupValidation(item, answer) {
-      var elementRegister = ElementRegisterFactory.create(item.customID, answer);
+    function setupValidation(currentItemService, answer) {
+      _answer = answer;
+      _elementRegister = ElementRegisterFactory.create(currentItemService.getItem().customID, answer);
 
-      Object.keys(item.fillingRules.options).map(function(validator) {
-        var reference = item.fillingRules.options[validator].data;
-        elementRegister.addValidator(validator, reference);
-      });
+      if (currentItemService.getFilling().forceAnswer) {
+        Object.keys(currentItemService.getItem().fillingRules.options).filter(function(validator) {
+          if (!currentItemService.getItem().fillingRules.options[validator].data.canBeIgnored) {
+            _addValidator(validator, currentItemService);
+          }
+        });
+      } else {
+        Object.keys(currentItemService.getItem().fillingRules.options).map(function(validator) {
+          _addValidator(validator, currentItemService);
+        });
+      }
 
-      ValidationService.unregisterElement(elementRegister.id);
-      ValidationService.registerElement(elementRegister);
+      ValidationService.unregisterElement(_elementRegister.id);
+      ValidationService.registerElement(_elementRegister);
+    }
+
+    function _addValidator(validator, currentItemService) {
+      var reference = currentItemService.getItem().fillingRules.options[validator].data;
+      _elementRegister.addValidator(validator, reference);
     }
   }
 }());
