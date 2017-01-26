@@ -41,10 +41,10 @@
       });
     };
 
-    self.forceAnswer = function() {
+    self.forceAnswer = function(value) {
       self.onUpdate({
         valueType: 'forceAnswer',
-        value: true
+        value: value
       });
     };
 

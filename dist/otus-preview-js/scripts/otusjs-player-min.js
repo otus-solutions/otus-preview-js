@@ -602,7 +602,7 @@
   angular
     .module('otusjs.player.component')
     .component('otusQuestion', {
-      template:'<md-content layout="column"><div layout="row"><md-tabs md-dynamic-height layout="column" flex="95"><md-tab label="Resposta"><md-content class="md-padding" bind-html-compile="$ctrl.template"></md-content></md-tab><md-tab label="Metadado"><md-content class="md-padding"><metadata-group on-update="$ctrl.update(valueType, value)" item-data="$ctrl.itemData"></metadata-group></md-content></md-tab><md-tab label="Comentário"><md-content class="md-padding"><otus-comment on-update="$ctrl.update(valueType, value)" item-data="$ctrl.itemData"></otus-comment></md-content></md-tab></md-tabs><div layout="column"><otus-question-menu on-clear="$ctrl.clear(value)" on-accept="$ctrl.forceAnswer()"></otus-question-menu></div></div></md-content>',
+      template:'<md-content layout="column"><div layout="row"><md-tabs md-dynamic-height layout="column" flex="95"><md-tab label="Resposta"><md-content class="md-padding" bind-html-compile="$ctrl.template"></md-content></md-tab><md-tab label="Metadado"><md-content class="md-padding"><metadata-group on-update="$ctrl.update(valueType, value)" item-data="$ctrl.itemData"></metadata-group></md-content></md-tab><md-tab label="Comentário"><md-content class="md-padding"><otus-comment on-update="$ctrl.update(valueType, value)" item-data="$ctrl.itemData"></otus-comment></md-content></md-tab></md-tabs><div layout="column"><otus-question-menu on-clear="$ctrl.clear(value)" on-accept="$ctrl.forceAnswer(value)"></otus-question-menu></div></div></md-content>',
       controller: OtusQuestionController,
       bindings: {
         itemData: '<',
@@ -639,10 +639,10 @@
       });
     };
 
-    self.forceAnswer = function() {
+    self.forceAnswer = function(value) {
       self.onUpdate({
         valueType: 'forceAnswer',
-        value: true
+        value: value
       });
     };
 
@@ -1348,7 +1348,7 @@
   angular
     .module('otusjs.player.component')
     .component('otusQuestionMenu', {
-      template:'<md-fab-speed-dial style="position:absolute; top:90px; right:0; transform: translate(0%, 0%);" md-direction="left" class="md-scale"><md-fab-trigger><md-button class="md-fab md-mini md-raised" aria-label="Limpar Resposta"><md-icon>delete</md-icon><md-tooltip md-direction="down">Limpar</md-tooltip></md-button></md-fab-trigger><md-fab-actions><md-button ng-click="$ctrl.clear(\'comment\')" class="md-fab md-raised md-mini" aria-label="Comentario"><md-icon>comment</md-icon><md-tooltip md-direction="down">Limpar comentário</md-tooltip></md-button><md-button ng-click="$ctrl.clear(\'metadata\')" class="md-fab md-raised md-mini" aria-label="Metadado"><md-icon>label</md-icon><md-tooltip md-direction="down">Limpar metadata</md-tooltip></md-button><md-button ng-click="$ctrl.clear(\'answer\')" class="md-fab md-raised md-mini" aria-label="Questão"><md-icon>question_answer</md-icon><md-tooltip md-direction="down">Limpar resposta</md-tooltip></md-button></md-fab-actions></md-fab-speed-dial><md-button style="position:absolute; top:30px; right:0; transform: translate(0%, 0%);" ng-click="$ctrl.showConfirm($event)" ng-show="$ctrl.error" class="md-fab md-mini md-raised" aria-label="Aceitar resposta"><md-icon>check</md-icon><md-tooltip md-direction="down">Aceitar resposta</md-tooltip></md-button>',
+      template:'<md-fab-speed-dial style="position:absolute; top:90px; right:0; transform: translate(0%, 0%);" md-direction="left" class="md-scale"><md-fab-trigger><md-button class="md-fab md-mini md-raised" aria-label="Limpar Resposta"><md-icon>delete</md-icon><md-tooltip md-direction="down">Limpar</md-tooltip></md-button></md-fab-trigger><md-fab-actions><md-button ng-click="$ctrl.clear(\'comment\')" class="md-fab md-raised md-mini" aria-label="Comentario"><md-icon>comment</md-icon><md-tooltip md-direction="down">Limpar comentário</md-tooltip></md-button><md-button ng-click="$ctrl.clear(\'metadata\')" class="md-fab md-raised md-mini" aria-label="Metadado"><md-icon>label</md-icon><md-tooltip md-direction="down">Limpar metadata</md-tooltip></md-button><md-button ng-click="$ctrl.clear(\'answer\')" class="md-fab md-raised md-mini" aria-label="Questão"><md-icon>question_answer</md-icon><md-tooltip md-direction="down">Limpar resposta</md-tooltip></md-button></md-fab-actions></md-fab-speed-dial><md-button id="accept-button" style="position:absolute; top:30px; right:0; transform: translate(0%, 0%);" ng-click="$ctrl.showConfirm($event)" ng-show="$ctrl.error" class="md-fab md-mini md-raised" aria-label="Aceitar resposta"><md-icon>check</md-icon><md-tooltip md-direction="down">Aceitar resposta</md-tooltip></md-button>',
       controller: OtusSurveyMenuController,
       bindings: {
         onClear: '&',
@@ -1366,19 +1366,12 @@
 
   function OtusSurveyMenuController($mdDialog, $mdMedia) {
     var self = this;
+    var isAccept = false;
 
     self.$onInit = function() {
       self.otusQuestion.menuComponent = self;
-      self.dialogSettings = {
-        parent: angular.element(document.body),
-        template:'<div md-theme="layoutTheme" class="md-padding" ng-cloak><md-dialog-content><h2 class="md-title">Questão fora dos limites estabelecidos</h2><p class="md-body-1">Você deseja <b>ignorar a validação</b> e aceitar a resposta?</p></md-dialog-content><md-dialog-actions><md-button class="md-raised" ng-click="controller.cancel({ action: \'cancel\' })">Cancelar</md-button><md-button class="md-raised md-primary" aria-label="Aceitar resposta" ng-click="controller.accept({ action: \'accept\' })">Aceitar</md-button></md-dialog-actions></div>',
-        controller: DialogController,
-        controllerAs: 'controller',
-        openFrom: '#system-toolbar',
-        closeTo: {
-          bottom: 0
-        }
-      };
+      enableDialogSettings();
+      disableDialogSettings();
     };
 
     self.clear = function(value) {
@@ -1388,27 +1381,83 @@
     };
 
     self.showConfirm = function(ev) {
-      $mdDialog
-        .show(self.dialogSettings)
-        .then(
-          forwardSuccessfulExecution,
-          forwardUnsuccessfulExecution
-        );
+      if (!isAccept) {
+        $mdDialog
+          .show(self.enableDialogSettings)
+          .then(
+            enableForwardSuccessfulExecution,
+            enableForwardUnsuccessfulExecution
+          );
 
-      return {
-        onConfirm: function(callback) {
-          self.callback = callback;
-        }
-      };
+        return {
+          onConfirm: function(callback) {
+            self.callback = callback;
+          }
+        };
+      } else {
+        $mdDialog
+          .show(self.disableDialogSettings)
+          .then(
+            disableForwardSuccessfulExecution,
+            disableForwardUnsuccessfulExecution
+          );
+
+        return {
+          onConfirm: function(callback) {
+            self.callback = callback;
+          }
+        };
+      }
     };
 
-    function forwardSuccessfulExecution(response) {
-      self.onAccept({
-        value: true
-      });
+    function enableForwardSuccessfulExecution(response) {
+      if (response.action !== 'cancel') {
+        self.onAccept({
+          value: true
+        });
+        isAccept = true;
+      }
     }
 
-    function forwardUnsuccessfulExecution(error) {}
+    function enableForwardUnsuccessfulExecution(error) {}
+
+    function disableForwardSuccessfulExecution(response) {
+      if (response.action !== 'cancel') {
+        self.onAccept({
+          value: false
+        });
+        isAccept = false;
+      }
+    }
+
+    function disableForwardUnsuccessfulExecution(error) {}
+
+    function enableDialogSettings() {
+      self.enableDialogSettings = {
+        parent: angular.element(document.body),
+        template:'<div md-theme="layoutTheme" class="md-padding" ng-cloak><md-dialog-content><h2 class="md-title">Questão fora dos limites estabelecidos</h2><p class="md-body-1">Você deseja <b>ignorar a validação</b> e aceitar a resposta?</p></md-dialog-content><md-dialog-actions><md-button class="md-raised" ng-click="controller.cancel({ action: \'cancel\' })">Cancelar</md-button><md-button class="md-raised md-primary" aria-label="Aceitar resposta" ng-click="controller.event({ action: \'true\' })">Aceitar</md-button></md-dialog-actions></div>',
+        controller: DialogController,
+        controllerAs: 'controller',
+        openFrom: '#system-toolbar',
+        closeTo: {
+          bottom: 0
+        }
+      };
+    }
+
+    function disableDialogSettings() {
+      self.disableDialogSettings = {
+        parent: angular.element(document.body),
+        template:'<div md-theme="layoutTheme" class="md-padding" ng-cloak><md-dialog-content><h2 class="md-title">Questão fora dos limites estabelecidos</h2><p class="md-body-1">Você deseja <b>remover a ação</b> de aceitar a resposta?</p></md-dialog-content><md-dialog-actions><md-button class="md-raised" ng-click="controller.cancel({ action: \'cancel\' })">Cancelar</md-button><md-button class="md-raised md-primary" aria-label="Aceitar resposta" ng-click="controller.event({ action: \'false\' })">Remover</md-button></md-dialog-actions></div>',
+        controller: DialogController,
+        controllerAs: 'controller',
+        openFrom: '#system-toolbar',
+        closeTo: {
+          bottom: 0
+        }
+      };
+    }
+
   }
 
   function DialogController($mdDialog) {
@@ -1416,13 +1465,13 @@
 
     /* Public interface */
     self.cancel = cancel;
-    self.accept = accept;
+    self.event = event;
 
     function cancel(response) {
       $mdDialog.hide(response);
     }
 
-    function accept(response) {
+    function event(response) {
       $mdDialog.hide(response);
     }
   }

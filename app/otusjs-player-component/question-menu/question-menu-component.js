@@ -22,19 +22,12 @@
 
   function OtusSurveyMenuController($mdDialog, $mdMedia) {
     var self = this;
+    var isAccept = false;
 
     self.$onInit = function() {
       self.otusQuestion.menuComponent = self;
-      self.dialogSettings = {
-        parent: angular.element(document.body),
-        templateUrl: 'app/otusjs-player-component/question-menu/accept-answer/accept-answer-dialog-template.html',
-        controller: DialogController,
-        controllerAs: 'controller',
-        openFrom: '#system-toolbar',
-        closeTo: {
-          bottom: 0
-        }
-      };
+      enableDialogSettings();
+      disableDialogSettings();
     };
 
     self.clear = function(value) {
@@ -44,27 +37,83 @@
     };
 
     self.showConfirm = function(ev) {
-      $mdDialog
-        .show(self.dialogSettings)
-        .then(
-          forwardSuccessfulExecution,
-          forwardUnsuccessfulExecution
-        );
+      if (!isAccept) {
+        $mdDialog
+          .show(self.enableDialogSettings)
+          .then(
+            enableForwardSuccessfulExecution,
+            enableForwardUnsuccessfulExecution
+          );
 
-      return {
-        onConfirm: function(callback) {
-          self.callback = callback;
-        }
-      };
+        return {
+          onConfirm: function(callback) {
+            self.callback = callback;
+          }
+        };
+      } else {
+        $mdDialog
+          .show(self.disableDialogSettings)
+          .then(
+            disableForwardSuccessfulExecution,
+            disableForwardUnsuccessfulExecution
+          );
+
+        return {
+          onConfirm: function(callback) {
+            self.callback = callback;
+          }
+        };
+      }
     };
 
-    function forwardSuccessfulExecution(response) {
-      self.onAccept({
-        value: true
-      });
+    function enableForwardSuccessfulExecution(response) {
+      if (response.action !== 'cancel') {
+        self.onAccept({
+          value: true
+        });
+        isAccept = true;
+      }
     }
 
-    function forwardUnsuccessfulExecution(error) {}
+    function enableForwardUnsuccessfulExecution(error) {}
+
+    function disableForwardSuccessfulExecution(response) {
+      if (response.action !== 'cancel') {
+        self.onAccept({
+          value: false
+        });
+        isAccept = false;
+      }
+    }
+
+    function disableForwardUnsuccessfulExecution(error) {}
+
+    function enableDialogSettings() {
+      self.enableDialogSettings = {
+        parent: angular.element(document.body),
+        templateUrl: 'app/otusjs-player-component/question-menu/accept-answer/enable-accept-answer-dialog-template.html',
+        controller: DialogController,
+        controllerAs: 'controller',
+        openFrom: '#system-toolbar',
+        closeTo: {
+          bottom: 0
+        }
+      };
+    }
+
+    function disableDialogSettings() {
+      self.disableDialogSettings = {
+        parent: angular.element(document.body),
+        templateUrl: 'app/otusjs-player-component/question-menu/accept-answer/disable-accept-answer-dialog-template.html',
+        controller: DialogController,
+        controllerAs: 'controller',
+        openFrom: '#system-toolbar',
+        closeTo: {
+          bottom: 0
+        }
+      };
+    }
+
   }
 
   function DialogController($mdDialog) {
@@ -72,13 +121,13 @@
 
     /* Public interface */
     self.cancel = cancel;
-    self.accept = accept;
+    self.event = event;
 
     function cancel(response) {
       $mdDialog.hide(response);
     }
 
-    function accept(response) {
+    function event(response) {
       $mdDialog.hide(response);
     }
   }
