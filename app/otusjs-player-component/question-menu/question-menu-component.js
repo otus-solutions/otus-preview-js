@@ -22,7 +22,7 @@
 
   function OtusSurveyMenuController($mdDialog, $mdMedia) {
     var self = this;
-    var isAccept = false;
+    self.isAccept = false;
 
     self.$onInit = function() {
       self.otusQuestion.menuComponent = self;
@@ -37,7 +37,7 @@
     };
 
     self.showConfirm = function(ev) {
-      if (!isAccept) {
+      if (!self.isAccept) {
         $mdDialog
           .show(self.enableDialogSettings)
           .then(
@@ -71,7 +71,7 @@
         self.onAccept({
           value: true
         });
-        isAccept = true;
+        self.isAccept = true;
       }
     }
 
@@ -82,7 +82,7 @@
         self.onAccept({
           value: false
         });
-        isAccept = false;
+        self.isAccept = false;
       }
     }
 

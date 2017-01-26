@@ -1348,7 +1348,7 @@
   angular
     .module('otusjs.player.component')
     .component('otusQuestionMenu', {
-      template:'<md-fab-speed-dial style="position:absolute; top:90px; right:0; transform: translate(0%, 0%);" md-direction="left" class="md-scale"><md-fab-trigger><md-button class="md-fab md-mini md-raised" aria-label="Limpar Resposta"><md-icon>delete</md-icon><md-tooltip md-direction="down">Limpar</md-tooltip></md-button></md-fab-trigger><md-fab-actions><md-button ng-click="$ctrl.clear(\'comment\')" class="md-fab md-raised md-mini" aria-label="Comentario"><md-icon>comment</md-icon><md-tooltip md-direction="down">Limpar comentário</md-tooltip></md-button><md-button ng-click="$ctrl.clear(\'metadata\')" class="md-fab md-raised md-mini" aria-label="Metadado"><md-icon>label</md-icon><md-tooltip md-direction="down">Limpar metadata</md-tooltip></md-button><md-button ng-click="$ctrl.clear(\'answer\')" class="md-fab md-raised md-mini" aria-label="Questão"><md-icon>question_answer</md-icon><md-tooltip md-direction="down">Limpar resposta</md-tooltip></md-button></md-fab-actions></md-fab-speed-dial><md-button id="accept-button" style="position:absolute; top:30px; right:0; transform: translate(0%, 0%);" ng-click="$ctrl.showConfirm($event)" ng-show="$ctrl.error" class="md-fab md-mini md-raised" aria-label="Aceitar resposta"><md-icon>check</md-icon><md-tooltip md-direction="down">Aceitar resposta</md-tooltip></md-button>',
+      template:'<md-fab-speed-dial style="position:absolute; top:90px; right:0; transform: translate(0%, 0%);" md-direction="left" class="md-scale"><md-fab-trigger><md-button class="md-fab md-mini md-raised" aria-label="Limpar Resposta"><md-icon>delete</md-icon><md-tooltip md-direction="down">Limpar</md-tooltip></md-button></md-fab-trigger><md-fab-actions><md-button ng-click="$ctrl.clear(\'comment\')" class="md-fab md-raised md-mini" aria-label="Comentario"><md-icon>comment</md-icon><md-tooltip md-direction="down">Limpar comentário</md-tooltip></md-button><md-button ng-click="$ctrl.clear(\'metadata\')" class="md-fab md-raised md-mini" aria-label="Metadado"><md-icon>label</md-icon><md-tooltip md-direction="down">Limpar metadata</md-tooltip></md-button><md-button ng-click="$ctrl.clear(\'answer\')" class="md-fab md-raised md-mini" aria-label="Questão"><md-icon>question_answer</md-icon><md-tooltip md-direction="down">Limpar resposta</md-tooltip></md-button></md-fab-actions></md-fab-speed-dial><md-button id="accept-button" ng-class="{ \'forced-answer\': $ctrl.isAccept, \'regular-answer\': !$ctrl.isAccept }" style="position:absolute; top:30px; right:0; transform: translate(0%, 0%);" ng-click="$ctrl.showConfirm($event)" ng-show="$ctrl.error" class="md-fab md-mini md-raised" aria-label="Aceitar resposta"><md-icon>check</md-icon><md-tooltip md-direction="down">Aceitar resposta</md-tooltip></md-button>',
       controller: OtusSurveyMenuController,
       bindings: {
         onClear: '&',
@@ -1366,7 +1366,7 @@
 
   function OtusSurveyMenuController($mdDialog, $mdMedia) {
     var self = this;
-    var isAccept = false;
+    self.isAccept = false;
 
     self.$onInit = function() {
       self.otusQuestion.menuComponent = self;
@@ -1381,7 +1381,7 @@
     };
 
     self.showConfirm = function(ev) {
-      if (!isAccept) {
+      if (!self.isAccept) {
         $mdDialog
           .show(self.enableDialogSettings)
           .then(
@@ -1415,7 +1415,7 @@
         self.onAccept({
           value: true
         });
-        isAccept = true;
+        self.isAccept = true;
       }
     }
 
@@ -1426,7 +1426,7 @@
         self.onAccept({
           value: false
         });
-        isAccept = false;
+        self.isAccept = false;
       }
     }
 
@@ -3973,6 +3973,7 @@
     function applyFilling() {
       if (_filling) {
         ActivityFacadeService.fillQuestion(_filling);
+        console.log(ActivityFacadeService.surveyActivity);
       }
     }
 
