@@ -28,6 +28,7 @@
       self.otusQuestion.menuComponent = self;
       enableDialogSettings();
       disableDialogSettings();
+      console.dir(self.otusQuestion);
     };
 
     self.clear = function(value) {

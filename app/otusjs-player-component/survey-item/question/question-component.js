@@ -27,9 +27,10 @@
     self.$onInit = function() {
       self.template = TagComponentBuilderService.createTagElement(self.itemData.objectType);
       self.otusSurveyItem.questionComponent = self;
-      self.item = {};
-      self.metadata = {};
-      self.comment = {};
+      self.filling = CurrentItemService.getFilling() || {};
+      self.answer = CurrentItemService.getFilling().answer || {};
+      self.metadata = CurrentItemService.getFilling().metadata || {};
+      self.comment = CurrentItemService.getFilling().comment || {};
       self.menuComponent = {};
       self.menuComponent.error = false;
     };
@@ -61,7 +62,7 @@
     }
 
     self.clearAnswer = function() {
-      self.item.clear();
+      self.answer.clear();
     };
 
     self.clearMetadataAnswer = function() {
@@ -73,8 +74,8 @@
     };
 
     self.setError = function(error) {
-      if (self.item.itemData.isQuestion()) {
-        if (self.item.itemData.fillingRules.options.accept !== undefined) {
+      if (self.itemData.isQuestion()) {
+        if (self.itemData.fillingRules.options.accept !== undefined) {
           if (!error.mandatory) {
             self.menuComponent.error = true;
           } else {
