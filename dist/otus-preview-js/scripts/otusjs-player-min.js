@@ -677,7 +677,7 @@
         itemData: '<',
         onUpdate: '&'
       },
-      require : {
+      require: {
         otusQuestion: '^otusQuestion'
       }
     });
@@ -690,21 +690,24 @@
     var self = this;
 
     self.$onInit = function() {
-      self.answer = CurrentItemService.getFilling().answer.value;
+      var modelAnswer = CurrentItemService.getFilling().answer.value;
+      if (modelAnswer) {
+        self.answer = new Date(modelAnswer);
+      }
       self.otusQuestion.item = self;
     };
 
     self.update = function() {
       self.onUpdate({
         valueType: 'answer',
-        value: self.answer
+        value: (self.answer instanceof Date) ? self.answer.getTime() : null
       });
     };
 
     self.clear = function() {
       CurrentItemService.getFilling().answer.clear();
       delete self.answer;
-    }
+    };
   }
 }());
 
@@ -1100,13 +1103,13 @@
   angular
     .module('otusjs.player.component')
     .component('otusTimeQuestion', {
-      template:'<md-content layout-padding><div layout="row"><md-input-container class="md-block" flex-gt-sm="45"><md-icon class="material-icons">access_time</md-icon><input type="time" ng-model="$ctrl.answer" ng-change="$ctrl.update()" aria-label="Tempo" min="0" max="4999"></md-input-container></div></md-content>',
+      template:'<md-content layout-padding><div layout="row"><md-input-container class="md-block" flex-gt-sm="45"><md-icon class="material-icons">access_time</md-icon><input type="time" ng-model="$ctrl.answer" ng-blur="$ctrl.update()" aria-label="Tempo" min="0" max="4999"></md-input-container></div></md-content>',
       controller: Controller,
       bindings: {
         itemData: '<',
         onUpdate: '&'
       },
-      require : {
+      require: {
         otusQuestion: '^otusQuestion'
       }
     });
@@ -1119,21 +1122,24 @@
     var self = this;
 
     self.$onInit = function() {
-      self.answer = CurrentItemService.getFilling().answer.value;
+      var modelAnswer = CurrentItemService.getFilling().answer.value;
+      if (modelAnswer) {
+        self.answer = new Date(modelAnswer);
+      }
       self.otusQuestion.item = self;
     };
 
     self.update = function() {
       self.onUpdate({
         valueType: 'answer',
-        value: self.answer
+        value: (self.answer instanceof Date) ? self.answer.getTime() : null
       });
     };
 
     self.clear = function() {
       CurrentItemService.getFilling().answer.clear();
       delete self.answer;
-    }
+    };
   }
 }());
 
@@ -1308,7 +1314,7 @@
 
     self.referenceAsTime = function(type) {
       var reference = CurrentItemService.getFillingRules()[type].data.reference;
-      return $filter('date')(new Date(reference), 'hh:mm:ss');
+      return $filter('date')(new Date(reference), 'hh:mm a');
     };
 
     self.reference = function(type) {
