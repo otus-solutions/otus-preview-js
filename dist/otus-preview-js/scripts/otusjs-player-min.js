@@ -2705,6 +2705,7 @@
        *
        **************************************************************/
       /* PreSave Phase */
+      PlayerConfigurationService.onPreSave(ApplyAnswer);
 
       /* ExecutionSave Phase */
       PlayerConfigurationService.onSave(SaveSurveyActivity);
