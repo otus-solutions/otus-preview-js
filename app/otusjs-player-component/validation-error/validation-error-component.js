@@ -43,7 +43,7 @@
 
     self.referenceAsTime = function(type) {
       var reference = CurrentItemService.getFillingRules()[type].data.reference;
-      return $filter('date')(new Date(reference), 'hh:mm:ss');
+      return $filter('date')(new Date(reference), 'hh:mm a');
     };
 
     self.reference = function(type) {
