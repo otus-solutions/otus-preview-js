@@ -23,12 +23,12 @@
   function OtusSurveyMenuController($mdDialog, $mdMedia) {
     var self = this;
     self.isAccept = false;
+    self.error;
 
     self.$onInit = function() {
       self.otusQuestion.menuComponent = self;
       enableDialogSettings();
       disableDialogSettings();
-      console.dir(self.otusQuestion);
     };
 
     self.clear = function(value) {

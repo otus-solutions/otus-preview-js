@@ -631,6 +631,8 @@
       self.comment = CurrentItemService.getFilling().comment || {};
       self.menuComponent = {};
       self.menuComponent.error = false;
+
+      self.setError();
     };
 
     self.update = function(prop, value) {
@@ -672,14 +674,25 @@
     };
 
     self.setError = function(error) {
-      if (self.itemData.isQuestion()) {
-        if (self.itemData.fillingRules.options.accept !== undefined && self.filling.forceAnswer) {
-          if (!error.mandatory) {
-            self.menuComponent.error = true;
-          } else {
-            self.menuComponent.error = false;
-          }
+      console.log("opa!");
+      if (self.filling.forceAnswer) {
+        console.log(self.filling.forceAnswer);
+        self.menuComponent.error = true;
+      } else if (self.itemData.isQuestion() && error) {
+        if (Object.keys(self.itemData.fillingRules.options).every(_canBeIgnored(error))) {
+          self.menuComponent.error = true;
+        } else {
+          self.menuComponent.error = false;
         }
+      } else {
+        console.log("false?");
+        self.menuComponent.error = false;
+      }
+    }
+
+    function _canBeIgnored(error) {
+      return function(validator) {
+        return self.itemData.fillingRules.options[validator].data.canBeIgnored || !error[validator];
       }
     }
   }
@@ -1368,12 +1381,12 @@
   function OtusSurveyMenuController($mdDialog, $mdMedia) {
     var self = this;
     self.isAccept = false;
+    self.error;
 
     self.$onInit = function() {
       self.otusQuestion.menuComponent = self;
       enableDialogSettings();
       disableDialogSettings();
-      console.dir(self.otusQuestion);
     };
 
     self.clear = function(value) {

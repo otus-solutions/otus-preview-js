@@ -33,6 +33,8 @@
       self.comment = CurrentItemService.getFilling().comment || {};
       self.menuComponent = {};
       self.menuComponent.error = false;
+
+      self.setError();
     };
 
     self.update = function(prop, value) {
@@ -74,14 +76,22 @@
     };
 
     self.setError = function(error) {
-      if (self.itemData.isQuestion()) {
-        if (self.itemData.fillingRules.options.accept !== undefined) {
-          if (!error.mandatory) {
-            self.menuComponent.error = true;
-          } else {
-            self.menuComponent.error = false;
-          }
+      if (self.filling.forceAnswer) {
+        self.menuComponent.error = true;
+      } else if (self.itemData.isQuestion() && error) {
+        if (Object.keys(self.itemData.fillingRules.options).every(_canBeIgnored(error))) {
+          self.menuComponent.error = true;
+        } else {
+          self.menuComponent.error = false;
         }
+      } else {
+        self.menuComponent.error = false;
+      }
+    }
+
+    function _canBeIgnored(error) {
+      return function(validator) {
+        return self.itemData.fillingRules.options[validator].data.canBeIgnored || !error[validator];
       }
     }
   }
