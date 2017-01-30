@@ -24,7 +24,7 @@
 
     self.$onInit = function() {
       self.answerArray = CurrentItemService.getFilling().answer.value;
-      self.otusQuestion.item = self;
+      self.otusQuestion.answer = self;
       if (!self.answerArray) {
         self.answerArray = [];
         self.itemData.options.forEach(function(option) {

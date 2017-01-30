@@ -30,7 +30,7 @@
       self.hasSpecials = CurrentItemService.getFillingRules().specials;
       self.hasUpperCase = CurrentItemService.getFillingRules().upperCase;
       self.hasLowerCase = CurrentItemService.getFillingRules().lowerCase;
-      self.otusQuestion.item = self;
+      self.otusQuestion.answer = self;
     };
 
     self.update = function() {

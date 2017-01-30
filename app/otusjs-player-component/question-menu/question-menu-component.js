@@ -23,12 +23,14 @@
   function OtusSurveyMenuController($mdDialog, $mdMedia) {
     var self = this;
     self.isAccept = false;
-    self.error;
+
+    /* Public methods */
+    self.showAccept = showAccept;
 
     self.$onInit = function() {
       self.otusQuestion.menuComponent = self;
-      enableDialogSettings();
-      disableDialogSettings();
+      _enableDialogSettings();
+      _disableDialogSettings();
     };
 
     self.clear = function(value) {
@@ -42,8 +44,8 @@
         $mdDialog
           .show(self.enableDialogSettings)
           .then(
-            enableForwardSuccessfulExecution,
-            enableForwardUnsuccessfulExecution
+            _enableForwardSuccessfulExecution,
+            _enableForwardUnsuccessfulExecution
           );
 
         return {
@@ -55,8 +57,8 @@
         $mdDialog
           .show(self.disableDialogSettings)
           .then(
-            disableForwardSuccessfulExecution,
-            disableForwardUnsuccessfulExecution
+            _disableForwardSuccessfulExecution,
+            _disableForwardUnsuccessfulExecution
           );
 
         return {
@@ -67,7 +69,7 @@
       }
     };
 
-    function enableForwardSuccessfulExecution(response) {
+    function _enableForwardSuccessfulExecution(response) {
       if (response.action !== 'cancel') {
         self.onAccept({
           value: true
@@ -76,9 +78,9 @@
       }
     }
 
-    function enableForwardUnsuccessfulExecution(error) {}
+    function _enableForwardUnsuccessfulExecution(error) {}
 
-    function disableForwardSuccessfulExecution(response) {
+    function _disableForwardSuccessfulExecution(response) {
       if (response.action !== 'cancel') {
         self.onAccept({
           value: false
@@ -87,9 +89,9 @@
       }
     }
 
-    function disableForwardUnsuccessfulExecution(error) {}
+    function _disableForwardUnsuccessfulExecution(error) {}
 
-    function enableDialogSettings() {
+    function _enableDialogSettings() {
       self.enableDialogSettings = {
         parent: angular.element(document.body),
         templateUrl: 'app/otusjs-player-component/question-menu/accept-answer/enable-accept-answer-dialog-template.html',
@@ -102,7 +104,7 @@
       };
     }
 
-    function disableDialogSettings() {
+    function _disableDialogSettings() {
       self.disableDialogSettings = {
         parent: angular.element(document.body),
         templateUrl: 'app/otusjs-player-component/question-menu/accept-answer/disable-accept-answer-dialog-template.html',
@@ -113,6 +115,10 @@
           bottom: 0
         }
       };
+    }
+
+    function showAccept() {
+      return self.error || self.otusQuestion.menuComponent.otusQuestion.filling.forceAnswer;
     }
 
   }

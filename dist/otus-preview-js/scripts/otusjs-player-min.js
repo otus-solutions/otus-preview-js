@@ -674,9 +674,7 @@
     };
 
     self.setError = function(error) {
-      console.log("opa!");
       if (self.filling.forceAnswer) {
-        console.log(self.filling.forceAnswer);
         self.menuComponent.error = true;
       } else if (self.itemData.isQuestion() && error) {
         if (Object.keys(self.itemData.fillingRules.options).every(_canBeIgnored(error))) {
@@ -685,7 +683,6 @@
           self.menuComponent.error = false;
         }
       } else {
-        console.log("false?");
         self.menuComponent.error = false;
       }
     }
@@ -725,7 +722,7 @@
 
     self.$onInit = function() {
       self.answer = CurrentItemService.getFilling().answer.value;
-      self.otusQuestion.item = self;
+      self.otusQuestion.answer = self;
     };
 
     self.update = function() {
@@ -754,7 +751,7 @@
         itemData: '<',
         onUpdate: '&'
       },
-      require : {
+      require: {
         otusQuestion: '^otusQuestion'
       }
     });
@@ -768,7 +765,7 @@
 
     self.$onInit = function() {
       self.answer = CurrentItemService.getFilling().answer.value;
-      self.otusQuestion.item = self;
+      self.otusQuestion.answer = self;
     };
 
     self.update = function() {
@@ -868,7 +865,7 @@
 
     self.$onInit = function() {
       self.answer = CurrentItemService.getFilling().answer.value;
-      self.otusQuestion.item = self;
+      self.otusQuestion.answer = self;
     };
 
     self.update = function() {
@@ -911,7 +908,7 @@
 
     self.$onInit = function() {
       self.answer = CurrentItemService.getFilling().answer.value;
-      self.otusQuestion.item = self;
+      self.otusQuestion.answer = self;
     };
 
     self.update = function() {
@@ -954,7 +951,7 @@
 
     self.$onInit = function() {
       self.answerArray = CurrentItemService.getFilling().answer.value;
-      self.otusQuestion.item = self;
+      self.otusQuestion.answer = self;
       if (!self.answerArray) {
         self.answerArray = [];
         self.itemData.options.forEach(function(option) {
@@ -1017,7 +1014,7 @@
       self.hasSpecials = CurrentItemService.getFillingRules().specials;
       self.hasUpperCase = CurrentItemService.getFillingRules().upperCase;
       self.hasLowerCase = CurrentItemService.getFillingRules().lowerCase;
-      self.otusQuestion.item = self;
+      self.otusQuestion.answer = self;
     };
 
     self.update = function() {
@@ -1107,7 +1104,7 @@
 
     self.$onInit = function() {
       self.answer = CurrentItemService.getFilling().answer.value;
-      self.otusQuestion.item = self;
+      self.otusQuestion.answer = self;
     };
 
     self.update = function() {
@@ -1154,7 +1151,7 @@
 
     self.$onInit = function() {
       self.answer = CurrentItemService.getFilling().answer.value;
-      self.otusQuestion.item = self;
+      self.otusQuestion.answer = self;
     };
 
     self.update = function() {
@@ -1197,7 +1194,7 @@
 
     self.$onInit = function() {
       self.answer = CurrentItemService.getFilling().answer.value;
-      self.otusQuestion.item = self;
+      self.otusQuestion.answer = self;
     };
 
     self.update = function() {
@@ -1362,7 +1359,7 @@
   angular
     .module('otusjs.player.component')
     .component('otusQuestionMenu', {
-      template:'<md-fab-speed-dial style="position:absolute; top:90px; right:0; transform: translate(0%, 0%);" md-direction="left" class="md-scale"><md-fab-trigger><md-button class="md-fab md-mini md-raised" aria-label="Limpar Resposta"><md-icon>delete</md-icon><md-tooltip md-direction="down">Limpar</md-tooltip></md-button></md-fab-trigger><md-fab-actions><md-button ng-click="$ctrl.clear(\'comment\')" class="md-fab md-raised md-mini" aria-label="Comentario"><md-icon>comment</md-icon><md-tooltip md-direction="down">Limpar comentário</md-tooltip></md-button><md-button ng-click="$ctrl.clear(\'metadata\')" class="md-fab md-raised md-mini" aria-label="Metadado"><md-icon>label</md-icon><md-tooltip md-direction="down">Limpar metadata</md-tooltip></md-button><md-button ng-click="$ctrl.clear(\'answer\')" class="md-fab md-raised md-mini" aria-label="Questão"><md-icon>question_answer</md-icon><md-tooltip md-direction="down">Limpar resposta</md-tooltip></md-button></md-fab-actions></md-fab-speed-dial><md-button id="accept-button" ng-class="{ \'forced-answer\': $ctrl.isAccept, \'regular-answer\': !$ctrl.isAccept }" style="position:absolute; top:30px; right:0; transform: translate(0%, 0%);" ng-click="$ctrl.showConfirm($event)" ng-show="$ctrl.error" class="md-fab md-mini md-raised" aria-label="Aceitar resposta"><md-icon>check</md-icon><md-tooltip md-direction="down">Aceitar resposta</md-tooltip></md-button>',
+      template:'<md-fab-speed-dial style="position:absolute; top:90px; right:0; transform: translate(0%, 0%);" md-direction="left" class="md-scale"><md-fab-trigger><md-button class="md-fab md-mini md-raised" aria-label="Limpar Resposta"><md-icon>delete</md-icon><md-tooltip md-direction="down">Limpar</md-tooltip></md-button></md-fab-trigger><md-fab-actions><md-button ng-click="$ctrl.clear(\'comment\')" class="md-fab md-raised md-mini" aria-label="Comentario"><md-icon>comment</md-icon><md-tooltip md-direction="down">Limpar comentário</md-tooltip></md-button><md-button ng-click="$ctrl.clear(\'metadata\')" class="md-fab md-raised md-mini" aria-label="Metadado"><md-icon>label</md-icon><md-tooltip md-direction="down">Limpar metadata</md-tooltip></md-button><md-button ng-click="$ctrl.clear(\'answer\')" class="md-fab md-raised md-mini" aria-label="Questão"><md-icon>question_answer</md-icon><md-tooltip md-direction="down">Limpar resposta</md-tooltip></md-button></md-fab-actions></md-fab-speed-dial><md-button id="accept-button" ng-class="{ \'forced-answer\': $ctrl.isAccept, \'regular-answer\': !$ctrl.isAccept }" style="position:absolute; top:30px; right:0; transform: translate(0%, 0%);" ng-click="$ctrl.showConfirm($event)" ng-show="$ctrl.showAccept()" class="md-fab md-mini md-raised" aria-label="Aceitar resposta"><md-icon>check</md-icon><md-tooltip md-direction="down">Aceitar resposta</md-tooltip></md-button>',
       controller: OtusSurveyMenuController,
       bindings: {
         onClear: '&',
@@ -1381,12 +1378,14 @@
   function OtusSurveyMenuController($mdDialog, $mdMedia) {
     var self = this;
     self.isAccept = false;
-    self.error;
+
+    /* Public methods */
+    self.showAccept = showAccept;
 
     self.$onInit = function() {
       self.otusQuestion.menuComponent = self;
-      enableDialogSettings();
-      disableDialogSettings();
+      _enableDialogSettings();
+      _disableDialogSettings();
     };
 
     self.clear = function(value) {
@@ -1400,8 +1399,8 @@
         $mdDialog
           .show(self.enableDialogSettings)
           .then(
-            enableForwardSuccessfulExecution,
-            enableForwardUnsuccessfulExecution
+            _enableForwardSuccessfulExecution,
+            _enableForwardUnsuccessfulExecution
           );
 
         return {
@@ -1413,8 +1412,8 @@
         $mdDialog
           .show(self.disableDialogSettings)
           .then(
-            disableForwardSuccessfulExecution,
-            disableForwardUnsuccessfulExecution
+            _disableForwardSuccessfulExecution,
+            _disableForwardUnsuccessfulExecution
           );
 
         return {
@@ -1425,7 +1424,7 @@
       }
     };
 
-    function enableForwardSuccessfulExecution(response) {
+    function _enableForwardSuccessfulExecution(response) {
       if (response.action !== 'cancel') {
         self.onAccept({
           value: true
@@ -1434,9 +1433,9 @@
       }
     }
 
-    function enableForwardUnsuccessfulExecution(error) {}
+    function _enableForwardUnsuccessfulExecution(error) {}
 
-    function disableForwardSuccessfulExecution(response) {
+    function _disableForwardSuccessfulExecution(response) {
       if (response.action !== 'cancel') {
         self.onAccept({
           value: false
@@ -1445,9 +1444,9 @@
       }
     }
 
-    function disableForwardUnsuccessfulExecution(error) {}
+    function _disableForwardUnsuccessfulExecution(error) {}
 
-    function enableDialogSettings() {
+    function _enableDialogSettings() {
       self.enableDialogSettings = {
         parent: angular.element(document.body),
         template:'<div md-theme="layoutTheme" class="md-padding" ng-cloak><md-dialog-content><h2 class="md-title">Questão fora dos limites estabelecidos</h2><p class="md-body-1">Você deseja <b>ignorar a validação</b> e aceitar a resposta?</p></md-dialog-content><md-dialog-actions><md-button class="md-raised" ng-click="controller.cancel({ action: \'cancel\' })">Cancelar</md-button><md-button class="md-raised md-primary" aria-label="Aceitar resposta" ng-click="controller.event({ action: \'true\' })">Aceitar</md-button></md-dialog-actions></div>',
@@ -1460,7 +1459,7 @@
       };
     }
 
-    function disableDialogSettings() {
+    function _disableDialogSettings() {
       self.disableDialogSettings = {
         parent: angular.element(document.body),
         template:'<div md-theme="layoutTheme" class="md-padding" ng-cloak><md-dialog-content><h2 class="md-title">Questão fora dos limites estabelecidos</h2><p class="md-body-1">Você deseja <b>remover a ação</b> de aceitar a resposta?</p></md-dialog-content><md-dialog-actions><md-button class="md-raised" ng-click="controller.cancel({ action: \'cancel\' })">Cancelar</md-button><md-button class="md-raised md-primary" aria-label="Aceitar resposta" ng-click="controller.event({ action: \'false\' })">Remover</md-button></md-dialog-actions></div>',
@@ -1471,6 +1470,10 @@
           bottom: 0
         }
       };
+    }
+
+    function showAccept() {
+      return self.error || self.otusQuestion.menuComponent.otusQuestion.filling.forceAnswer;
     }
 
   }
