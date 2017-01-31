@@ -20,11 +20,8 @@
     self.setupValidation = setupValidation;
 
     function applyValidation(currentItemService, callback) {
-      if (currentItemService.getFilling().forceAnswer) {
-        ValidationService.unregisterElement(_elementRegister.id);
-        setupValidation(currentItemService, _answer);
-      }
-      
+      ValidationService.unregisterElement(_elementRegister.id);
+      setupValidation(currentItemService, _answer);
       ValidationService.validateElement(currentItemService.getItem().customID, callback);
     }
 

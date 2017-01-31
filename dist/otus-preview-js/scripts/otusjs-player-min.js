@@ -1377,7 +1377,6 @@
 
   function OtusSurveyMenuController($mdDialog, $mdMedia) {
     var self = this;
-    self.isAccept = false;
     self.forceAnswer = false;
 
     /* Public methods */
@@ -1432,7 +1431,7 @@
         self.onAccept({
           value: true
         });
-        self.forceAnswer = self.otusQuestion.menuComponent.otusQuestion.filling.forceAnswer;
+        self.forceAnswer = true;
       }
     }
 
@@ -1443,7 +1442,7 @@
         self.onAccept({
           value: false
         });
-        self.forceAnswer = self.otusQuestion.menuComponent.otusQuestion.filling.forceAnswer;
+        self.forceAnswer = false;
       }
     }
 
@@ -4475,11 +4474,8 @@
     self.setupValidation = setupValidation;
 
     function applyValidation(currentItemService, callback) {
-      if (currentItemService.getFilling().forceAnswer) {
-        ValidationService.unregisterElement(_elementRegister.id);
-        setupValidation(currentItemService, _answer);
-      }
-      
+      ValidationService.unregisterElement(_elementRegister.id);
+      setupValidation(currentItemService, _answer);
       ValidationService.validateElement(currentItemService.getItem().customID, callback);
     }
 

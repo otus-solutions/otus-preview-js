@@ -22,7 +22,6 @@
 
   function OtusSurveyMenuController($mdDialog, $mdMedia) {
     var self = this;
-    self.isAccept = false;
     self.forceAnswer = false;
 
     /* Public methods */
@@ -77,7 +76,7 @@
         self.onAccept({
           value: true
         });
-        self.forceAnswer = self.otusQuestion.menuComponent.otusQuestion.filling.forceAnswer;
+        self.forceAnswer = true;
       }
     }
 
@@ -88,7 +87,7 @@
         self.onAccept({
           value: false
         });
-        self.forceAnswer = self.otusQuestion.menuComponent.otusQuestion.filling.forceAnswer;
+        self.forceAnswer = false;
       }
     }
 
