@@ -687,6 +687,12 @@
       }
     }
 
+    self.isAccept = function() {
+      if (self.itemData.fillingRules.options.accept == undefined)
+        return false;
+      return true;
+    }
+
     function _canBeIgnored(error) {
       return function(validator) {
         return self.itemData.fillingRules.options[validator].data.canBeIgnored || !error[validator];
@@ -1475,7 +1481,7 @@
     }
 
     function showAccept() {
-      return self.error || self.forceAnswer;
+      return (self.error && self.forceAnswer) || (self.error && self.otusQuestion.isAccept()) || self.forceAnswer;
     }
 
   }

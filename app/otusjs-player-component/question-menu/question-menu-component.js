@@ -120,7 +120,7 @@
     }
 
     function showAccept() {
-      return self.error || self.forceAnswer;
+      return (self.error && self.forceAnswer) || (self.error && self.otusQuestion.isAccept()) || self.forceAnswer;
     }
 
   }
