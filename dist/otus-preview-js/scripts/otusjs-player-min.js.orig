@@ -407,7 +407,11 @@
     function onInit() {
       $scope.$parent.$ctrl.playerBackCover = self;
       var activity = ActivityFacadeService.getCurrentSurvey().getSurvey();
-      self.title = activity.surveyForm.surveyTemplate.identity.name;
+<<<<<<< HEAD
+      self.title = activity.surveyForm.identity.name;
+=======
+      self.title = activity.getName();
+>>>>>>> 81182047545bf6b23516df57dc8dd6f1d85c7ecb
     }
   }
 }());
@@ -443,7 +447,11 @@
     function onInit() {
       $scope.$parent.$ctrl.playerCover = self;
       var activity = ActivityFacadeService.getCurrentSurvey().getSurvey();
-      self.title = activity.surveyForm.surveyTemplate.identity.name;
+<<<<<<< HEAD
+      self.title = activity.surveyForm.identity.name;
+=======
+      self.title = activity.getName();
+>>>>>>> 81182047545bf6b23516df57dc8dd6f1d85c7ecb
     }
 
     function play() {
@@ -452,7 +460,11 @@
 
     function show() {
       var activity = ActivityFacadeService.getCurrentSurvey().getSurvey();
-      self.title = activity.surveyForm.surveyTemplate.identity.name;
+<<<<<<< HEAD
+      self.title = activity.surveyForm.identity.name;
+=======
+      self.title = activity.getName();
+>>>>>>> 81182047545bf6b23516df57dc8dd6f1d85c7ecb
     }
 
     function remove() {
@@ -467,7 +479,7 @@
   angular
     .module('otusjs.player.component')
     .component('otusSurveyHeader', {
-      template:'<md-content layout="column" flex><md-content layout="row"><md-chips layout="column" layout-padding layout-align="center center" style="padding: 0 !important; padding-left: 10px !important"><md-chip style="margin: 0 !important">{{ $ctrl.surveyIdentity.acronym }}</md-chip></md-chips><md-content layout="column" flex layout-padding style="padding: 0 !important" layout-align="center start"><div><span class="md-display-1">{{ $ctrl.surveyIdentity.name }}</span></div></md-content></md-content><md-content layout="row" style="padding-left: 10px !important; padding-right: 10px !important"><div layout="column" layout-padding layout-align="center start"><label class="md-subhead" style="padding: 0 !important">Participante</label> <span style="padding: 0 !important">{{ $ctrl.participantData.name }}</span></div><div layout="column" layout-padding layout-align="center start"><label class="md-subhead" style="padding: 0 !important">Número de Recrutamento</label> <span style="padding: 0 !important">{{ $ctrl.participantData.recruitmentNumber }}</span></div><div layout-padding flex></div></md-content></md-content>',
+      template:'<md-content layout="column" flex><md-card><md-content layout="row"><md-chips layout="column" layout-padding layout-align="center center" style="padding: 0 !important; padding-left: 10px !important"><md-chip style="margin: 0 !important">{{ $ctrl.surveyIdentity.acronym }}</md-chip></md-chips><md-content layout="column" flex layout-padding style="padding: 0 !important" layout-align="center start"><div><span class="md-display-1">{{ $ctrl.surveyIdentity.name }}</span></div></md-content></md-content><md-content layout="row" style="padding-left: 10px !important; padding-right: 10px !important"><div layout="column" layout-padding layout-align="center start"><label class="md-caption" style="padding: 0 !important">Participante</label> <span class="md-title" style="padding: 0 !important">{{ $ctrl.participantData.name }}</span></div><div class="md-list-item-text" layout="column" layout-padding layout-align="center start"><label class="md-caption" style="padding: 0 !important">Número de Recrutamento</label> <span class="md-title" style="padding: 0 !important">{{ $ctrl.participantData.recruitmentNumber }}</span></div></md-content></md-card></md-content>',
       controller: Controller,
       bindings: {
         surveyIdentity: '<'
@@ -486,7 +498,11 @@
 
     function onInit() {
       self.activity = ActivityFacadeService.getCurrentSurvey().getSurvey();
-      self.surveyIdentity = self.activity.surveyForm.surveyTemplate.identity;
+<<<<<<< HEAD
+      self.surveyIdentity = self.activity.surveyForm.identity;
+=======
+      self.surveyIdentity = self.activity.getIdentity();
+>>>>>>> 81182047545bf6b23516df57dc8dd6f1d85c7ecb
       self.participantData = self.activity.participantData;
 
       if (self.activity.interviews.length) {
@@ -545,7 +561,7 @@
       self.$error = validationMap;
 
       if (self.$error.hasError) {
-        self.errorComponent.focus();
+        self.questionComponent.setError(self.$error);
       }
     }
 
@@ -561,7 +577,7 @@
 
     function update(prop, value) {
       if (prop) {
-        if (prop === 'comment') {
+        if (prop === 'comment' || prop === 'forceAnswer') {
           self.filling[prop] = value;
         } else {
           clear(prop, value);
@@ -602,7 +618,7 @@
   angular
     .module('otusjs.player.component')
     .component('otusQuestion', {
-      template:'<md-content layout="column"><div layout="row"><md-tabs md-dynamic-height layout="column" flex="95"><md-tab label="Resposta"><md-content class="md-padding" bind-html-compile="$ctrl.template"></md-content></md-tab><md-tab label="Metadado"><md-content class="md-padding"><metadata-group on-update="$ctrl.update(valueType, value)" item-data="$ctrl.itemData"></metadata-group></md-content></md-tab><md-tab label="Comentário"><md-content class="md-padding"><otus-comment on-update="$ctrl.update(valueType, value)" item-data="$ctrl.itemData"></otus-comment></md-content></md-tab></md-tabs><div layout="column"><otus-question-menu on-clear="$ctrl.clear(value)"></otus-question-menu></div></div></md-content>',
+      template:'<md-content layout="column"><div layout="row"><md-tabs md-dynamic-height layout="column" flex="95"><md-tab label="Resposta"><md-content class="md-padding" bind-html-compile="$ctrl.template"></md-content></md-tab><md-tab label="Metadado"><md-content class="md-padding"><metadata-group on-update="$ctrl.update(valueType, value)" item-data="$ctrl.itemData"></metadata-group></md-content></md-tab><md-tab label="Comentário"><md-content class="md-padding"><otus-comment on-update="$ctrl.update(valueType, value)" item-data="$ctrl.itemData"></otus-comment></md-content></md-tab></md-tabs><div layout="column"><otus-question-menu on-clear="$ctrl.clear(value)" on-accept="$ctrl.forceAnswer(value)"></otus-question-menu></div></div></md-content>',
       controller: OtusQuestionController,
       bindings: {
         itemData: '<',
@@ -625,15 +641,26 @@
     self.$onInit = function() {
       self.template = TagComponentBuilderService.createTagElement(self.itemData.objectType);
       self.otusSurveyItem.questionComponent = self;
-      self.item = {};
-      self.metadata = {};
-      self.comment = {};
+      self.filling = CurrentItemService.getFilling() || {};
+      self.answer = CurrentItemService.getFilling().answer || {};
+      self.metadata = CurrentItemService.getFilling().metadata || {};
+      self.comment = CurrentItemService.getFilling().comment || {};
       self.menuComponent = {};
+      self.menuComponent.error = false;
+
+      self.setError();
     };
 
     self.update = function(prop, value) {
       self.onUpdate({
         valueType: prop,
+        value: value
+      });
+    };
+
+    self.forceAnswer = function(value) {
+      self.onUpdate({
+        valueType: 'forceAnswer',
         value: value
       });
     };
@@ -651,7 +678,7 @@
     }
 
     self.clearAnswer = function() {
-      self.item.clear();
+      self.answer.clear();
     };
 
     self.clearMetadataAnswer = function() {
@@ -661,6 +688,32 @@
     self.clearCommentAnswer = function() {
       self.comment.clear();
     };
+
+    self.setError = function(error) {
+      if (self.filling.forceAnswer) {
+        self.menuComponent.error = true;
+      } else if (self.itemData.isQuestion() && error) {
+        if (Object.keys(self.itemData.fillingRules.options).every(_canBeIgnored(error))) {
+          self.menuComponent.error = true;
+        } else {
+          self.menuComponent.error = false;
+        }
+      } else {
+        self.menuComponent.error = false;
+      }
+    }
+
+    self.isAccept = function() {
+      if (self.itemData.fillingRules.options.accept == undefined)
+        return false;
+      return true;
+    }
+
+    function _canBeIgnored(error) {
+      return function(validator) {
+        return self.itemData.fillingRules.options[validator].data.canBeIgnored || !error[validator];
+      }
+    }
   }
 
 })();
@@ -677,7 +730,7 @@
         itemData: '<',
         onUpdate: '&'
       },
-      require : {
+      require: {
         otusQuestion: '^otusQuestion'
       }
     });
@@ -690,21 +743,29 @@
     var self = this;
 
     self.$onInit = function() {
+<<<<<<< HEAD
       self.answer = CurrentItemService.getFilling().answer.value;
+      self.otusQuestion.answer = self;
+=======
+      var modelAnswer = CurrentItemService.getFilling().answer.value;
+      if (modelAnswer) {
+        self.answer = new Date(modelAnswer);
+      }
       self.otusQuestion.item = self;
+>>>>>>> 81182047545bf6b23516df57dc8dd6f1d85c7ecb
     };
 
     self.update = function() {
       self.onUpdate({
         valueType: 'answer',
-        value: self.answer
+        value: (self.answer instanceof Date) ? self.answer.getTime() : null
       });
     };
 
     self.clear = function() {
       CurrentItemService.getFilling().answer.clear();
       delete self.answer;
-    }
+    };
   }
 }());
 
@@ -720,7 +781,7 @@
         itemData: '<',
         onUpdate: '&'
       },
-      require : {
+      require: {
         otusQuestion: '^otusQuestion'
       }
     });
@@ -734,7 +795,7 @@
 
     self.$onInit = function() {
       self.answer = CurrentItemService.getFilling().answer.value;
-      self.otusQuestion.item = self;
+      self.otusQuestion.answer = self;
     };
 
     self.update = function() {
@@ -834,7 +895,7 @@
 
     self.$onInit = function() {
       self.answer = CurrentItemService.getFilling().answer.value;
-      self.otusQuestion.item = self;
+      self.otusQuestion.answer = self;
     };
 
     self.update = function() {
@@ -877,7 +938,7 @@
 
     self.$onInit = function() {
       self.answer = CurrentItemService.getFilling().answer.value;
-      self.otusQuestion.item = self;
+      self.otusQuestion.answer = self;
     };
 
     self.update = function() {
@@ -920,7 +981,7 @@
 
     self.$onInit = function() {
       self.answerArray = CurrentItemService.getFilling().answer.value;
-      self.otusQuestion.item = self;
+      self.otusQuestion.answer = self;
       if (!self.answerArray) {
         self.answerArray = [];
         self.itemData.options.forEach(function(option) {
@@ -983,7 +1044,7 @@
       self.hasSpecials = CurrentItemService.getFillingRules().specials;
       self.hasUpperCase = CurrentItemService.getFillingRules().upperCase;
       self.hasLowerCase = CurrentItemService.getFillingRules().lowerCase;
-      self.otusQuestion.item = self;
+      self.otusQuestion.answer = self;
     };
 
     self.update = function() {
@@ -1073,7 +1134,7 @@
 
     self.$onInit = function() {
       self.answer = CurrentItemService.getFilling().answer.value;
-      self.otusQuestion.item = self;
+      self.otusQuestion.answer = self;
     };
 
     self.update = function() {
@@ -1100,13 +1161,13 @@
   angular
     .module('otusjs.player.component')
     .component('otusTimeQuestion', {
-      template:'<md-content layout-padding><div layout="row"><md-input-container class="md-block" flex-gt-sm="45"><md-icon class="material-icons">access_time</md-icon><input type="time" ng-model="$ctrl.answer" ng-change="$ctrl.update()" aria-label="Tempo" min="0" max="4999"></md-input-container></div></md-content>',
+      template:'<md-content layout-padding><div layout="row"><md-input-container class="md-block" flex-gt-sm="45"><md-icon class="material-icons">access_time</md-icon><input type="time" ng-model="$ctrl.answer" ng-blur="$ctrl.update()" aria-label="Tempo" min="0" max="4999"></md-input-container></div></md-content>',
       controller: Controller,
       bindings: {
         itemData: '<',
         onUpdate: '&'
       },
-      require : {
+      require: {
         otusQuestion: '^otusQuestion'
       }
     });
@@ -1119,21 +1180,29 @@
     var self = this;
 
     self.$onInit = function() {
+<<<<<<< HEAD
       self.answer = CurrentItemService.getFilling().answer.value;
+      self.otusQuestion.answer = self;
+=======
+      var modelAnswer = CurrentItemService.getFilling().answer.value;
+      if (modelAnswer) {
+        self.answer = new Date(modelAnswer);
+      }
       self.otusQuestion.item = self;
+>>>>>>> 81182047545bf6b23516df57dc8dd6f1d85c7ecb
     };
 
     self.update = function() {
       self.onUpdate({
         valueType: 'answer',
-        value: self.answer
+        value: (self.answer instanceof Date) ? self.answer.getTime() : null
       });
     };
 
     self.clear = function() {
       CurrentItemService.getFilling().answer.clear();
       delete self.answer;
-    }
+    };
   }
 }());
 
@@ -1163,7 +1232,7 @@
 
     self.$onInit = function() {
       self.answer = CurrentItemService.getFilling().answer.value;
-      self.otusQuestion.item = self;
+      self.otusQuestion.answer = self;
     };
 
     self.update = function() {
@@ -1308,7 +1377,7 @@
 
     self.referenceAsTime = function(type) {
       var reference = CurrentItemService.getFillingRules()[type].data.reference;
-      return $filter('date')(new Date(reference), 'hh:mm:ss');
+      return $filter('date')(new Date(reference), 'hh:mm a');
     };
 
     self.reference = function(type) {
@@ -1328,21 +1397,35 @@
   angular
     .module('otusjs.player.component')
     .component('otusQuestionMenu', {
-      template:'<md-fab-speed-dial style="position:absolute; top:50px; right:0; transform: translate(0%, 0%);" md-direction="left" class="md-scale"><md-fab-trigger><md-button class="md-fab md-mini md-raised" aria-label="Limpar Resposta"><md-icon>delete</md-icon><md-tooltip md-direction="down">Limpar</md-tooltip></md-button></md-fab-trigger><md-fab-actions><md-button ng-click="$ctrl.clear(\'comment\')" class="md-fab md-raised md-mini" aria-label="Comentario"><md-icon>comment</md-icon><md-tooltip md-direction="down">Limpar comentário</md-tooltip></md-button><md-button ng-click="$ctrl.clear(\'metadata\')" class="md-fab md-raised md-mini" aria-label="Metadado"><md-icon>label</md-icon><md-tooltip md-direction="down">Limpar metadata</md-tooltip></md-button><md-button ng-click="$ctrl.clear(\'answer\')" class="md-fab md-raised md-mini" aria-label="Questão"><md-icon>question_answer</md-icon><md-tooltip md-direction="down">Limpar resposta</md-tooltip></md-button></md-fab-actions></md-fab-speed-dial>',
+      template:'<md-fab-speed-dial style="position:absolute; top:90px; right:0; transform: translate(0%, 0%);" md-direction="left" class="md-scale"><md-fab-trigger><md-button class="md-fab md-mini md-raised" aria-label="Limpar Resposta"><md-icon>delete</md-icon><md-tooltip md-direction="down">Limpar</md-tooltip></md-button></md-fab-trigger><md-fab-actions><md-button ng-click="$ctrl.clear(\'comment\')" class="md-fab md-raised md-mini" aria-label="Comentario"><md-icon>comment</md-icon><md-tooltip md-direction="down">Limpar comentário</md-tooltip></md-button><md-button ng-click="$ctrl.clear(\'metadata\')" class="md-fab md-raised md-mini" aria-label="Metadado"><md-icon>label</md-icon><md-tooltip md-direction="down">Limpar metadata</md-tooltip></md-button><md-button ng-click="$ctrl.clear(\'answer\')" class="md-fab md-raised md-mini" aria-label="Questão"><md-icon>question_answer</md-icon><md-tooltip md-direction="down">Limpar resposta</md-tooltip></md-button></md-fab-actions></md-fab-speed-dial><md-button id="accept-button" ng-class="{ \'md-primary\': $ctrl.forceAnswer, \'md-raised\': !$ctrl.forceAnswer }" style="position:absolute; top:30px; right:0; transform: translate(0%, 0%);" ng-click="$ctrl.showConfirm($event)" ng-show="$ctrl.showAccept()" class="md-fab md-mini md-raised" aria-label="Aceitar resposta"><md-icon>check</md-icon><md-tooltip md-direction="down">Aceitar resposta</md-tooltip></md-button>',
       controller: OtusSurveyMenuController,
       bindings: {
-        onClear: '&'
+        onClear: '&',
+        onAccept: '&'
       },
       require: {
         otusQuestion: '^otusQuestion'
       }
     });
 
-  function OtusSurveyMenuController() {
+  OtusSurveyMenuController.$inject = [
+    '$mdDialog',
+    '$mdMedia'
+  ];
+
+  function OtusSurveyMenuController($mdDialog, $mdMedia) {
     var self = this;
+    self.forceAnswer = false;
+
+    /* Public methods */
+    self.showAccept = showAccept;
 
     self.$onInit = function() {
       self.otusQuestion.menuComponent = self;
+      _enableDialogSettings();
+      _disableDialogSettings();
+
+      self.forceAnswer = self.otusQuestion.menuComponent.otusQuestion.filling.forceAnswer;
     };
 
     self.clear = function(value) {
@@ -1350,6 +1433,105 @@
         value: value
       });
     };
+
+    self.showConfirm = function(ev) {
+      if (!self.forceAnswer) {
+        $mdDialog
+          .show(self.enableDialogSettings)
+          .then(
+            _enableForwardSuccessfulExecution,
+            _enableForwardUnsuccessfulExecution
+          );
+
+        return {
+          onConfirm: function(callback) {
+            self.callback = callback;
+          }
+        };
+      } else {
+        $mdDialog
+          .show(self.disableDialogSettings)
+          .then(
+            _disableForwardSuccessfulExecution,
+            _disableForwardUnsuccessfulExecution
+          );
+
+        return {
+          onConfirm: function(callback) {
+            self.callback = callback;
+          }
+        };
+      }
+    };
+
+    function _enableForwardSuccessfulExecution(response) {
+      if (response.action !== 'cancel') {
+        self.onAccept({
+          value: true
+        });
+        self.forceAnswer = true;
+      }
+    }
+
+    function _enableForwardUnsuccessfulExecution(error) {}
+
+    function _disableForwardSuccessfulExecution(response) {
+      if (response.action !== 'cancel') {
+        self.onAccept({
+          value: false
+        });
+        self.forceAnswer = false;
+      }
+    }
+
+    function _disableForwardUnsuccessfulExecution(error) {}
+
+    function _enableDialogSettings() {
+      self.enableDialogSettings = {
+        parent: angular.element(document.body),
+        template:'<div md-theme="layoutTheme" class="md-padding" ng-cloak><md-dialog-content><h2 class="md-title">Questão fora dos limites estabelecidos</h2><p class="md-body-1">Você deseja <b>ignorar a validação</b> e aceitar a resposta?</p></md-dialog-content><md-dialog-actions><md-button class="md-raised" ng-click="controller.cancel({ action: \'cancel\' })">Cancelar</md-button><md-button class="md-raised md-primary" aria-label="Aceitar resposta" ng-click="controller.event({ action: \'true\' })">Aceitar</md-button></md-dialog-actions></div>',
+        controller: DialogController,
+        controllerAs: 'controller',
+        openFrom: '#system-toolbar',
+        closeTo: {
+          bottom: 0
+        }
+      };
+    }
+
+    function _disableDialogSettings() {
+      self.disableDialogSettings = {
+        parent: angular.element(document.body),
+        template:'<div md-theme="layoutTheme" class="md-padding" ng-cloak><md-dialog-content><h2 class="md-title">Questão fora dos limites estabelecidos</h2><p class="md-body-1">Você deseja <b>remover a ação</b> de aceitar a resposta?</p></md-dialog-content><md-dialog-actions><md-button class="md-raised" ng-click="controller.cancel({ action: \'cancel\' })">Cancelar</md-button><md-button class="md-raised md-primary" aria-label="Aceitar resposta" ng-click="controller.event({ action: \'false\' })">Remover</md-button></md-dialog-actions></div>',
+        controller: DialogController,
+        controllerAs: 'controller',
+        openFrom: '#system-toolbar',
+        closeTo: {
+          bottom: 0
+        }
+      };
+    }
+
+    function showAccept() {
+      return (self.error && self.forceAnswer) || (self.error && self.otusQuestion.isAccept()) || self.forceAnswer;
+    }
+
+  }
+
+  function DialogController($mdDialog) {
+    var self = this;
+
+    /* Public interface */
+    self.cancel = cancel;
+    self.event = event;
+
+    function cancel(response) {
+      $mdDialog.hide(response);
+    }
+
+    function event(response) {
+      $mdDialog.hide(response);
+    }
   }
 
 })();
@@ -2705,6 +2887,7 @@
        *
        **************************************************************/
       /* PreSave Phase */
+      PlayerConfigurationService.onPreSave(ApplyAnswer);
 
       /* ExecutionSave Phase */
       PlayerConfigurationService.onSave(SaveSurveyActivity);
@@ -3149,7 +3332,9 @@
         _execute(pipe, flowData);
       }
 
-      if (_postExecute) _postExecute(pipe, flowData);
+      if (_postExecute && !pipe.skipStep) {
+        _postExecute(pipe, flowData);
+      }
 
       if (pipe.isFlowing) {
         pipe.skipStep = false;
@@ -3515,6 +3700,7 @@
 
   function Service(ActivityFacadeService) {
     var self = this;
+    var _currentItem;
 
     /* Public methods */
     self.beforeEffect = beforeEffect;
@@ -3523,6 +3709,13 @@
     self.getEffectResult = getEffectResult;
 
     function beforeEffect(pipe, flowData) {
+      _currentItem = ActivityFacadeService.getCurrentItem();
+
+      if (_currentItem.shouldIgnoreResponseEvaluation()) {
+        pipe.skipStep = true;
+      } else {
+        pipe.skipStep = false;
+      }
     }
 
     function effect(pipe, flowData) {
@@ -3566,6 +3759,12 @@
 
     function beforeEffect(pipe, flowData) {
       _currentItem = ActivityFacadeService.getCurrentItem();
+
+      if (_currentItem.shouldIgnoreResponseEvaluation()) {
+        pipe.skipStep = true;
+      } else {
+        pipe.skipStep = false;
+      }
     }
 
     function effect(pipe, flowData) {
@@ -3632,7 +3831,7 @@
     }
 
     function effect(pipe, flowData) {
-      ValidationService.applyValidation(_currentItem.getItem(), function(validationResponse) {
+      ValidationService.applyValidation(_currentItem, function(validationResponse) {
         flowData.validationResponse = validationResponse[0];
       });
     }
@@ -3682,7 +3881,7 @@
     }
 
     function effect(pipe, flowData) {
-      ValidationService.setupValidation(_currentItem.getItem(), flowData.answerToEvaluate);
+      ValidationService.setupValidation(_currentItem, flowData.answerToEvaluate);
     }
 
     function afterEffect(pipe, flowData) {
@@ -3951,7 +4150,12 @@
     }
 
     function getItems() {
-      return ActivityFacadeService.surveyActivity.surveyForm.surveyTemplate.SurveyItemManager.getItemList();
+<<<<<<< HEAD
+      return ActivityFacadeService.surveyActivity.surveyForm.SurveyItemManager.getItemList();
+=======
+      return ActivityFacadeService.surveyActivity.getItems();
+      // return ActivityFacadeService.surveyActivity.surveyForm.surveyTemplate.SurveyItemManager.getItemList();
+>>>>>>> 81182047545bf6b23516df57dc8dd6f1d85c7ecb
     }
 
     function getItemByCustomID(customID) {
@@ -3981,7 +4185,11 @@
     }
 
     function getNavigations() {
-      return ActivityFacadeService.surveyActivity.surveyForm.surveyTemplate.NavigationManager.getNavigationList();
+<<<<<<< HEAD
+      return ActivityFacadeService.surveyActivity.surveyForm.NavigationManager.getNavigationList();
+=======
+      return ActivityFacadeService.surveyActivity.getNavigations();
+>>>>>>> 81182047545bf6b23516df57dc8dd6f1d85c7ecb
     }
 
     function getNavigationByOrigin(origin) {
@@ -4306,26 +4514,42 @@
 
   function Service(ElementRegisterFactory, ValidationService) {
     var self = this;
-    var elementRegister;
+    var _elementRegister;
+    var _answer = {};
 
     /* Public methods */
     self.applyValidation = applyValidation;
     self.setupValidation = setupValidation;
 
-    function applyValidation(item, callback) {
-      ValidationService.validateElement(item.customID, callback);
+    function applyValidation(currentItemService, callback) {
+      ValidationService.unregisterElement(_elementRegister.id);
+      setupValidation(currentItemService, _answer);
+      ValidationService.validateElement(currentItemService.getItem().customID, callback);
     }
 
-    function setupValidation(item, answer) {
-      var elementRegister = ElementRegisterFactory.create(item.customID, answer);
+    function setupValidation(currentItemService, answer) {
+      _answer = answer;
+      _elementRegister = ElementRegisterFactory.create(currentItemService.getItem().customID, answer);
 
-      Object.keys(item.fillingRules.options).map(function(validator) {
-        var reference = item.fillingRules.options[validator].data;
-        elementRegister.addValidator(validator, reference);
-      });
+      if (currentItemService.getFilling().forceAnswer) {
+        Object.keys(currentItemService.getItem().fillingRules.options).filter(function(validator) {
+          if (!currentItemService.getItem().fillingRules.options[validator].data.canBeIgnored) {
+            _addValidator(validator, currentItemService);
+          }
+        });
+      } else {
+        Object.keys(currentItemService.getItem().fillingRules.options).map(function(validator) {
+          _addValidator(validator, currentItemService);
+        });
+      }
 
-      ValidationService.unregisterElement(elementRegister.id);
-      ValidationService.registerElement(elementRegister);
+      ValidationService.unregisterElement(_elementRegister.id);
+      ValidationService.registerElement(_elementRegister);
+    }
+
+    function _addValidator(validator, currentItemService) {
+      var reference = currentItemService.getItem().fillingRules.options[validator].data;
+      _elementRegister.addValidator(validator, reference);
     }
   }
 }());

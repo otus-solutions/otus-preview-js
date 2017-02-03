@@ -10,7 +10,7 @@
         itemData: '<',
         onUpdate: '&'
       },
-      require : {
+      require: {
         otusQuestion: '^otusQuestion'
       }
     });
@@ -23,20 +23,23 @@
     var self = this;
 
     self.$onInit = function() {
-      self.answer = CurrentItemService.getFilling().answer.value;
-      self.otusQuestion.answer = self;
+      var modelAnswer = CurrentItemService.getFilling().answer.value;
+      if (modelAnswer) {
+        self.answer = new Date(modelAnswer);
+      }
+      self.otusQuestion.item = self;
     };
 
     self.update = function() {
       self.onUpdate({
         valueType: 'answer',
-        value: self.answer
+        value: (self.answer instanceof Date) ? self.answer.getTime() : null
       });
     };
 
     self.clear = function() {
       CurrentItemService.getFilling().answer.clear();
       delete self.answer;
-    }
+    };
   }
 }());

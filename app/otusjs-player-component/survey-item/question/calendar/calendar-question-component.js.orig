@@ -23,11 +23,16 @@
     var self = this;
 
     self.$onInit = function() {
+<<<<<<< HEAD
+      self.answer = CurrentItemService.getFilling().answer.value;
+      self.otusQuestion.answer = self;
+=======
       var modelAnswer = CurrentItemService.getFilling().answer.value;
       if (modelAnswer) {
         self.answer = new Date(modelAnswer);
       }
       self.otusQuestion.item = self;
+>>>>>>> 81182047545bf6b23516df57dc8dd6f1d85c7ecb
     };
 
     self.update = function() {

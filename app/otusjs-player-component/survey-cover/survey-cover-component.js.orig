@@ -29,7 +29,11 @@
     function onInit() {
       $scope.$parent.$ctrl.playerCover = self;
       var activity = ActivityFacadeService.getCurrentSurvey().getSurvey();
+<<<<<<< HEAD
+      self.title = activity.surveyForm.identity.name;
+=======
       self.title = activity.getName();
+>>>>>>> 81182047545bf6b23516df57dc8dd6f1d85c7ecb
     }
 
     function play() {
@@ -38,7 +42,11 @@
 
     function show() {
       var activity = ActivityFacadeService.getCurrentSurvey().getSurvey();
+<<<<<<< HEAD
+      self.title = activity.surveyForm.identity.name;
+=======
       self.title = activity.getName();
+>>>>>>> 81182047545bf6b23516df57dc8dd6f1d85c7ecb
     }
 
     function remove() {

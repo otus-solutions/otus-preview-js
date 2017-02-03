@@ -34,8 +34,12 @@
     }
 
     function getItems() {
+<<<<<<< HEAD
+      return ActivityFacadeService.surveyActivity.surveyForm.SurveyItemManager.getItemList();
+=======
       return ActivityFacadeService.surveyActivity.getItems();
       // return ActivityFacadeService.surveyActivity.surveyForm.surveyTemplate.SurveyItemManager.getItemList();
+>>>>>>> 81182047545bf6b23516df57dc8dd6f1d85c7ecb
     }
 
     function getItemByCustomID(customID) {
@@ -65,7 +69,11 @@
     }
 
     function getNavigations() {
+<<<<<<< HEAD
+      return ActivityFacadeService.surveyActivity.surveyForm.NavigationManager.getNavigationList();
+=======
       return ActivityFacadeService.surveyActivity.getNavigations();
+>>>>>>> 81182047545bf6b23516df57dc8dd6f1d85c7ecb
     }
 
     function getNavigationByOrigin(origin) {
