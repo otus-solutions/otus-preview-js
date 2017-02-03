@@ -34,7 +34,8 @@
     }
 
     function getItems() {
-      return ActivityFacadeService.surveyActivity.surveyForm.surveyTemplate.SurveyItemManager.getItemList();
+      return ActivityFacadeService.surveyActivity.getItems();
+      // return ActivityFacadeService.surveyActivity.surveyForm.surveyTemplate.SurveyItemManager.getItemList();
     }
 
     function getItemByCustomID(customID) {
@@ -64,7 +65,7 @@
     }
 
     function getNavigations() {
-      return ActivityFacadeService.surveyActivity.surveyForm.surveyTemplate.NavigationManager.getNavigationList();
+      return ActivityFacadeService.surveyActivity.getNavigations();
     }
 
     function getNavigationByOrigin(origin) {

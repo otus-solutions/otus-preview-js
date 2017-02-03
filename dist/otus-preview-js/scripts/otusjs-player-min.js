@@ -407,7 +407,7 @@
     function onInit() {
       $scope.$parent.$ctrl.playerBackCover = self;
       var activity = ActivityFacadeService.getCurrentSurvey().getSurvey();
-      self.title = activity.surveyForm.surveyTemplate.identity.name;
+      self.title = activity.getName();
     }
   }
 }());
@@ -443,7 +443,7 @@
     function onInit() {
       $scope.$parent.$ctrl.playerCover = self;
       var activity = ActivityFacadeService.getCurrentSurvey().getSurvey();
-      self.title = activity.surveyForm.surveyTemplate.identity.name;
+      self.title = activity.getName();
     }
 
     function play() {
@@ -452,7 +452,7 @@
 
     function show() {
       var activity = ActivityFacadeService.getCurrentSurvey().getSurvey();
-      self.title = activity.surveyForm.surveyTemplate.identity.name;
+      self.title = activity.getName();
     }
 
     function remove() {
@@ -486,7 +486,7 @@
 
     function onInit() {
       self.activity = ActivityFacadeService.getCurrentSurvey().getSurvey();
-      self.surveyIdentity = self.activity.surveyForm.surveyTemplate.identity;
+      self.surveyIdentity = self.activity.getIdentity();
       self.participantData = self.activity.participantData;
 
       if (self.activity.interviews.length) {
@@ -3958,7 +3958,8 @@
     }
 
     function getItems() {
-      return ActivityFacadeService.surveyActivity.surveyForm.surveyTemplate.SurveyItemManager.getItemList();
+      return ActivityFacadeService.surveyActivity.getItems();
+      // return ActivityFacadeService.surveyActivity.surveyForm.surveyTemplate.SurveyItemManager.getItemList();
     }
 
     function getItemByCustomID(customID) {
@@ -3988,7 +3989,7 @@
     }
 
     function getNavigations() {
-      return ActivityFacadeService.surveyActivity.surveyForm.surveyTemplate.NavigationManager.getNavigationList();
+      return ActivityFacadeService.surveyActivity.getNavigations();
     }
 
     function getNavigationByOrigin(origin) {

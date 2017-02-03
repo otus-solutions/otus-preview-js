@@ -23,7 +23,7 @@
 
     function onInit() {
       self.activity = ActivityFacadeService.getCurrentSurvey().getSurvey();
-      self.surveyIdentity = self.activity.surveyForm.surveyTemplate.identity;
+      self.surveyIdentity = self.activity.getIdentity();
       self.participantData = self.activity.participantData;
 
       if (self.activity.interviews.length) {
