@@ -7,10 +7,10 @@
 
   Service.$inject = [
     'otusjs.player.data.activity.ActivityFacadeService',
-    'otusjs.player.data.validation.ItemFillingValidatorService',
+    'otusjs.player.data.validation.ItemFillingValidatorService'
   ];
 
-  function Service(ActivityFacadeService, ValidationService) {
+  function Service(ActivityFacadeService, ItemFillingValidatorService) {
     var self = this;
     var _currentItem;
 
@@ -31,7 +31,7 @@
     }
 
     function effect(pipe, flowData) {
-      ValidationService.applyValidation(_currentItem, function(validationResponse) {
+      ItemFillingValidatorService.applyValidation(_currentItem, function(validationResponse) {
         flowData.validationResponse = validationResponse[0];
       });
     }

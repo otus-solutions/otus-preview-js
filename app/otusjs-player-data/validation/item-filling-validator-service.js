@@ -22,6 +22,7 @@
     function applyValidation(currentItemService, callback) {
       ValidationService.unregisterElement(_elementRegister.id);
       setupValidation(currentItemService, _answer);
+
       ValidationService.validateElement(currentItemService.getItem().customID, callback);
     }
 

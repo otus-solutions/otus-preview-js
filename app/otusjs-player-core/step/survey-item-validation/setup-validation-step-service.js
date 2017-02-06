@@ -10,7 +10,7 @@
     'otusjs.player.data.validation.ItemFillingValidatorService'
   ];
 
-  function Service(ActivityFacadeService, ValidationService) {
+  function Service(ActivityFacadeService, ItemFillingValidatorService) {
     var self = this;
     var _currentItem;
 
@@ -31,11 +31,10 @@
     }
 
     function effect(pipe, flowData) {
-      ValidationService.setupValidation(_currentItem, flowData.answerToEvaluate);
+      ItemFillingValidatorService.setupValidation(_currentItem, flowData.answerToEvaluate);
     }
 
-    function afterEffect(pipe, flowData) {
-    }
+    function afterEffect(pipe, flowData) { }
 
     function getEffectResult(pipe, flowData) {
       return flowData;

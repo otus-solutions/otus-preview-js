@@ -3648,15 +3648,30 @@
 
     function effect(pipe, flowData) {
       ActivityFacadeService.applyAnswer();
-      flowData.answerToEvaluate.data = _currentItem.getFilling().answer.value || {};
-      flowData.metadataToEvaluate.data = _currentItem.getFilling().metadata.value || {};
+      flowData.answerToEvaluate.data = _ensureTestableValue(_currentItem.getFilling().answer);
+      flowData.metadataToEvaluate.data = _ensureTestableValue(_currentItem.getFilling().metadata);
     }
 
-    function afterEffect(pipe, flowData) {
-    }
+    function afterEffect(pipe, flowData) { }
 
     function getEffectResult(pipe, flowData) {
       return flowData;
+    }
+
+    function _isTestableValue(value) {
+      if (value !== null && value !== undefined ) {
+        return true;
+      } else {
+        return false;
+      }
+    }
+
+    function _ensureTestableValue(filling) {
+      if (_isTestableValue(filling.value)) {
+        return filling.value;
+      } else {
+        return {};
+      }
     }
   }
 })();
@@ -3781,10 +3796,10 @@
 
   Service.$inject = [
     'otusjs.player.data.activity.ActivityFacadeService',
-    'otusjs.player.data.validation.ItemFillingValidatorService',
+    'otusjs.player.data.validation.ItemFillingValidatorService'
   ];
 
-  function Service(ActivityFacadeService, ValidationService) {
+  function Service(ActivityFacadeService, ItemFillingValidatorService) {
     var self = this;
     var _currentItem;
 
@@ -3805,7 +3820,7 @@
     }
 
     function effect(pipe, flowData) {
-      ValidationService.applyValidation(_currentItem, function(validationResponse) {
+      ItemFillingValidatorService.applyValidation(_currentItem, function(validationResponse) {
         flowData.validationResponse = validationResponse[0];
       });
     }
@@ -3834,7 +3849,7 @@
     'otusjs.player.data.validation.ItemFillingValidatorService'
   ];
 
-  function Service(ActivityFacadeService, ValidationService) {
+  function Service(ActivityFacadeService, ItemFillingValidatorService) {
     var self = this;
     var _currentItem;
 
@@ -3855,11 +3870,10 @@
     }
 
     function effect(pipe, flowData) {
-      ValidationService.setupValidation(_currentItem, flowData.answerToEvaluate);
+      ItemFillingValidatorService.setupValidation(_currentItem, flowData.answerToEvaluate);
     }
 
-    function afterEffect(pipe, flowData) {
-    }
+    function afterEffect(pipe, flowData) { }
 
     function getEffectResult(pipe, flowData) {
       return flowData;
@@ -4488,8 +4502,8 @@
     self.setupValidation = setupValidation;
 
     function applyValidation(currentItemService, callback) {
-      ValidationService.unregisterElement(_elementRegister.id);
-      setupValidation(currentItemService, _answer);
+      // ValidationService.unregisterElement(_elementRegister.id);
+      // setupValidation(currentItemService, _answer);
       ValidationService.validateElement(currentItemService.getItem().customID, callback);
     }
 

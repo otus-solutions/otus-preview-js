@@ -33,15 +33,30 @@
 
     function effect(pipe, flowData) {
       ActivityFacadeService.applyAnswer();
-      flowData.answerToEvaluate.data = _currentItem.getFilling().answer.value || {};
-      flowData.metadataToEvaluate.data = _currentItem.getFilling().metadata.value || {};
+      flowData.answerToEvaluate.data = _ensureTestableValue(_currentItem.getFilling().answer);
+      flowData.metadataToEvaluate.data = _ensureTestableValue(_currentItem.getFilling().metadata);
     }
 
-    function afterEffect(pipe, flowData) {
-    }
+    function afterEffect(pipe, flowData) { }
 
     function getEffectResult(pipe, flowData) {
       return flowData;
+    }
+
+    function _isTestableValue(value) {
+      if (value !== null && value !== undefined ) {
+        return true;
+      } else {
+        return false;
+      }
+    }
+
+    function _ensureTestableValue(filling) {
+      if (_isTestableValue(filling.value)) {
+        return filling.value;
+      } else {
+        return {};
+      }
     }
   }
 })();
