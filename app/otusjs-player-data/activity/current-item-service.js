@@ -105,7 +105,7 @@
       _navigation = data.navigation;
 
       if (_item.isQuestion()) {
-        _filling = ActivityFacadeService.getFillingByQuestionID(_item.customID);
+        _filling = ActivityFacadeService.getFillingByQuestionID(_item.templateID);
 
         if (!_filling) {
           _filling = ActivityFacadeService.createQuestionFill(_item);

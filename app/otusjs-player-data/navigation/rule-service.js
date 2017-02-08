@@ -17,7 +17,7 @@
 
     function isRuleApplicable(rule) {
       var whenItem = ActivityFacadeService.fetchItemByID(rule.when);
-      var itemAnswer = ActivityFacadeService.fetchItemAnswerByCustomID(rule.when);
+      var itemAnswer = ActivityFacadeService.fetchItemAnswerByTemplateID(rule.when);
 
       if (itemAnswer) {
         if (rule.isMetadata) {

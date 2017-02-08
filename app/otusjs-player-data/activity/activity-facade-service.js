@@ -17,6 +17,7 @@
     self.applyAnswer = applyAnswer;
     self.attachItemValidationError = attachItemValidationError;
     self.fetchItemAnswerByCustomID = fetchItemAnswerByCustomID;
+    self.fetchItemAnswerByTemplateID = fetchItemAnswerByTemplateID;
     self.fetchItemByID = fetchItemByID;
     self.fetchNavigationByOrigin = fetchNavigationByOrigin;
     self.getCurrentItem = getCurrentItem;
@@ -36,6 +37,10 @@
     }
 
     function fetchItemAnswerByCustomID(id) {
+      return CurrentSurveyService.getAnswerByItemID(id);
+    }
+
+    function fetchItemAnswerByTemplateID(id) {
       return CurrentSurveyService.getAnswerByItemID(id);
     }
 

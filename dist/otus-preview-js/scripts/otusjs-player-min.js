@@ -3921,6 +3921,7 @@
     self.applyAnswer = applyAnswer;
     self.attachItemValidationError = attachItemValidationError;
     self.fetchItemAnswerByCustomID = fetchItemAnswerByCustomID;
+    self.fetchItemAnswerByTemplateID = fetchItemAnswerByTemplateID;
     self.fetchItemByID = fetchItemByID;
     self.fetchNavigationByOrigin = fetchNavigationByOrigin;
     self.getCurrentItem = getCurrentItem;
@@ -3940,6 +3941,10 @@
     }
 
     function fetchItemAnswerByCustomID(id) {
+      return CurrentSurveyService.getAnswerByItemID(id);
+    }
+
+    function fetchItemAnswerByTemplateID(id) {
       return CurrentSurveyService.getAnswerByItemID(id);
     }
 
@@ -4089,7 +4094,7 @@
       _navigation = data.navigation;
 
       if (_item.isQuestion()) {
-        _filling = ActivityFacadeService.getFillingByQuestionID(_item.customID);
+        _filling = ActivityFacadeService.getFillingByQuestionID(_item.templateID);
 
         if (!_filling) {
           _filling = ActivityFacadeService.createQuestionFill(_item);
@@ -4455,7 +4460,7 @@
 
     function isRuleApplicable(rule) {
       var whenItem = ActivityFacadeService.fetchItemByID(rule.when);
-      var itemAnswer = ActivityFacadeService.fetchItemAnswerByCustomID(rule.when);
+      var itemAnswer = ActivityFacadeService.fetchItemAnswerByTemplateID(rule.when);
 
       if (itemAnswer) {
         if (rule.isMetadata) {
