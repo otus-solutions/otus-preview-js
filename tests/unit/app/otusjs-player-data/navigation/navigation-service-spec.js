@@ -345,7 +345,7 @@ describe('NavigationService', function() {
   });
 
   function mockNavigationStackItemFactory($injector) {
-    Mock.NavigationStackItemFactory = $injector.get('otusjs.model.navigation.NavigationPathItemFactory');
+    Mock.NavigationStackItemFactory = $injector.get('otusjs.model.navigation.NavigationTrackingItemFactory');
 
     var options = {};
     options.id = Mock.itemCAD1.customID;
@@ -747,10 +747,10 @@ describe('NavigationService', function() {
   }
 
   function mockNavigationStackData($injector) {
-    Mock.newStack = $injector.get('otusjs.model.navigation.NavigationPathFactory').create();
-    Mock.savedStack = $injector.get('otusjs.model.navigation.NavigationPathFactory').create();
+    Mock.newStack = $injector.get('otusjs.model.navigation.NavigationTrackerFactory').create();
+    Mock.savedStack = $injector.get('otusjs.model.navigation.NavigationTrackerFactory').create();
 
-    itemFactory = $injector.get('otusjs.model.navigation.NavigationPathItemFactory');
+    itemFactory = $injector.get('otusjs.model.navigation.NavigationTrackingItemFactory');
     var options = { id: 'CAD1', label: 'Label', type: 'IntegerQuestion', answer: 'Label da resposta', metadata: 'Label do metdado.' };
     Mock.itemA = itemFactory.create(options);
     options = { id: 'CAD2', label: 'Label', type: 'IntegerQuestion', answer: 'Label da resposta', metadata: 'Label do metdado.' };

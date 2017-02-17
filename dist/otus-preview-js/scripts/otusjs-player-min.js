@@ -2750,6 +2750,7 @@
       'otusjs.player.core.step.SaveSurveyActivityStepService',
       'otusjs.player.core.step.LoadPreviousItemStepService',
       'otusjs.player.core.step.LoadNextItemStepService',
+      'otusjs.player.core.step.UpdateItemTrackingStepService',
       'otusjs.player.core.step.LoadSurveyActivityStepService',
       'otusjs.player.core.step.LoadSurveyActivityCoverStepService',
       'otusjs.player.core.step.ReadValidationErrorStepService',
@@ -2767,6 +2768,7 @@
       SaveSurveyActivity,
       LoadPreviousItem,
       LoadNextItem,
+      UpdateItemTracking,
       LoadSurveyActivity,
       LoadSurveyActivityCover,
       ReadValidationError,
@@ -2825,6 +2827,7 @@
       PlayerConfigurationService.onPreAhead(RunValidation);
       PlayerConfigurationService.onPreAhead(ReadValidationError);
       PlayerConfigurationService.onPreAhead(HandleValidationError);
+      PlayerConfigurationService.onPreAhead(UpdateItemTracking);
 
       /* ExecutionAhead Phase */
       PlayerConfigurationService.onAhead(LoadNextItem);
@@ -2862,6 +2865,7 @@
        **************************************************************/
       /* PreSave Phase */
       PlayerConfigurationService.onPreSave(ApplyAnswer);
+      // PlayerConfigurationService.onPreSave(UpdateItemTracking);
 
       /* ExecutionSave Phase */
       PlayerConfigurationService.onSave(SaveSurveyActivity);
@@ -3618,6 +3622,42 @@
 
   angular
     .module('otusjs.player.core.step')
+    .service('otusjs.player.core.step.UpdateItemTrackingStepService', Service);
+
+  Service.$inject = [
+    'otusjs.player.data.navigation.NavigationService',
+    'otusjs.player.data.activity.CurrentItemService',
+    'otusjs.player.core.player.PlayerService',
+  ];
+
+  function Service(NavigationService, CurrentItemService, PlayerService) {
+    var self = this;
+
+    /* Public methods */
+    self.beforeEffect = beforeEffect;
+    self.effect = effect;
+    self.afterEffect = afterEffect;
+    self.getEffectResult = getEffectResult;
+
+    function beforeEffect(pipe, flowData) {}
+
+    function effect(pipe, flowData) {
+      NavigationService.updateSkipedItems();
+    }
+
+    function afterEffect(pipe, flowData) {}
+
+    function getEffectResult(pipe, flowData) {
+      return flowData;
+    }
+  }
+})();
+
+(function() {
+  'use strict';
+
+  angular
+    .module('otusjs.player.core.step')
     .service('otusjs.player.core.step.ApplyAnswerStepService', Service);
 
   Service.$inject = [
@@ -4144,7 +4184,6 @@
 
     function getItems() {
       return ActivityFacadeService.surveyActivity.getItems();
-      // return ActivityFacadeService.surveyActivity.surveyForm.surveyTemplate.SurveyItemManager.getItemList();
     }
 
     function getItemByCustomID(customID) {
@@ -4203,7 +4242,6 @@
     }
 
     function setup() {
-      // ActivityFacadeService.openActivitySurvey();
     }
   }
 }());
@@ -4226,24 +4264,24 @@
     .service('otusjs.player.data.navigation.NavigationService', Service);
 
   Service.$inject = [
-    'otusjs.model.navigation.NavigationPathItemFactory',
+    'otusjs.model.navigation.NavigationTrackingItemFactory',
     'otusjs.player.data.activity.ActivityFacadeService',
     'otusjs.player.data.navigation.RouteService'
   ];
 
-  function Service(NavigationStackItemFactory, ActivityFacadeService, RouteService) {
+  function Service(NavigationTrackingItemFactory, ActivityFacadeService, RouteService) {
     var self = this;
-    var _path = null;
+    var _navigationTracker = null;
 
     /* Public Interface */
     self.getNextItems = getNextItems;
     self.getPreviousItem = getPreviousItem;
-    self.getStack = getStack;
     self.hasNext = hasNext;
     self.hasPrevious = hasPrevious;
     self.initialize = initialize;
     self.loadNextItem = loadNextItem;
     self.loadPreviousItem = loadPreviousItem;
+    self.updateItemTracking = updateItemTracking;
 
     function getNextItems() {
       return ActivityFacadeService.getCurrentItem().getNavigation().listRoutes().map(function(route) {
@@ -4252,17 +4290,12 @@
     }
 
     function getPreviousItem() {
-      var item = _path.getCurrentItem().getPrevious();
-      _path.back();
-      if (item) {
-        return ActivityFacadeService.getCurrentSurvey().getItemByTemplateID(item.getID());
+      if (hasPrevious()) {
+        var previousID = _navigationTracker.getCurrentItem().getPrevious();
+        return ActivityFacadeService.getCurrentSurvey().getItemByTemplateID(previousID);
       } else {
         return null;
       }
-    }
-
-    function getStack() {
-      return _path;
     }
 
     function hasNext() {
@@ -4274,7 +4307,7 @@
     }
 
     function hasPrevious() {
-      if (_path.getCurrentItem().getPrevious()) {
+      if (_navigationTracker.hasPreviousItem()) {
         return true;
       } else {
         return false;
@@ -4282,67 +4315,26 @@
     }
 
     function initialize() {
-      _path = ActivityFacadeService.getCurrentSurvey().getSurvey().getNavigationStack();
+      _navigationTracker = ActivityFacadeService.getCurrentSurvey().getSurvey().getNavigationTracker();
     }
 
     function loadNextItem() {
       if (ActivityFacadeService.getCurrentItem().hasItem()) {
         return _loadNextItem();
-      } else if (_path.getSize()) {
+      } else if (_navigationTracker.getCurrentIndex()) {
         return _loadLastVisitedItem();
       } else {
         return _loadFirstItem();
       }
     }
 
-    function _loadFirstItem() {
-      return _loadItem();
-    }
-
-    function _loadLastVisitedItem() {
-      return _loadItem(_path.getCurrentItem().getID());
-    }
-
-    function _loadNextItem() {
-      var currentItemNavigation = ActivityFacadeService.getCurrentItem().getNavigation();
-
-      if (currentItemNavigation) {
-        var routeToUse = RouteService.calculateRoute(currentItemNavigation);
-        return _loadItem(routeToUse.destination);
-      }
-    }
-
-    function _loadItem(id) {
-      if (id === 'END NODE') {
-        return id;
-      }
-      var item = null;
-      var navigation = null;
-
-      if (!id) {
-        item = ActivityFacadeService.getCurrentSurvey().getItems()[0];
-        navigation = ActivityFacadeService.getCurrentSurvey().getNavigations()[2];
-      } else {
-        item = ActivityFacadeService.fetchItemByID(id);
-        navigation = ActivityFacadeService.fetchNavigationByOrigin(id);
-      }
-
-      if (navigation) {
-        RouteService.setup(navigation);
-      }
-      _pathUpItem(item);
-
-      return {
-        item: item,
-        navigation: navigation
-      };
-    }
-
     function loadPreviousItem() {
       if (hasPrevious()) {
         var item = getPreviousItem();
         var navigation = ActivityFacadeService.getCurrentSurvey().getNavigationByOrigin(item.templateID);
+
         RouteService.setup(navigation);
+        _navigationTracker.visitItem(item.templateID);
 
         return {
           item: item,
@@ -4351,15 +4343,53 @@
       }
     }
 
-    function _pathUpItem(item) {
-      var options = {};
-      options.id = item.templateID;
-      options.type = item.objectType;
+    function updateItemTracking() {
+      var currentItemFilling = ActivityFacadeService.getCurrentItem().getFilling();
+      _navigationTracker.updateCurrentItem(currentItemFilling);
+    }
 
-      if (item.isQuestion()) {
-        options.label = item.label.ptBR.plainText;
+    function _loadFirstItem() {
+      return _loadItem();
+    }
+
+    function _loadLastVisitedItem() {
+      return _loadItem(_navigationTracker.getCurrentItem().getID());
+    }
+
+    function _loadNextItem() {
+      var currentItemNavigation = ActivityFacadeService.getCurrentItem().getNavigation();
+
+      if (currentItemNavigation) {
+        var routeToUse = RouteService.calculateRoute();
+        return _loadItem(routeToUse.destination);
       }
-      _path.add(NavigationStackItemFactory.create(options));
+    }
+
+    function _loadItem(id) {
+      if (id === 'END NODE') {
+        return id;
+      }
+      var itemToLoad = null;
+      var navigation = null;
+
+      if (!id) {
+        itemToLoad = ActivityFacadeService.getCurrentSurvey().getItems()[0];
+        navigation = ActivityFacadeService.getCurrentSurvey().getNavigations()[2];
+      } else {
+        itemToLoad = ActivityFacadeService.fetchItemByID(id);
+        navigation = ActivityFacadeService.fetchNavigationByOrigin(id);
+      }
+
+      if (navigation) {
+        RouteService.setup(navigation);
+      }
+
+      _navigationTracker.visitItem(itemToLoad.templateID);
+
+      return {
+        item: itemToLoad,
+        navigation: navigation
+      };
     }
   }
 }());
@@ -4450,7 +4480,7 @@
 
   Service.$inject = [
     'otusjs.player.data.activity.ActivityFacadeService'
-  ]
+  ];
 
   function Service(ActivityFacadeService) {
     var self = this;
@@ -4459,7 +4489,6 @@
     self.isRuleApplicable = isRuleApplicable;
 
     function isRuleApplicable(rule) {
-      var whenItem = ActivityFacadeService.fetchItemByID(rule.when);
       var itemAnswer = ActivityFacadeService.fetchItemAnswerByTemplateID(rule.when);
 
       if (itemAnswer) {

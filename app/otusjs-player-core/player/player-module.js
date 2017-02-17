@@ -11,6 +11,7 @@
       'otusjs.player.core.step.SaveSurveyActivityStepService',
       'otusjs.player.core.step.LoadPreviousItemStepService',
       'otusjs.player.core.step.LoadNextItemStepService',
+      'otusjs.player.core.step.UpdateItemTrackingStepService',
       'otusjs.player.core.step.LoadSurveyActivityStepService',
       'otusjs.player.core.step.LoadSurveyActivityCoverStepService',
       'otusjs.player.core.step.ReadValidationErrorStepService',
@@ -28,6 +29,7 @@
       SaveSurveyActivity,
       LoadPreviousItem,
       LoadNextItem,
+      UpdateItemTracking,
       LoadSurveyActivity,
       LoadSurveyActivityCover,
       ReadValidationError,
@@ -86,6 +88,7 @@
       PlayerConfigurationService.onPreAhead(RunValidation);
       PlayerConfigurationService.onPreAhead(ReadValidationError);
       PlayerConfigurationService.onPreAhead(HandleValidationError);
+      PlayerConfigurationService.onPreAhead(UpdateItemTracking);
 
       /* ExecutionAhead Phase */
       PlayerConfigurationService.onAhead(LoadNextItem);
@@ -123,6 +126,7 @@
        **************************************************************/
       /* PreSave Phase */
       PlayerConfigurationService.onPreSave(ApplyAnswer);
+      // PlayerConfigurationService.onPreSave(UpdateItemTracking);
 
       /* ExecutionSave Phase */
       PlayerConfigurationService.onSave(SaveSurveyActivity);

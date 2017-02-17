@@ -35,7 +35,6 @@
 
     function getItems() {
       return ActivityFacadeService.surveyActivity.getItems();
-      // return ActivityFacadeService.surveyActivity.surveyForm.surveyTemplate.SurveyItemManager.getItemList();
     }
 
     function getItemByCustomID(customID) {
@@ -94,7 +93,6 @@
     }
 
     function setup() {
-      // ActivityFacadeService.openActivitySurvey();
     }
   }
 }());

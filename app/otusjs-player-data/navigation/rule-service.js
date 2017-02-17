@@ -7,7 +7,7 @@
 
   Service.$inject = [
     'otusjs.player.data.activity.ActivityFacadeService'
-  ]
+  ];
 
   function Service(ActivityFacadeService) {
     var self = this;
@@ -16,7 +16,6 @@
     self.isRuleApplicable = isRuleApplicable;
 
     function isRuleApplicable(rule) {
-      var whenItem = ActivityFacadeService.fetchItemByID(rule.when);
       var itemAnswer = ActivityFacadeService.fetchItemAnswerByTemplateID(rule.when);
 
       if (itemAnswer) {

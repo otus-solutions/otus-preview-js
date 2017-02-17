@@ -6,24 +6,24 @@
     .service('otusjs.player.data.navigation.NavigationService', Service);
 
   Service.$inject = [
-    'otusjs.model.navigation.NavigationPathItemFactory',
+    'otusjs.model.navigation.NavigationTrackingItemFactory',
     'otusjs.player.data.activity.ActivityFacadeService',
     'otusjs.player.data.navigation.RouteService'
   ];
 
-  function Service(NavigationStackItemFactory, ActivityFacadeService, RouteService) {
+  function Service(NavigationTrackingItemFactory, ActivityFacadeService, RouteService) {
     var self = this;
-    var _path = null;
+    var _navigationTracker = null;
 
     /* Public Interface */
     self.getNextItems = getNextItems;
     self.getPreviousItem = getPreviousItem;
-    self.getStack = getStack;
     self.hasNext = hasNext;
     self.hasPrevious = hasPrevious;
     self.initialize = initialize;
     self.loadNextItem = loadNextItem;
     self.loadPreviousItem = loadPreviousItem;
+    self.updateItemTracking = updateItemTracking;
 
     function getNextItems() {
       return ActivityFacadeService.getCurrentItem().getNavigation().listRoutes().map(function(route) {
@@ -32,17 +32,12 @@
     }
 
     function getPreviousItem() {
-      var item = _path.getCurrentItem().getPrevious();
-      _path.back();
-      if (item) {
-        return ActivityFacadeService.getCurrentSurvey().getItemByTemplateID(item.getID());
+      if (hasPrevious()) {
+        var previousID = _navigationTracker.getCurrentItem().getPrevious();
+        return ActivityFacadeService.getCurrentSurvey().getItemByTemplateID(previousID);
       } else {
         return null;
       }
-    }
-
-    function getStack() {
-      return _path;
     }
 
     function hasNext() {
@@ -54,7 +49,7 @@
     }
 
     function hasPrevious() {
-      if (_path.getCurrentItem().getPrevious()) {
+      if (_navigationTracker.hasPreviousItem()) {
         return true;
       } else {
         return false;
@@ -62,67 +57,26 @@
     }
 
     function initialize() {
-      _path = ActivityFacadeService.getCurrentSurvey().getSurvey().getNavigationStack();
+      _navigationTracker = ActivityFacadeService.getCurrentSurvey().getSurvey().getNavigationTracker();
     }
 
     function loadNextItem() {
       if (ActivityFacadeService.getCurrentItem().hasItem()) {
         return _loadNextItem();
-      } else if (_path.getSize()) {
+      } else if (_navigationTracker.getCurrentIndex()) {
         return _loadLastVisitedItem();
       } else {
         return _loadFirstItem();
       }
     }
 
-    function _loadFirstItem() {
-      return _loadItem();
-    }
-
-    function _loadLastVisitedItem() {
-      return _loadItem(_path.getCurrentItem().getID());
-    }
-
-    function _loadNextItem() {
-      var currentItemNavigation = ActivityFacadeService.getCurrentItem().getNavigation();
-
-      if (currentItemNavigation) {
-        var routeToUse = RouteService.calculateRoute(currentItemNavigation);
-        return _loadItem(routeToUse.destination);
-      }
-    }
-
-    function _loadItem(id) {
-      if (id === 'END NODE') {
-        return id;
-      }
-      var item = null;
-      var navigation = null;
-
-      if (!id) {
-        item = ActivityFacadeService.getCurrentSurvey().getItems()[0];
-        navigation = ActivityFacadeService.getCurrentSurvey().getNavigations()[2];
-      } else {
-        item = ActivityFacadeService.fetchItemByID(id);
-        navigation = ActivityFacadeService.fetchNavigationByOrigin(id);
-      }
-
-      if (navigation) {
-        RouteService.setup(navigation);
-      }
-      _pathUpItem(item);
-
-      return {
-        item: item,
-        navigation: navigation
-      };
-    }
-
     function loadPreviousItem() {
       if (hasPrevious()) {
         var item = getPreviousItem();
         var navigation = ActivityFacadeService.getCurrentSurvey().getNavigationByOrigin(item.templateID);
+
         RouteService.setup(navigation);
+        _navigationTracker.visitItem(item.templateID);
 
         return {
           item: item,
@@ -131,15 +85,53 @@
       }
     }
 
-    function _pathUpItem(item) {
-      var options = {};
-      options.id = item.templateID;
-      options.type = item.objectType;
+    function updateItemTracking() {
+      var currentItemFilling = ActivityFacadeService.getCurrentItem().getFilling();
+      _navigationTracker.updateCurrentItem(currentItemFilling);
+    }
 
-      if (item.isQuestion()) {
-        options.label = item.label.ptBR.plainText;
+    function _loadFirstItem() {
+      return _loadItem();
+    }
+
+    function _loadLastVisitedItem() {
+      return _loadItem(_navigationTracker.getCurrentItem().getID());
+    }
+
+    function _loadNextItem() {
+      var currentItemNavigation = ActivityFacadeService.getCurrentItem().getNavigation();
+
+      if (currentItemNavigation) {
+        var routeToUse = RouteService.calculateRoute();
+        return _loadItem(routeToUse.destination);
       }
-      _path.add(NavigationStackItemFactory.create(options));
+    }
+
+    function _loadItem(id) {
+      if (id === 'END NODE') {
+        return id;
+      }
+      var itemToLoad = null;
+      var navigation = null;
+
+      if (!id) {
+        itemToLoad = ActivityFacadeService.getCurrentSurvey().getItems()[0];
+        navigation = ActivityFacadeService.getCurrentSurvey().getNavigations()[2];
+      } else {
+        itemToLoad = ActivityFacadeService.fetchItemByID(id);
+        navigation = ActivityFacadeService.fetchNavigationByOrigin(id);
+      }
+
+      if (navigation) {
+        RouteService.setup(navigation);
+      }
+
+      _navigationTracker.visitItem(itemToLoad.templateID);
+
+      return {
+        item: itemToLoad,
+        navigation: navigation
+      };
     }
   }
 }());
