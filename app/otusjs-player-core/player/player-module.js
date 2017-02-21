@@ -6,6 +6,7 @@
     .run([
       'otusjs.player.core.player.PlayerConfigurationService',
       'otusjs.player.core.step.ApplyAnswerStepService',
+      'otusjs.player.core.step.ClearSkippedAnswersStepService',
       'otusjs.player.core.step.InitializeSurveyActivityStepService',
       'otusjs.player.core.step.FinalizeSurveyActivityStepService',
       'otusjs.player.core.step.SaveSurveyActivityStepService',
@@ -24,6 +25,7 @@
     function run(
       PlayerConfigurationService,
       ApplyAnswer,
+      ClearSkippedAnswersStepService,
       InitializeSurveyActivity,
       FinalizeSurveyActivity,
       SaveSurveyActivity,
@@ -161,6 +163,7 @@
       /* PreBack Phase */
 
       /* ExecutionStop Phase */
+      PlayerConfigurationService.onEject(ClearSkippedAnswersStepService);
       PlayerConfigurationService.onEject(FinalizeSurveyActivity);
 
       /* PostStop Phase */

@@ -3,16 +3,15 @@
 
   angular
     .module('otusjs.player.core.step')
-    .service('otusjs.player.core.step.UpdateItemTrackingStepService', Service);
+    .service('otusjs.player.core.step.ClearSkippedAnswersStepService', Service);
 
   Service.$inject = [
-    'otusjs.player.data.navigation.NavigationService',
-    'otusjs.player.data.activity.CurrentItemService',
-    'otusjs.player.core.player.PlayerService',
+    'otusjs.player.data.activity.ActivityFacadeService'
   ];
 
-  function Service(NavigationService, CurrentItemService, PlayerService) {
+  function Service(ActivityFacadeService) {
     var self = this;
+    var _currentItem;
 
     /* Public methods */
     self.beforeEffect = beforeEffect;
@@ -23,10 +22,10 @@
     function beforeEffect(pipe, flowData) {}
 
     function effect(pipe, flowData) {
-      NavigationService.updateItemTracking();
+      ActivityFacadeService.clearSkippedAnswers();
     }
 
-    function afterEffect(pipe, flowData) {}
+    function afterEffect(pipe, flowData) { }
 
     function getEffectResult(pipe, flowData) {
       return flowData;

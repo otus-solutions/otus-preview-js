@@ -2745,6 +2745,7 @@
     .run([
       'otusjs.player.core.player.PlayerConfigurationService',
       'otusjs.player.core.step.ApplyAnswerStepService',
+      'otusjs.player.core.step.ClearSkippedAnswersStepService',
       'otusjs.player.core.step.InitializeSurveyActivityStepService',
       'otusjs.player.core.step.FinalizeSurveyActivityStepService',
       'otusjs.player.core.step.SaveSurveyActivityStepService',
@@ -2763,6 +2764,7 @@
     function run(
       PlayerConfigurationService,
       ApplyAnswer,
+      ClearSkippedAnswersStepService,
       InitializeSurveyActivity,
       FinalizeSurveyActivity,
       SaveSurveyActivity,
@@ -2900,6 +2902,7 @@
       /* PreBack Phase */
 
       /* ExecutionStop Phase */
+      PlayerConfigurationService.onEject(ClearSkippedAnswersStepService);
       PlayerConfigurationService.onEject(FinalizeSurveyActivity);
 
       /* PostStop Phase */
@@ -3642,7 +3645,7 @@
     function beforeEffect(pipe, flowData) {}
 
     function effect(pipe, flowData) {
-      NavigationService.updateSkipedItems();
+      NavigationService.updateItemTracking();
     }
 
     function afterEffect(pipe, flowData) {}
@@ -3712,6 +3715,41 @@
       } else {
         return {};
       }
+    }
+  }
+})();
+
+(function() {
+  'use strict';
+
+  angular
+    .module('otusjs.player.core.step')
+    .service('otusjs.player.core.step.ClearSkippedAnswersStepService', Service);
+
+  Service.$inject = [
+    'otusjs.player.data.activity.ActivityFacadeService'
+  ];
+
+  function Service(ActivityFacadeService) {
+    var self = this;
+    var _currentItem;
+
+    /* Public methods */
+    self.beforeEffect = beforeEffect;
+    self.effect = effect;
+    self.afterEffect = afterEffect;
+    self.getEffectResult = getEffectResult;
+
+    function beforeEffect(pipe, flowData) {}
+
+    function effect(pipe, flowData) {
+      ActivityFacadeService.clearSkippedAnswers();
+    }
+
+    function afterEffect(pipe, flowData) { }
+
+    function getEffectResult(pipe, flowData) {
+      return flowData;
     }
   }
 })();
@@ -3971,6 +4009,7 @@
     self.save = save;
     self.setupAnswer = setupAnswer;
     self.setup = setup;
+    self.clearSkippedAnswers = clearSkippedAnswers;
 
     function applyAnswer() {
       CurrentItemService.applyFilling();
@@ -4023,6 +4062,10 @@
     function setup() {
       CurrentItemService.clearData();
       CurrentSurveyService.setup();
+    }
+
+    function clearSkippedAnswers() {
+      CurrentSurveyService.clearSkippedAnswers();
     }
   }
 }());
@@ -4173,6 +4216,7 @@
     self.finalize = finalize;
     self.save = save;
     self.setup = setup;
+    self.clearSkippedAnswers = clearSkippedAnswers;
 
     function getSurvey() {
       return ActivityFacadeService.surveyActivity;
@@ -4241,7 +4285,10 @@
       ActivityFacadeService.saveActivitySurvey();
     }
 
-    function setup() {
+    function setup() { }
+
+    function clearSkippedAnswers() {
+      ActivityFacadeService.clearSkippedAnswers();
     }
   }
 }());

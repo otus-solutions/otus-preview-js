@@ -27,6 +27,7 @@
     self.save = save;
     self.setupAnswer = setupAnswer;
     self.setup = setup;
+    self.clearSkippedAnswers = clearSkippedAnswers;
 
     function applyAnswer() {
       CurrentItemService.applyFilling();
@@ -79,6 +80,10 @@
     function setup() {
       CurrentItemService.clearData();
       CurrentSurveyService.setup();
+    }
+
+    function clearSkippedAnswers() {
+      CurrentSurveyService.clearSkippedAnswers();
     }
   }
 }());

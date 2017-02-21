@@ -24,6 +24,7 @@
     self.finalize = finalize;
     self.save = save;
     self.setup = setup;
+    self.clearSkippedAnswers = clearSkippedAnswers;
 
     function getSurvey() {
       return ActivityFacadeService.surveyActivity;
@@ -92,7 +93,10 @@
       ActivityFacadeService.saveActivitySurvey();
     }
 
-    function setup() {
+    function setup() { }
+
+    function clearSkippedAnswers() {
+      ActivityFacadeService.clearSkippedAnswers();
     }
   }
 }());
