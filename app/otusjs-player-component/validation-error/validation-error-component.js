@@ -32,17 +32,17 @@
       var date;
       if (type === 'rangeDate') {
         date = {
-          'initial': $filter('date')(new Date(reference.initial), 'dd/MM/yyyy'),
-          'end': $filter('date')(new Date(reference.end), 'dd/MM/yyyy')
+          'initial': $filter('date')(new Date(reference.initial.value), 'dd/MM/yyyy'),
+          'end': $filter('date')(new Date(reference.end.value), 'dd/MM/yyyy')
         };
       } else {
-        date = $filter('date')(new Date(reference), 'dd/MM/yyyy');
+        date = $filter('date')(new Date(reference.value), 'dd/MM/yyyy');
       }
       return date;
     };
 
     self.referenceAsTime = function(type) {
-      var reference = CurrentItemService.getFillingRules()[type].data.reference;
+      var reference = CurrentItemService.getFillingRules()[type].data.reference.value;
       return $filter('date')(new Date(reference), 'hh:mm a');
     };
 

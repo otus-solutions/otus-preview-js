@@ -16,24 +16,22 @@
     });
 
   Controller.$inject = [
-    'otusjs.player.data.activity.CurrentItemService'
+    'otusjs.player.data.activity.CurrentItemService',
+    'otusjs.utils.ImmutableDate'
   ];
 
-  function Controller(CurrentItemService) {
+  function Controller(CurrentItemService, ImmutableDate) {
     var self = this;
 
     self.$onInit = function() {
-      var modelAnswer = CurrentItemService.getFilling().answer.value;
-      if (modelAnswer) {
-        self.answer = new Date(modelAnswer);
-      }
-      self.otusQuestion.item = self;
+      self.answer = CurrentItemService.getFilling().answer.value || new ImmutableDate(null);
+      self.otusQuestion.answer = self;
     };
 
     self.update = function() {
       self.onUpdate({
         valueType: 'answer',
-        value: (self.answer instanceof Date) ? self.answer.getTime() : null
+        value: (self.answer.date instanceof Date) ? self.answer : new ImmutableDate(null)
       });
     };
 

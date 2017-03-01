@@ -6,10 +6,11 @@
     .service('otusjs.player.data.activity.CurrentItemService', Service);
 
   Service.$inject = [
-    'otusjs.model.activity.ActivityFacadeService'
+    'otusjs.model.activity.ActivityFacadeService',
+    'otusjs.utils.ImmutableDate'
   ];
 
-  function Service(ActivityFacadeService) {
+  function Service(ActivityFacadeService, ImmutableDate) {
     var self = this;
     var _item = null;
     var _filling = null;

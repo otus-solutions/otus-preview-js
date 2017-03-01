@@ -708,7 +708,7 @@
   angular
     .module('otusjs.player.component')
     .component('otusCalendarQuestion', {
-      template:'<md-content layout-padding><div layout="row" style="margin-top: 15px"><md-datepicker ng-model="$ctrl.answer" ng-change="$ctrl.update()" md-placeholder="Insira a data"></md-datepicker></div></md-content>',
+      template:'<md-content layout-padding><div layout="row" style="margin-top: 15px"><md-datepicker ng-model="$ctrl.answer.date" ng-blur="$ctrl.update()" md-placeholder="Insira a data"></md-datepicker></div></md-content>',
       controller: Controller,
       bindings: {
         itemData: '<',
@@ -720,24 +720,22 @@
     });
 
   Controller.$inject = [
-    'otusjs.player.data.activity.CurrentItemService'
+    'otusjs.player.data.activity.CurrentItemService',
+    'otusjs.utils.ImmutableDate'
   ];
 
-  function Controller(CurrentItemService) {
+  function Controller(CurrentItemService, ImmutableDate) {
     var self = this;
 
     self.$onInit = function() {
-      var modelAnswer = CurrentItemService.getFilling().answer.value;
-      if (modelAnswer) {
-        self.answer = new Date(modelAnswer);
-      }
-      self.otusQuestion.item = self;
+      self.answer = CurrentItemService.getFilling().answer.value || new ImmutableDate(null);
+      self.otusQuestion.answer = self;
     };
 
     self.update = function() {
       self.onUpdate({
         valueType: 'answer',
-        value: (self.answer instanceof Date) ? self.answer.getTime() : null
+        value: (self.answer.date instanceof Date) ? self.answer : new ImmutableDate(null)
       });
     };
 
@@ -986,7 +984,7 @@
     self.clear = function() {
       CurrentItemService.getFilling().answer.clear();
       delete self.answerArray;
-    }
+    };
   }
 
 }());
@@ -1140,7 +1138,7 @@
   angular
     .module('otusjs.player.component')
     .component('otusTimeQuestion', {
-      template:'<md-content layout-padding><div layout="row"><md-input-container class="md-block" flex-gt-sm="45"><md-icon class="material-icons">access_time</md-icon><input type="time" ng-model="$ctrl.answer" ng-blur="$ctrl.update()" aria-label="Tempo" min="0" max="4999"></md-input-container></div></md-content>',
+      template:'<md-content layout-padding><div layout="row"><md-input-container class="md-block" flex-gt-sm="45"><md-icon class="material-icons">access_time</md-icon><input type="time" ng-model="$ctrl.answer.date" ng-blur="$ctrl.update()" aria-label="Tempo" min="0" max="4999"></md-input-container></div></md-content>',
       controller: Controller,
       bindings: {
         itemData: '<',
@@ -1152,24 +1150,22 @@
     });
 
   Controller.$inject = [
-    'otusjs.player.data.activity.CurrentItemService'
+    'otusjs.player.data.activity.CurrentItemService',
+    'otusjs.utils.ImmutableDate'
   ];
 
-  function Controller(CurrentItemService) {
+  function Controller(CurrentItemService, ImmutableDate) {
     var self = this;
 
     self.$onInit = function() {
-      var modelAnswer = CurrentItemService.getFilling().answer.value;
-      if (modelAnswer) {
-        self.answer = new Date(modelAnswer);
-      }
-      self.otusQuestion.item = self;
+      self.answer = CurrentItemService.getFilling().answer.value || new ImmutableDate(null);
+      self.otusQuestion.answer = self;
     };
 
     self.update = function() {
       self.onUpdate({
         valueType: 'answer',
-        value: (self.answer instanceof Date) ? self.answer.getTime() : null
+        value: (self.answer.date instanceof Date) ? self.answer : new ImmutableDate(null)
       });
     };
 
@@ -1340,17 +1336,17 @@
       var date;
       if (type === 'rangeDate') {
         date = {
-          'initial': $filter('date')(new Date(reference.initial), 'dd/MM/yyyy'),
-          'end': $filter('date')(new Date(reference.end), 'dd/MM/yyyy')
+          'initial': $filter('date')(new Date(reference.initial.value), 'dd/MM/yyyy'),
+          'end': $filter('date')(new Date(reference.end.value), 'dd/MM/yyyy')
         };
       } else {
-        date = $filter('date')(new Date(reference), 'dd/MM/yyyy');
+        date = $filter('date')(new Date(reference.value), 'dd/MM/yyyy');
       }
       return date;
     };
 
     self.referenceAsTime = function(type) {
-      var reference = CurrentItemService.getFillingRules()[type].data.reference;
+      var reference = CurrentItemService.getFillingRules()[type].data.reference.value;
       return $filter('date')(new Date(reference), 'hh:mm a');
     };
 
@@ -1543,7 +1539,7 @@
   function Service() {
     var self = this;
     self.pipe = {};
-    self.flowData = {}
+    self.flowData = {};
 
     /* Public methods */
   }
@@ -4078,10 +4074,11 @@
     .service('otusjs.player.data.activity.CurrentItemService', Service);
 
   Service.$inject = [
-    'otusjs.model.activity.ActivityFacadeService'
+    'otusjs.model.activity.ActivityFacadeService',
+    'otusjs.utils.ImmutableDate'
   ];
 
-  function Service(ActivityFacadeService) {
+  function Service(ActivityFacadeService, ImmutableDate) {
     var self = this;
     var _item = null;
     var _filling = null;

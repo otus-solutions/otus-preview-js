@@ -50,7 +50,7 @@
     self.clear = function() {
       CurrentItemService.getFilling().answer.clear();
       delete self.answerArray;
-    }
+    };
   }
 
 }());

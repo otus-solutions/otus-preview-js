@@ -8,7 +8,7 @@
   function Service() {
     var self = this;
     self.pipe = {};
-    self.flowData = {}
+    self.flowData = {};
 
     /* Public methods */
   }
