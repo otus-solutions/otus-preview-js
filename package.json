@@ -22,12 +22,12 @@
     "build": "gulp compress"
   },
   "dependencies": {
-    "angular": "^1.4.7",
-    "angular-animate": "^1.4.7",
-    "angular-aria": "^1.4.7",
+    "angular": "1.5.8",
+    "angular-animate": "1.5.8",
+    "angular-aria": "1.5.8",
     "angular-bind-html-compile-ci-dev": "1.1.1",
     "angular-material": "1.0.9",
-    "angular-messages": "^1.5.0",
+    "angular-messages": "1.5.8",
     "angular-mousewheel": "^1.0.5",
     "angular-ui-router": "0.2.14",
     "jquery": "^3.1.1",
@@ -35,7 +35,7 @@
     "otus-validation-js": "git@github.com:ccem-dev/otus-validation-js.git#dev"
   },
   "devDependencies": {
-    "angular-mocks": "^1.4.9",
+    "angular-mocks": "1.4.9",
     "browser-sync": "2.11.2",
     "browser-sync-middleware-spa": "^1.0.0",
     "concurrently": "^1.0.0",
