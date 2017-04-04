@@ -78,6 +78,7 @@
     }
 
     function onInit() {
+      _setupPhaseBlocker();  //TODO this should be called elsewhere if we want to block other phases than pre-start (which method is executed at every phase change?)
       self.showBackCover = false;
       self.showCover = true;
       self.showActivity = false;
@@ -92,6 +93,10 @@
       self.playerCover = {};
       self.playerBackCover = {};
       PlayerService.bindComponent(self);
+    }
+
+    function _setupPhaseBlocker() {
+      self.phaseBlocker = PlayerService.getPhaseBlocker();
     }
 
     function _loadItem() {

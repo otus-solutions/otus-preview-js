@@ -40,6 +40,30 @@
     self.stop = stop;
     self.save = save;
 
+    /**/
+    self.registerPhaseBlocker = registerPhaseBlocker;
+    self.getPhaseBlocker = getPhaseBlocker;
+    self.clearPhaseBlocker = clearPhaseBlocker;
+
+
+    var _phaseBlocker = null;
+    function registerPhaseBlocker(blocker) {
+      _phaseBlocker = blocker;
+      _phaseBlocker.then(function(){
+         getPhaseBlocker();
+      });
+    }
+
+    function getPhaseBlocker(){
+      return _phaseBlocker;
+    }
+
+    function clearPhaseBlocker(){
+      _phaseBlocker = null;
+   }
+
+    /**/
+
     function bindComponent(component) {
       _component = component;
     }

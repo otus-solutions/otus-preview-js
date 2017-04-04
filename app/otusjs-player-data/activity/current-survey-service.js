@@ -20,6 +20,7 @@
     self.getNavigationByOrigin = getNavigationByOrigin;
     self.getItemByCustomID = getItemByCustomID;
     self.getItemByTemplateID = getItemByTemplateID;
+    self.getSurveyDatasources = getSurveyDatasources;
     self.initialize = initialize;
     self.finalize = finalize;
     self.save = save;
@@ -29,6 +30,10 @@
     function getSurvey() {
       return ActivityFacadeService.surveyActivity;
     }
+
+    function getSurveyDatasources(){ //question datasources
+      return getSurvey().getDataSources();
+   }
 
     function getAnswerByItemID(id) {
       return ActivityFacadeService.getFillingByQuestionID(id);

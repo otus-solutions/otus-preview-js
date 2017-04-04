@@ -152,7 +152,7 @@
   angular
     .module('otusjs.player.component')
     .component('otusPlayer', {
-      template:'<otus-survey-cover on-play="$ctrl.play()" ng-show="$ctrl.showCover" layout-align="center center" layout="column" flex class="player-cover"></otus-survey-cover><md-content layout="column" flex ng-show="$ctrl.showActivity"><otus-survey-header layout="row" flex="21"></otus-survey-header><otus-player-commander layout="row" flex="10" on-go-back="$ctrl.goBack()" on-pause="$ctrl.pause()" on-stop="$ctrl.stop()" on-go-ahead="$ctrl.goAhead()" on-eject="$ctrl.eject()"></otus-player-commander><otus-player-display layout="row" flex style="overflow: hidden !important; position: relative !important"></otus-player-display></md-content><otus-survey-back-cover on-finalize="$ctrl.eject()" ng-show="$ctrl.showBackCover" layout-align="center center" layout="column" flex class="player-back-cover"></otus-survey-back-cover>',
+      template:'<otus-survey-cover on-play="$ctrl.play()" phase-blocker="$ctrl.phaseBlocker" ng-show="$ctrl.showCover" layout-align="center center" layout="column" flex class="player-cover"></otus-survey-cover><md-content layout="column" flex ng-show="$ctrl.showActivity"><otus-survey-header layout="row" flex="21"></otus-survey-header><otus-player-commander layout="row" flex="10" on-go-back="$ctrl.goBack()" on-pause="$ctrl.pause()" on-stop="$ctrl.stop()" on-go-ahead="$ctrl.goAhead()" on-eject="$ctrl.eject()"></otus-player-commander><otus-player-display layout="row" flex style="overflow: hidden !important; position: relative !important"></otus-player-display></md-content><otus-survey-back-cover on-finalize="$ctrl.eject()" ng-show="$ctrl.showBackCover" layout-align="center center" layout="column" flex class="player-back-cover"></otus-survey-back-cover>',
       controller: Controller
     });
 
@@ -226,6 +226,7 @@
     }
 
     function onInit() {
+      _setupPhaseBlocker();  //TODO this should be called elsewhere if we want to block other phases than pre-start (which method is executed at every phase change?)
       self.showBackCover = false;
       self.showCover = true;
       self.showActivity = false;
@@ -240,6 +241,10 @@
       self.playerCover = {};
       self.playerBackCover = {};
       PlayerService.bindComponent(self);
+    }
+
+    function _setupPhaseBlocker() {
+      self.phaseBlocker = PlayerService.getPhaseBlocker();
     }
 
     function _loadItem() {
@@ -418,10 +423,11 @@
   angular
     .module('otusjs.player.component')
     .component('otusSurveyCover', {
-      template:'<md-content class="cover-content" layout-align="center center" layout="row" flex><div layout-align="center center" layout="column" flex><section><h2 class="md-display-1">{{ $ctrl.title }}</h2></section><md-button class="md-raised md-primary" aria-label="Iniciar" ng-click="$ctrl.play()"><md-icon md-font-set="material-icons">assignment</md-icon>Iniciar</md-button></div></md-content>',
+      template:'<md-content class="cover-content" layout-align="center center" layout="row" flex><div layout-align="center center" layout="column" flex><section><h2 class="md-display-1">{{ $ctrl.title }}</h2></section><md-button class="md-raised md-primary" aria-label="Iniciar" ng-click="$ctrl.play()" ng-disabled="$ctrl.block"><md-icon md-font-set="material-icons">assignment</md-icon>Iniciar</md-button><md-progress-circular md-primary md-mode="indeterminate" ng-show="$ctrl.block"></md-progress-circular></div></md-content>',
       controller: Controller,
       bindings: {
-        onPlay: '&'
+        onPlay: '&',
+        phaseBlocker: '&'
       }
     });
 
@@ -444,6 +450,17 @@
       $scope.$parent.$ctrl.playerCover = self;
       var activity = ActivityFacadeService.getCurrentSurvey().getSurvey();
       self.title = activity.getName();
+      _unblock();
+    }
+
+    function _unblock(){
+      if (self.phaseBlocker()) {
+         self.block = true;
+         self.phaseBlocker()
+            .then(function(thing) {
+               self.block=false;
+            });
+      }
     }
 
     function play() {
@@ -1215,6 +1232,78 @@
     self.clear = function() {
       CurrentItemService.getFilling().answer.clear();
       delete self.answer;
+    }
+  }
+}());
+
+(function() {
+  'use strict';
+
+  angular
+    .module('otusjs.player.component')
+    .component('otusAutocompleteQuestion', {
+      template:'<md-content layout-padding><div layout="row" style="margin-top: 15px" layout-fill><div layout="column" flex><p layout="row" ng-hide="$ctrl.dataReady || $ctrl.dataError">Aguarde. Preparando lista de opções.</p><p layout="row" md-warn ng-show="$ctrl.dataError">Erro ao carregar opções.</p><md-autocomplete flex ng-disabled="!$ctrl.dataReady" md-search-text="$ctrl.autoCompleteSettings.searchText" md-selected-item="$ctrl.answer" md-selected-item-change="$ctrl.update()" md-items="meds in $ctrl.searchQuery($ctrl.autoCompleteSettings.searchText)" md-item-text="meds.value" md-min-length="3" placeholder="Inicie a digitação"><md-item-template layout-fill flex><span md-highlight-text="$ctrl.autoCompleteSettings.searchText" md-highlight-flags="gi">{{meds.value}}</span></md-item-template><md-not-found><span ng-click="$ctrl.setOther()">"{{$ctrl.autoCompleteSettings.searchText}}" não encontrado. Clique para responder com "Outro"</span></md-not-found></md-autocomplete></div></div></md-content>',
+      controller: Controller,
+      bindings: {
+        itemData: '<',
+        onUpdate: '&'
+      },
+      require: {
+        otusQuestion: '^otusQuestion'
+      }
+    });
+
+  Controller.$inject = [
+    'otusjs.player.data.activity.CurrentItemService',
+    'otusjs.utils.DatasourceService',
+    'otusjs.utils.SearchQueryFactory'
+  ];
+
+  function Controller(CurrentItemService, DatasourceService, SearchQueryFactory) {
+    var self = this;
+    var _datasource = [];
+
+    /* Question Methods */
+    self.$onInit = function() {
+      self.dataReady = false;
+      self.answer = CurrentItemService.getFilling().answer.value;
+      self.otusQuestion.answer = self;
+      _setupDatasourceQuery();
+    };
+
+    self.update = function() {
+      self.onUpdate({
+        valueType: 'answer',
+        value: self.answer.value
+      });
+    };
+
+    self.clear = function() {
+      CurrentItemService.getFilling().answer.clear();
+      delete self.answer;
+    };
+
+    self.setOther = function() {
+      self.answer = {value:"Outro"};
+      self.update();
+    };
+
+    /* Datasource Methods */
+    function _setupDatasourceQuery() {
+      DatasourceService.fetchDatasources(self.itemData.dataSources)
+        .then(function(dataList) {
+          _datasource = _datasource.concat(dataList);
+          if (_datasource.length) {
+            self.searchQuery = SearchQueryFactory.newStringSearch(_datasource).perform;
+            self.dataReady = true;
+          }
+       }, function(err){
+          self.dataError = true;
+       });
+      self.autoCompleteSettings = {
+        selectedItem: null,
+        searchText: "",
+      };
     }
   }
 }());
@@ -3076,6 +3165,30 @@
     self.stop = stop;
     self.save = save;
 
+    /**/
+    self.registerPhaseBlocker = registerPhaseBlocker;
+    self.getPhaseBlocker = getPhaseBlocker;
+    self.clearPhaseBlocker = clearPhaseBlocker;
+
+
+    var _phaseBlocker = null;
+    function registerPhaseBlocker(blocker) {
+      _phaseBlocker = blocker;
+      _phaseBlocker.then(function(){
+         getPhaseBlocker();
+      });
+    }
+
+    function getPhaseBlocker(){
+      return _phaseBlocker;
+    }
+
+    function clearPhaseBlocker(){
+      _phaseBlocker = null;
+   }
+
+    /**/
+
     function bindComponent(component) {
       _component = component;
     }
@@ -4209,6 +4322,7 @@
     self.getNavigationByOrigin = getNavigationByOrigin;
     self.getItemByCustomID = getItemByCustomID;
     self.getItemByTemplateID = getItemByTemplateID;
+    self.getSurveyDatasources = getSurveyDatasources;
     self.initialize = initialize;
     self.finalize = finalize;
     self.save = save;
@@ -4218,6 +4332,10 @@
     function getSurvey() {
       return ActivityFacadeService.surveyActivity;
     }
+
+    function getSurveyDatasources(){ //question datasources
+      return getSurvey().getDataSources();
+   }
 
     function getAnswerByItemID(id) {
       return ActivityFacadeService.getFillingByQuestionID(id);

@@ -7,7 +7,8 @@
       templateUrl: 'app/otusjs-player-component/survey-cover/survey-cover-template.html',
       controller: Controller,
       bindings: {
-        onPlay: '&'
+        onPlay: '&',
+        phaseBlocker: '&'
       }
     });
 
@@ -30,6 +31,17 @@
       $scope.$parent.$ctrl.playerCover = self;
       var activity = ActivityFacadeService.getCurrentSurvey().getSurvey();
       self.title = activity.getName();
+      _unblock();
+    }
+
+    function _unblock(){
+      if (self.phaseBlocker()) {
+         self.block = true;
+         self.phaseBlocker()
+            .then(function(thing) {
+               self.block=false;
+            });
+      }
     }
 
     function play() {
