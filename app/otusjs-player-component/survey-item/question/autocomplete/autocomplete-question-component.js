@@ -34,10 +34,16 @@
     };
 
     self.update = function() {
+      var _answerUpdate;
+      if (!self.answer) {
+         _answerUpdate = null;
+     } else{
+        _answerUpdate = self.answer.value;
+     }
       self.onUpdate({
         valueType: 'answer',
-        value: self.answer.value
-      });
+        value: _answerUpdate
+    });
     };
 
     self.clear = function() {
@@ -52,7 +58,7 @@
 
     /* Datasource Methods */
     function _setupDatasourceQuery() {
-      DatasourceService.fetchDatasources(self.itemData.dataSources)
+      DatasourceService.fetchDatasources(self.itemData.templateID)
         .then(function(dataList) {
           _datasource = _datasource.concat(dataList);
           if (_datasource.length) {
