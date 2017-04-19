@@ -961,7 +961,7 @@
         itemData: '<',
         onUpdate: '&'
       },
-      require : {
+      require: {
         otusQuestion: '^otusQuestion'
       }
     });
@@ -976,19 +976,27 @@
     self.$onInit = function() {
       self.answerArray = CurrentItemService.getFilling().answer.value;
       self.otusQuestion.answer = self;
-      if (!self.answerArray) {
-        self.answerArray = [];
-        self.itemData.options.forEach(function(option) {
-          self.answerArray.push(_buildAnswerObject(option));
+      _fixArray();
+    };
+
+    self.update = function(index) {      
+      if (!_checkIfAnyTrue()) {
+        self.onUpdate({
+          valueType: 'answer',
+          value: {}
+        });
+      } else {
+        self.onUpdate({
+          valueType: 'answer',
+          value: self.answerArray
         });
       }
     };
 
-    self.update = function(index) {
-      self.onUpdate({
-        valueType: 'answer',
-        value: self.answerArray
-      });
+    self.clear = function() {
+      CurrentItemService.getFilling().answer.clear();
+      delete self.answerArray;
+      _fixArray();
     };
 
     function _buildAnswerObject(option) {
@@ -998,10 +1006,20 @@
       };
     }
 
-    self.clear = function() {
-      CurrentItemService.getFilling().answer.clear();
-      delete self.answerArray;
-    };
+    function _fixArray() {
+      if (!self.answerArray) {
+        self.answerArray = [];
+        self.itemData.options.forEach(function(option) {
+          self.answerArray.push(_buildAnswerObject(option));
+        });
+     }
+    }
+
+    function _checkIfAnyTrue() {
+      return self.answerArray.some(function(answer) {
+        return answer.state;
+      });
+    }
   }
 
 }());
