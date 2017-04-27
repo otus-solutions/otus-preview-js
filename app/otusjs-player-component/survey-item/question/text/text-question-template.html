@@ -1,7 +1,7 @@
 <md-content id="text-question" layout-padding>
     <div layout="row">
         <md-input-container md-no-float class="md-block" flex>
-            <textarea ng-class="{lowercase: $ctrl.hasLowerCase, uppercase: $ctrl.hasUpperCase}" ng-model="$ctrl.answer" ng-change="$ctrl.update()" placeholder="Digite o texto aqui"></textarea>
+            <textarea id="textQuestion" ng-class="{lowercase: $ctrl.hasLowerCase, uppercase: $ctrl.hasUpperCase}" ng-model="$ctrl.answer" ng-change="$ctrl.update()" placeholder="Digite o texto aqui"></textarea>
         </md-input-container>
     </div>
 </md-content>

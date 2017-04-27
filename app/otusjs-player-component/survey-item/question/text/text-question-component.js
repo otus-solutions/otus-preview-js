@@ -10,18 +10,17 @@
         itemData: '<',
         onUpdate: '&'
       },
-      require : {
+      require: {
         otusQuestion: '^otusQuestion'
       }
     });
 
   Controller.$inject = [
     '$element',
-    'otusjs.player.data.activity.CurrentItemService',
-    'uiFormatedService'
+    'otusjs.player.data.activity.CurrentItemService'
   ];
 
-  function Controller($element, CurrentItemService, uiFormatedService) {
+  function Controller($element, CurrentItemService) {
     var self = this;
 
     self.$onInit = function() {
@@ -43,7 +42,7 @@
 
       if ((self.hasAlphanumeric && self.hasAlphanumeric.data.reference) ||
         (self.hasSpecials && self.hasSpecials.data.reference)) {
-        uiFormatedService.apply($element, self.answer);
+        _filter();
       }
 
       self.onUpdate({
@@ -55,6 +54,12 @@
     self.clear = function() {
       CurrentItemService.getFilling().answer.clear();
       delete self.answer;
+    }
+
+    function _filter() {
+      var element = angular.element($element[0].querySelector('textarea#textQuestion'));
+      self.answer = self.answer.replace(/[^A-Za-z0-9]/g, '');
+      element.value = self.answer;
     }
 
   }
