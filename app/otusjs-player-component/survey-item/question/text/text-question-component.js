@@ -1,4 +1,4 @@
-(function() {
+(function () {
   'use strict';
 
   angular
@@ -23,7 +23,7 @@
   function Controller($element, CurrentItemService) {
     var self = this;
 
-    self.$onInit = function() {
+    self.$onInit = function () {
       self.answer = CurrentItemService.getFilling().answer.value;
       self.hasAlphanumeric = CurrentItemService.getFillingRules().alphanumeric;
       self.hasSpecials = CurrentItemService.getFillingRules().specials;
@@ -32,7 +32,7 @@
       self.otusQuestion.answer = self;
     };
 
-    self.update = function() {
+    self.update = function () {
       if (self.hasLowerCase) {
         self.answer.value.toLowerCase();
       }
@@ -51,14 +51,14 @@
       });
     };
 
-    self.clear = function() {
+    self.clear = function () {
       CurrentItemService.getFilling().answer.clear();
       delete self.answer;
     }
 
     function _filter() {
       var element = angular.element($element[0].querySelector('textarea#textQuestion'));
-      self.answer = self.answer.replace(/[^A-Za-z0-9]/g, '');
+      self.answer = self.answer.replace(/[^A-Za-z0-9\u00C0-\u00FF,.'"]/g, '');
       element.value = self.answer;
     }
 
