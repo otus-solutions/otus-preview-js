@@ -58,7 +58,7 @@
 
     function _filter() {
       var element = angular.element($element[0].querySelector('textarea#textQuestion'));
-      self.answer = self.answer.replace(/[^A-Za-z0-9\u00C0-\u00FF,.'"]/g, '');
+      self.answer = self.answer.replace(/[^A-Za-z0-9\u00C0-\u00FF,.'"\s]/g, '');
       element.value = self.answer;
     }
 
