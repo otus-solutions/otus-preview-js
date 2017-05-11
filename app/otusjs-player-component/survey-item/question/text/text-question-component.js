@@ -33,17 +33,7 @@
     };
 
     self.update = function () {
-      if (self.hasLowerCase) {
-        self.answer.value.toLowerCase();
-      }
-      if (self.hasUpperCase) {
-        self.answer.value.toUpperCase();
-      }
-
-      if ((self.hasAlphanumeric && self.hasAlphanumeric.data.reference) ||
-        (self.hasSpecials && self.hasSpecials.data.reference)) {
-        _filter();
-      }
+      _runValidationSteps();
 
       self.onUpdate({
         valueType: 'answer',
@@ -60,6 +50,30 @@
       var element = angular.element($element[0].querySelector('textarea#textQuestion'));
       self.answer = self.answer.replace(/[^A-Za-z0-9\u00C0-\u00FF,.'"\s]/g, '');
       element.value = self.answer;
+    }
+
+    function _isEmpty() {
+      return self.answer.length == 0;
+    }
+
+    function _runValidationSteps() {
+      if (self.hasLowerCase) {
+        self.answer.toLowerCase();
+      }
+
+      if (self.hasUpperCase) {
+        self.answer.toUpperCase();
+      }
+
+      if ((self.hasAlphanumeric && self.hasAlphanumeric.data.reference) ||
+        (self.hasSpecials && self.hasSpecials.data.reference)) {
+        _filter();
+      }
+
+      if (_isEmpty()) {
+        delete self.answer;
+      }
+
     }
 
   }
