@@ -200,7 +200,6 @@
     function clear() {
       self.pendingList = [];
       _pendingArrayControl = 0;
-      CurrentItemService.getFilling().answer.clear();
     }
 
   }
