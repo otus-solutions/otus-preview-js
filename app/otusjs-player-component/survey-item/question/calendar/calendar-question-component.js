@@ -31,7 +31,7 @@
     self.update = function() {
       self.onUpdate({
         valueType: 'answer',
-        value: (self.answer.date instanceof Date) ? self.answer : new ImmutableDate(null)
+        value: (self.answer.date instanceof Date) ? self.answer : null
       });
     };
 

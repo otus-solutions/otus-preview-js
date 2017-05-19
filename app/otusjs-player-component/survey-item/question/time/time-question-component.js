@@ -28,10 +28,29 @@
       self.otusQuestion.answer = self;
     };
 
-    self.update = function() {
+    self.update = function(e) {
+      var _answer = {};
+
+      if (e.target.validity.valid) {
+        _answer = self.answer;
+        if (self.answer === null) {
+          _answer = {};
+        } else {
+          if (self.answer.hasOwnProperty('date')) {
+            if (self.answer.date === null || self.answer.date === undefined) {
+              _answer = {};
+            }
+          }
+        }
+      } else {
+        _answer = "invalid format";
+      }
+
+
+
       self.onUpdate({
         valueType: 'answer',
-        value: (self.answer.date instanceof Date) ? self.answer : new ImmutableDate(null)
+        value: _answer
       });
     };
 
@@ -40,4 +59,5 @@
       delete self.answer;
     };
   }
+
 }());

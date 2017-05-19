@@ -61,7 +61,7 @@
           self.clearCommentAnswer();
         }
       }
-    }
+    };
 
     self.clearAnswer = function() {
       self.answer.clear();
@@ -87,18 +87,16 @@
       } else {
         self.menuComponent.error = false;
       }
-    }
+    };
 
     self.isAccept = function() {
-      if (self.itemData.fillingRules.options.accept == undefined)
-        return false;
-      return true;
-    }
+      return self.itemData.fillingRules.options.accept === undefined ? false : true;
+    };
 
     function _canBeIgnored(error) {
       return function(validator) {
         return self.itemData.fillingRules.options[validator].data.canBeIgnored || !error[validator];
-      }
+      };
     }
   }
 

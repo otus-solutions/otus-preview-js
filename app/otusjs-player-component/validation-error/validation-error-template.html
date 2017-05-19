@@ -94,4 +94,10 @@
     <md-icon md-font-set="material-icons">error_outline</md-icon><span></span>
     <span class="md-body-1">Quantidade máxima selecionada deve ser {{ $ctrl.reference('maxSelected')}}</span>
   </ng-message>
+
+  <ng-message class="md-button md-warn" when="ImmutableDate">
+    <md-icon md-font-set="material-icons">error_outline</md-icon><span></span>
+    <span class="md-body-1">Formato Inválido</span>
+  </ng-message>
+
 </ng-messages>

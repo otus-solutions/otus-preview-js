@@ -44,7 +44,7 @@
     self.clear = function () {
       CurrentItemService.getFilling().answer.clear();
       delete self.answer;
-    }
+    };
 
     function _filter() {
       var element = angular.element($element[0].querySelector('textarea#textQuestion'));

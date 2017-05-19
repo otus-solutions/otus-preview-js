@@ -40,6 +40,7 @@
         Object.keys(currentItemService.getItem().fillingRules.options).map(function(validator) {
           _addValidator(validator, currentItemService);
         });
+        _setupImmutableDateValidation(currentItemService);
       }
 
       ValidationService.unregisterElement(_elementRegister.id);
@@ -50,5 +51,13 @@
       var reference = currentItemService.getItem().fillingRules.options[validator].data;
       _elementRegister.addValidator(validator, reference);
     }
+
+    function _setupImmutableDateValidation(currentItemService) {
+      var currentItemItemType = currentItemService.getItem().objectType;
+      if(currentItemItemType === "TimeQuestion" || currentItemItemType === "CalendarQuestion") {
+        _elementRegister.addValidator("ImmutableDate", currentItemService);
+      }
+    }
+
   }
 }());
