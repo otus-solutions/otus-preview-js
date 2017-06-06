@@ -85,8 +85,8 @@
 
       self.pendingCounter++;
 
-      _uploadInterface.uploadFile(file).
-      then(function(response) {
+      _uploadInterface.uploadFile(file, _questionID)
+      .then(function(response) {
         var _oid = response.data.data;
         self.pendingCounter--;
         var fileInfo = _removeFile(file);
