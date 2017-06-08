@@ -1,4 +1,4 @@
-(function() {
+(function () {
   'use strict';
 
   angular
@@ -22,13 +22,13 @@
   function Controller(CurrentItemService) {
     var self = this;
 
-    self.$onInit = function() {
+    self.$onInit = function () {
       self.answerArray = CurrentItemService.getFilling().answer.value;
       self.otusQuestion.answer = self;
       _fixArray();
     };
 
-    self.update = function(index) {      
+    self.update = function (index) {
       if (!_checkIfAnyTrue()) {
         self.onUpdate({
           valueType: 'answer',
@@ -42,7 +42,7 @@
       }
     };
 
-    self.clear = function() {
+    self.clear = function () {
       CurrentItemService.getFilling().answer.clear();
       delete self.answerArray;
       _fixArray();
@@ -58,14 +58,14 @@
     function _fixArray() {
       if (!self.answerArray) {
         self.answerArray = [];
-        self.itemData.options.forEach(function(option) {
+        self.itemData.options.forEach(function (option) {
           self.answerArray.push(_buildAnswerObject(option));
         });
-     }
+      }
     }
 
     function _checkIfAnyTrue() {
-      return self.answerArray.some(function(answer) {
+      return self.answerArray.some(function (answer) {
         return answer.state;
       });
     }

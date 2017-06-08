@@ -947,7 +947,7 @@
   }
 }());
 
-(function() {
+(function () {
   'use strict';
 
   angular
@@ -971,13 +971,13 @@
   function Controller(CurrentItemService) {
     var self = this;
 
-    self.$onInit = function() {
+    self.$onInit = function () {
       self.answerArray = CurrentItemService.getFilling().answer.value;
       self.otusQuestion.answer = self;
       _fixArray();
     };
 
-    self.update = function(index) {      
+    self.update = function (index) {
       if (!_checkIfAnyTrue()) {
         self.onUpdate({
           valueType: 'answer',
@@ -991,7 +991,7 @@
       }
     };
 
-    self.clear = function() {
+    self.clear = function () {
       CurrentItemService.getFilling().answer.clear();
       delete self.answerArray;
       _fixArray();
@@ -1007,14 +1007,14 @@
     function _fixArray() {
       if (!self.answerArray) {
         self.answerArray = [];
-        self.itemData.options.forEach(function(option) {
+        self.itemData.options.forEach(function (option) {
           self.answerArray.push(_buildAnswerObject(option));
         });
-     }
+      }
     }
 
     function _checkIfAnyTrue() {
-      return self.answerArray.some(function(answer) {
+      return self.answerArray.some(function (answer) {
         return answer.state;
       });
     }
@@ -1539,6 +1539,107 @@
         searchText: "",
       };
     }
+  }
+}());
+
+(function () {
+  'use strict';
+
+  angular
+    .module('otusjs.player.component')
+    .component('otusGridTextQuestion', {
+      template:'<div ng-repeat="line in ::$ctrl.itemData.getLinesList()" ng-init="outerIndex=$index" layout="row" flex><div ng-repeat="gridText in ::line.getGridTextList()" ng-init="innerIndex=$index" layout-padding layout="row" flex><md-input-container flex><label>{{ ::gridText.label.ptBR.formattedText }}</label><div><textarea ng-model="$ctrl.answerArray[outerIndex][innerIndex].value" ng-blur="$ctrl.update(outerIndex, innerIndex)"></textarea></div><div style="color: gray;">{{::gridText.unit.ptBR.formattedText}}</div></md-input-container></div></div>',
+      controller: Controller,
+      bindings: {
+        itemData: '<',
+        onUpdate: '&'
+      },
+      require: {
+        otusQuestion: '^otusQuestion'
+      }
+    });
+
+  Controller.$inject = [
+    'otusjs.player.data.activity.CurrentItemService'
+  ];
+
+  function Controller(CurrentItemService) {
+    var self = this;
+
+    /* Public Interface */
+    self.$onInit = onInit;
+    self.update = update;
+    self.clear = clear;
+
+    function onInit() {
+      self.answerArray = CurrentItemService.getFilling().answer.value;
+      self.otusQuestion.answer = self;
+      _fixArray();
+    };
+
+    function update(outerIndex, innerIndex) {
+      if (!_checkIfAnswered()) {
+        self.onUpdate({
+          valueType: 'answer',
+          value: {}
+        });
+      } else {
+        assignNullsToEmptyValues();
+        self.onUpdate({
+          valueType: 'answer',
+          value: self.answerArray
+        });
+      }
+    };
+
+    function _fixArray() {
+      if (!self.answerArray) {
+        self.answerArray = [[]];
+
+        self.itemData.getLinesList().forEach(function (line, outerIndex) {
+          self.answerArray[outerIndex] = [];
+          line.getGridTextList().forEach(function (gridText, innerIndex) {
+            self.answerArray[outerIndex][innerIndex] = _buildAnswerObject(gridText);
+          });
+        });
+      }
+    };
+
+    function _buildAnswerObject(gridText) {
+      return {
+        objectType: 'GridTextAnswer',
+        gridText: gridText.customID,
+        value: (gridText.value === undefined) ? null : gridText.value
+      };
+    };
+
+    function _checkIfAnswered() {
+      var result = false;
+      self.itemData.getLinesList().forEach(function (line, outerIndex) {
+        line.getGridTextList().forEach(function (gridText, innerIndex) {
+          if (self.answerArray[outerIndex][innerIndex].value && self.answerArray[outerIndex][innerIndex].value.length > 0) {
+            result = true;
+          }
+        });
+      });
+      return result;
+    };
+
+    function assignNullsToEmptyValues() {
+      self.itemData.getLinesList().forEach(function (line, outerIndex) {
+        line.getGridTextList().forEach(function (gridText, innerIndex) {
+          if (self.answerArray[outerIndex][innerIndex].value === '') {
+            self.answerArray[outerIndex][innerIndex].value = null;
+          }
+        });
+      });
+    }
+
+    function clear() {
+      CurrentItemService.getFilling().answer.clear();
+      delete self.answerArray;
+      _fixArray();
+    };
   }
 }());
 
