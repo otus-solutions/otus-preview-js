@@ -1156,7 +1156,7 @@
   angular
     .module('otusjs.player.component')
     .component('otusTimeQuestion', {
-      template:'<md-content layout-padding><div layout="row"><md-input-container class="md-block" flex-gt-sm="45"><md-icon class="material-icons">access_time</md-icon><input type="time" ng-model="$ctrl.answer.date" ng-blur="$ctrl.update($event)" aria-label="Tempo"></md-input-container></div></md-content>',
+      template:'<md-content layout-padding><div layout="row"><md-button ng-click="$ctrl.currentTime()" class="md-fab md-raised md-mini" aria-label="Hora Atual"><md-icon>access_time</md-icon><md-tooltip md-direction="down">Hora Atual</md-tooltip></md-button><md-input-container class="md-block" flex-gt-sm="45"><input id="inputtime" type="time" ng-model="$ctrl.answer.date" ng-blur="$ctrl.update($event)" aria-label="Tempo"></md-input-container></div></md-content>',
       controller: Controller,
       bindings: {
         itemData: '<',
@@ -1169,10 +1169,11 @@
 
   Controller.$inject = [
     'otusjs.player.data.activity.CurrentItemService',
-    'otusjs.utils.ImmutableDate'
+    'otusjs.utils.ImmutableDate',
+    '$element'
   ];
 
-  function Controller(CurrentItemService, ImmutableDate) {
+  function Controller(CurrentItemService, ImmutableDate, $element) {
     var self = this;
 
     self.$onInit = function() {
@@ -1206,9 +1207,21 @@
       });
     };
 
+
     self.clear = function() {
       CurrentItemService.getFilling().answer.clear();
       delete self.answer;
+    };
+
+    self.currentTime = function(e) {
+      var imuDate = new ImmutableDate()
+
+      imuDate.setSeconds(0);
+      imuDate.setMilliseconds(0);
+
+      self.answer = imuDate;
+
+      $element.find('#inputtime').blur();
     };
   }
 

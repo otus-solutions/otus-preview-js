@@ -17,10 +17,11 @@
 
   Controller.$inject = [
     'otusjs.player.data.activity.CurrentItemService',
-    'otusjs.utils.ImmutableDate'
+    'otusjs.utils.ImmutableDate',
+    '$element'
   ];
 
-  function Controller(CurrentItemService, ImmutableDate) {
+  function Controller(CurrentItemService, ImmutableDate, $element) {
     var self = this;
 
     self.$onInit = function() {
@@ -54,9 +55,21 @@
       });
     };
 
+
     self.clear = function() {
       CurrentItemService.getFilling().answer.clear();
       delete self.answer;
+    };
+
+    self.currentTime = function(e) {
+      var imuDate = new ImmutableDate()
+
+      imuDate.setSeconds(0);
+      imuDate.setMilliseconds(0);
+
+      self.answer = imuDate;
+
+      $element.find('#inputtime').blur();
     };
   }
 
