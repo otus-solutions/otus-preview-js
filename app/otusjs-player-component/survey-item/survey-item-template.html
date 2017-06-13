@@ -1,5 +1,5 @@
 <md-card flex>
-  <md-card-title layout="row">
+  <md-card-title layout="row" ng-if="!$ctrl.isItem()">
     <md-card-title-text layout="column" flex>
       <div layout="row">
         <otus-label class="md-headline" item-label="$ctrl.itemData.label.ptBR.formattedText" flex layout-padding>

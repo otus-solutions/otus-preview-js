@@ -1,4 +1,7 @@
-<md-content layout="column" layout-align="center center">
-    <otus-image-item ng-if="$ctrl.isImageItem()" item-data="$ctrl.itemData"></otus-image-item>
-    <otus-text-item ng-if="$ctrl.isTextItem()" item-data="$ctrl.itemData"></otus-text-item>
-</md-content>
+<div ng-if="$ctrl.isImageItem()" layout="column" layout-align="center center" layout-padding>
+    <otus-image-item item-data="$ctrl.itemData"></otus-image-item>
+</div>
+
+<div ng-if="$ctrl.isTextItem()" layout="column" layout-padding>
+    <otus-text-item item-data="$ctrl.itemData"></otus-text-item>
+</div>

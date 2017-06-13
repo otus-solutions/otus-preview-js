@@ -520,7 +520,7 @@
   angular
     .module('otusjs.player.component')
     .component('otusSurveyItem', {
-      template:'<md-card flex><md-card-title layout="row"><md-card-title-text layout="column" flex><div layout="row"><otus-label class="md-headline" item-label="$ctrl.itemData.label.ptBR.formattedText" flex layout-padding></otus-label></div></md-card-title-text></md-card-title><otus-validation-error error="$ctrl.$error" layout="row"></otus-validation-error><md-card-content layout="row" layout-align="space-between" flex><otus-question ng-if="$ctrl.isQuestion()" on-update="$ctrl.update(valueType, value)" item-data="$ctrl.itemData" layout="column" flex></otus-question><otus-misc-item ng-if="$ctrl.isItem()" item-data="$ctrl.itemData" layout="column" flex></otus-misc-item></md-card-content></md-card>',
+      template:'<md-card flex><md-card-title layout="row" ng-if="!$ctrl.isItem()"><md-card-title-text layout="column" flex><div layout="row"><otus-label class="md-headline" item-label="$ctrl.itemData.label.ptBR.formattedText" flex layout-padding></otus-label></div></md-card-title-text></md-card-title><otus-validation-error error="$ctrl.$error" layout="row"></otus-validation-error><md-card-content layout="row" layout-align="space-between" flex><otus-question ng-if="$ctrl.isQuestion()" on-update="$ctrl.update(valueType, value)" item-data="$ctrl.itemData" layout="column" flex></otus-question><otus-misc-item ng-if="$ctrl.isItem()" item-data="$ctrl.itemData" layout="column" flex></otus-misc-item></md-card-content></md-card>',
       controller: OtusSurveyItemController,
       bindings: {
         itemData: '<'
@@ -1662,7 +1662,7 @@
     angular
         .module('otusjs.player.component')
         .component('otusMiscItem', {
-            template:'<md-content layout="column" layout-align="center center"><otus-image-item ng-if="$ctrl.isImageItem()" item-data="$ctrl.itemData"></otus-image-item><otus-text-item ng-if="$ctrl.isTextItem()" item-data="$ctrl.itemData"></otus-text-item></md-content>',
+            template:'<div ng-if="$ctrl.isImageItem()" layout="column" layout-align="center center" layout-padding><otus-image-item item-data="$ctrl.itemData"></otus-image-item></div><div ng-if="$ctrl.isTextItem()" layout="column" layout-padding><otus-text-item item-data="$ctrl.itemData"></otus-text-item></div>',
             controller: OtusMiscItemController,
             bindings: {
                 itemData : '<'
@@ -1715,7 +1715,7 @@
   angular
     .module('otusjs.player.component')
     .component('otusTextItem', {
-      template:'<md-content><br><label ng-bind-html="$ctrl.trustedHtml($ctrl.itemData.value.ptBR.formattedText)"></label></md-content>',
+      template:'<div><label class="md-headline" ng-bind-html="$ctrl.trustedHtml($ctrl.itemData.value.ptBR.formattedText)"></label></div>',
       controller: TextItemController,
       bindings: {
         itemData: '<'
