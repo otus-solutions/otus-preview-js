@@ -1,0 +1,7 @@
+<div ng-if="$ctrl.isImageItem()" layout="column" layout-align="center center" layout-padding>
+    <otus-image-item item-data="$ctrl.itemData"></otus-image-item>
+</div>
+
+<div ng-if="$ctrl.isTextItem()" layout="column" layout-padding>
+    <otus-text-item item-data="$ctrl.itemData"></otus-text-item>
+</div>

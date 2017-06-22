@@ -1,0 +1,953 @@
+{
+    "extents": "StudioObject",
+    "objectType": "Survey",
+    "oid": "dXNlclVVSUQ6W3VuZGVmaW5lZF1zdXJ2ZXlVVUlEOltkYmE0ZjU1MC0zZTIyLTExZTYtOTk5Yi1kNWJhZDdkNWYyMjldcmVwb3NpdG9yeVVVSUQ6WyBOb3QgZG9uZSB5ZXQgXQ==",
+    "identity": {
+        "extents": "StudioObject",
+        "objectType": "SurveyIdentity",
+        "name": "Preview",
+        "acronym": "PW",
+        "recommendedTo": "",
+        "description": "",
+        "keywords": []
+    },
+    "metainfo": {
+        "extents": "StudioObject",
+        "objectType": "SurveyMetaInfo",
+        "creationDatetime": 1467223011620,
+        "otusStudioVersion": ""
+    },
+    "itemContainer": [{
+        "extents": "SurveyItem",
+        "objectType": "CalendarQuestion",
+        "templateID": "PW1",
+        "dataType": "LocalDate",
+        "label": {
+            "ptBR": {
+                "extends": "StudioObject",
+                "objectType": "Label",
+                "oid": "",
+                "plainText": "Qual sua data de nascimento?",
+                "formattedText": "<i>Qual sua data de nascimento?</i>"
+            },
+            "enUS": {
+                "extends": "StudioObject",
+                "objectType": "Label",
+                "oid": "",
+                "plainText": "",
+                "formattedText": ""
+            },
+            "esES": {
+                "extends": "StudioObject",
+                "objectType": "Label",
+                "oid": "",
+                "plainText": "",
+                "formattedText": ""
+            }
+        },
+        "metadata": {
+            "extents": "StudioObject",
+            "objectType": "MetadataGroup",
+            "options": [{
+                "extends": "StudioObject",
+                "objectType": "MetadataAnswer",
+                "dataType": "Integer",
+                "value": 1,
+                "label": {
+                    "ptBR": {
+                        "extends": "StudioObject",
+                        "objectType": "Label",
+                        "oid": "",
+                        "plainText": "Não possui certidão de nascimento",
+                        "formattedText": "Não possui certidão de nascimento"
+                    },
+                    "enUS": {
+                        "extends": "StudioObject",
+                        "objectType": "Label",
+                        "oid": "",
+                        "plainText": "",
+                        "formattedText": ""
+                    },
+                    "esES": {
+                        "extends": "StudioObject",
+                        "objectType": "Label",
+                        "oid": "",
+                        "plainText": "",
+                        "formattedText": ""
+                    }
+                }
+            }, {
+                "extends": "StudioObject",
+                "objectType": "MetadataAnswer",
+                "dataType": "Integer",
+                "value": 2,
+                "label": {
+                    "ptBR": {
+                        "extends": "StudioObject",
+                        "objectType": "Label",
+                        "oid": "",
+                        "plainText": "Não sabe",
+                        "formattedText": "Não sabe"
+                    },
+                    "enUS": {
+                        "extends": "StudioObject",
+                        "objectType": "Label",
+                        "oid": "",
+                        "plainText": "",
+                        "formattedText": ""
+                    },
+                    "esES": {
+                        "extends": "StudioObject",
+                        "objectType": "Label",
+                        "oid": "",
+                        "plainText": "",
+                        "formattedText": ""
+                    }
+                }
+            }]
+        }
+    }, {
+        "extents": "SurveyItem",
+        "objectType": "CalendarQuestion",
+        "templateID": "PW2",
+        "dataType": "LocalDate",
+        "label": {
+            "ptBR": {
+                "extends": "StudioObject",
+                "objectType": "Label",
+                "oid": "",
+                "plainText": "Qual é a data de nascimento do bebê?",
+                "formattedText": "Qual é a data de nascimento do bebê?"
+            },
+            "enUS": {
+                "extends": "StudioObject",
+                "objectType": "Label",
+                "oid": "",
+                "plainText": "",
+                "formattedText": ""
+            },
+            "esES": {
+                "extends": "StudioObject",
+                "objectType": "Label",
+                "oid": "",
+                "plainText": "",
+                "formattedText": ""
+            }
+        },
+        "metadata": {
+            "extents": "StudioObject",
+            "objectType": "MetadataGroup",
+            "options": []
+        }
+    }, {
+        "extents": "SurveyItem",
+        "objectType": "IntegerQuestion",
+        "templateID": "PW3",
+        "dataType": "Integer",
+        "label": {
+            "ptBR": {
+                "extends": "StudioObject",
+                "objectType": "Label",
+                "oid": "",
+                "plainText": "Quantos filhos você tem?",
+                "formattedText": "Quantos filhos você tem?"
+            },
+            "enUS": {
+                "extends": "StudioObject",
+                "objectType": "Label",
+                "oid": "",
+                "plainText": "",
+                "formattedText": ""
+            },
+            "esES": {
+                "extends": "StudioObject",
+                "objectType": "Label",
+                "oid": "",
+                "plainText": "",
+                "formattedText": ""
+            }
+        },
+        "metadata": {
+            "extents": "StudioObject",
+            "objectType": "MetadataGroup",
+            "options": [{
+                "extends": "StudioObject",
+                "objectType": "MetadataAnswer",
+                "dataType": "Integer",
+                "value": 1,
+                "label": {
+                    "ptBR": {
+                        "extends": "StudioObject",
+                        "objectType": "Label",
+                        "oid": "",
+                        "plainText": "Não possui",
+                        "formattedText": "Não possui"
+                    },
+                    "enUS": {
+                        "extends": "StudioObject",
+                        "objectType": "Label",
+                        "oid": "",
+                        "plainText": "",
+                        "formattedText": ""
+                    },
+                    "esES": {
+                        "extends": "StudioObject",
+                        "objectType": "Label",
+                        "oid": "",
+                        "plainText": "",
+                        "formattedText": ""
+                    }
+                }
+            }]
+        },
+        "unit": {
+            "ptBR": {
+                "extends": "StudioObject",
+                "objectType": "Unit",
+                "oid": "",
+                "plainText": "Filhos",
+                "formattedText": "Filhos"
+            },
+            "enUS": {
+                "extends": "StudioObject",
+                "objectType": "Unit",
+                "oid": "",
+                "plainText": "",
+                "formattedText": ""
+            },
+            "esES": {
+                "extends": "StudioObject",
+                "objectType": "Unit",
+                "oid": "",
+                "plainText": "",
+                "formattedText": ""
+            }
+        }
+    }, {
+        "extents": "SurveyItem",
+        "objectType": "DecimalQuestion",
+        "templateID": "PW4",
+        "dataType": "Decimal",
+        "label": {
+            "ptBR": {
+                "extends": "StudioObject",
+                "objectType": "Label",
+                "oid": "",
+                "plainText": "Qual foi o seu último peso?",
+                "formattedText": "Qual foi o seu último peso? "
+            },
+            "enUS": {
+                "extends": "StudioObject",
+                "objectType": "Label",
+                "oid": "",
+                "plainText": "",
+                "formattedText": ""
+            },
+            "esES": {
+                "extends": "StudioObject",
+                "objectType": "Label",
+                "oid": "",
+                "plainText": "",
+                "formattedText": ""
+            }
+        },
+        "metadata": {
+            "extents": "StudioObject",
+            "objectType": "MetadataGroup",
+            "options": [{
+                "extends": "StudioObject",
+                "objectType": "MetadataAnswer",
+                "dataType": "Integer",
+                "value": 1,
+                "label": {
+                    "ptBR": {
+                        "extends": "StudioObject",
+                        "objectType": "Label",
+                        "oid": "",
+                        "plainText": "Não sabe responder",
+                        "formattedText": "Não sabe responder"
+                    },
+                    "enUS": {
+                        "extends": "StudioObject",
+                        "objectType": "Label",
+                        "oid": "",
+                        "plainText": "",
+                        "formattedText": ""
+                    },
+                    "esES": {
+                        "extends": "StudioObject",
+                        "objectType": "Label",
+                        "oid": "",
+                        "plainText": "",
+                        "formattedText": ""
+                    }
+                }
+            }, {
+                "extends": "StudioObject",
+                "objectType": "MetadataAnswer",
+                "dataType": "Integer",
+                "value": 2,
+                "label": {
+                    "ptBR": {
+                        "extends": "StudioObject",
+                        "objectType": "Label",
+                        "oid": "",
+                        "plainText": "Não quer responder",
+                        "formattedText": "Não quer responder"
+                    },
+                    "enUS": {
+                        "extends": "StudioObject",
+                        "objectType": "Label",
+                        "oid": "",
+                        "plainText": "",
+                        "formattedText": ""
+                    },
+                    "esES": {
+                        "extends": "StudioObject",
+                        "objectType": "Label",
+                        "oid": "",
+                        "plainText": "",
+                        "formattedText": ""
+                    }
+                }
+            }]
+        },
+        "unit": {
+            "ptBR": {
+                "extends": "StudioObject",
+                "objectType": "Unit",
+                "oid": "",
+                "plainText": "Quilos",
+                "formattedText": "Quilos"
+            },
+            "enUS": {
+                "extends": "StudioObject",
+                "objectType": "Unit",
+                "oid": "",
+                "plainText": "",
+                "formattedText": ""
+            },
+            "esES": {
+                "extends": "StudioObject",
+                "objectType": "Unit",
+                "oid": "",
+                "plainText": "",
+                "formattedText": ""
+            }
+        }
+    }, {
+        "extents": "SurveyItem",
+        "objectType": "SingleSelectionQuestion",
+        "templateID": "PW5",
+        "dataType": "Integer",
+        "label": {
+            "ptBR": {
+                "extends": "StudioObject",
+                "objectType": "Label",
+                "oid": "",
+                "plainText": "Alguém da sua família teve ou tem diabetes?",
+                "formattedText": "Alguém da sua família teve ou tem diabetes?"
+            },
+            "enUS": {
+                "extends": "StudioObject",
+                "objectType": "Label",
+                "oid": "",
+                "plainText": "",
+                "formattedText": ""
+            },
+            "esES": {
+                "extends": "StudioObject",
+                "objectType": "Label",
+                "oid": "",
+                "plainText": "",
+                "formattedText": ""
+            }
+        },
+        "options": [{
+            "extents": "StudioObject",
+            "objectType": "AnswerOption",
+            "value": 1,
+            "dataType": "Integer",
+            "label": {
+                "ptBR": {
+                    "extends": "StudioObject",
+                    "objectType": "Label",
+                    "oid": "",
+                    "plainText": "Sim",
+                    "formattedText": "Sim"
+                },
+                "enUS": {
+                    "extends": "StudioObject",
+                    "objectType": "Label",
+                    "oid": "",
+                    "plainText": "",
+                    "formattedText": ""
+                },
+                "esES": {
+                    "extends": "StudioObject",
+                    "objectType": "Label",
+                    "oid": "",
+                    "plainText": "",
+                    "formattedText": ""
+                }
+            }
+        }, {
+            "extents": "StudioObject",
+            "objectType": "AnswerOption",
+            "value": 2,
+            "dataType": "Integer",
+            "label": {
+                "ptBR": {
+                    "extends": "StudioObject",
+                    "objectType": "Label",
+                    "oid": "",
+                    "plainText": "Não",
+                    "formattedText": "Não"
+                },
+                "enUS": {
+                    "extends": "StudioObject",
+                    "objectType": "Label",
+                    "oid": "",
+                    "plainText": "",
+                    "formattedText": ""
+                },
+                "esES": {
+                    "extends": "StudioObject",
+                    "objectType": "Label",
+                    "oid": "",
+                    "plainText": "",
+                    "formattedText": ""
+                }
+            }
+        }],
+        "metadata": {
+            "extents": "StudioObject",
+            "objectType": "MetadataGroup",
+            "options": []
+        }
+    }, {
+        "extents": "SurveyItem",
+        "objectType": "CheckboxQuestion",
+        "templateID": "PW6",
+        "dataType": "Integer",
+        "label": {
+            "ptBR": {
+                "extends": "StudioObject",
+                "objectType": "Label",
+                "oid": "",
+                "plainText": "Quais itens você tem em casa?",
+                "formattedText": "Quais itens você tem em casa?"
+            },
+            "enUS": {
+                "extends": "StudioObject",
+                "objectType": "Label",
+                "oid": "",
+                "plainText": "",
+                "formattedText": ""
+            },
+            "esES": {
+                "extends": "StudioObject",
+                "objectType": "Label",
+                "oid": "",
+                "plainText": "",
+                "formattedText": ""
+            }
+        },
+        "options": [{
+            "extents": "StudioObject",
+            "objectType": "AnswerOption",
+            "value": 1,
+            "dataType": "Integer",
+            "label": {
+                "ptBR": {
+                    "extends": "StudioObject",
+                    "objectType": "Label",
+                    "oid": "",
+                    "plainText": "Refrigerador",
+                    "formattedText": "Refrigerador"
+                },
+                "enUS": {
+                    "extends": "StudioObject",
+                    "objectType": "Label",
+                    "oid": "",
+                    "plainText": "",
+                    "formattedText": ""
+                },
+                "esES": {
+                    "extends": "StudioObject",
+                    "objectType": "Label",
+                    "oid": "",
+                    "plainText": "",
+                    "formattedText": ""
+                }
+            }
+        }, {
+            "extents": "StudioObject",
+            "objectType": "AnswerOption",
+            "value": 2,
+            "dataType": "Integer",
+            "label": {
+                "ptBR": {
+                    "extends": "StudioObject",
+                    "objectType": "Label",
+                    "oid": "",
+                    "plainText": "Televisão",
+                    "formattedText": "Televisão"
+                },
+                "enUS": {
+                    "extends": "StudioObject",
+                    "objectType": "Label",
+                    "oid": "",
+                    "plainText": "",
+                    "formattedText": ""
+                },
+                "esES": {
+                    "extends": "StudioObject",
+                    "objectType": "Label",
+                    "oid": "",
+                    "plainText": "",
+                    "formattedText": ""
+                }
+            }
+        }, {
+            "extents": "StudioObject",
+            "objectType": "AnswerOption",
+            "value": 3,
+            "dataType": "Integer",
+            "label": {
+                "ptBR": {
+                    "extends": "StudioObject",
+                    "objectType": "Label",
+                    "oid": "",
+                    "plainText": "Cafeteira",
+                    "formattedText": "Cafeteira"
+                },
+                "enUS": {
+                    "extends": "StudioObject",
+                    "objectType": "Label",
+                    "oid": "",
+                    "plainText": "",
+                    "formattedText": ""
+                },
+                "esES": {
+                    "extends": "StudioObject",
+                    "objectType": "Label",
+                    "oid": "",
+                    "plainText": "",
+                    "formattedText": ""
+                }
+            }
+        }],
+        "metadata": {
+            "extents": "StudioObject",
+            "objectType": "MetadataGroup",
+            "options": [{
+                "extends": "StudioObject",
+                "objectType": "MetadataAnswer",
+                "dataType": "Integer",
+                "value": 1,
+                "label": {
+                    "ptBR": {
+                        "extends": "StudioObject",
+                        "objectType": "Label",
+                        "oid": "",
+                        "plainText": "Nenhum =(",
+                        "formattedText": "Nenhum =("
+                    },
+                    "enUS": {
+                        "extends": "StudioObject",
+                        "objectType": "Label",
+                        "oid": "",
+                        "plainText": "",
+                        "formattedText": ""
+                    },
+                    "esES": {
+                        "extends": "StudioObject",
+                        "objectType": "Label",
+                        "oid": "",
+                        "plainText": "",
+                        "formattedText": ""
+                    }
+                }
+            }]
+        }
+    }, {
+        "extents": "SurveyItem",
+        "objectType": "TextQuestion",
+        "templateID": "PW7",
+        "dataType": "String",
+        "label": {
+            "ptBR": {
+                "extends": "StudioObject",
+                "objectType": "Label",
+                "oid": "",
+                "plainText": " O(a) está dormindo bem?",
+                "formattedText": "&nbsp;O(a) está dormindo bem?"
+            },
+            "enUS": {
+                "extends": "StudioObject",
+                "objectType": "Label",
+                "oid": "",
+                "plainText": "",
+                "formattedText": ""
+            },
+            "esES": {
+                "extends": "StudioObject",
+                "objectType": "Label",
+                "oid": "",
+                "plainText": "",
+                "formattedText": ""
+            }
+        },
+        "metadata": {
+            "extents": "StudioObject",
+            "objectType": "MetadataGroup",
+            "options": [{
+                "extends": "StudioObject",
+                "objectType": "MetadataAnswer",
+                "dataType": "Integer",
+                "value": 1,
+                "label": {
+                    "ptBR": {
+                        "extends": "StudioObject",
+                        "objectType": "Label",
+                        "oid": "",
+                        "plainText": "Não sabe responder",
+                        "formattedText": "Não sabe responder"
+                    },
+                    "enUS": {
+                        "extends": "StudioObject",
+                        "objectType": "Label",
+                        "oid": "",
+                        "plainText": "",
+                        "formattedText": ""
+                    },
+                    "esES": {
+                        "extends": "StudioObject",
+                        "objectType": "Label",
+                        "oid": "",
+                        "plainText": "",
+                        "formattedText": ""
+                    }
+                }
+            }]
+        }
+    }, {
+        "extents": "SurveyItem",
+        "objectType": "EmailQuestion",
+        "templateID": "PW8",
+        "dataType": "String",
+        "label": {
+            "ptBR": {
+                "extends": "StudioObject",
+                "objectType": "Label",
+                "oid": "",
+                "plainText": "Você possui um email para contato?",
+                "formattedText": "<span style='letter-spacing: 0.14px;'>Você possui um email para contato?</span>"
+            },
+            "enUS": {
+                "extends": "StudioObject",
+                "objectType": "Label",
+                "oid": "",
+                "plainText": "",
+                "formattedText": ""
+            },
+            "esES": {
+                "extends": "StudioObject",
+                "objectType": "Label",
+                "oid": "",
+                "plainText": "",
+                "formattedText": ""
+            }
+        },
+        "metadata": {
+            "extents": "StudioObject",
+            "objectType": "MetadataGroup",
+            "options": []
+        }
+    }, {
+        "extents": "SurveyItem",
+        "objectType": "TimeQuestion",
+        "templateID": "PW9",
+        "dataType": "LocalTime",
+        "label": {
+            "ptBR": {
+                "extends": "StudioObject",
+                "objectType": "Label",
+                "oid": "",
+                "plainText": "Qual é a hora da realização do exame?",
+                "formattedText": "Qual é a hora da realização do exame?"
+            },
+            "enUS": {
+                "extends": "StudioObject",
+                "objectType": "Label",
+                "oid": "",
+                "plainText": "",
+                "formattedText": ""
+            },
+            "esES": {
+                "extends": "StudioObject",
+                "objectType": "Label",
+                "oid": "",
+                "plainText": "",
+                "formattedText": ""
+            }
+        },
+        "metadata": {
+            "extents": "StudioObject",
+            "objectType": "MetadataGroup",
+            "options": []
+        }
+    }, {
+        "extents": "SurveyItem",
+        "objectType": "PhoneQuestion",
+        "templateID": "PW10",
+        "dataType": "Integer",
+        "label": {
+            "ptBR": {
+                "extends": "StudioObject",
+                "objectType": "Label",
+                "oid": "",
+                "plainText": "Qual seu número de telefone?",
+                "formattedText": "Qual seu número de telefone?"
+            },
+            "enUS": {
+                "extends": "StudioObject",
+                "objectType": "Label",
+                "oid": "",
+                "plainText": "",
+                "formattedText": ""
+            },
+            "esES": {
+                "extends": "StudioObject",
+                "objectType": "Label",
+                "oid": "",
+                "plainText": "",
+                "formattedText": ""
+            }
+        },
+        "metadata": {
+            "extents": "StudioObject",
+            "objectType": "MetadataGroup",
+            "options": [{
+                "extends": "StudioObject",
+                "objectType": "MetadataAnswer",
+                "dataType": "Integer",
+                "value": 1,
+                "label": {
+                    "ptBR": {
+                        "extends": "StudioObject",
+                        "objectType": "Label",
+                        "oid": "",
+                        "plainText": "Não lembra",
+                        "formattedText": "Não lembra"
+                    },
+                    "enUS": {
+                        "extends": "StudioObject",
+                        "objectType": "Label",
+                        "oid": "",
+                        "plainText": "",
+                        "formattedText": ""
+                    },
+                    "esES": {
+                        "extends": "StudioObject",
+                        "objectType": "Label",
+                        "oid": "",
+                        "plainText": "",
+                        "formattedText": ""
+                    }
+                }
+            }]
+        }
+    }, {
+        "extents": "SurveyItem",
+        "objectType": "TextItem",
+        "templateID": "PW11",
+        "dataType": "String",
+        "value": {
+            "ptBR": {
+                "extends": "StudioObject",
+                "objectType": "Label",
+                "oid": "",
+                "plainText": "Agora já estamos quase acabando. O próximo item é uma imagem!!",
+                "formattedText": "Agora já estamos quase acabando. O próximo item é uma imagem!!"
+            },
+            "enUS": {
+                "extends": "StudioObject",
+                "objectType": "Label",
+                "oid": "",
+                "plainText": "",
+                "formattedText": ""
+            },
+            "esES": {
+                "extends": "StudioObject",
+                "objectType": "Label",
+                "oid": "",
+                "plainText": "",
+                "formattedText": ""
+            }
+        }
+    }, {
+        "extents": "SurveyItem",
+        "objectType": "ImageItem",
+        "templateID": "PW12",
+        "dataType": "String",
+        "url": "http://www.bacancytechnology.com/wp-content/uploads/2015/02/AngularJS-Flat-Icon-Vector.png",
+        "footer": {
+            "ptBR": {
+                "extends": "StudioObject",
+                "objectType": "Label",
+                "oid": "",
+                "plainText": "Fonte: Google Imagens",
+                "formattedText": "Fonte: Google Imagens"
+            },
+            "enUS": {
+                "extends": "StudioObject",
+                "objectType": "Label",
+                "oid": "",
+                "plainText": "",
+                "formattedText": ""
+            },
+            "esES": {
+                "extends": "StudioObject",
+                "objectType": "Label",
+                "oid": "",
+                "plainText": "",
+                "formattedText": ""
+            }
+        }
+    }],
+    "navigationList": [{
+        "extents": "StudioObject",
+        "objectType": "Navigation",
+        "origin": "PW1",
+        "routes": [{
+            "extents": "StudioObject",
+            "objectType": "Route",
+            "name": "1",
+            "origin": "PW1",
+            "destination": "PW2",
+            "conditionSet": {}
+        }]
+    }, {
+        "extents": "StudioObject",
+        "objectType": "Navigation",
+        "origin": "PW2",
+        "routes": [{
+            "extents": "StudioObject",
+            "objectType": "Route",
+            "name": "1",
+            "origin": "PW2",
+            "destination": "PW3",
+            "conditionSet": {}
+        }]
+    }, {
+        "extents": "StudioObject",
+        "objectType": "Navigation",
+        "origin": "PW3",
+        "routes": [{
+            "extents": "StudioObject",
+            "objectType": "Route",
+            "name": "1",
+            "origin": "PW3",
+            "destination": "PW4",
+            "conditionSet": {}
+        }]
+    }, {
+        "extents": "StudioObject",
+        "objectType": "Navigation",
+        "origin": "PW4",
+        "routes": [{
+            "extents": "StudioObject",
+            "objectType": "Route",
+            "name": "1",
+            "origin": "PW4",
+            "destination": "PW5",
+            "conditionSet": {}
+        }]
+    }, {
+        "extents": "StudioObject",
+        "objectType": "Navigation",
+        "origin": "PW5",
+        "routes": [{
+            "extents": "StudioObject",
+            "objectType": "Route",
+            "name": "1",
+            "origin": "PW5",
+            "destination": "PW6",
+            "conditionSet": {}
+        }]
+    }, {
+        "extents": "StudioObject",
+        "objectType": "Navigation",
+        "origin": "PW6",
+        "routes": [{
+            "extents": "StudioObject",
+            "objectType": "Route",
+            "name": "1",
+            "origin": "PW6",
+            "destination": "PW7",
+            "conditionSet": {}
+        }]
+    }, {
+        "extents": "StudioObject",
+        "objectType": "Navigation",
+        "origin": "PW7",
+        "routes": [{
+            "extents": "StudioObject",
+            "objectType": "Route",
+            "name": "1",
+            "origin": "PW7",
+            "destination": "PW8",
+            "conditionSet": {}
+        }]
+    }, {
+        "extents": "StudioObject",
+        "objectType": "Navigation",
+        "origin": "PW8",
+        "routes": [{
+            "extents": "StudioObject",
+            "objectType": "Route",
+            "name": "1",
+            "origin": "PW8",
+            "destination": "PW9",
+            "conditionSet": {}
+        }]
+    }, {
+        "extents": "StudioObject",
+        "objectType": "Navigation",
+        "origin": "PW9",
+        "routes": [{
+            "extents": "StudioObject",
+            "objectType": "Route",
+            "name": "1",
+            "origin": "PW9",
+            "destination": "PW10",
+            "conditionSet": {}
+        }]
+    }, {
+        "extents": "StudioObject",
+        "objectType": "Navigation",
+        "origin": "PW10",
+        "routes": [{
+            "extents": "StudioObject",
+            "objectType": "Route",
+            "name": "1",
+            "origin": "PW10",
+            "destination": "PW11",
+            "conditionSet": {}
+        }]
+    }, {
+        "extents": "StudioObject",
+        "objectType": "Navigation",
+        "origin": "PW11",
+        "routes": [{
+            "extents": "StudioObject",
+            "objectType": "Route",
+            "name": "1",
+            "origin": "PW11",
+            "destination": "PW12",
+            "conditionSet": {}
+        }]
+    }]
+}

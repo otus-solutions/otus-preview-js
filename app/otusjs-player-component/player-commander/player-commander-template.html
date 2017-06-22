@@ -1,0 +1,32 @@
+<md-content layout-padding layout="column" flex style="padding-top: 0 !important; padding-bottom: 0 !important">
+  <md-toolbar style="border-radius: 3px" class="md-whiteframe-1dp">
+    <div class="md-toolbar-tools" layout-align="space-around center">
+      <md-button class="md-icon-button" aria-label="Voltar" ng-click="$ctrl.goBack()"
+      ng-disabled="$ctrl.isGoBackDisabled">
+        <md-icon md-font-set="material-icons">skip_previous</md-icon>
+        <md-tooltip md-direction="bottom">
+          Voltar
+        </md-tooltip>
+      </md-button>
+      <md-button class="md-icon-button" aria-label="Salvar" ng-click="$ctrl.pause()">
+        <md-icon md-font-set="material-icons">save</md-icon>
+        <md-tooltip md-direction="bottom">
+          Salvar
+        </md-tooltip>
+      </md-button>
+      <md-button class="md-icon-button" aria-label="Cancelar" ng-click="$ctrl.stop()">
+        <md-icon md-font-set="material-icons">close</md-icon>
+        <md-tooltip md-direction="bottom">
+          Cancelar
+        </md-tooltip>
+      </md-button>
+      <md-button class="md-icon-button" aria-label="Avançar" ng-click="$ctrl.goAhead()"
+      ng-disabled="$ctrl.isGoAheadDisabled">
+        <md-icon md-font-set="material-icons">skip_next</md-icon>
+        <md-tooltip md-direction="bottom">
+          Avançar
+        </md-tooltip>
+      </md-button>
+    </div>
+  </md-toolbar>
+</md-content>

@@ -1,0 +1,212 @@
+<!doctype html>
+<html lang="en" ng-app="otusjs.player.standalone">
+
+  <head>
+    <meta charset="utf-8"/>
+    <base href="/otus-preview-js/"/>
+    <link href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700,400italic" rel="stylesheet"/>
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet"/>
+    <link href="node_modules/angular-material/angular-material.min.css" rel="stylesheet"/>
+    <link href="app/assets/otusjs-player-standalone.css" rel="stylesheet"/>
+
+    <!-- build:js css/otus-player-min.css -->
+    <link href="app/assets/otusjs-player.css" rel="stylesheet"/>
+    <link href="app/assets/otusjs-survey-item.css" rel="stylesheet"/>
+    <!-- endbuild -->
+
+    <title>OtusJS Player Standalone</title>
+  </head>
+
+  <body layout="column" flex>
+    <div ui-view layout="row" flex layout-align="center start"></div>
+
+    <!-- OTUSJS PLAYER STANDALONE APP DEPENDECIES -->
+    <!-- jQuery -->
+    <script src="node_modules/jquery/dist/jquery.min.js"></script>
+
+    <!-- AngularJS -->
+    <script src="node_modules/angular/angular.min.js"></script>
+    <!-- ui-router -->
+    <script src="node_modules/angular-ui-router/release/angular-ui-router.min.js"></script>
+    <!-- Angular Material & Dependencies -->
+    <script src="node_modules/angular-material/angular-material.min.js"></script>
+    <script src="node_modules/angular-aria/angular-aria.min.js"></script>
+    <script src="node_modules/angular-animate/angular-animate.min.js"></script>
+    <script src="node_modules/angular-messages/angular-messages.min.js"></script>
+    <!-- Bind HTML Compile -->
+    <script src="node_modules/angular-bind-html-compile-ci-dev/angular-bind-html-compile.js"></script>
+    <script src="node_modules/angular-mousewheel/mousewheel.js"></script>
+    <!-- Otus Model JS -->
+    <script src="node_modules/otus-model-js/dist/otus-model.min.js"></script>
+    <script src="node_modules/otus-model-js/dist/st-utils-min.js"></script>
+    <!-- Otus Validation JS -->
+    <script src="node_modules/otus-validation-js/dist/otus-validation-min.js"></script>
+
+    <!-- OTUSJS PLAYER STANDALONE -->
+    <script src="app/app.js"></script>
+    <!-- CONFIG -->
+    <script src="app/config/otusjs-config-module.js"></script>
+    <script src="app/config/state-configuration.js"></script>
+    <script src="app/config/theme-configuration.js"></script>
+    <script src="app/config/locale-configuration.js"></script>
+    <!-- DATA -->
+    <script src="app/otusjs-player-data/otusjs-player-data-module.js"></script>
+    <script src="app/otusjs-player-data/fake-data-service.js"></script>
+    <!-- VIEWER -->
+    <script src="app/otusjs-player-viewer/otusjs-player-viewer-module.js"></script>
+    <script src="app/otusjs-player-viewer/sheet-view-controller.js"></script>
+
+    <!-- OTUSJS PLAYER -->
+    <!-- build:js scripts/otusjs-player-min.js -->
+    <script src="app/player-module.js"></script>
+
+    <!-- -------------------------------------------------------------------------------------- -->
+    <!-- OTUSJS-PLAYER-CORE -->
+    <script src="app/otusjs-player-component/component-module.js"></script>
+
+    <script src="app/otusjs-player-component/comment/comment-component.js"></script>
+    <script src="app/otusjs-player-component/label/otus-label-component.js"></script>
+    <script src="app/otusjs-player-component/metadata/metadata-component.js"></script>
+    <script src="app/otusjs-player-component/player/player-component.js"></script>
+    <script src="app/otusjs-player-component/player-commander/player-commander-component.js"></script>
+    <script src="app/otusjs-player-component/player-display/player-display-component.js"></script>
+    <script src="app/otusjs-player-component/survey-back-cover/survey-back-cover-component.js"></script>
+    <script src="app/otusjs-player-component/survey-cover/survey-cover-component.js"></script>
+    <script src="app/otusjs-player-component/survey-header/survey-header-component.js"></script>
+    <script src="app/otusjs-player-component/survey-item/survey-item-component.js"></script>
+    <script src="app/otusjs-player-component/survey-item/question/question-component.js"></script>
+    <script src="app/otusjs-player-component/survey-item/question/calendar/calendar-question-component.js"></script>
+    <script src="app/otusjs-player-component/survey-item/question/integer/integer-question-component.js"></script>
+    <script src="app/otusjs-player-component/survey-item/question/integer/ui-integer-directive.js"></script>
+    <script src="app/otusjs-player-component/survey-item/question/decimal/decimal-question-component.js"></script>
+    <script src="app/otusjs-player-component/survey-item/question/single-selection/single-selection-question-component.js"></script>
+    <script src="app/otusjs-player-component/survey-item/question/checkbox/checkbox-question-component.js"></script>
+    <script src="app/otusjs-player-component/survey-item/question/text/text-question-component.js"></script>
+    <script src="app/otusjs-player-component/survey-item/question/email/email-question-component.js"></script>
+    <script src="app/otusjs-player-component/survey-item/question/time/time-question-component.js"></script>
+    <script src="app/otusjs-player-component/survey-item/question/phone/phone-question-component.js"></script>
+    <script src="app/otusjs-player-component/survey-item/question/file-upload/file-upload-question-component.js"></script>
+    <script src="app/otusjs-player-component/survey-item/question/autocomplete/autocomplete-question-component.js"></script>
+    <script src="app/otusjs-player-component/survey-item/question/grid-text/grid-text-question-component.js"></script>
+    <script src="app/otusjs-player-component/survey-item/misc/misc-item-component.js"></script>
+    <script src="app/otusjs-player-component/survey-item/misc/image/image-item-component.js"></script>
+    <script src="app/otusjs-player-component/survey-item/misc/text/text-item-component.js"></script>
+    <script src="app/otusjs-player-component/validation-error/validation-error-component.js"></script>
+    <script src="app/otusjs-player-component/question-menu/question-menu-component.js"></script>
+
+    <!-- /OTUSJS-PLAYER-CORE -->
+    <!-- -------------------------------------------------------------------------------------- -->
+
+    <!-- -------------------------------------------------------------------------------------- -->
+    <!-- OTUSJS-PLAYER-CORE -->
+    <script src="app/otusjs-player-core/core-module.js"></script>
+
+    <!-- PHASE -->
+    <script src="app/otusjs-player-core/phase/phase-module.js"></script>
+
+    <script src="app/otusjs-player-core/phase/action-pipe-service.js"></script>
+
+    <script src="app/otusjs-player-core/phase/ahead/ahead-action-service.js"></script>
+    <script src="app/otusjs-player-core/phase/ahead/execution-ahead-action-service.js"></script>
+    <script src="app/otusjs-player-core/phase/ahead/post-ahead-action-service.js"></script>
+    <script src="app/otusjs-player-core/phase/ahead/pre-ahead-action-service.js"></script>
+
+    <script src="app/otusjs-player-core/phase/back/back-action-service.js"></script>
+    <script src="app/otusjs-player-core/phase/back/execution-back-action-service.js"></script>
+    <script src="app/otusjs-player-core/phase/back/post-back-action-service.js"></script>
+    <script src="app/otusjs-player-core/phase/back/pre-back-action-service.js"></script>
+
+    <script src="app/otusjs-player-core/phase/eject/eject-action-service.js"></script>
+    <script src="app/otusjs-player-core/phase/eject/execution-eject-action-service.js"></script>
+    <script src="app/otusjs-player-core/phase/eject/post-eject-action-service.js"></script>
+    <script src="app/otusjs-player-core/phase/eject/pre-eject-action-service.js"></script>
+
+    <script src="app/otusjs-player-core/phase/play/play-action-service.js"></script>
+    <script src="app/otusjs-player-core/phase/play/execution-play-action-service.js"></script>
+    <script src="app/otusjs-player-core/phase/play/post-play-action-service.js"></script>
+    <script src="app/otusjs-player-core/phase/play/pre-play-action-service.js"></script>
+
+    <script src="app/otusjs-player-core/phase/save/save-action-service.js"></script>
+    <script src="app/otusjs-player-core/phase/save/execution-save-action-service.js"></script>
+    <script src="app/otusjs-player-core/phase/save/post-save-action-service.js"></script>
+    <script src="app/otusjs-player-core/phase/save/pre-save-action-service.js"></script>
+
+    <script src="app/otusjs-player-core/phase/start/execution-player-start-action-service.js"></script>
+    <script src="app/otusjs-player-core/phase/start/player-start-action-service.js"></script>
+    <script src="app/otusjs-player-core/phase/start/post-player-start-action-service.js"></script>
+    <script src="app/otusjs-player-core/phase/start/pre-player-start-action-service.js"></script>
+
+    <script src="app/otusjs-player-core/phase/stop/execution-stop-action-service.js"></script>
+    <script src="app/otusjs-player-core/phase/stop/stop-action-service.js"></script>
+    <script src="app/otusjs-player-core/phase/stop/post-stop-action-service.js"></script>
+    <script src="app/otusjs-player-core/phase/stop/pre-stop-action-service.js"></script>
+    <!-- /PHASE -->
+
+    <!-- PLAYER -->
+    <script src="app/otusjs-player-core/player/player-module.js"></script>
+    <script src="app/otusjs-player-core/player/player-configuration-service.js"></script>
+    <script src="app/otusjs-player-core/player/player-service.js"></script>
+    <!-- /PLAYER -->
+
+    <!-- RENDERER -->
+    <script src="app/otusjs-player-core/renderer/renderer-module.js"></script>
+    <script src="app/otusjs-player-core/renderer/html-builder-service.js"></script>
+    <script src="app/otusjs-player-core/renderer/tag-component-builder-service.js"></script>
+    <!-- /RENDERER -->
+
+    <!-- SCAFFOLD -->
+    <script src="app/otusjs-player-core/scaffold/scaffold-module.js"></script>
+    <script src="app/otusjs-player-core/scaffold/chain-factory.js"></script>
+    <script src="app/otusjs-player-core/scaffold/chain-link-factory.js"></script>
+    <!-- /SCAFFOLD -->
+
+    <!-- STEP -->
+    <script src="app/otusjs-player-core/step/step-module.js"></script>
+    <script src="app/otusjs-player-core/step/survey/initialize-survey-activity-step-service.js"></script>
+    <script src="app/otusjs-player-core/step/survey/finalize-survey-activity-step-service.js"></script>
+    <script src="app/otusjs-player-core/step/survey/save-survey-activity-step-service.js"></script>
+    <script src="app/otusjs-player-core/step/survey/load-survey-activity-step-service.js"></script>
+    <script src="app/otusjs-player-core/step/survey/load-survey-activity-cover-step-service.js"></script>
+    <script src="app/otusjs-player-core/step/survey-item/load-next-item-step-service.js"></script>
+    <script src="app/otusjs-player-core/step/survey-item/load-previous-item-step-service.js"></script>
+    <script src="app/otusjs-player-core/step/survey-item/update-item-tracking-step-service.js"></script>
+    <script src="app/otusjs-player-core/step/survey-item-data/apply-answer-step-service.js"></script>
+    <script src="app/otusjs-player-core/step/survey-item-data/clear-skipped-answer-step-service.js"></script>
+    <script src="app/otusjs-player-core/step/survey-item-validation/handle-validation-error-step-service.js"></script>
+    <script src="app/otusjs-player-core/step/survey-item-validation/read-validation-error-step-service.js"></script>
+    <script src="app/otusjs-player-core/step/survey-item-validation/run-validation-step-service.js"></script>
+    <script src="app/otusjs-player-core/step/survey-item-validation/setup-validation-step-service.js"></script>
+    <!-- /STEP -->
+
+    <!-- /OTUSJS-PLAYER-CORE -->
+    <!-- -------------------------------------------------------------------------------------- -->
+
+    <!-- -------------------------------------------------------------------------------------- -->
+    <!-- OTUSJS-PLAYER-DATA -->
+    <script src="app/otusjs-player-data/data-module.js"></script>
+
+    <!-- ACTIVITY -->
+    <script src="app/otusjs-player-data/activity/activity-module.js"></script>
+    <script src="app/otusjs-player-data/activity/activity-facade-service.js"></script>
+    <script src="app/otusjs-player-data/activity/current-item-service.js"></script>
+    <script src="app/otusjs-player-data/activity/current-survey-service.js"></script>
+    <!-- /ACTIVITY -->
+    <!-- NAVIGATION -->
+    <script src="app/otusjs-player-data/navigation/navigation-module.js"></script>
+    <script src="app/otusjs-player-data/navigation/navigation-service.js"></script>
+    <script src="app/otusjs-player-data/navigation/route-service.js"></script>
+    <script src="app/otusjs-player-data/navigation/rule-service.js"></script>
+    <!-- /NAVIGATION -->
+    <!-- VALIDATION -->
+    <script src="app/otusjs-player-data/validation/validation-module.js"></script>
+    <script src="app/otusjs-player-data/validation/item-filling-validator-service.js"></script>
+    <!-- /VALIDATION -->
+
+    <!-- /OTUSJS-PLAYER-DATA -->
+    <!-- -------------------------------------------------------------------------------------- -->
+
+    <!-- endbuild -->
+    <!-- END OTUSJS PLAYER -->
+  </body>
+
+</html>

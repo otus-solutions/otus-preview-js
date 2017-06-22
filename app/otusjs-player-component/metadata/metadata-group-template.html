@@ -1,0 +1,9 @@
+<md-content layout-padding style="margin-left: 10px">
+    <md-radio-group ng-model="$ctrl.metadata" ng-change="$ctrl.update()" layout-padding flex>
+        <md-content value="{{option.value}}" ng-repeat="option in $ctrl.itemData.metadata.options" layout="row" style="margin: 10px">
+            <md-radio-button aria-label="{{option.label}}" value="{{option.value}}" flex>
+                <otus-label item-label="option.label.ptBR.formattedText"></otus-label>
+            </md-radio-button>
+        </md-content>
+    </md-radio-group>
+</md-content>
