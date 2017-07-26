@@ -13,3 +13,4 @@ target/
 /**/env.properties
 /**/npm-debug.log.*
 **/.sonar
+package-lock.json
