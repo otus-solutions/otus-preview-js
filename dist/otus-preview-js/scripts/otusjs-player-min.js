@@ -1005,7 +1005,7 @@
   angular
     .module('otusjs.player.component')
     .component('otusSingleSelectionQuestion', {
-      template:'<md-content layout-padding style="margin-left: 10px"><md-radio-group ng-model="$ctrl.answer" ng-change="$ctrl.update()" layout-padding flex><md-radio-button value="{{option.value}}" ng-repeat="option in $ctrl.itemData.options" layout="row" style="margin: 10px"><otus-label item-label="option.label.ptBR.formattedText"></otus-label></md-radio-button></md-radio-group></md-content>',
+      template:'<md-content layout-padding style="margin-left: 10px"><md-radio-group id="singleSelectionQuestionRadioGroup" ng-model="$ctrl.answer" ng-change="$ctrl.update()" layout-padding flex><md-radio-button value="{{option.value}}" ng-click="$ctrl.blurOnClick()" ng-repeat="option in $ctrl.itemData.options" layout="row" style="margin: 10px;outline: none;border: 0;"><otus-label item-label="option.label.ptBR.formattedText"></otus-label></md-radio-button></md-radio-group></md-content>',
       controller: Controller,
       bindings: {
         itemData: '<',
@@ -1017,10 +1017,11 @@
     });
 
   Controller.$inject = [
-    'otusjs.player.data.activity.CurrentItemService'
+    'otusjs.player.data.activity.CurrentItemService',
+    '$element'
   ];
 
-  function Controller(CurrentItemService) {
+  function Controller(CurrentItemService,$element) {
     var self = this;
 
     self.$onInit = function() {
@@ -1038,6 +1039,12 @@
     self.clear = function() {
       CurrentItemService.getFilling().answer.clear();
       delete self.answer;
+    }
+
+    //OPJ-21 Remove classe md-focused que é adicionada pelo componete radiogroup do angular-material para que
+    //não ative os atalhos do teclado nativos do componente
+    self.blurOnClick = function() {
+      $element.find('#singleSelectionQuestionRadioGroup').removeClass('md-focused');
     }
   }
 }());
