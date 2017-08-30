@@ -54,26 +54,25 @@
 
         self.itemData.getLinesList().forEach(function (line, outerIndex) {
           self.answerArray[outerIndex] = [];
-          line.getGridIntegerList().forEach(function (gridNumber, innerIndex) {
-            self.answerArray[outerIndex][innerIndex] = _buildAnswerObject(gridNumber);
-            console.log(self.answerArray[outerIndex][innerIndex]);
+          line.getGridIntegerList().forEach(function (gridInteger, innerIndex) {
+            self.answerArray[outerIndex][innerIndex] = _buildAnswerObject(gridInteger);
           });
         });
       }
     }
 
-    function _buildAnswerObject(gridNumber) {
+    function _buildAnswerObject(gridInteger) {
       return {
         objectType: 'GridIntegerAnswer',
-        gridNumber: gridNumber.customID,
-        value: (gridNumber.value === undefined) ? null : Number(gridNumber.value)
+        customID: gridInteger.customID,
+        value: (gridInteger.value === undefined) ? null : Number(gridInteger.value)
       };
     }
 
     function _checkIfAnswered() {
       var result = false;
       self.itemData.getLinesList().forEach(function (line, outerIndex) {
-        line.getGridIntegerList().forEach(function (gridNumber, innerIndex) {
+        line.getGridIntegerList().forEach(function (gridInteger, innerIndex) {
           if (self.answerArray[outerIndex][innerIndex].value !== null) {
             result = true;
           }
@@ -84,7 +83,7 @@
 
     function assignNullsToEmptyValues() {
       self.itemData.getLinesList().forEach(function (line, outerIndex) {
-        line.getGridIntegerList().forEach(function (gridNumber, innerIndex) {
+        line.getGridIntegerList().forEach(function (gridInteger, innerIndex) {
           if (!self.answerArray[outerIndex][innerIndex].value || self.answerArray[outerIndex][innerIndex].value === '') {
             self.answerArray[outerIndex][innerIndex].value = null;
           }
