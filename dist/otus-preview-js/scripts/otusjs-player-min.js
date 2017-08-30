@@ -912,6 +912,10 @@
                 function shouldPrintChar(event) {
                     var element = angular.element(event.currentTarget);
                     var keycode = event.which;
+                    if (keycode === 9) {
+                       console.log(element);
+                       element.next().focus();
+                    }
                     return (isNumberKey(keycode) || isValidKey(keycode));
                 }
 
@@ -925,6 +929,7 @@
                     if (currentValue.length === 0) {
                         lastValidValue = '';
                     } else if (isNumberKey(keycode) || isValidKey(keycode)) {
+                       console.log('here');
                         lastValidValue = element.val();
                     } else if (!isValidKey(keycode)) {
                         element.val(lastValidValue);
@@ -941,6 +946,7 @@
                     var backspaceKey = (keycode === 8);
                     var homeKey = (keycode === 36);
                     var endKey = (keycode === 35);
+                    var tabKey = (keycode === 9);
                     var deleteKey = (keycode === 46);
                     var controlKey = (keycode === 17);
                     // var cKey = (keycode === 67);
@@ -948,7 +954,7 @@
                     var leftKey = (keycode === 37);
                     var rightKey = (keycode === 39);
 
-                    return (minusKey || shiftKey || backspaceKey || homeKey || endKey || deleteKey || controlKey || leftKey || rightKey);
+                    return (minusKey || shiftKey || backspaceKey || homeKey || endKey || deleteKey || controlKey || leftKey || rightKey || tabKey);
                 }
             }
         };
@@ -1690,7 +1696,7 @@
       self.answerArray = CurrentItemService.getFilling().answer.value;
       self.otusQuestion.answer = self;
       _fixArray();
-    };
+    }
 
     function update(outerIndex, innerIndex) {
       if (!_checkIfAnswered()) {
@@ -1705,7 +1711,7 @@
           value: self.answerArray
         });
       }
-    };
+    }
 
     function _fixArray() {
       if (!self.answerArray) {
@@ -1718,7 +1724,7 @@
           });
         });
       }
-    };
+    }
 
     function _buildAnswerObject(gridText) {
       return {
@@ -1726,7 +1732,7 @@
         gridText: gridText.customID,
         value: (gridText.value === undefined) ? null : gridText.value
       };
-    };
+    }
 
     function _checkIfAnswered() {
       var result = false;
@@ -1738,7 +1744,7 @@
         });
       });
       return result;
-    };
+    }
 
     function assignNullsToEmptyValues() {
       self.itemData.getLinesList().forEach(function (line, outerIndex) {
@@ -1754,8 +1760,137 @@
       CurrentItemService.getFilling().answer.clear();
       delete self.answerArray;
       _fixArray();
-    };
+    }
   }
+}());
+
+(function () {
+  'use strict';
+
+  angular
+    .module('otusjs.player.component')
+    .component('otusGridIntegerQuestion', {
+      template:'<div ng-repeat="line in ::$ctrl.itemData.getLinesList()" ng-init="outerIndex=$index" layout="row" flex><div ng-repeat="gridNumber in ::line.getGridIntegerList()" ng-init="innerIndex=$index" layout-padding layout="row" flex><md-input-container flex><label>{{ ::gridNumber.label.ptBR.formattedText }}</label><div><input type="text" numbers-only ng-model="$ctrl.answerArray[outerIndex][innerIndex].value" ng-blur="$ctrl.update(outerIndex, innerIndex)"></div><div style="color: gray;">{{::gridNumber.unit.ptBR.formattedText}}</div></md-input-container></div></div>',
+      controller: Controller,
+      bindings: {
+        itemData: '<',
+        onUpdate: '&'
+      },
+      require: {
+        otusQuestion: '^otusQuestion'
+      }
+    });
+
+  Controller.$inject = [
+    'otusjs.player.data.activity.CurrentItemService'
+  ];
+
+  function Controller(CurrentItemService) {
+    var self = this;
+
+    /* Public Interface */
+    self.$onInit = onInit;
+    self.update = update;
+    self.clear = clear;
+
+    function onInit() {
+      self.answerArray = CurrentItemService.getFilling().answer.value;
+      self.otusQuestion.answer = self;
+      _fixArray();
+    }
+
+    function update(outerIndex, innerIndex) {
+      if (!_checkIfAnswered()) {
+        self.onUpdate({
+          valueType: 'answer',
+          value: {}
+        });
+      } else {
+        assignNullsToEmptyValues();
+        self.onUpdate({
+          valueType: 'answer',
+          value: self.answerArray
+        });
+      }
+    }
+
+    function _fixArray() {
+      if (!self.answerArray) {
+        self.answerArray = [[]];
+
+        self.itemData.getLinesList().forEach(function (line, outerIndex) {
+          self.answerArray[outerIndex] = [];
+          line.getGridIntegerList().forEach(function (gridNumber, innerIndex) {
+            self.answerArray[outerIndex][innerIndex] = _buildAnswerObject(gridNumber);
+            console.log(self.answerArray[outerIndex][innerIndex]);
+          });
+        });
+      }
+    }
+
+    function _buildAnswerObject(gridNumber) {
+      return {
+        objectType: 'GridIntegerAnswer',
+        gridNumber: gridNumber.customID,
+        value: (gridNumber.value === undefined) ? null : Number(gridNumber.value)
+      };
+    }
+
+    function _checkIfAnswered() {
+      var result = false;
+      self.itemData.getLinesList().forEach(function (line, outerIndex) {
+        line.getGridIntegerList().forEach(function (gridNumber, innerIndex) {
+          if (self.answerArray[outerIndex][innerIndex].value !== null) {
+            result = true;
+          }
+        });
+      });
+      return result;
+    }
+
+    function assignNullsToEmptyValues() {
+      self.itemData.getLinesList().forEach(function (line, outerIndex) {
+        line.getGridIntegerList().forEach(function (gridNumber, innerIndex) {
+          if (!self.answerArray[outerIndex][innerIndex].value || self.answerArray[outerIndex][innerIndex].value === '') {
+            self.answerArray[outerIndex][innerIndex].value = null;
+          }
+        });
+      });
+    }
+
+    function clear() {
+      CurrentItemService.getFilling().answer.clear();
+      delete self.answerArray;
+      _fixArray();
+    }
+  }
+}());
+
+(function() {
+  'use strict';
+
+  angular
+    .module('otusjs.player.component')
+    .directive('numbersOnly', function() {
+      return {
+        require: 'ngModel',
+        link: function(scope, element, attr, ngModelCtrl) {
+          function fromUser(text) {
+            if (text) {
+              var stringfiedText = String(text);
+              var transformedInput = stringfiedText.replace(/[^0-9]/g, '');
+              if (transformedInput !== stringfiedText) {
+                ngModelCtrl.$setViewValue(transformedInput);
+                ngModelCtrl.$render();
+              }
+              return Number(transformedInput);
+            }
+            return undefined;
+          }
+          ngModelCtrl.$parsers.push(fromUser);
+        }
+      };
+    });
 }());
 
 (function() {

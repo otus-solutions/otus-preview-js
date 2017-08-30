@@ -3,8 +3,8 @@
 
   angular
     .module('otusjs.player.component')
-    .component('otusGridTextQuestion', {
-      templateUrl: 'app/otusjs-player-component/survey-item/question/grid-text/grid-text-question-template.html',
+    .component('otusGridIntegerQuestion', {
+      templateUrl: 'app/otusjs-player-component/survey-item/question/grid-integer/grid-integer-question-template.html',
       controller: Controller,
       bindings: {
         itemData: '<',
@@ -54,26 +54,27 @@
 
         self.itemData.getLinesList().forEach(function (line, outerIndex) {
           self.answerArray[outerIndex] = [];
-          line.getGridTextList().forEach(function (gridText, innerIndex) {
-            self.answerArray[outerIndex][innerIndex] = _buildAnswerObject(gridText);
+          line.getGridIntegerList().forEach(function (gridNumber, innerIndex) {
+            self.answerArray[outerIndex][innerIndex] = _buildAnswerObject(gridNumber);
+            console.log(self.answerArray[outerIndex][innerIndex]);
           });
         });
       }
     }
 
-    function _buildAnswerObject(gridText) {
+    function _buildAnswerObject(gridNumber) {
       return {
-        objectType: 'GridTextAnswer',
-        gridText: gridText.customID,
-        value: (gridText.value === undefined) ? null : gridText.value
+        objectType: 'GridIntegerAnswer',
+        gridNumber: gridNumber.customID,
+        value: (gridNumber.value === undefined) ? null : Number(gridNumber.value)
       };
     }
 
     function _checkIfAnswered() {
       var result = false;
       self.itemData.getLinesList().forEach(function (line, outerIndex) {
-        line.getGridTextList().forEach(function (gridText, innerIndex) {
-          if (self.answerArray[outerIndex][innerIndex].value && self.answerArray[outerIndex][innerIndex].value.length > 0) {
+        line.getGridIntegerList().forEach(function (gridNumber, innerIndex) {
+          if (self.answerArray[outerIndex][innerIndex].value !== null) {
             result = true;
           }
         });
@@ -83,8 +84,8 @@
 
     function assignNullsToEmptyValues() {
       self.itemData.getLinesList().forEach(function (line, outerIndex) {
-        line.getGridTextList().forEach(function (gridText, innerIndex) {
-          if (self.answerArray[outerIndex][innerIndex].value === '') {
+        line.getGridIntegerList().forEach(function (gridNumber, innerIndex) {
+          if (!self.answerArray[outerIndex][innerIndex].value || self.answerArray[outerIndex][innerIndex].value === '') {
             self.answerArray[outerIndex][innerIndex].value = null;
           }
         });
