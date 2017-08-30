@@ -1669,7 +1669,7 @@
   angular
     .module('otusjs.player.component')
     .component('otusGridTextQuestion', {
-      template:'<div ng-repeat="line in ::$ctrl.itemData.getLinesList()" ng-init="outerIndex=$index" layout="row" flex><div ng-repeat="gridText in ::line.getGridTextList()" ng-init="innerIndex=$index" layout-padding layout="row" flex><md-input-container flex><label>{{ ::gridText.label.ptBR.formattedText }}</label><div><textarea ng-model="$ctrl.answerArray[outerIndex][innerIndex].value" ng-blur="$ctrl.update(outerIndex, innerIndex)"></textarea></div><div style="color: gray;">{{::gridText.unit.ptBR.formattedText}}</div></md-input-container></div></div>',
+      template:'<div ng-repeat="line in ::$ctrl.itemData.getLinesList()" ng-init="outerIndex=$index" layout="row" flex><div ng-repeat="gridText in ::line.getGridTextList()" ng-init="innerIndex=$index" layout-padding layout="row" flex><md-input-container flex><label>{{ ::gridText.label.ptBR.formattedText }}</label><div><textarea ng-model="$ctrl.answerArray[outerIndex][innerIndex].value" ng-blur="$ctrl.update(outerIndex, innerIndex)"></textarea></div><div style="color: gray;">{{::gridText.unit.ptBR.plainText}}</div></md-input-container></div></div>',
       controller: Controller,
       bindings: {
         itemData: '<',
@@ -1770,7 +1770,7 @@
   angular
     .module('otusjs.player.component')
     .component('otusGridIntegerQuestion', {
-      template:'<div ng-repeat="line in ::$ctrl.itemData.getLinesList()" ng-init="outerIndex=$index" layout="row" flex><div ng-repeat="gridNumber in ::line.getGridIntegerList()" ng-init="innerIndex=$index" layout-padding layout="row" flex><md-input-container flex><label>{{ ::gridNumber.label.ptBR.formattedText }}</label><div><input type="text" numbers-only ng-model="$ctrl.answerArray[outerIndex][innerIndex].value" ng-blur="$ctrl.update(outerIndex, innerIndex)"></div><div style="color: gray;">{{::gridNumber.unit.ptBR.formattedText}}</div></md-input-container></div></div>',
+      template:'<div ng-repeat="line in ::$ctrl.itemData.getLinesList()" ng-init="outerIndex=$index" layout="row" flex><div ng-repeat="gridNumber in ::line.getGridIntegerList()" ng-init="innerIndex=$index" layout-padding layout="row" flex><md-input-container flex><label>{{ ::gridNumber.label.ptBR.formattedText }}</label><div><input type="text" numbers-only ng-model="$ctrl.answerArray[outerIndex][innerIndex].value" ng-blur="$ctrl.update(outerIndex, innerIndex)"></div><div style="color: gray;">{{::gridNumber.unit.ptBR.plainText}}</div></md-input-container></div></div>',
       controller: Controller,
       bindings: {
         itemData: '<',
