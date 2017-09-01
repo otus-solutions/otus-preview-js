@@ -26,6 +26,7 @@
     self.save = save;
     self.setup = setup;
     self.clearSkippedAnswers = clearSkippedAnswers;
+    self.getNavigationTracker = getNavigationTracker;
 
     function getSurvey() {
       return ActivityFacadeService.surveyActivity;
@@ -103,5 +104,10 @@
     function clearSkippedAnswers() {
       ActivityFacadeService.clearSkippedAnswers();
     }
+
+    function getNavigationTracker() {
+      return ActivityFacadeService.getNavigationTracker();
+    }
+
   }
 }());

@@ -4912,6 +4912,7 @@
     self.save = save;
     self.setup = setup;
     self.clearSkippedAnswers = clearSkippedAnswers;
+    self.getNavigationTracker = getNavigationTracker;
 
     function getSurvey() {
       return ActivityFacadeService.surveyActivity;
@@ -4989,6 +4990,11 @@
     function clearSkippedAnswers() {
       ActivityFacadeService.clearSkippedAnswers();
     }
+
+    function getNavigationTracker() {
+      return ActivityFacadeService.getNavigationTracker();
+    }
+
   }
 }());
 
@@ -5225,10 +5231,11 @@
     .service('otusjs.player.data.navigation.RuleService', Service);
 
   Service.$inject = [
-    'otusjs.player.data.activity.ActivityFacadeService'
+    'otusjs.player.data.activity.ActivityFacadeService',
+    'otusjs.player.data.activity.CurrentSurveyService'
   ];
 
-  function Service(ActivityFacadeService) {
+  function Service(ActivityFacadeService, CurrentSurveyService) {
     var self = this;
 
     /* Public Interface */
@@ -5237,7 +5244,7 @@
     function isRuleApplicable(rule) {
       var itemAnswer = ActivityFacadeService.fetchItemAnswerByTemplateID(rule.when);
 
-      if (itemAnswer) {
+      if (itemAnswer && !_isSkipped(rule.when)) {
         if (rule.isMetadata) {
           return itemAnswer.answer.eval.run(rule, itemAnswer.metadata.value);
         } else {
@@ -5247,6 +5254,13 @@
         return false;
       }
     }
+
+    function _isSkipped(item) {
+      return CurrentSurveyService.getNavigationTracker().getSkippedItems().some(function(element) {
+        return item === element.getID();
+      });
+    }
+
   }
 }());
 
