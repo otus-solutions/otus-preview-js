@@ -11,6 +11,10 @@
                 function shouldPrintChar(event) {
                     var element = angular.element(event.currentTarget);
                     var keycode = event.which;
+                    if (keycode === 9) {
+                       console.log(element);
+                       element.next().focus();
+                    }
                     return (isNumberKey(keycode) || isValidKey(keycode));
                 }
 
@@ -24,6 +28,7 @@
                     if (currentValue.length === 0) {
                         lastValidValue = '';
                     } else if (isNumberKey(keycode) || isValidKey(keycode)) {
+                       console.log('here');
                         lastValidValue = element.val();
                     } else if (!isValidKey(keycode)) {
                         element.val(lastValidValue);
@@ -40,6 +45,7 @@
                     var backspaceKey = (keycode === 8);
                     var homeKey = (keycode === 36);
                     var endKey = (keycode === 35);
+                    var tabKey = (keycode === 9);
                     var deleteKey = (keycode === 46);
                     var controlKey = (keycode === 17);
                     // var cKey = (keycode === 67);
@@ -47,7 +53,7 @@
                     var leftKey = (keycode === 37);
                     var rightKey = (keycode === 39);
 
-                    return (minusKey || shiftKey || backspaceKey || homeKey || endKey || deleteKey || controlKey || leftKey || rightKey);
+                    return (minusKey || shiftKey || backspaceKey || homeKey || endKey || deleteKey || controlKey || leftKey || rightKey || tabKey);
                 }
             }
         };

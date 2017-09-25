@@ -16,10 +16,11 @@
     });
 
   Controller.$inject = [
-    'otusjs.player.data.activity.CurrentItemService'
+    'otusjs.player.data.activity.CurrentItemService',
+    '$element'
   ];
 
-  function Controller(CurrentItemService) {
+  function Controller(CurrentItemService,$element) {
     var self = this;
 
     self.$onInit = function() {
@@ -37,6 +38,12 @@
     self.clear = function() {
       CurrentItemService.getFilling().answer.clear();
       delete self.answer;
+    }
+
+    //OPJ-21 Remove classe md-focused que é adicionada pelo componete radiogroup do angular-material para que
+    //não ative os atalhos do teclado nativos do componente
+    self.blurOnClick = function() {
+      $element.find('#singleSelectionQuestionRadioGroup').removeClass('md-focused');
     }
   }
 }());

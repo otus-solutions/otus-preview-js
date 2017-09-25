@@ -32,9 +32,9 @@
       return ActivityFacadeService.surveyActivity;
     }
 
-    function getSurveyDatasources() { //question datasources
+    function getSurveyDatasources(){ //question datasources
       return getSurvey().getDataSources();
-    }
+   }
 
     function getAnswerByItemID(id) {
       return ActivityFacadeService.getFillingByQuestionID(id);
@@ -99,7 +99,7 @@
       ActivityFacadeService.saveActivitySurvey();
     }
 
-    function setup() {}
+    function setup() { }
 
     function clearSkippedAnswers() {
       ActivityFacadeService.clearSkippedAnswers();
@@ -108,5 +108,6 @@
     function getNavigationTracker() {
       return ActivityFacadeService.getNavigationTracker();
     }
+
   }
 }());

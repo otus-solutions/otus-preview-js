@@ -255,13 +255,13 @@
   }
 }());
 
-(function() {
+(function () {
   'use strict';
 
   angular
     .module('otusjs.player.component')
     .component('otusPlayerCommander', {
-      template:'<md-content layout-padding layout="column" flex style="padding-top: 0 !important; padding-bottom: 0 !important"><md-toolbar style="border-radius: 3px" class="md-whiteframe-1dp"><div class="md-toolbar-tools" layout-align="space-around center"><md-button class="md-icon-button" aria-label="Voltar" ng-click="$ctrl.goBack()" ng-disabled="$ctrl.isGoBackDisabled"><md-icon md-font-set="material-icons">skip_previous</md-icon><md-tooltip md-direction="bottom">Voltar</md-tooltip></md-button><md-button class="md-icon-button" aria-label="Salvar" ng-click="$ctrl.pause()"><md-icon md-font-set="material-icons">save</md-icon><md-tooltip md-direction="bottom">Salvar</md-tooltip></md-button><md-button class="md-icon-button" aria-label="Cancelar" ng-click="$ctrl.stop()"><md-icon md-font-set="material-icons">close</md-icon><md-tooltip md-direction="bottom">Cancelar</md-tooltip></md-button><md-button class="md-icon-button" aria-label="Avançar" ng-click="$ctrl.goAhead()" ng-disabled="$ctrl.isGoAheadDisabled"><md-icon md-font-set="material-icons">skip_next</md-icon><md-tooltip md-direction="bottom">Avançar</md-tooltip></md-button></div></md-toolbar></md-content>',
+      template:'<md-content layout-padding layout="column" flex style="padding-top: 0 !important; padding-bottom: 0 !important"><md-toolbar style="border-radius: 3px" class="md-whiteframe-1dp"><div class="md-toolbar-tools" layout-align="space-around center"><md-button id="previousQuestion" class="md-icon-button" aria-label="Voltar" ng-click="$ctrl.goBack()" ng-disabled="$ctrl.isGoBackDisabled"><md-icon md-font-set="material-icons">skip_previous</md-icon><md-tooltip md-direction="bottom">Voltar</md-tooltip></md-button><md-button id="saveActivity" class="md-icon-button" aria-label="Salvar" ng-click="$ctrl.pause()"><md-icon md-font-set="material-icons">save</md-icon><md-tooltip md-direction="bottom">Salvar</md-tooltip></md-button><md-button id="cancelActivity" class="md-icon-button" aria-label="Cancelar" ng-click="$ctrl.stop()"><md-icon md-font-set="material-icons">close</md-icon><md-tooltip md-direction="bottom">Cancelar</md-tooltip></md-button><md-button id="nextQuestion" class="md-icon-button" aria-label="Avançar" ng-click="$ctrl.goAhead()" ng-disabled="$ctrl.isGoAheadDisabled"><md-icon md-font-set="material-icons">skip_next</md-icon><md-tooltip md-direction="bottom">Avançar</md-tooltip></md-button></div></md-toolbar></md-content>',
       controller: Controller,
       bindings: {
         onGoAhead: '&',
@@ -272,11 +272,21 @@
     });
 
   Controller.$inject = [
-    '$scope'
+    '$q',
+    '$mdDialog',
+    '$scope',
+    '$document',
+    '$element'
   ];
 
-  function Controller($scope) {
+  function Controller($q, $mdDialog, $scope, $document, $element) {
+    var SAVE_TITLE = 'Salvar Atividade';
+    var SAVE_CONTENT = 'Você tem certeza que deseja salvar a atividade?';
+    var CANCEL_TITLE = 'Cancelar Atividade';
+    var CANCEL_CONTENT = 'Todos os dados, não salvos, serão perdidos. Você tem certeza que deseja cancelar?';
+
     var self = this;
+    var pressedControl = false;
 
     /* Public methods */
     self.goBack = goBack;
@@ -285,6 +295,15 @@
     self.stop = stop;
     self.remove = remove;
     self.$onInit = onInit;
+    self.$postLink = postLink;
+
+    function onInit() {
+      $scope.$parent.$ctrl.playerCommander = self;
+    }
+
+    function postLink() {
+      shortcutAction();
+    }
 
     function goAhead() {
       self.onGoAhead();
@@ -295,20 +314,96 @@
     }
 
     function pause() {
-      self.onPause();
+      confirmDialog(SAVE_TITLE, SAVE_CONTENT).then(
+        function () {
+          self.onPause();
+        });
     }
 
     function stop() {
-      self.onStop();
+      confirmDialog(CANCEL_TITLE, CANCEL_CONTENT).then(
+        function () {
+          self.onStop();
+        });
     }
 
     function remove() {
       $element.remove();
     }
 
-    function onInit() {
-      $scope.$parent.$ctrl.playerCommander = self;
+    function shortcutAction() {
+      $(document).unbind('keydown').bind('keydown', function (event) {
+        switch (event.key) {
+          case 'Control':
+            {
+              pressedControl = true;
+              break;
+            }
+          case 'ArrowLeft':
+            {
+              if (pressedControl) {
+                event.preventDefault();
+                $element.find('#previousQuestion').focus();
+                self.goBack();
+                $scope.$apply();
+              }
+              break;
+            }
+          case 'ArrowRight':
+            {
+              if (pressedControl) {
+                event.preventDefault();
+                $element.find('#nextQuestion').focus();
+                self.goAhead();
+                $scope.$apply();
+              }
+              break;
+            }
+          case 'End':
+            {
+              if (pressedControl) {
+                $element.find('#cancelActivity').focus();
+                self.stop();
+              }
+              break;
+            }
+          case 'Home':
+            {
+              if (pressedControl) {
+                $element.find('#saveActivity').focus();
+                self.pause();
+              }
+              break;
+            }
+          default:
+            return;
+        }
+      });
+
+      $(document).bind("keyup", function (event) {
+        if (event.which === 17) {
+          pressedControl = false;
+          return false;
+        }
+      });
     }
+
+    function confirmDialog(title, content) {
+      var deferred = $q.defer();
+      $mdDialog.show($mdDialog.confirm()
+        .title(title)
+        .textContent(content)
+        .ariaLabel('Confirmar ação de atalho:' + title)
+        .ok('Ok')
+        .cancel('Cancelar')
+      ).then(function () {
+        deferred.resolve();
+      }, function () {
+        deferred.reject();
+      });
+      return deferred.promise;
+    }
+
   }
 }());
 
@@ -817,6 +912,10 @@
                 function shouldPrintChar(event) {
                     var element = angular.element(event.currentTarget);
                     var keycode = event.which;
+                    if (keycode === 9) {
+                       console.log(element);
+                       element.next().focus();
+                    }
                     return (isNumberKey(keycode) || isValidKey(keycode));
                 }
 
@@ -830,6 +929,7 @@
                     if (currentValue.length === 0) {
                         lastValidValue = '';
                     } else if (isNumberKey(keycode) || isValidKey(keycode)) {
+                       console.log('here');
                         lastValidValue = element.val();
                     } else if (!isValidKey(keycode)) {
                         element.val(lastValidValue);
@@ -846,6 +946,7 @@
                     var backspaceKey = (keycode === 8);
                     var homeKey = (keycode === 36);
                     var endKey = (keycode === 35);
+                    var tabKey = (keycode === 9);
                     var deleteKey = (keycode === 46);
                     var controlKey = (keycode === 17);
                     // var cKey = (keycode === 67);
@@ -853,7 +954,7 @@
                     var leftKey = (keycode === 37);
                     var rightKey = (keycode === 39);
 
-                    return (minusKey || shiftKey || backspaceKey || homeKey || endKey || deleteKey || controlKey || leftKey || rightKey);
+                    return (minusKey || shiftKey || backspaceKey || homeKey || endKey || deleteKey || controlKey || leftKey || rightKey || tabKey);
                 }
             }
         };
@@ -910,7 +1011,7 @@
   angular
     .module('otusjs.player.component')
     .component('otusSingleSelectionQuestion', {
-      template:'<md-content layout-padding style="margin-left: 10px"><md-radio-group ng-model="$ctrl.answer" ng-change="$ctrl.update()" layout-padding flex><md-radio-button value="{{option.value}}" ng-repeat="option in $ctrl.itemData.options" layout="row" style="margin: 10px"><otus-label item-label="option.label.ptBR.formattedText"></otus-label></md-radio-button></md-radio-group></md-content>',
+      template:'<md-content layout-padding style="margin-left: 10px"><md-radio-group id="singleSelectionQuestionRadioGroup" ng-model="$ctrl.answer" ng-change="$ctrl.update()" layout-padding flex><md-radio-button value="{{option.value}}" ng-click="$ctrl.blurOnClick()" ng-repeat="option in $ctrl.itemData.options" layout="row" style="margin: 10px;outline: none;border: 0;"><otus-label item-label="option.label.ptBR.formattedText"></otus-label></md-radio-button></md-radio-group></md-content>',
       controller: Controller,
       bindings: {
         itemData: '<',
@@ -922,10 +1023,11 @@
     });
 
   Controller.$inject = [
-    'otusjs.player.data.activity.CurrentItemService'
+    'otusjs.player.data.activity.CurrentItemService',
+    '$element'
   ];
 
-  function Controller(CurrentItemService) {
+  function Controller(CurrentItemService,$element) {
     var self = this;
 
     self.$onInit = function() {
@@ -943,6 +1045,12 @@
     self.clear = function() {
       CurrentItemService.getFilling().answer.clear();
       delete self.answer;
+    }
+
+    //OPJ-21 Remove classe md-focused que é adicionada pelo componete radiogroup do angular-material para que
+    //não ative os atalhos do teclado nativos do componente
+    self.blurOnClick = function() {
+      $element.find('#singleSelectionQuestionRadioGroup').removeClass('md-focused');
     }
   }
 }());
@@ -1561,7 +1669,7 @@
   angular
     .module('otusjs.player.component')
     .component('otusGridTextQuestion', {
-      template:'<div ng-repeat="line in ::$ctrl.itemData.getLinesList()" ng-init="outerIndex=$index" layout="row" flex><div ng-repeat="gridText in ::line.getGridTextList()" ng-init="innerIndex=$index" layout-padding layout="row" flex><md-input-container flex><label>{{ ::gridText.label.ptBR.formattedText }}</label><div><textarea ng-model="$ctrl.answerArray[outerIndex][innerIndex].value" ng-blur="$ctrl.update(outerIndex, innerIndex)"></textarea></div><div style="color: gray;">{{::gridText.unit.ptBR.formattedText}}</div></md-input-container></div></div>',
+      template:'<div ng-repeat="line in ::$ctrl.itemData.getLinesList()" ng-init="outerIndex=$index" layout="row" flex><div ng-repeat="gridText in ::line.getGridTextList()" ng-init="innerIndex=$index" layout-padding layout="row" flex><md-input-container flex><label>{{ ::gridText.label.ptBR.formattedText }}</label><div><textarea ng-model="$ctrl.answerArray[outerIndex][innerIndex].value" ng-blur="$ctrl.update(outerIndex, innerIndex)"></textarea></div><div style="color: gray;">{{::gridText.unit.ptBR.plainText}}</div></md-input-container></div></div>',
       controller: Controller,
       bindings: {
         itemData: '<',
@@ -1588,7 +1696,7 @@
       self.answerArray = CurrentItemService.getFilling().answer.value;
       self.otusQuestion.answer = self;
       _fixArray();
-    };
+    }
 
     function update(outerIndex, innerIndex) {
       if (!_checkIfAnswered()) {
@@ -1603,7 +1711,7 @@
           value: self.answerArray
         });
       }
-    };
+    }
 
     function _fixArray() {
       if (!self.answerArray) {
@@ -1616,7 +1724,7 @@
           });
         });
       }
-    };
+    }
 
     function _buildAnswerObject(gridText) {
       return {
@@ -1624,7 +1732,7 @@
         gridText: gridText.customID,
         value: (gridText.value === undefined) ? null : gridText.value
       };
-    };
+    }
 
     function _checkIfAnswered() {
       var result = false;
@@ -1636,7 +1744,7 @@
         });
       });
       return result;
-    };
+    }
 
     function assignNullsToEmptyValues() {
       self.itemData.getLinesList().forEach(function (line, outerIndex) {
@@ -1652,8 +1760,136 @@
       CurrentItemService.getFilling().answer.clear();
       delete self.answerArray;
       _fixArray();
-    };
+    }
   }
+}());
+
+(function () {
+  'use strict';
+
+  angular
+    .module('otusjs.player.component')
+    .component('otusGridIntegerQuestion', {
+      template:'<div ng-repeat="line in ::$ctrl.itemData.getLinesList()" ng-init="outerIndex=$index" layout="row" flex><div ng-repeat="gridNumber in ::line.getGridIntegerList()" ng-init="innerIndex=$index" layout-padding layout="row" flex><md-input-container flex><label>{{ ::gridNumber.label.ptBR.formattedText }}</label><div><input type="text" numbers-only ng-model="$ctrl.answerArray[outerIndex][innerIndex].value" ng-blur="$ctrl.update(outerIndex, innerIndex)"></div><div style="color: gray;">{{::gridNumber.unit.ptBR.plainText}}</div></md-input-container></div></div>',
+      controller: Controller,
+      bindings: {
+        itemData: '<',
+        onUpdate: '&'
+      },
+      require: {
+        otusQuestion: '^otusQuestion'
+      }
+    });
+
+  Controller.$inject = [
+    'otusjs.player.data.activity.CurrentItemService'
+  ];
+
+  function Controller(CurrentItemService) {
+    var self = this;
+
+    /* Public Interface */
+    self.$onInit = onInit;
+    self.update = update;
+    self.clear = clear;
+
+    function onInit() {
+      self.answerArray = CurrentItemService.getFilling().answer.value;
+      self.otusQuestion.answer = self;
+      _fixArray();
+    }
+
+    function update(outerIndex, innerIndex) {
+      if (!_checkIfAnswered()) {
+        self.onUpdate({
+          valueType: 'answer',
+          value: {}
+        });
+      } else {
+        assignNullsToEmptyValues();
+        self.onUpdate({
+          valueType: 'answer',
+          value: self.answerArray
+        });
+      }
+    }
+
+    function _fixArray() {
+      if (!self.answerArray) {
+        self.answerArray = [[]];
+
+        self.itemData.getLinesList().forEach(function (line, outerIndex) {
+          self.answerArray[outerIndex] = [];
+          line.getGridIntegerList().forEach(function (gridInteger, innerIndex) {
+            self.answerArray[outerIndex][innerIndex] = _buildAnswerObject(gridInteger);
+          });
+        });
+      }
+    }
+
+    function _buildAnswerObject(gridInteger) {
+      return {
+        objectType: 'GridIntegerAnswer',
+        customID: gridInteger.customID,
+        value: (gridInteger.value === undefined) ? null : Number(gridInteger.value)
+      };
+    }
+
+    function _checkIfAnswered() {
+      var result = false;
+      self.itemData.getLinesList().forEach(function (line, outerIndex) {
+        line.getGridIntegerList().forEach(function (gridInteger, innerIndex) {
+          if (self.answerArray[outerIndex][innerIndex].value !== null) {
+            result = true;
+          }
+        });
+      });
+      return result;
+    }
+
+    function assignNullsToEmptyValues() {
+      self.itemData.getLinesList().forEach(function (line, outerIndex) {
+        line.getGridIntegerList().forEach(function (gridInteger, innerIndex) {
+          if (!self.answerArray[outerIndex][innerIndex].value || self.answerArray[outerIndex][innerIndex].value === '') {
+            self.answerArray[outerIndex][innerIndex].value = null;
+          }
+        });
+      });
+    }
+
+    function clear() {
+      CurrentItemService.getFilling().answer.clear();
+      delete self.answerArray;
+      _fixArray();
+    }
+  }
+}());
+
+(function() {
+  'use strict';
+
+  angular
+    .module('otusjs.player.component')
+    .directive('numbersOnly', function() {
+      return {
+        require: 'ngModel',
+        link: function(scope, element, attr, ngModelCtrl) {
+          function fromUser(text) {
+            if (text) {
+              var stringfiedText = String(text);
+              var transformedInput = stringfiedText.replace(/[^0-9]/g, '');
+              if (transformedInput !== stringfiedText) {
+                ngModelCtrl.$setViewValue(transformedInput);
+                ngModelCtrl.$render();
+              }
+              return Number(transformedInput);
+            }
+            return undefined;
+          }
+          ngModelCtrl.$parsers.push(fromUser);
+        }
+      };
+    });
 }());
 
 (function() {
@@ -4682,9 +4918,9 @@
       return ActivityFacadeService.surveyActivity;
     }
 
-    function getSurveyDatasources() { //question datasources
+    function getSurveyDatasources(){ //question datasources
       return getSurvey().getDataSources();
-    }
+   }
 
     function getAnswerByItemID(id) {
       return ActivityFacadeService.getFillingByQuestionID(id);
@@ -4749,7 +4985,7 @@
       ActivityFacadeService.saveActivitySurvey();
     }
 
-    function setup() {}
+    function setup() { }
 
     function clearSkippedAnswers() {
       ActivityFacadeService.clearSkippedAnswers();
@@ -4758,6 +4994,7 @@
     function getNavigationTracker() {
       return ActivityFacadeService.getNavigationTracker();
     }
+
   }
 }());
 
@@ -5023,6 +5260,7 @@
         return item === element.getID();
       });
     }
+
   }
 }());
 

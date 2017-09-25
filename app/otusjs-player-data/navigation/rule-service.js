@@ -35,5 +35,6 @@
         return item === element.getID();
       });
     }
+
   }
 }());
