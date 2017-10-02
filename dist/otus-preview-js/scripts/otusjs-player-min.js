@@ -1764,7 +1764,7 @@
   }
 }());
 
-(function () {
+(function() {
   'use strict';
 
   angular
@@ -1800,7 +1800,7 @@
     }
 
     function update(outerIndex, innerIndex) {
-      if (!_checkIfAnswered()) {
+      if (!_checkIfAnswered(outerIndex, innerIndex)) {
         self.onUpdate({
           valueType: 'answer',
           value: {}
@@ -1816,12 +1816,16 @@
 
     function _fixArray() {
       if (!self.answerArray) {
-        self.answerArray = [[]];
+        self.answerArray = [
+          []
+        ];
 
-        self.itemData.getLinesList().forEach(function (line, outerIndex) {
+        self.itemData.getLinesList().forEach(function(line, outerIndex) {
           self.answerArray[outerIndex] = [];
-          line.getGridIntegerList().forEach(function (gridInteger, innerIndex) {
-            self.answerArray[outerIndex][innerIndex] = _buildAnswerObject(gridInteger);
+          line.getGridIntegerList().forEach(function(gridInteger,
+            innerIndex) {
+            self.answerArray[outerIndex][innerIndex] =
+              _buildAnswerObject(gridInteger);
           });
         });
       }
@@ -1835,10 +1839,11 @@
       };
     }
 
-    function _checkIfAnswered() {
+    function _checkIfAnswered(outerIndex, innerIndex) {
       var result = false;
-      self.itemData.getLinesList().forEach(function (line, outerIndex) {
-        line.getGridIntegerList().forEach(function (gridInteger, innerIndex) {
+      self.itemData.getLinesList().forEach(function(line, outerIndex) {
+        line.getGridIntegerList().forEach(function(gridInteger,
+          innerIndex) {
           if (self.answerArray[outerIndex][innerIndex].value !== null) {
             result = true;
           }
@@ -1848,10 +1853,13 @@
     }
 
     function assignNullsToEmptyValues() {
-      self.itemData.getLinesList().forEach(function (line, outerIndex) {
-        line.getGridIntegerList().forEach(function (gridInteger, innerIndex) {
-          if (!self.answerArray[outerIndex][innerIndex].value || self.answerArray[outerIndex][innerIndex].value === '') {
+      self.itemData.getLinesList().forEach(function(line, outerIndex) {
+        line.getGridIntegerList().forEach(function(gridInteger,
+          innerIndex) {
+          if (!self.answerArray[outerIndex][innerIndex].value || self
+            .answerArray[outerIndex][innerIndex].length < 0) {
             self.answerArray[outerIndex][innerIndex].value = null;
+
           }
         });
       });
@@ -1873,9 +1881,11 @@
     .directive('numbersOnly', function() {
       return {
         require: 'ngModel',
+        restrict: 'A',
         link: function(scope, element, attr, ngModelCtrl) {
           function fromUser(text) {
-            if (text) {
+
+            if (text.length > 0) {
               var stringfiedText = String(text);
               var transformedInput = stringfiedText.replace(/[^0-9]/g, '');
               if (transformedInput !== stringfiedText) {
@@ -1884,7 +1894,7 @@
               }
               return Number(transformedInput);
             }
-            return undefined;
+            return null;
           }
           ngModelCtrl.$parsers.push(fromUser);
         }
