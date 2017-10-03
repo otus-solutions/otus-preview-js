@@ -35,9 +35,10 @@
 
     function update(outerIndex, innerIndex) {
       if (!_checkIfAnswered()) {
+        clear();
         self.onUpdate({
           valueType: 'answer',
-          value: {}
+          value: null
         });
       } else {
         assignNullsToEmptyValues();
@@ -65,7 +66,7 @@
       return {
         objectType: 'GridTextAnswer',
         gridText: gridText.customID,
-        value: (gridText.value === undefined) ? null : gridText.value
+        value: (gridText.value === undefined || gridText.value === '') ? null : gridText.value
       };
     }
 
@@ -73,7 +74,7 @@
       var result = false;
       self.itemData.getLinesList().forEach(function (line, outerIndex) {
         line.getGridTextList().forEach(function (gridText, innerIndex) {
-          if (self.answerArray[outerIndex][innerIndex].value && self.answerArray[outerIndex][innerIndex].value.length > 0) {
+          if (self.answerArray[outerIndex][innerIndex].value && self.answerArray[outerIndex][innerIndex].value !== null) {
             result = true;
           }
         });
