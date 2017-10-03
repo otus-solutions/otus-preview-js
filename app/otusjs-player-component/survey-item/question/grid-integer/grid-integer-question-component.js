@@ -91,7 +91,6 @@
       self.itemData.getLinesList().forEach(function (line, outerIndex) {
         line.getGridIntegerList().forEach(function (gridInteger,
           innerIndex) {
-          console.log(self.answerArray[outerIndex][innerIndex].value);
           if (!self.answerArray[outerIndex][innerIndex].value || self
             .answerArray[outerIndex][innerIndex].value == '' || self
             .answerArray[outerIndex][innerIndex].value == undefined) {
