@@ -6,11 +6,9 @@
     .directive('numbersOnly', function() {
       return {
         require: 'ngModel',
-        restrict: 'A',
         link: function(scope, element, attr, ngModelCtrl) {
           function fromUser(text) {
-
-            if (text.length > 0) {
+            if (text) {
               var stringfiedText = String(text);
               var transformedInput = stringfiedText.replace(/[^0-9]/g, '');
               if (transformedInput !== stringfiedText) {
@@ -19,7 +17,7 @@
               }
               return Number(transformedInput);
             }
-            return null;
+            return undefined;
           }
           ngModelCtrl.$parsers.push(fromUser);
         }
