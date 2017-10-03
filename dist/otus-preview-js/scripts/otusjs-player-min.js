@@ -1700,9 +1700,10 @@
 
     function update(outerIndex, innerIndex) {
       if (!_checkIfAnswered()) {
+        clear();
         self.onUpdate({
           valueType: 'answer',
-          value: {}
+          value: null
         });
       } else {
         assignNullsToEmptyValues();
@@ -1730,7 +1731,7 @@
       return {
         objectType: 'GridTextAnswer',
         gridText: gridText.customID,
-        value: (gridText.value === undefined) ? null : gridText.value
+        value: (gridText.value === undefined || gridText.value === '') ? null : gridText.value
       };
     }
 
@@ -1738,7 +1739,7 @@
       var result = false;
       self.itemData.getLinesList().forEach(function (line, outerIndex) {
         line.getGridTextList().forEach(function (gridText, innerIndex) {
-          if (self.answerArray[outerIndex][innerIndex].value && self.answerArray[outerIndex][innerIndex].value.length > 0) {
+          if (self.answerArray[outerIndex][innerIndex].value && self.answerArray[outerIndex][innerIndex].value !== null) {
             result = true;
           }
         });
@@ -1801,9 +1802,10 @@
 
     function update(outerIndex, innerIndex) {
       if (!_checkIfAnswered()) {
+        clear();
         self.onUpdate({
           valueType: 'answer',
-          value: {}
+          value: null
         });
       } else {
         assignNullsToEmptyValues();
@@ -1815,15 +1817,17 @@
     }
 
     function _fixArray() {
-      if (!self.answerArray) {
+      if (!Array.isArray(self.answerArray)) {
         self.answerArray = [
           []
         ];
 
-        self.itemData.getLinesList().forEach(function(line, outerIndex) {
+        self.itemData.getLinesList().forEach(function (line, outerIndex) {
           self.answerArray[outerIndex] = [];
-          line.getGridIntegerList().forEach(function(gridInteger, innerIndex) {
-            self.answerArray[outerIndex][innerIndex] = _buildAnswerObject(gridInteger);
+          line.getGridIntegerList().forEach(function (gridInteger,
+            innerIndex) {
+            self.answerArray[outerIndex][innerIndex] =
+              _buildAnswerObject(gridInteger);
           });
         });
       }
@@ -1833,14 +1837,15 @@
       return {
         objectType: 'GridIntegerAnswer',
         customID: gridInteger.customID,
-        value: (gridInteger.value === undefined) ? null : Number(gridInteger.value)
+        value: (gridInteger.value === undefined || gridInteger.value === '') ? null : Number(gridInteger.value)
       };
     }
 
     function _checkIfAnswered() {
       var result = false;
-      self.itemData.getLinesList().forEach(function(line, outerIndex) {
-        line.getGridIntegerList().forEach(function(gridInteger, innerIndex) {
+      self.itemData.getLinesList().forEach(function (line, outerIndex) {
+        line.getGridIntegerList().forEach(function (gridInteger,
+          innerIndex) {
           if (self.answerArray[outerIndex][innerIndex].value !== null) {
             result = true;
           }
@@ -1850,9 +1855,12 @@
     }
 
     function assignNullsToEmptyValues() {
-      self.itemData.getLinesList().forEach(function(line, outerIndex) {
-        line.getGridIntegerList().forEach(function(gridInteger, innerIndex) {
-          if (!self.answerArray[outerIndex][innerIndex].value || self.answerArray[outerIndex][innerIndex].value === '') {
+      self.itemData.getLinesList().forEach(function (line, outerIndex) {
+        line.getGridIntegerList().forEach(function (gridInteger,
+          innerIndex) {
+          if (!self.answerArray[outerIndex][innerIndex].value || self
+            .answerArray[outerIndex][innerIndex].value == '' || self
+            .answerArray[outerIndex][innerIndex].value == undefined) {
             self.answerArray[outerIndex][innerIndex].value = null;
           }
         });
@@ -1875,9 +1883,11 @@
     .directive('numbersOnly', function() {
       return {
         require: 'ngModel',
+        restrict: 'A',
         link: function(scope, element, attr, ngModelCtrl) {
           function fromUser(text) {
-            if (text) {
+
+            if (text.length > 0) {
               var stringfiedText = String(text);
               var transformedInput = stringfiedText.replace(/[^0-9]/g, '');
               if (transformedInput !== stringfiedText) {
@@ -1886,7 +1896,7 @@
               }
               return Number(transformedInput);
             }
-            return undefined;
+            return null;
           }
           ngModelCtrl.$parsers.push(fromUser);
         }
