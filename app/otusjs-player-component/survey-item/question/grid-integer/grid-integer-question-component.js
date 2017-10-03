@@ -1,4 +1,4 @@
-(function () {
+(function() {
   'use strict';
 
   angular
@@ -50,11 +50,13 @@
 
     function _fixArray() {
       if (!self.answerArray) {
-        self.answerArray = [[]];
+        self.answerArray = [
+          []
+        ];
 
-        self.itemData.getLinesList().forEach(function (line, outerIndex) {
+        self.itemData.getLinesList().forEach(function(line, outerIndex) {
           self.answerArray[outerIndex] = [];
-          line.getGridIntegerList().forEach(function (gridInteger, innerIndex) {
+          line.getGridIntegerList().forEach(function(gridInteger, innerIndex) {
             self.answerArray[outerIndex][innerIndex] = _buildAnswerObject(gridInteger);
           });
         });
@@ -71,8 +73,8 @@
 
     function _checkIfAnswered() {
       var result = false;
-      self.itemData.getLinesList().forEach(function (line, outerIndex) {
-        line.getGridIntegerList().forEach(function (gridInteger, innerIndex) {
+      self.itemData.getLinesList().forEach(function(line, outerIndex) {
+        line.getGridIntegerList().forEach(function(gridInteger, innerIndex) {
           if (self.answerArray[outerIndex][innerIndex].value !== null) {
             result = true;
           }
@@ -82,8 +84,8 @@
     }
 
     function assignNullsToEmptyValues() {
-      self.itemData.getLinesList().forEach(function (line, outerIndex) {
-        line.getGridIntegerList().forEach(function (gridInteger, innerIndex) {
+      self.itemData.getLinesList().forEach(function(line, outerIndex) {
+        line.getGridIntegerList().forEach(function(gridInteger, innerIndex) {
           if (!self.answerArray[outerIndex][innerIndex].value || self.answerArray[outerIndex][innerIndex].value === '') {
             self.answerArray[outerIndex][innerIndex].value = null;
           }

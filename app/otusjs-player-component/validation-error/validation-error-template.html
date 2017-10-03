@@ -12,12 +12,12 @@
 
   <ng-message class="md-button md-warn" when="lowerLimit">
     <md-icon md-font-set="material-icons">error_outline</md-icon><span></span>
-    <span class="md-body-1">O valor deve ser maior que {{ $ctrl.reference('lowerLimit') }}</span>
+    <span class="md-body-1">O valor deve ser maior ou igual a {{ $ctrl.reference('lowerLimit') }}</span>
   </ng-message>
 
   <ng-message class="md-button md-warn" when="upperLimit">
     <md-icon md-font-set="material-icons">error_outline</md-icon><span></span>
-    <span class="md-body-1">O valor deve ser menor que {{ $ctrl.reference('upperLimit') }}</span>
+    <span class="md-body-1">O valor deve ser menor ou igual a {{ $ctrl.reference('upperLimit') }}</span>
   </ng-message>
 
   <ng-message class="md-button md-warn" when="rangeDate">
@@ -47,17 +47,17 @@
 
   <ng-message class="md-button md-warn" when="minLength">
     <md-icon md-font-set="material-icons">error_outline</md-icon><span></span>
-    <span class="md-body-1">Resposta deve ter mais que {{ $ctrl.reference('minLength') }} caracteres</span>
+    <span class="md-body-1">Resposta deve ter no mínimo {{ $ctrl.reference('minLength') }} caracteres</span>
   </ng-message>
 
   <ng-message class="md-button md-warn" when="maxLength">
     <md-icon md-font-set="material-icons">error_outline</md-icon><span></span>
-    <span class="md-body-1">Resposta deve ter mais que {{ $ctrl.reference('maxLength') }} caracteres</span>
+    <span class="md-body-1">Resposta deve ter no máximo {{ $ctrl.reference('maxLength') }} caracteres</span>
   </ng-message>
 
   <ng-message class="md-button md-warn" when="in">
     <md-icon md-font-set="material-icons">error_outline</md-icon><span></span>
-    <span class="md-body-1">O valor deve ser maior que {{ $ctrl.reference('in').initial }} e menor que {{ $ctrl.reference('in').end }}</span>
+    <span class="md-body-1">O valor deve ser maior ou igual a {{ $ctrl.reference('in').initial }} e menor ou igual a {{ $ctrl.reference('in').end }}</span>
   </ng-message>
 
   <ng-message class="md-button md-warn" when="precision">
