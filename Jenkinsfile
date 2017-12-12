@@ -11,6 +11,7 @@ pipeline {
       steps{
         // sh "git show -s --pretty=%an | perl -ne 'print \"GIT-COMMIT-USER=$_\"' >> $WORKSPACE/env.properties"
         // sh "echo '' >> $WORKSPACE/env.properties"
+        sh 'df -h ~/.npm'
         sh "rm -rf node_modules/"
         sh "npm install"
         sh "npm test"
