@@ -16,10 +16,11 @@
     });
 
   MetadataGroupController.$inject = [
-    'otusjs.player.data.activity.CurrentItemService'
+    'otusjs.player.data.activity.CurrentItemService',
+    '$element'
   ];
 
-  function MetadataGroupController(CurrentItemService) {
+  function MetadataGroupController(CurrentItemService, $element) {
     var self = this;
 
     self.$onInit = function() {
@@ -38,6 +39,10 @@
       CurrentItemService.getFilling().metadata.clear();
       delete self.metadata;
     };
+
+    self.blurOnClick = function() {
+      $element.find('#metadataGroupRadioGroup').removeClass('md-focused');
+    }
   }
 
 })();
