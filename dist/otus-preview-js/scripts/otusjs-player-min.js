@@ -1806,6 +1806,7 @@
     }
 
     function update(outerIndex, innerIndex) {
+      assignNullsToEmptyValues();
       if (!_checkIfAnswered()) {
         clear();
         self.onUpdate({
@@ -1813,7 +1814,6 @@
           value: null
         });
       } else {
-        assignNullsToEmptyValues();
         self.onUpdate({
           valueType: 'answer',
           value: self.answerArray
