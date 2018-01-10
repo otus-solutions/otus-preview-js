@@ -1,6 +1,7 @@
 <div ng-repeat="line in ::$ctrl.itemData.getLinesList()" ng-init="outerIndex=$index" layout="row" flex>
     <div ng-repeat="gridNumber in ::line.getGridIntegerList()" ng-init="innerIndex=$index" layout-padding layout="row" flex>
         <md-input-container flex>
+
             <label>{{ ::gridNumber.label.ptBR.formattedText }}</label>
             <div>
                 <input type="text" numbers-only ng-model="$ctrl.answerArray[outerIndex][innerIndex].value" ng-blur="$ctrl.update(outerIndex, innerIndex)"></input>
