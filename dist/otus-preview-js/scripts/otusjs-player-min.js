@@ -1865,8 +1865,7 @@
       self.itemData.getLinesList().forEach(function (line, outerIndex) {
         line.getGridIntegerList().forEach(function (gridInteger,
           innerIndex) {
-          if ( || self
-            .answerArray[outerIndex][innerIndex].value == '' || self
+          if ( self.answerArray[outerIndex][innerIndex].value == '' || self
             .answerArray[outerIndex][innerIndex].value == undefined) {
             self.answerArray[outerIndex][innerIndex].value = null;
           }
