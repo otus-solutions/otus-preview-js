@@ -24,8 +24,8 @@
       .pipe(gulpif('*.js', embedTemplates({
         basePath: __dirname + '/'
       })))
-      // .pipe(gulpif('*.js', uglify()))
-      .pipe(gulpif('*.css', minifyCss()))
+      //  .pipe(gulpif('*.js', uglify()))
+       .pipe(gulpif('*.css', minifyCss()))
       .pipe(gulp.dest('dist/otus-preview-js'));
   });
 

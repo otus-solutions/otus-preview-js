@@ -14,3 +14,4 @@ target/
 /**/npm-debug.log.*
 **/.sonar
 package-lock.json
+bin/
