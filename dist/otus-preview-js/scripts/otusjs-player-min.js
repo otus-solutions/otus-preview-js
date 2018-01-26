@@ -1806,6 +1806,7 @@
     }
 
     function update(outerIndex, innerIndex) {
+      assignNullsToEmptyValues();
       if (!_checkIfAnswered()) {
         clear();
         self.onUpdate({
@@ -1813,7 +1814,6 @@
           value: null
         });
       } else {
-        assignNullsToEmptyValues();
         self.onUpdate({
           valueType: 'answer',
           value: self.answerArray
@@ -1863,9 +1863,8 @@
       self.itemData.getLinesList().forEach(function (line, outerIndex) {
         line.getGridIntegerList().forEach(function (gridInteger,
           innerIndex) {
-          if (!self.answerArray[outerIndex][innerIndex].value || self
-            .answerArray[outerIndex][innerIndex].value == '' || self
-            .answerArray[outerIndex][innerIndex].value == undefined) {
+          if (self.answerArray[outerIndex][innerIndex].value === '' || self
+            .answerArray[outerIndex][innerIndex].value === undefined) {
             self.answerArray[outerIndex][innerIndex].value = null;
           }
         });
