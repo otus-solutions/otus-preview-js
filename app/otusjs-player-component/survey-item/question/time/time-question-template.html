@@ -1,6 +1,6 @@
 <md-content layout-padding>
     <div layout="row">
-        <md-button ng-click="$ctrl.currentTime()" class="md-fab md-raised md-mini" aria-label="Hora Atual">
+        <md-button ng-click="$ctrl.currentTime()" class="md-fab md-raised md-mini" aria-label="Hora Atual" ng-disabled="$ctrl.itemData.options.data.disabledButton.value">
             <md-icon>access_time</md-icon>
             <md-tooltip md-direction="down">
                 Hora Atual
