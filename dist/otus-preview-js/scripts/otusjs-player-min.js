@@ -1090,11 +1090,11 @@
       _fixArray();
     };
 
-    self.update = function (index) {
+    self.update = function () {
       if (!_checkIfAnyTrue()) {
         self.onUpdate({
           valueType: 'answer',
-          value: {}
+          value: null
         });
       } else {
         self.onUpdate({
@@ -1118,7 +1118,7 @@
     }
 
     function _fixArray() {
-      if (!self.answerArray) {
+      if (!self.answerArray || Object.keys(self.answerArray).length===0) {
         self.answerArray = [];
         self.itemData.options.forEach(function (option) {
           self.answerArray.push(_buildAnswerObject(option));
