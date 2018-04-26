@@ -1067,7 +1067,7 @@
     .module('otusjs.player.component')
     .component('otusCheckboxQuestion', {
       template:'<md-content layout-padding style="margin-top: 12px"><md-content ng-repeat="option in $ctrl.itemData.options track by $index" flex><md-checkbox ng-model="$ctrl.answerArray[$index].state" ng-change="$ctrl.update($index)" layout="row" style="margin: 7px"><otus-label item-label="option.label.ptBR.formattedText"></otus-label></md-checkbox></md-content></md-content>',
-      controller: Controller,
+      controller: 'otusjs.player.component.CheckboxQuestionController as $ctrl',
       bindings: {
         itemData: '<',
         onUpdate: '&'
@@ -1077,9 +1077,21 @@
       }
     });
 
+
+}());
+
+(function(){
+  'use strict';
+
+  angular
+    .module('otusjs.player.component')
+    .controller('otusjs.player.component.CheckboxQuestionController', Controller);
+
+
   Controller.$inject = [
     'otusjs.player.data.activity.CurrentItemService'
   ];
+
 
   function Controller(CurrentItemService) {
     var self = this;
@@ -1133,8 +1145,8 @@
     }
   }
 
-}());
 
+}());
 (function () {
   'use strict';
 
