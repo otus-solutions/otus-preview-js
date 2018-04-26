@@ -25,7 +25,7 @@
     self.$onInit = function () {
       self.answerArray = CurrentItemService.getFilling().answer.value;
       self.otusQuestion.answer = self;
-      _fixArray();
+      _buildAnswerArray();
     };
 
     self.update = function () {
@@ -45,7 +45,7 @@
     self.clear = function () {
       CurrentItemService.getFilling().answer.clear();
       delete self.answerArray;
-      _fixArray();
+      _buildAnswerArray();
     };
 
     function _buildAnswerObject(option) {
@@ -55,8 +55,8 @@
       };
     }
 
-    function _fixArray() {
-      if (!self.answerArray || Object.keys(self.answerArray).length===0) {
+    function _buildAnswerArray() {
+      if (!self.answerArray) {
         self.answerArray = [];
         self.itemData.options.forEach(function (option) {
           self.answerArray.push(_buildAnswerObject(option));
