@@ -32,20 +32,21 @@ module.exports = function(config) {
             APP_ROOT_PATH + 'app.js',
             APP_ROOT_PATH + '**/*-module.js',
             APP_ROOT_PATH + '**/*.js', {
-                pattern: 'tests/unit/**/example.js',
+                pattern: 'tests/unit/**/*-spec.js',
                 included: true
             }
         ],
 
         // list of files to exclude
         exclude: [
-          'tests/unit/**/*-spec.js'
+          'tests/unit/**/*example.js'
         ],
 
         // preprocess matching files before serving them to the browser
         // available preprocessors: https://npmjs.org/browse/keyword/karma-preprocessor
         preprocessors: {
-            'app/**/*.js': ['coverage']
+            'app/**/*.js': ['coverage'],
+            './tests/unit/**/*-spec.js': ['coverage']
         },
 
         coverageReporter: {
