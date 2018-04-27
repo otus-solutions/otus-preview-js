@@ -132,9 +132,7 @@ fdescribe('checkbox question controller component', function () {
 
   function mockBindings() {
     Mock.parentContainer = {
-      onUpdate: function () {
-        console.log('parent');
-      }
+      onUpdate: function () {}
     };
 
     var otusQuestion = {

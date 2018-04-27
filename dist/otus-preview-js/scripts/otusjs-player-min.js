@@ -918,7 +918,6 @@
                     var element = angular.element(event.currentTarget);
                     var keycode = event.which;
                     if (keycode === 9) {
-                       console.log(element);
                        element.next().focus();
                     }
                     return (isNumberKey(keycode) || isValidKey(keycode));
@@ -934,7 +933,6 @@
                     if (currentValue.length === 0) {
                         lastValidValue = '';
                     } else if (isNumberKey(keycode) || isValidKey(keycode)) {
-                       console.log('here');
                         lastValidValue = element.val();
                     } else if (!isValidKey(keycode)) {
                         element.val(lastValidValue);
@@ -1122,13 +1120,6 @@
       _buildAnswerArray();
     };
 
-    function _buildAnswerObject(option) {
-      return {
-        option: option.customOptionID,
-        state: option.value
-      };
-    }
-
     function _buildAnswerArray() {
       if (!self.answerArray) {
         self.answerArray = [];
@@ -1137,6 +1128,15 @@
         });
       }
     }
+
+
+    function _buildAnswerObject(option) {
+      return {
+        option: option.customOptionID,
+        state: option.value
+      };
+    }
+
 
     function _checkIfAnyTrue() {
       return self.answerArray.some(function (answer) {
