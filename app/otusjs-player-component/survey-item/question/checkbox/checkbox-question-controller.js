@@ -40,13 +40,6 @@
       _buildAnswerArray();
     };
 
-    function _buildAnswerObject(option) {
-      return {
-        option: option.customOptionID,
-        state: option.value
-      };
-    }
-
     function _buildAnswerArray() {
       if (!self.answerArray) {
         self.answerArray = [];
@@ -55,6 +48,15 @@
         });
       }
     }
+
+
+    function _buildAnswerObject(option) {
+      return {
+        option: option.customOptionID,
+        state: option.value
+      };
+    }
+
 
     function _checkIfAnyTrue() {
       return self.answerArray.some(function (answer) {
