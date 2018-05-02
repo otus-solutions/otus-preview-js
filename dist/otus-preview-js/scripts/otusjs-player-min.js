@@ -918,7 +918,6 @@
                     var element = angular.element(event.currentTarget);
                     var keycode = event.which;
                     if (keycode === 9) {
-                       console.log(element);
                        element.next().focus();
                     }
                     return (isNumberKey(keycode) || isValidKey(keycode));
@@ -934,7 +933,6 @@
                     if (currentValue.length === 0) {
                         lastValidValue = '';
                     } else if (isNumberKey(keycode) || isValidKey(keycode)) {
-                       console.log('here');
                         lastValidValue = element.val();
                     } else if (!isValidKey(keycode)) {
                         element.val(lastValidValue);
@@ -1067,7 +1065,7 @@
     .module('otusjs.player.component')
     .component('otusCheckboxQuestion', {
       template:'<md-content layout-padding style="margin-top: 12px"><md-content ng-repeat="option in $ctrl.itemData.options track by $index" flex><md-checkbox ng-model="$ctrl.answerArray[$index].state" ng-change="$ctrl.update($index)" layout="row" style="margin: 7px"><otus-label item-label="option.label.ptBR.formattedText"></otus-label></md-checkbox></md-content></md-content>',
-      controller: Controller,
+      controller: 'otusjs.player.component.CheckboxQuestionController as $ctrl',
       bindings: {
         itemData: '<',
         onUpdate: '&'
@@ -1077,9 +1075,21 @@
       }
     });
 
+
+}());
+
+(function(){
+  'use strict';
+
+  angular
+    .module('otusjs.player.component')
+    .controller('otusjs.player.component.CheckboxQuestionController', Controller);
+
+
   Controller.$inject = [
     'otusjs.player.data.activity.CurrentItemService'
   ];
+
 
   function Controller(CurrentItemService) {
     var self = this;
@@ -1087,14 +1097,14 @@
     self.$onInit = function () {
       self.answerArray = CurrentItemService.getFilling().answer.value;
       self.otusQuestion.answer = self;
-      _fixArray();
+      _buildAnswerArray();
     };
 
-    self.update = function (index) {
+    self.update = function () {
       if (!_checkIfAnyTrue()) {
         self.onUpdate({
           valueType: 'answer',
-          value: {}
+          value: null
         });
       } else {
         self.onUpdate({
@@ -1107,17 +1117,10 @@
     self.clear = function () {
       CurrentItemService.getFilling().answer.clear();
       delete self.answerArray;
-      _fixArray();
+      _buildAnswerArray();
     };
 
-    function _buildAnswerObject(option) {
-      return {
-        option: option.customOptionID,
-        state: option.value
-      };
-    }
-
-    function _fixArray() {
+    function _buildAnswerArray() {
       if (!self.answerArray) {
         self.answerArray = [];
         self.itemData.options.forEach(function (option) {
@@ -1126,6 +1129,15 @@
       }
     }
 
+
+    function _buildAnswerObject(option) {
+      return {
+        option: option.customOptionID,
+        state: option.value
+      };
+    }
+
+
     function _checkIfAnyTrue() {
       return self.answerArray.some(function (answer) {
         return answer.state;
@@ -1133,8 +1145,8 @@
     }
   }
 
-}());
 
+}());
 (function () {
   'use strict';
 
@@ -1269,7 +1281,7 @@
   angular
     .module('otusjs.player.component')
     .component('otusTimeQuestion', {
-      template:'<md-content layout-padding><div layout="row"><md-button ng-click="$ctrl.currentTime()" class="md-fab md-raised md-mini" aria-label="Hora Atual"><md-icon>access_time</md-icon><md-tooltip md-direction="down">Hora Atual</md-tooltip></md-button><md-input-container class="md-block" flex-gt-sm="45"><input id="inputtime" type="time" ng-model="$ctrl.answer.date" ng-blur="$ctrl.update($event)" aria-label="Tempo"></md-input-container></div></md-content>',
+      template:'<md-content layout-padding><div layout="row"><md-button ng-click="$ctrl.currentTime()" class="md-fab md-raised md-mini" aria-label="Hora Atual" ng-disabled="$ctrl.itemData.options.data.disabledButton.value"><md-icon>access_time</md-icon><md-tooltip md-direction="down">Hora Atual</md-tooltip></md-button><md-input-container class="md-block" flex-gt-sm="45"><input id="inputtime" type="time" ng-model="$ctrl.answer.date" ng-blur="$ctrl.update($event)" aria-label="Tempo"></md-input-container></div></md-content>',
       controller: Controller,
       bindings: {
         itemData: '<',
