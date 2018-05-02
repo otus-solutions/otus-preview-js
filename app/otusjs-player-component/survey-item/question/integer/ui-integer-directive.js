@@ -12,7 +12,6 @@
                     var element = angular.element(event.currentTarget);
                     var keycode = event.which;
                     if (keycode === 9) {
-                       console.log(element);
                        element.next().focus();
                     }
                     return (isNumberKey(keycode) || isValidKey(keycode));
@@ -28,7 +27,6 @@
                     if (currentValue.length === 0) {
                         lastValidValue = '';
                     } else if (isNumberKey(keycode) || isValidKey(keycode)) {
-                       console.log('here');
                         lastValidValue = element.val();
                     } else if (!isValidKey(keycode)) {
                         element.val(lastValidValue);
