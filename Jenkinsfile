@@ -7,21 +7,16 @@ pipeline {
   }
 
   stages{
-    stage('Build') {
+    stage('Build Aplication') {
       steps{
-        // sh "git show -s --pretty=%an | perl -ne 'print \"GIT-COMMIT-USER=$_\"' >> $WORKSPACE/env.properties"
-        // sh "echo '' >> $WORKSPACE/env.properties"
-        sh 'df -h ~/.npm'
-        sh "rm -rf node_modules/"
         sh "npm install"
-        sh "npm test"
-
       }
     }
 
-    stage('Publish Nexus') {
-      steps {
-        sh "npm publish --registry ${repository_npm}"
+    stage('Unit tests') {
+      steps{
+        sh "npm test"
+
       }
     }
 
