@@ -18,7 +18,7 @@
     return gulp.src('app/index.html',{allowEmpty: true})
       .pipe(useref({
         transformPath: function(filePath) {
-          return filePath.replace('app', '');
+          return filePath.replace('app/app', 'app');
         }
       }))
       .pipe(gulpif('*.js', embedTemplates({
