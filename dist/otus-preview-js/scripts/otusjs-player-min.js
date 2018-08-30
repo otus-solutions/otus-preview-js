@@ -157,7 +157,7 @@
   angular
     .module('otusjs.player.component')
     .component('otusPlayer', {
-      template:'<otus-survey-cover on-play="$ctrl.play()" phase-blocker="$ctrl.phaseBlocker" ng-show="$ctrl.showCover" layout-align="center center" layout="column" flex class="player-cover"></otus-survey-cover><md-content layout="column" flex ng-show="$ctrl.showActivity"><otus-survey-header layout="row" flex="21"></otus-survey-header><otus-player-commander layout="row" flex="10" on-go-back="$ctrl.goBack()" on-pause="$ctrl.pause()" on-stop="$ctrl.stop()" on-go-ahead="$ctrl.goAhead()" on-eject="$ctrl.eject()"></otus-player-commander><otus-player-display layout="row" flex style="overflow: hidden !important; position: relative !important"></otus-player-display></md-content><otus-survey-back-cover on-finalize="$ctrl.eject()" ng-show="$ctrl.showBackCover" layout-align="center center" layout="column" flex class="player-back-cover"></otus-survey-back-cover>',
+      template:'<otus-survey-cover on-play="$ctrl.play()" phase-blocker="$ctrl.phaseBlocker" ng-show="$ctrl.showCover" layout-align="center center" layout="column" flex class="player-cover"></otus-survey-cover><md-content layout="column" flex ng-show="$ctrl.showActivity"><otus-survey-header layout="row" flex="21"></otus-survey-header><otus-player-commander layout="row" flex="10" on-go-back="$ctrl.goBack()" on-pause="$ctrl.pause()" on-stop="$ctrl.stop()" on-go-ahead="$ctrl.goAhead()" on-eject="$ctrl.eject()"></otus-player-commander><otus-player-display layout="column" flex style="overflow: hidden !important; position: relative !important"></otus-player-display></md-content><otus-survey-back-cover on-finalize="$ctrl.eject()" ng-show="$ctrl.showBackCover" layout-align="center center" layout="column" flex class="player-back-cover"></otus-survey-back-cover>',
       controller: Controller
     });
 
@@ -418,7 +418,7 @@
   angular
     .module('otusjs.player.component')
     .component('otusPlayerDisplay', {
-      template:'',
+      template:'<div layout="row" flex><md-content flex="15" layout="column" ng-init="tracks=[1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1]"><span ng-repeat="t in tracks track by $index">teste</span></md-content><md-content flex="85" layout="column" id="pagePlayer"></md-content></div>',
       controller: Controller
     });
 
@@ -431,7 +431,7 @@
   function Controller($scope, $element, $compile) {
     var self = this;
 
-    var SURVEY_ITEM = '<otus-survey-item item-data="itemData" flex style="overflow: auto; position: relative; margin-right: -15px;"/>';
+    var SURVEY_ITEM = '<otus-survey-item item-data="itemData" id="{{itemData.templateID}}" style="margin: 0;display:block;"/>';
     var SURVEY_COVER = '<otus-cover />';
 
     /* Public methods */
@@ -439,6 +439,7 @@
     self.showCover = showCover;
     self.remove = remove;
     self.$onInit = onInit;
+    self.ids = [];
 
     function _destroyCurrentItem() {
       if (self.currentItem) {
@@ -448,10 +449,17 @@
 
     function loadItem(itemData) {
       if (_shouldLoadItem(itemData)) {
-        _destroyCurrentItem();
+        // _destroyCurrentItem();
         $scope.itemData = itemData;
-        $element.empty();
-        $element.append($compile(SURVEY_ITEM)($scope));
+        if(self.ids.length){
+          console.info("#" + self.ids[self.ids.length - 1])
+          console.log($element.find("#" + self.ids[self.ids.length - 1]))
+          // document.getElementById("#" + self.ids[self.ids.length - 1]).remove()
+          $element.find("#" + self.ids[self.ids.length - 1]).detach();
+        }
+        self.ids.push(itemData.templateID)
+        // $element.empty();
+        $element.find("#pagePlayer").append($compile(SURVEY_ITEM)($scope));
       }
     }
 

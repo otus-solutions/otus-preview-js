@@ -17,7 +17,7 @@
   function Controller($scope, $element, $compile) {
     var self = this;
 
-    var SURVEY_ITEM = '<otus-survey-item item-data="itemData" flex style="overflow: auto; position: relative; margin-right: -15px;"/>';
+    var SURVEY_ITEM = '<otus-survey-item item-data="itemData" id="{{itemData.templateID}}" style="margin: 0;display:block;"/>';
     var SURVEY_COVER = '<otus-cover />';
 
     /* Public methods */
@@ -25,6 +25,7 @@
     self.showCover = showCover;
     self.remove = remove;
     self.$onInit = onInit;
+    self.ids = [];
 
     function _destroyCurrentItem() {
       if (self.currentItem) {
@@ -34,10 +35,15 @@
 
     function loadItem(itemData) {
       if (_shouldLoadItem(itemData)) {
-        _destroyCurrentItem();
+        // _destroyCurrentItem();
         $scope.itemData = itemData;
-        $element.empty();
-        $element.append($compile(SURVEY_ITEM)($scope));
+        if(self.ids.length){
+          // document.getElementById("#" + self.ids[self.ids.length - 1]).remove()
+          $element.find("#" + self.ids[self.ids.length - 1]).detach();
+        }
+        self.ids.push(itemData.templateID)
+        // $element.empty();
+        $element.find("#pagePlayer").append($compile(SURVEY_ITEM)($scope));
       }
     }
 
