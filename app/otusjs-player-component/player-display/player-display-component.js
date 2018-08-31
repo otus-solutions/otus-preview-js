@@ -49,11 +49,12 @@
         $element.find('#pagePlayer').append($compile(SURVEY_ITEM)($scope));
       }
 
-      var questionToGoBack = PlayerService.getGoBackTo();
-      if(questionToGoBack && questionToGoBack !== itemData.templateID){
-        self.goBack()
-      } else {
-        PlayerService.setGoBackTo(null)
+      if(PlayerService.isGoingBack()){
+        if(PlayerService.getGoBackTo() !== itemData.templateID){
+          self.goBack()
+        } else {
+          PlayerService.setGoBackTo(null)
+        }
       }
     }
 

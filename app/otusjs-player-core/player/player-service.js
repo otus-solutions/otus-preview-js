@@ -29,6 +29,7 @@
     var self = this;
     var _component = null;
     var _goBackTo = null;
+    var _goingBack = null;
 
     self.bindComponent = bindComponent;
     self.getItemData = getItemData;
@@ -36,6 +37,7 @@
     self.goBack = goBack;
     self.setGoBackTo = setGoBackTo;
     self.getGoBackTo = getGoBackTo;
+    self.isGoingBack = isGoingBack;
     self.play = play;
     self.setup = setup;
     self.end = end;
@@ -84,15 +86,20 @@
     }
 
     function setGoBackTo(templateID) {
+      if(templateID === null){
+        _goingBack = false;
+      } else {
+        _goingBack = true;
+      }
       _goBackTo = templateID;
-      console.log("setGoBackTo");
-      console.log(_goBackTo)
     }
 
     function getGoBackTo() {
-      console.log("getGoBackTo");
-      console.log(_goBackTo);
       return _goBackTo;
+    }
+
+    function isGoingBack() {
+      return _goingBack;
     }
 
     function play() {
