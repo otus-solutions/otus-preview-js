@@ -14,7 +14,7 @@
     'use strict';
 
     angular
-        .module('otusjs.player.component', []);
+        .module('otusjs.player.component', ['trail']);
 
 }());
 
@@ -418,7 +418,7 @@
   angular
     .module('otusjs.player.component')
     .component('otusPlayerDisplay', {
-      template:'<div layout="row" flex><md-content flex="15" layout="column" ng-init="tracks=[1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1]"><span ng-repeat="t in tracks track by $index">teste</span></md-content><md-content flex="85" layout="column" id="pagePlayer"></md-content></div>',
+      template:'<div layout="row" flex><md-content flex="15" layout="column"><otus-trail nodes></otus-trail></md-content><md-content flex="85" layout="column" id="pagePlayer"></md-content></div>',
       controller: Controller
     });
 
@@ -452,8 +452,6 @@
         // _destroyCurrentItem();
         $scope.itemData = itemData;
         if(self.ids.length){
-          console.info("#" + self.ids[self.ids.length - 1])
-          console.log($element.find("#" + self.ids[self.ids.length - 1]))
           // document.getElementById("#" + self.ids[self.ids.length - 1]).remove()
           $element.find("#" + self.ids[self.ids.length - 1]).detach();
         }
@@ -477,6 +475,33 @@
       $scope.$parent.$ctrl.playerDisplay = self;
       $scope.itemData = {};
       $scope.itemData.customID = '';
+      $scope.tracks = [{
+            id: "",
+            icon: "date_range",
+            text: "Nodo numero 1",
+            time: "",
+            styleClass: "md-hue-2",
+            click: function callback(){alert('Hello World')}
+
+        }, {
+            id: "",
+            icon: "looks_one",
+            text: "Segundo nodo da lista",
+            time: "",
+            styleClass: "md-warn"
+        }, {
+            id: "",
+            icon: "exposure_zero",
+            text: "Terceira opção",
+            time: "",
+            styleClass: "md-accent"
+        }, {
+            id: "",
+            icon: "radio_button_checked",
+            text: "Ultima.",
+            time: "",
+            styleClass: "md-primary"
+        }];
     }
 
     function _shouldLoadItem(itemData) {

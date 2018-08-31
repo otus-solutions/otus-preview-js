@@ -61,6 +61,33 @@
       $scope.$parent.$ctrl.playerDisplay = self;
       $scope.itemData = {};
       $scope.itemData.customID = '';
+      $scope.tracks = [{
+            id: "",
+            icon: "date_range",
+            text: "Nodo numero 1",
+            time: "",
+            styleClass: "md-hue-2",
+            click: function callback(){alert('Hello World')}
+
+        }, {
+            id: "",
+            icon: "looks_one",
+            text: "Segundo nodo da lista",
+            time: "",
+            styleClass: "md-warn"
+        }, {
+            id: "",
+            icon: "exposure_zero",
+            text: "Terceira opção",
+            time: "",
+            styleClass: "md-accent"
+        }, {
+            id: "",
+            icon: "radio_button_checked",
+            text: "Ultima.",
+            time: "",
+            styleClass: "md-primary"
+        }];
     }
 
     function _shouldLoadItem(itemData) {

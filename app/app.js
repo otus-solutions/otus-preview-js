@@ -15,7 +15,7 @@
             /* Standalone dependencies */
             'otusjs.player.config',
             'otusjs.player.data',
-            'otusjs.player.viewer',
+            'otusjs.player.viewer'
         ]);
 
 }());
