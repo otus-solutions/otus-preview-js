@@ -418,20 +418,21 @@
   angular
     .module('otusjs.player.component')
     .component('otusPlayerDisplay', {
-      template:'<div layout="row" flex><md-content flex="15" layout="column"><otus-trail nodes></otus-trail></md-content><md-content flex="85" layout="column" id="pagePlayer"></md-content></div>',
+      template:'<div layout="row" flex><md-content flex="15" layout="column"><otus-trail nodes="tracks"></otus-trail></md-content><md-content flex="85" layout="column" id="pagePlayer"></md-content></div>',
       controller: Controller
     });
 
   Controller.$inject = [
     '$scope',
     '$element',
-    '$compile'
+    '$compile',
+    'otusjs.player.data.activity.ActivityFacadeService'
   ];
 
-  function Controller($scope, $element, $compile) {
+  function Controller($scope, $element, $compile, ActivityFacadeService) {
     var self = this;
 
-    var SURVEY_ITEM = '<otus-survey-item item-data="itemData" id="{{itemData.templateID}}" style="margin: 0;display:block;"/>';
+    var SURVEY_ITEM = '<answer-view ng-repeat="item in questions" question="{{item.label.ptBR.formattedText}}"></answer-view><otus-survey-item item-data="itemData" id="{{itemData.templateID}}" style="margin: 0;display:block;"/>';
     var SURVEY_COVER = '<otus-cover />';
 
     /* Public methods */
@@ -449,59 +450,52 @@
 
     function loadItem(itemData) {
       if (_shouldLoadItem(itemData)) {
-        // _destroyCurrentItem();
+        _destroyCurrentItem();
+        _saveQuestion();
         $scope.itemData = itemData;
-        if(self.ids.length){
-          // document.getElementById("#" + self.ids[self.ids.length - 1]).remove()
-          $element.find("#" + self.ids[self.ids.length - 1]).detach();
-        }
-        self.ids.push(itemData.templateID)
-        // $element.empty();
-        $element.find("#pagePlayer").append($compile(SURVEY_ITEM)($scope));
+        console.log(itemData);
+        console.log(ActivityFacadeService);
+        $element.find('#pagePlayer').empty();
+        $element.find('#pagePlayer').append($compile(SURVEY_ITEM)($scope));
+      }
+    }
+
+    function _saveQuestion() {
+      if($scope.itemData.templateID){
+        let question = angular.copy($scope.itemData);
+        _trailConstructor(question)
+        console.log(ActivityFacadeService.fetchItemAnswerByTemplateID(question.templateID));
+        $scope.questions.push(angular.copy($scope.itemData))
       }
     }
 
     function showCover() {
       _destroyCurrentItem();
-      $element.empty();
-      $element.append($compile(SURVEY_COVER)($scope));
+      $element.find('#pagePlayer').empty();
+      $element.find('#pagePlayer').append($compile(SURVEY_COVER)($scope));
     }
 
     function remove() {
-      $element.remove();
+      $element.find('#pagePlayer').remove();
+    }
+
+    function _trailConstructor(item) {
+      $scope.tracks.push({
+        id: item.customID,
+        icon: "spellcheck",
+        text: item.customID,
+        time: "",
+        styleClass:"md-accent",
+        click: ""
+      })
     }
 
     function onInit() {
       $scope.$parent.$ctrl.playerDisplay = self;
       $scope.itemData = {};
       $scope.itemData.customID = '';
-      $scope.tracks = [{
-            id: "",
-            icon: "date_range",
-            text: "Nodo numero 1",
-            time: "",
-            styleClass: "md-hue-2",
-            click: function callback(){alert('Hello World')}
-
-        }, {
-            id: "",
-            icon: "looks_one",
-            text: "Segundo nodo da lista",
-            time: "",
-            styleClass: "md-warn"
-        }, {
-            id: "",
-            icon: "exposure_zero",
-            text: "Terceira opção",
-            time: "",
-            styleClass: "md-accent"
-        }, {
-            id: "",
-            icon: "radio_button_checked",
-            text: "Ultima.",
-            time: "",
-            styleClass: "md-primary"
-        }];
+      $scope.questions = [];
+      $scope.tracks = [];
     }
 
     function _shouldLoadItem(itemData) {
@@ -2238,6 +2232,28 @@
 
 })();
 
+(function () {
+  angular.module('otusjs.player.component')
+    .component('answerView',{
+      template:'<md-card flex layout="row"><md-card-header layout-fill style="margin: 0 !important;"><md-card><md-card-content><md-icon md-font-set="material-icons" class="material-icons ng-binding md-layoutTheme-theme">text_format</md-icon></md-card-content></md-card><span></span><md-card-header-text layout-align="center start"><span class="md-title">{{label}}</span> <span class="md-subhead">subhead</span></md-card-header-text></md-card-header></md-card>',
+      controller: Controller,
+      bindings: {
+        icon: '<',
+        question: '@',
+        answer: '<'
+      }
+    });
+
+  Controller.$inject = [
+    '$scope'
+  ]
+
+  function Controller($scope) {
+    var self = this;
+    console.log(self)
+    $scope.label = self.question;
+  }
+})();
 (function() {
   'use strict';
 
@@ -5396,3 +5412,5 @@
 
   }
 }());
+
+angular.module("trail",["ngMaterial","nsPopover"]),function(e,t,n){"use strict";var o=t.module("nsPopover",[]),i=t.element,r=t.isDefined,c=[],a=0;o.provider("nsPopover",function(){var e={template:"",theme:"ns-popover-list-theme",plain:"false",trigger:"click",triggerPrevent:!0,angularEvent:"",scopeEvent:"",container:"body",placement:"bottom|left",timeout:1.5,hideOnInsideClick:!1,hideOnOutsideClick:!0,hideOnButtonClick:!0,mouseRelative:"",popupDelay:0};this.setDefaults=function(n){t.extend(e,n)},this.$get=function(){return{getDefaults:function(){return e}}}}),o.controller("clientCtrl",function(){var e=this;e.tracks=[{id:"TST1",icon:"date_range",text:"TST1",time:"",styleClass:"md-warn",click:function(){}},{id:"",icon:"looks_one",text:"Segundo nodo da lista",time:"",styleClass:"md-warn",click:function(){e.add()}},{id:"",icon:"exposure_zero",text:"Terceira opção",time:"",styleClass:"md-warn"},{id:"",icon:"radio_button_checked",text:"Ultima.",time:"",styleClass:"md-warn"}],e.add=function(){var t={id:"",icon:"looks_one",text:"Segundo nodo da lista",time:"",styleClass:"md-warn",click:function(){console.log("oi")}};e.tracks.push(t)}}),o.directive("nsPopover",["nsPopover","$rootScope","$timeout","$templateCache","$q","$http","$compile","$document","$parse",function(n,o,l,s,p,d,u,m,v){return{restrict:"A",scope:!0,link:function(g,h,f){function y(e,t,n,o,i){var r,c,a=P(e[0]),l=function(){return"center"===n?Math.round(o.left+o.width/2-a.width/2):"right"===n?o.right-a.width:o.left},s=function(){return"center"===n?Math.round(o.top+o.height/2-a.height/2):"bottom"===n?o.bottom-a.height:o.top};"top"===t?(r=o.top-a.height,c=l()):"right"===t?(r=s(),c=o.right):"bottom"===t?(r=o.bottom,c=l()):"left"===t&&(r=s(),c=o.left-a.width),e.css("top",r.toString()+"px").css("left",c.toString()+"px"),i&&("top"===t||"bottom"===t?(c=o.left+o.width/2-c,i.css("left",c.toString()+"px")):(r=o.top+o.height/2-r,i.css("top",r.toString()+"px")))}function k(e,t,n,o){var i={bottom:e.bottom,height:e.height,left:e.left,right:e.right,top:e.top,width:e.width};return t&&(i.left=o.pageX,i.right=o.pageX,i.width=0),n&&(i.top=o.pageY,i.bottom=o.pageY,i.height=0),i}function P(t){var n=e,o=document.documentElement||document.body.parentNode||document.body,i=r(n.pageXOffset)?n.pageXOffset:o.scrollLeft,c=r(n.pageYOffset)?n.pageYOffset:o.scrollTop,a=t.getBoundingClientRect();return i||c?{bottom:a.bottom+c,left:a.left+i,right:a.right+i,top:a.top+c,height:a.height,width:a.width}:a}function O(e){return e=!(!e||0===e.length)&&"true"==(""+e).toLowerCase()}function b(){B.isOpen&&_.hide(0)}function C(e){function n(e){if(e.id===o)return!0;var i=t.element(e).parent()[0];return!!i&&(i.id===o||n(i))}if(B.isOpen&&e.target!==h[0]){var o=B[0].id;n(e.target)||_.hide(0)}}function w(){B.isOpen&&_.hide(0)}var x=n.getDefaults(),$={template:f.nsPopoverTemplate||x.template,theme:f.nsPopoverTheme||x.theme,plain:O(f.nsPopoverPlain||x.plain),trigger:f.nsPopoverTrigger||x.trigger,triggerPrevent:f.nsPopoverTriggerPrevent||x.triggerPrevent,angularEvent:f.nsPopoverAngularEvent||x.angularEvent,scopeEvent:f.nsPopoverScopeEvent||x.scopeEvent,container:f.nsPopoverContainer||x.container,placement:f.nsPopoverPlacement||x.placement,timeout:f.nsPopoverTimeout||x.timeout,hideOnInsideClick:O(f.nsPopoverHideOnInsideClick||x.hideOnInsideClick),hideOnOutsideClick:O(f.nsPopoverHideOnOutsideClick||x.hideOnOutsideClick),hideOnButtonClick:O(f.nsPopoverHideOnButtonClick||x.hideOnButtonClick),mouseRelative:f.nsPopoverMouseRelative,popupDelay:f.nsPopoverPopupDelay||x.popupDelay,group:f.nsPopoverGroup};$.mouseRelative&&($.mouseRelativeX=-1!==$.mouseRelative.indexOf("x"),$.mouseRelativeY=-1!==$.mouseRelative.indexOf("y"));var E={id_:void 0,display:function(e,t){!1!==v(f.nsPopover)(g)&&(l.cancel(E.id_),r(e)||(e=0),$.group&&o.$broadcast("ns:popover:hide",$.group),E.id_=l(function(){B.isOpen=!0,B.css("display","block");var e=P(h[0]);$.mouseRelative&&(e=k(e,$.mouseRelativeX,$.mouseRelativeY,t)),y(B,R,T,e,D),$.hideOnInsideClick&&B.on("click",b),$.hideOnOutsideClick&&m.on("click",C),$.hideOnButtonClick&&h.on("click",w)},1e3*e))},cancel:function(){l.cancel(E.id_)}},_={id_:void 0,hide:function(e){l.cancel(_.id_),"-1"!==e&&(r(e)||(e=1.5),_.id_=l(function(){B.off("click",b),m.off("click",C),h.off("click",w),B.isOpen=!1,E.cancel(),B.css("display","none")},1e3*e))},cancel:function(){l.cancel(_.id_)}},S=m.find($.container);S.length||(S=m.find("body"));var D,R,T;a+=1;var B=i('<div id="nspopover-'+a+'"></div>');c.push(B);var X=$.placement.match(/^(top|bottom|left|right)$|((top|bottom)\|(center|left|right)+)|((left|right)\|(center|top|bottom)+)/);if(!X)throw new Error('"'+$.placement+'" is not a valid placement or has a invalid combination of placements.');R=X[6]||X[3]||X[1],T=X[7]||X[4]||X[2]||"center",p.when(function(e,n){return e?t.isString(e)&&n?e:s.get(e)||d.get(e,{cache:!0}):""}($.template,$.plain)).then(function(e){e=t.isString(e)?e:e.data&&t.isString(e.data)?e.data:"",B.html(e),$.theme&&B.addClass($.theme),B.addClass("ns-popover-"+R+"-placement").addClass("ns-popover-"+T+"-align"),u(B)(g),g.$on("$destroy",function(){B.remove()}),g.hidePopover=function(){_.hide(0)},g.$on("ns:popover:hide",function(e,t){$.group===t&&g.hidePopover()}),B.css("position","absolute").css("display","none"),D=B[0].querySelectorAll(".triangle"),D.length&&(D=i(D)),S.append(B)}),$.angularEvent?o.$on($.angularEvent,function(){_.cancel(),E.display($.popupDelay)}):$.scopeEvent?g.$on($.scopeEvent,function(){_.cancel(),E.display(B,$.popupDelay)}):h.on($.trigger,function(e){!1!==$.triggerPrevent&&e.preventDefault(),_.cancel(),E.display($.popupDelay,e)}),h.on("mouseout",function(){_.hide($.timeout)}).on("mouseover",function(){_.cancel()}),B.on("mouseout",function(e){_.hide($.timeout)}).on("mouseover",function(){_.cancel()})}}}])}(window,window.angular),angular.module("trail").directive("otusTrail",function(){return{template:'<div layout-align="center center" layout="column"><md-button class="md-fab md-primary"><md-icon >question_answer</md-icon></md-button><div layout-align="center" ng-repeat="content in nodes"><section flex class="timeLine"></section><div layout="row" layout-align="center center"><div id="stepButtons"><md-button ng-click="content.click(content)" ns-popover ns-popover-template="tooltip" ns-popover-trigger="mouseover"ns-popover-theme="ns-popover-tooltip-theme" ns-popover-timeout="0.1"ns-popover-placement="right" ng-class="content.styleClass" class="md-fab md-mini"><md-icon>{{content.icon}}</md-icon></md-button></div><div><span>{{content.time}}</span></div></div><script type="text/ng-template" id="tooltip"><div class="triangle"></div><div class="md-body-2 ns-popover-tooltip">{{content.text+i}}</div></script></div></div',restrict:"E",scope:{nodes:"="}}});

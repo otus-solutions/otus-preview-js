@@ -11,13 +11,14 @@
   Controller.$inject = [
     '$scope',
     '$element',
-    '$compile'
+    '$compile',
+    'otusjs.player.data.activity.ActivityFacadeService'
   ];
 
-  function Controller($scope, $element, $compile) {
+  function Controller($scope, $element, $compile, ActivityFacadeService) {
     var self = this;
 
-    var SURVEY_ITEM = '<otus-survey-item item-data="itemData" id="{{itemData.templateID}}" style="margin: 0;display:block;"/>';
+    var SURVEY_ITEM = '<answer-view ng-repeat="item in questions" question="{{item.label.ptBR.formattedText}}"></answer-view><otus-survey-item item-data="itemData" id="{{itemData.templateID}}" style="margin: 0;display:block;"/>';
     var SURVEY_COVER = '<otus-cover />';
 
     /* Public methods */
@@ -35,59 +36,52 @@
 
     function loadItem(itemData) {
       if (_shouldLoadItem(itemData)) {
-        // _destroyCurrentItem();
+        _destroyCurrentItem();
+        _saveQuestion();
         $scope.itemData = itemData;
-        if(self.ids.length){
-          // document.getElementById("#" + self.ids[self.ids.length - 1]).remove()
-          $element.find("#" + self.ids[self.ids.length - 1]).detach();
-        }
-        self.ids.push(itemData.templateID)
-        // $element.empty();
-        $element.find("#pagePlayer").append($compile(SURVEY_ITEM)($scope));
+        console.log(itemData);
+        console.log(ActivityFacadeService);
+        $element.find('#pagePlayer').empty();
+        $element.find('#pagePlayer').append($compile(SURVEY_ITEM)($scope));
+      }
+    }
+
+    function _saveQuestion() {
+      if($scope.itemData.templateID){
+        let question = angular.copy($scope.itemData);
+        _trailConstructor(question)
+        console.log(ActivityFacadeService.fetchItemAnswerByTemplateID(question.templateID));
+        $scope.questions.push(angular.copy($scope.itemData))
       }
     }
 
     function showCover() {
       _destroyCurrentItem();
-      $element.empty();
-      $element.append($compile(SURVEY_COVER)($scope));
+      $element.find('#pagePlayer').empty();
+      $element.find('#pagePlayer').append($compile(SURVEY_COVER)($scope));
     }
 
     function remove() {
-      $element.remove();
+      $element.find('#pagePlayer').remove();
+    }
+
+    function _trailConstructor(item) {
+      $scope.tracks.push({
+        id: item.customID,
+        icon: "spellcheck",
+        text: item.customID,
+        time: "",
+        styleClass:"md-accent",
+        click: ""
+      })
     }
 
     function onInit() {
       $scope.$parent.$ctrl.playerDisplay = self;
       $scope.itemData = {};
       $scope.itemData.customID = '';
-      $scope.tracks = [{
-            id: "",
-            icon: "date_range",
-            text: "Nodo numero 1",
-            time: "",
-            styleClass: "md-hue-2",
-            click: function callback(){alert('Hello World')}
-
-        }, {
-            id: "",
-            icon: "looks_one",
-            text: "Segundo nodo da lista",
-            time: "",
-            styleClass: "md-warn"
-        }, {
-            id: "",
-            icon: "exposure_zero",
-            text: "Terceira opção",
-            time: "",
-            styleClass: "md-accent"
-        }, {
-            id: "",
-            icon: "radio_button_checked",
-            text: "Ultima.",
-            time: "",
-            styleClass: "md-primary"
-        }];
+      $scope.questions = [];
+      $scope.tracks = [];
     }
 
     function _shouldLoadItem(itemData) {
