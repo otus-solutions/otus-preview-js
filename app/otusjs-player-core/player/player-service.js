@@ -28,11 +28,14 @@
 
     var self = this;
     var _component = null;
+    var _goBackTo = null;
 
     self.bindComponent = bindComponent;
     self.getItemData = getItemData;
     self.goAhead = goAhead;
     self.goBack = goBack;
+    self.setGoBackTo = setGoBackTo;
+    self.getGoBackTo = getGoBackTo;
     self.play = play;
     self.setup = setup;
     self.end = end;
@@ -78,6 +81,18 @@
 
     function goBack() {
       BackActionService.execute();
+    }
+
+    function setGoBackTo(templateID) {
+      _goBackTo = templateID;
+      console.log("setGoBackTo");
+      console.log(_goBackTo)
+    }
+
+    function getGoBackTo() {
+      console.log("getGoBackTo");
+      console.log(_goBackTo);
+      return _goBackTo;
     }
 
     function play() {

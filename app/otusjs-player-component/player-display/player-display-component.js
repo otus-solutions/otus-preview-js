@@ -5,17 +5,21 @@
     .module('otusjs.player.component')
     .component('otusPlayerDisplay', {
       templateUrl: 'app/otusjs-player-component/player-display/player-display-template.html',
-      controller: Controller
+      controller: Controller,
+      bindings:{
+        goBack: "&"
+      }
     });
 
   Controller.$inject = [
     '$scope',
     '$element',
     '$compile',
-    'otusjs.player.data.activity.ActivityFacadeService'
+    'otusjs.player.data.activity.ActivityFacadeService',
+    'otusjs.player.core.player.PlayerService'
   ];
 
-  function Controller($scope, $element, $compile, ActivityFacadeService) {
+  function Controller($scope, $element, $compile, ActivityFacadeService, PlayerService) {
     var self = this;
 
     var SURVEY_ITEM = '<answer-view ng-repeat="item in questions" question="{{item.label.ptBR.formattedText}}"></answer-view><otus-survey-item item-data="itemData" id="{{itemData.templateID}}" style="margin: 0;display:block;"/>';
@@ -44,12 +48,19 @@
         $element.find('#pagePlayer').empty();
         $element.find('#pagePlayer').append($compile(SURVEY_ITEM)($scope));
       }
+
+      var questionToGoBack = PlayerService.getGoBackTo();
+      if(questionToGoBack && questionToGoBack !== itemData.templateID){
+        self.goBack()
+      } else {
+        PlayerService.setGoBackTo(null)
+      }
     }
 
     function _saveQuestion() {
       if($scope.itemData.templateID){
         let question = angular.copy($scope.itemData);
-        _trailConstructor(question)
+        _trailConstructor(question);
         console.log(ActivityFacadeService.fetchItemAnswerByTemplateID(question.templateID));
         $scope.questions.push(angular.copy($scope.itemData))
       }
@@ -66,13 +77,17 @@
     }
 
     function _trailConstructor(item) {
+      let itemCopy = angular.copy(item);
       $scope.tracks.push({
-        id: item.customID,
+        id: itemCopy.templateID,
         icon: "spellcheck",
-        text: item.customID,
+        text: itemCopy.templateID,
         time: "",
         styleClass:"md-accent",
-        click: ""
+        click: () => {
+          PlayerService.setGoBackTo(itemCopy.templateID);
+          self.goBack();
+        }
       })
     }
 
