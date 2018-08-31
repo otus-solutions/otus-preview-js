@@ -18,6 +18,26 @@
 
 }());
 
+(function () {
+  angular.module('otusjs.player.component')
+    .constant('ICON', {
+      'CalendarQuestion': 'date_range',
+      'IntegerQuestion': 'looks_one',
+      'DecimalQuestion': 'exposure_zero',
+      'SingleSelectionQuestion': 'radio_button_checked',
+      'CheckboxQuestion': 'check_box',
+      'AutocompleteQuestion': 'youtube_searched_for',
+      'FileUploadQuestion': 'attach_file',
+      'GridTextQuestion': 'filter_none',
+      'GridIntegerQuestion': 'filter_1',
+      'PhoneQuestion': 'phone',
+      'EmailQuestion': 'email',
+      'TimeQuestion': 'access_time',
+      'TextQuestion': 'text_format',
+      'TextItem': 'message',
+      'ImageItem': 'image'
+    });
+}());
 (function() {
   'use strict';
 
@@ -157,7 +177,7 @@
   angular
     .module('otusjs.player.component')
     .component('otusPlayer', {
-      template:'<otus-survey-cover on-play="$ctrl.play()" phase-blocker="$ctrl.phaseBlocker" ng-show="$ctrl.showCover" layout-align="center center" layout="column" flex class="player-cover"></otus-survey-cover><md-content layout="column" flex ng-show="$ctrl.showActivity"><otus-survey-header layout="row" flex="21"></otus-survey-header><otus-player-commander layout="row" flex="10" on-go-back="$ctrl.goBack()" on-pause="$ctrl.pause()" on-stop="$ctrl.stop()" on-go-ahead="$ctrl.goAhead()" on-eject="$ctrl.eject()"></otus-player-commander><otus-player-display layout="column" flex style="overflow: hidden !important; position: relative !important"></otus-player-display></md-content><otus-survey-back-cover on-finalize="$ctrl.eject()" ng-show="$ctrl.showBackCover" layout-align="center center" layout="column" flex class="player-back-cover"></otus-survey-back-cover>',
+      template:'<otus-survey-cover on-play="$ctrl.play()" phase-blocker="$ctrl.phaseBlocker" ng-show="$ctrl.showCover" layout-align="center center" layout="column" flex class="player-cover"></otus-survey-cover><md-content layout="column" flex ng-show="$ctrl.showActivity"><otus-survey-header layout="row"></otus-survey-header><otus-player-commander layout="row" flex="10" on-go-back="$ctrl.goBack()" on-pause="$ctrl.pause()" on-stop="$ctrl.stop()" on-go-ahead="$ctrl.goAhead()" on-eject="$ctrl.eject()"></otus-player-commander><otus-player-display go-back="$ctrl.goBack()" layout="column" flex style="overflow: hidden !important; position: relative !important"></otus-player-display></md-content><otus-survey-back-cover on-finalize="$ctrl.eject()" ng-show="$ctrl.showBackCover" layout-align="center center" layout="column" flex class="player-back-cover"></otus-survey-back-cover>',
       controller: Controller
     });
 
@@ -418,21 +438,29 @@
   angular
     .module('otusjs.player.component')
     .component('otusPlayerDisplay', {
-      template:'<div layout="row" flex><md-content flex="15" layout="column"><otus-trail nodes="tracks"></otus-trail></md-content><md-content flex="85" layout="column" id="pagePlayer"></md-content></div>',
-      controller: Controller
+      template:'<div layout="row" flex><md-content flex="10" layout="column"><otus-trail nodes="tracks"></otus-trail></md-content><md-content flex layout="column" id="pagePlayer"></md-content><md-content flex="10" layout="column"><otus-trail nodes="tracks"></otus-trail></md-content></div>',
+      controller: Controller,
+      bindings:{
+        goBack: "&"
+      }
     });
 
   Controller.$inject = [
     '$scope',
     '$element',
     '$compile',
-    'otusjs.player.data.activity.ActivityFacadeService'
+    '$location',
+    '$anchorScroll',
+    'otusjs.player.data.activity.ActivityFacadeService',
+    'otusjs.player.core.player.PlayerService',
+    'ICON'
   ];
 
-  function Controller($scope, $element, $compile, ActivityFacadeService) {
+  function Controller($scope, $element, $compile, $location, $anchorScroll, ActivityFacadeService, PlayerService, ICON) {
     var self = this;
 
-    var SURVEY_ITEM = '<answer-view ng-repeat="item in questions" question="{{item.label.ptBR.formattedText}}"></answer-view><otus-survey-item item-data="itemData" id="{{itemData.templateID}}" style="margin: 0;display:block;"/>';
+    var SURVEY_ITEM = '<answer-view ng-repeat="item in questions" go-back="$ctrl.edit()" icon="item.objectType" answer="item.answer" question="{{item.label.ptBR.formattedText}}"></answer-view>' +
+      '<otus-survey-item item-data="itemData" id="{{itemData.templateID}}" style="margin: 0;display:block;"/>';
     var SURVEY_COVER = '<otus-cover />';
 
     /* Public methods */
@@ -457,15 +485,51 @@
         console.log(ActivityFacadeService);
         $element.find('#pagePlayer').empty();
         $element.find('#pagePlayer').append($compile(SURVEY_ITEM)($scope));
+        _onGoBottom(itemData.templateID);
       }
+
+      if(PlayerService.isGoingBack()){
+        if(PlayerService.getGoBackTo() !== itemData.templateID){
+          self.goBack()
+          _removeQuestion(itemData.templateID)
+        } else {
+          PlayerService.setGoBackTo(null)
+        }
+      }
+    }
+
+    function _removeQuestion(id) {
+      let index = 0;
+      $scope.questions.forEach((question) => {
+        if (question.templateID == id){
+          let removeIndexes = $scope.questions.length - index;
+          for(var i = 0; i < removeIndexes; i++){
+            $scope.questions.pop();
+          }
+          $scope.questions.pop();
+
+        } else {
+          index++;
+        }
+      });
+    }
+
+function _onGoBottom(idQuestion) {
+      $location.hash(idQuestion);
+      $anchorScroll();
     }
 
     function _saveQuestion() {
       if($scope.itemData.templateID){
         let question = angular.copy($scope.itemData);
         _trailConstructor(question)
-        console.log(ActivityFacadeService.fetchItemAnswerByTemplateID(question.templateID));
-        $scope.questions.push(angular.copy($scope.itemData))
+        question.answer = ActivityFacadeService.fetchItemAnswerByTemplateID(question.templateID);
+        self.edit = function () {
+          PlayerService.setGoBackTo(question.templateID);
+          _removeQuestion(question.templateID)
+          self.goBack();
+        };
+        $scope.questions.push(question)
       }
     }
 
@@ -482,11 +546,14 @@
     function _trailConstructor(item) {
       $scope.tracks.push({
         id: item.customID,
-        icon: "spellcheck",
+        icon: ICON[item.objectType],
         text: item.customID,
         time: "",
         styleClass:"md-accent",
-        click: ""
+        click: () => {
+          PlayerService.setGoBackTo(item.templateID);
+          self.goBack();
+        }
       })
     }
 
@@ -2235,23 +2302,37 @@
 (function () {
   angular.module('otusjs.player.component')
     .component('answerView',{
-      template:'<md-card flex layout="row"><md-card-header layout-fill style="margin: 0 !important;"><md-card><md-card-content><md-icon md-font-set="material-icons" class="material-icons ng-binding md-layoutTheme-theme">text_format</md-icon></md-card-content></md-card><span></span><md-card-header-text layout-align="center start"><span class="md-title">{{label}}</span> <span class="md-subhead">subhead</span></md-card-header-text></md-card-header></md-card>',
+      template:'<md-card flex layout="row"><md-card-header layout-fill style="padding: 0 !important;"><md-card><md-card-content><md-icon md-font-set="material-icons" class="material-icons ng-binding md-layoutTheme-theme">{{icon}}</md-icon></md-card-content></md-card><span></span><md-card-header-text layout-align="center start"><span class="md-title">{{label}}</span> <span class="md-subhead">{{answer}}</span> <span class="md-subhead">{{comment}}</span></md-card-header-text></md-card-header><md-button class="md-icon-button" ng-click="$ctrl.goBack()"><md-icon md-font-set="material-icons" class="material-icons ng-binding md-layoutTheme-theme">edit</md-icon></md-button></md-card>',
       controller: Controller,
       bindings: {
         icon: '<',
         question: '@',
-        answer: '<'
+        answer: '<',
+        goBack: "&"
       }
     });
 
   Controller.$inject = [
-    '$scope'
+    '$scope',
+    'ICON',
+    'otusjs.player.core.player.PlayerService'
   ]
 
-  function Controller($scope) {
+  function Controller($scope, ICON, PlayerService) {
     var self = this;
-    console.log(self)
+    const METADADO = ['Não quer responder', 'Não sabe', 'Não se aplica', 'Não há dados']
+    console.log(self.answer)
+    self.question = self.question.replace(/<\w+>/g, ' ');
+    self.question = self.question.replace(/<\/\w+>/g, ' ');
+    $scope.answer = self.answer.answer.value ? 'Resposta: '+self.answer.answer.value : 'Metadado: '+  METADADO[self.answer.metadata.value - 1];
+    $scope.comment = self.answer.comment ? 'Comentário: '+ self.answer.comment: '';
+    $scope.icon = ICON[self.icon];
     $scope.label = self.question;
+
+    $scope.edit = function () {
+      PlayerService.setGoBackTo(self.answer.questionID);
+      self.goBack();
+    }
   }
 })();
 (function() {
@@ -3812,11 +3893,16 @@
 
     var self = this;
     var _component = null;
+    var _goBackTo = null;
+    var _goingBack = null;
 
     self.bindComponent = bindComponent;
     self.getItemData = getItemData;
     self.goAhead = goAhead;
     self.goBack = goBack;
+    self.setGoBackTo = setGoBackTo;
+    self.getGoBackTo = getGoBackTo;
+    self.isGoingBack = isGoingBack;
     self.play = play;
     self.setup = setup;
     self.end = end;
@@ -3862,6 +3948,23 @@
 
     function goBack() {
       BackActionService.execute();
+    }
+
+    function setGoBackTo(templateID) {
+      if(templateID === null){
+        _goingBack = false;
+      } else {
+        _goingBack = true;
+      }
+      _goBackTo = templateID;
+    }
+
+    function getGoBackTo() {
+      return _goBackTo;
+    }
+
+    function isGoingBack() {
+      return _goingBack;
     }
 
     function play() {

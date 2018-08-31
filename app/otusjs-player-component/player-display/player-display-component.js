@@ -15,14 +15,18 @@
     '$scope',
     '$element',
     '$compile',
+    '$location',
+    '$anchorScroll',
     'otusjs.player.data.activity.ActivityFacadeService',
-    'otusjs.player.core.player.PlayerService'
+    'otusjs.player.core.player.PlayerService',
+    'ICON'
   ];
 
-  function Controller($scope, $element, $compile, ActivityFacadeService, PlayerService) {
+  function Controller($scope, $element, $compile, $location, $anchorScroll, ActivityFacadeService, PlayerService, ICON) {
     var self = this;
 
-    var SURVEY_ITEM = '<answer-view ng-repeat="item in questions" question="{{item.label.ptBR.formattedText}}"></answer-view><otus-survey-item item-data="itemData" id="{{itemData.templateID}}" style="margin: 0;display:block;"/>';
+    var SURVEY_ITEM = '<answer-view ng-repeat="item in questions" go-back="$ctrl.edit()" icon="item.objectType" answer="item.answer" question="{{item.label.ptBR.formattedText}}"></answer-view>' +
+      '<otus-survey-item item-data="itemData" id="{{itemData.templateID}}" style="margin: 0;display:block;"/>';
     var SURVEY_COVER = '<otus-cover />';
 
     /* Public methods */
@@ -47,23 +51,51 @@
         console.log(ActivityFacadeService);
         $element.find('#pagePlayer').empty();
         $element.find('#pagePlayer').append($compile(SURVEY_ITEM)($scope));
+        _onGoBottom(itemData.templateID);
       }
 
       if(PlayerService.isGoingBack()){
         if(PlayerService.getGoBackTo() !== itemData.templateID){
           self.goBack()
+          _removeQuestion(itemData.templateID)
         } else {
           PlayerService.setGoBackTo(null)
         }
       }
     }
 
+    function _removeQuestion(id) {
+      let index = 0;
+      $scope.questions.forEach((question) => {
+        if (question.templateID == id){
+          let removeIndexes = $scope.questions.length - index;
+          for(var i = 0; i < removeIndexes; i++){
+            $scope.questions.pop();
+          }
+          $scope.questions.pop();
+
+        } else {
+          index++;
+        }
+      });
+    }
+
+function _onGoBottom(idQuestion) {
+      $location.hash(idQuestion);
+      $anchorScroll();
+    }
+
     function _saveQuestion() {
       if($scope.itemData.templateID){
         let question = angular.copy($scope.itemData);
-        _trailConstructor(question);
-        console.log(ActivityFacadeService.fetchItemAnswerByTemplateID(question.templateID));
-        $scope.questions.push(angular.copy($scope.itemData))
+        _trailConstructor(question)
+        question.answer = ActivityFacadeService.fetchItemAnswerByTemplateID(question.templateID);
+        self.edit = function () {
+          PlayerService.setGoBackTo(question.templateID);
+          _removeQuestion(question.templateID)
+          self.goBack();
+        };
+        $scope.questions.push(question)
       }
     }
 
@@ -78,15 +110,14 @@
     }
 
     function _trailConstructor(item) {
-      let itemCopy = angular.copy(item);
       $scope.tracks.push({
-        id: itemCopy.templateID,
-        icon: "spellcheck",
-        text: itemCopy.templateID,
+        id: item.customID,
+        icon: ICON[item.objectType],
+        text: item.customID,
         time: "",
         styleClass:"md-accent",
         click: () => {
-          PlayerService.setGoBackTo(itemCopy.templateID);
+          PlayerService.setGoBackTo(item.templateID);
           self.goBack();
         }
       })

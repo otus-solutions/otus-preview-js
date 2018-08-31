@@ -6,17 +6,31 @@
       bindings: {
         icon: '<',
         question: '@',
-        answer: '<'
+        answer: '<',
+        goBack: "&"
       }
     });
 
   Controller.$inject = [
-    '$scope'
+    '$scope',
+    'ICON',
+    'otusjs.player.core.player.PlayerService'
   ]
 
-  function Controller($scope) {
+  function Controller($scope, ICON, PlayerService) {
     var self = this;
-    console.log(self)
+    const METADADO = ['Não quer responder', 'Não sabe', 'Não se aplica', 'Não há dados']
+    console.log(self.answer)
+    self.question = self.question.replace(/<\w+>/g, ' ');
+    self.question = self.question.replace(/<\/\w+>/g, ' ');
+    $scope.answer = self.answer.answer.value ? 'Resposta: '+self.answer.answer.value : 'Metadado: '+  METADADO[self.answer.metadata.value - 1];
+    $scope.comment = self.answer.comment ? 'Comentário: '+ self.answer.comment: '';
+    $scope.icon = ICON[self.icon];
     $scope.label = self.question;
+
+    $scope.edit = function () {
+      PlayerService.setGoBackTo(self.answer.questionID);
+      self.goBack();
+    }
   }
 })();
