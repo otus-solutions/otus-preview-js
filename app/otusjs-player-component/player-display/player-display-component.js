@@ -25,7 +25,7 @@
   function Controller($scope, $element, $compile, $location, $anchorScroll, ActivityFacadeService, PlayerService, ICON) {
     var self = this;
 
-    var SURVEY_ITEM = '<answer-view ng-repeat="item in questions" ng-show="questions.length" go-back="removeQuestion(item.templateID)" icon="item.objectType" item-data="item" question="{{item.label.ptBR.plainText}}"></answer-view>' +
+    var SURVEY_ITEM = '<answer-view ng-repeat="item in questions" ng-show="questions.length" go-back="$ctrl.goBack()" icon="item.objectType" item-data="item" question="{{item.label.ptBR.plainText}}"></answer-view>' +
       '<otus-survey-item item-data="itemData" id="{{itemData.templateID}}" style="margin: 0;display:block;"/>';
     var SURVEY_COVER = '<otus-cover />';
 
@@ -46,8 +46,6 @@
       if (_shouldLoadItem(itemData)) {
         _destroyCurrentItem();
         _saveQuestion();
-
-
         removeQuestion(itemData.templateID);
         $scope.itemData = itemData;
         _setQuestionId(itemData.templateID);
@@ -61,7 +59,6 @@
       if(PlayerService.isGoingBack()){
         if(PlayerService.getGoBackTo() !== itemData.templateID){
           self.goBack()
-          // removeQuestion(itemData.templateID)
         } else {
           PlayerService.setGoBackTo(null)
         }
@@ -77,18 +74,16 @@
         let length = $scope.questions.length;
         $scope.questions.splice(index, length);
         self.ids.splice(index, length);
-
-        //TODO: TIAGO
-        $scope.tracks.splice(index, length);
-        if(PlayerService.isGoingBack()){
-          if(PlayerService.getGoBackTo() !== itemData.templateID){
-            self.goBack()
-            // removeQuestion(itemData.templateID)
-          } else {
-            PlayerService.setGoBackTo(null)
-          }
-        }
-
+        // TODO: TIAGO
+        // $scope.tracks.splice(index, length);
+        // if(PlayerService.isGoingBack()){
+        //   if(PlayerService.getGoBackTo() !== itemData.templateID){
+        //     self.goBack()
+        //     // removeQuestion(itemData.templateID)
+        //   } else {
+        //     PlayerService.setGoBackTo(null)
+        //   }
+        // }
       } else {
         return false;
       }

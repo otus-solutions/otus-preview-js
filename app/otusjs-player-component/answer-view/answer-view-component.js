@@ -22,6 +22,7 @@
     var self = this;
 
     self.$onInit = onInit;
+    self.goingBack = goingBack;
 
     const METADADO = ['Não quer responder', 'Não sabe', 'Não se aplica', 'Não há dados'];
 
@@ -38,6 +39,11 @@
     function onInit() {
       console.log($scope.icon);
       console.log(self.answer)
+    }
+
+    function goingBack() {
+      PlayerService.setGoBackTo(self.itemData.templateID);
+      self.goBack();
     }
 
     function formatDate(value, format = 'dd/MM/yyyy') {
