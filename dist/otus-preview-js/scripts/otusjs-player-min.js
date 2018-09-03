@@ -177,7 +177,7 @@
   angular
     .module('otusjs.player.component')
     .component('otusPlayer', {
-      template:'<otus-survey-cover on-play="$ctrl.play()" phase-blocker="$ctrl.phaseBlocker" ng-show="$ctrl.showCover" layout-align="center center" layout="column" flex class="player-cover"></otus-survey-cover><md-content layout="column" flex ng-show="$ctrl.showActivity"><otus-survey-header layout="row"></otus-survey-header><otus-player-commander layout="row" flex="10" on-go-back="$ctrl.goBack()" on-pause="$ctrl.pause()" on-stop="$ctrl.stop()" on-go-ahead="$ctrl.goAhead()" on-eject="$ctrl.eject()"></otus-player-commander><otus-player-display go-back="$ctrl.goBack()" layout="column" flex style="overflow: hidden !important; position: relative !important"></otus-player-display></md-content><otus-survey-back-cover on-finalize="$ctrl.eject()" ng-show="$ctrl.showBackCover" layout-align="center center" layout="column" flex class="player-back-cover"></otus-survey-back-cover>',
+      template:'<otus-survey-cover on-play="$ctrl.play()" phase-blocker="$ctrl.phaseBlocker" ng-show="$ctrl.showCover" layout-align="center center" layout="column" flex class="player-cover"></otus-survey-cover><md-content layout="column" flex ng-show="$ctrl.showActivity"><otus-survey-header layout="row"></otus-survey-header><md-divider></md-divider><md-content layout="row" flex><otus-player-display go-back="$ctrl.goBack()" layout="column" flex style="overflow: hidden !important; position: relative !important"></otus-player-display><otus-player-commander layout="column" flex="10" layout-align="space-between center" on-go-back="$ctrl.goBack()" on-pause="$ctrl.pause()" on-stop="$ctrl.stop()" on-go-ahead="$ctrl.goAhead()" on-eject="$ctrl.eject()"></otus-player-commander></md-content></md-content><otus-survey-back-cover on-finalize="$ctrl.eject()" ng-show="$ctrl.showBackCover" layout-align="center center" layout="column" flex class="player-back-cover"></otus-survey-back-cover>',
       controller: Controller
     });
 
@@ -286,7 +286,7 @@
   angular
     .module('otusjs.player.component')
     .component('otusPlayerCommander', {
-      template:'<md-content layout-padding layout="column" flex style="padding-top: 0 !important; padding-bottom: 0 !important"><md-toolbar style="border-radius: 3px" class="md-whiteframe-1dp"><div class="md-toolbar-tools" layout-align="space-around center"><md-button id="previousQuestion" class="md-icon-button" aria-label="Voltar" ng-click="$ctrl.goBack()" ng-disabled="$ctrl.isGoBackDisabled"><md-icon md-font-set="material-icons">skip_previous</md-icon><md-tooltip md-direction="bottom">Voltar</md-tooltip></md-button><md-button id="saveActivity" class="md-icon-button" aria-label="Salvar" ng-click="$ctrl.pause()"><md-icon md-font-set="material-icons">save</md-icon><md-tooltip md-direction="bottom">Salvar</md-tooltip></md-button><md-button id="cancelActivity" class="md-icon-button" aria-label="Cancelar" ng-click="$ctrl.stop()"><md-icon md-font-set="material-icons">close</md-icon><md-tooltip md-direction="bottom">Cancelar</md-tooltip></md-button><md-button id="nextQuestion" class="md-icon-button" aria-label="Avançar" ng-click="$ctrl.goAhead()" ng-disabled="$ctrl.isGoAheadDisabled"><md-icon md-font-set="material-icons">skip_next</md-icon><md-tooltip md-direction="bottom">Avançar</md-tooltip></md-button></div></md-toolbar></md-content>',
+      template:'<md-content layout-padding layout="column" flex layout-align="space-between center" style="padding-top: 0 !important; padding-bottom: 0 !important"><span flex="5"></span><md-button id="previousQuestion" class="md-fab md-warn" aria-label="Voltar" ng-click="$ctrl.goBack()" ng-disabled="$ctrl.isGoBackDisabled"><md-icon md-font-set="material-icons">arrow_drop_up</md-icon><md-tooltip md-direction="bottom">Voltar</md-tooltip></md-button><md-button id="cancelActivity" class="md-fab md-raised" aria-label="Cancelar" ng-click="$ctrl.stop()"><md-icon md-font-set="material-icons">close</md-icon><md-tooltip md-direction="bottom">Cancelar</md-tooltip></md-button><md-button id="saveActivity" class="md-fab md-raised" aria-label="Salvar" ng-click="$ctrl.pause()"><md-icon md-font-set="material-icons">save</md-icon><md-tooltip md-direction="bottom">Salvar</md-tooltip></md-button><md-button id="nextQuestion" class="md-fab md-warn" aria-label="Avançar" ng-click="$ctrl.goAhead()" ng-disabled="$ctrl.isGoAheadDisabled"><md-icon md-font-set="material-icons">arrow_drop_down</md-icon><md-tooltip md-direction="bottom">Avançar</md-tooltip></md-button><span flex="5"></span></md-content>',
       controller: Controller,
       bindings: {
         onGoAhead: '&',
@@ -438,7 +438,7 @@
   angular
     .module('otusjs.player.component')
     .component('otusPlayerDisplay', {
-      template:'<div layout="row" flex><md-content flex="10" layout="column"><otus-trail nodes="tracks"></otus-trail></md-content><md-content flex layout="column" id="pagePlayer"></md-content><md-content flex="10" layout="column"><otus-trail nodes="tracks"></otus-trail></md-content></div>',
+      template:'<div layout="row" flex><md-content flex="10" layout="column"><otus-trail nodes="tracks"></otus-trail></md-content><md-content flex layout="column" id="pagePlayer"></md-content></div>',
       controller: Controller,
       bindings:{
         goBack: "&"
@@ -459,7 +459,7 @@
   function Controller($scope, $element, $compile, $location, $anchorScroll, ActivityFacadeService, PlayerService, ICON) {
     var self = this;
 
-    var SURVEY_ITEM = '<answer-view ng-repeat="item in questions" go-back="$ctrl.edit()" icon="item.objectType" answer="item.answer" question="{{item.label.ptBR.formattedText}}"></answer-view>' +
+    var SURVEY_ITEM = '<answer-view ng-repeat="item in questions" ng-show="questions.length" go-back="removeQuestion(item.templateID)" icon="item.objectType" answer="item.answer" question="{{item.label.ptBR.formattedText}}"></answer-view>' +
       '<otus-survey-item item-data="itemData" id="{{itemData.templateID}}" style="margin: 0;display:block;"/>';
     var SURVEY_COVER = '<otus-cover />';
 
@@ -480,38 +480,44 @@
       if (_shouldLoadItem(itemData)) {
         _destroyCurrentItem();
         _saveQuestion();
+        if(_getIndexQuestionId(itemData.templateID) > -1){
+          removeQuestion(itemData.templateID);
+        }
         $scope.itemData = itemData;
-        console.log(itemData);
-        console.log(ActivityFacadeService);
+        _setQuestionId(itemData.templateID);
         $element.find('#pagePlayer').empty();
         $element.find('#pagePlayer').append($compile(SURVEY_ITEM)($scope));
         _onGoBottom(itemData.templateID);
       }
 
+
+
       if(PlayerService.isGoingBack()){
         if(PlayerService.getGoBackTo() !== itemData.templateID){
           self.goBack()
-          _removeQuestion(itemData.templateID)
+          // removeQuestion(itemData.templateID)
         } else {
           PlayerService.setGoBackTo(null)
         }
       }
     }
 
-    function _removeQuestion(id) {
-      let index = 0;
-      $scope.questions.forEach((question) => {
-        if (question.templateID == id){
-          let removeIndexes = $scope.questions.length - index;
-          for(var i = 0; i < removeIndexes; i++){
-            $scope.questions.pop();
-          }
-          $scope.questions.pop();
 
-        } else {
-          index++;
-        }
-      });
+    $scope.removeQuestion = removeQuestion;
+
+    function removeQuestion(id) {
+      let index = _getIndexQuestionId(id);
+      let length = $scope.questions.length;
+      $scope.questions.splice(index, length);
+      self.ids.splice(index, length);
+    }
+
+    function _setQuestionId(id) {
+      self.ids.push(id);
+    }
+
+    function _getIndexQuestionId(id) {
+      return self.ids.indexOf(id);
     }
 
 function _onGoBottom(idQuestion) {
@@ -526,7 +532,7 @@ function _onGoBottom(idQuestion) {
         question.answer = ActivityFacadeService.fetchItemAnswerByTemplateID(question.templateID);
         self.edit = function () {
           PlayerService.setGoBackTo(question.templateID);
-          _removeQuestion(question.templateID)
+          removeQuestion(question.templateID)
           self.goBack();
         };
         $scope.questions.push(question)
@@ -678,7 +684,7 @@ function _onGoBottom(idQuestion) {
   angular
     .module('otusjs.player.component')
     .component('otusSurveyHeader', {
-      template:'<md-content layout="column" flex><md-card><md-content layout="row"><md-chips layout="column" layout-padding layout-align="center center" style="padding: 0 !important; padding-left: 10px !important"><md-chip style="margin: 0 !important">{{ $ctrl.surveyIdentity.acronym }}</md-chip></md-chips><md-content layout="column" flex layout-padding style="padding: 0 !important" layout-align="center start"><div><span class="md-display-1">{{ $ctrl.surveyIdentity.name }}</span></div></md-content></md-content><md-content layout="row" style="padding-left: 10px !important; padding-right: 10px !important"><div layout="column" layout-padding layout-align="center start"><label class="md-caption" style="padding: 0 !important">Participante</label> <span class="md-title" style="padding: 0 !important">{{ $ctrl.participantData.name }}</span></div><div class="md-list-item-text" layout="column" layout-padding layout-align="center start"><label class="md-caption" style="padding: 0 !important">Número de Recrutamento</label> <span class="md-title" style="padding: 0 !important">{{ $ctrl.participantData.recruitmentNumber }}</span></div></md-content></md-card></md-content>',
+      template:'<md-content layout="column" flex><md-toolbar layout="column" flex style="height: 200px"><div class="md-toolbar-tools" layout-align="space-around center" layout="column" flex><div layout="row" flex><md-chips layout="column" layout-padding layout-align="center center" style="padding: 0 !important; padding-left: 10px !important"><md-chip style="margin: 0 !important">{{ $ctrl.surveyIdentity.acronym }}</md-chip></md-chips><div layout="column" flex layout-padding style="padding: 0 !important" layout-align="center start"><div><span class="md-display-1">{{ $ctrl.surveyIdentity.name }}</span></div></div></div><div layout="row" style="padding-left: 10px !important; padding-right: 10px !important"><div layout="column" layout-padding layout-align="center start"><label class="md-caption" style="padding: 0 !important">Participante</label> <span class="md-title" style="padding: 0 !important">{{ $ctrl.participantData.name }}</span></div><div class="md-list-item-text" layout="column" layout-padding layout-align="center start"><label class="md-caption" style="padding: 0 !important">Número de Recrutamento</label> <span class="md-title" style="padding: 0 !important">{{ $ctrl.participantData.recruitmentNumber }}</span></div></div></div></md-toolbar></md-content>',
       controller: Controller,
       bindings: {
         surveyIdentity: '<'
@@ -2315,23 +2321,59 @@ function _onGoBottom(idQuestion) {
   Controller.$inject = [
     '$scope',
     'ICON',
+    '$filter',
     'otusjs.player.core.player.PlayerService'
   ]
 
-  function Controller($scope, ICON, PlayerService) {
+  function Controller($scope, ICON, $filter, PlayerService) {
     var self = this;
-    const METADADO = ['Não quer responder', 'Não sabe', 'Não se aplica', 'Não há dados']
-    console.log(self.answer)
+
+    self.$onInit = onInit;
+
+    const METADADO = ['Não quer responder', 'Não sabe', 'Não se aplica', 'Não há dados'];
+
+
+    $scope.icon = ICON[self.icon];
     self.question = self.question.replace(/<\w+>/g, ' ');
     self.question = self.question.replace(/<\/\w+>/g, ' ');
-    $scope.answer = self.answer.answer.value ? 'Resposta: '+self.answer.answer.value : 'Metadado: '+  METADADO[self.answer.metadata.value - 1];
-    $scope.comment = self.answer.comment ? 'Comentário: '+ self.answer.comment: '';
-    $scope.icon = ICON[self.icon];
-    $scope.label = self.question;
+    // _formatAnswer();
+    $scope.answer = self.answer.answer.value ? 'Resposta: '+_formatAnswer() : 'Metadado: '+  METADADO[self.answer.metadata.value - 1];
 
-    $scope.edit = function () {
-      PlayerService.setGoBackTo(self.answer.questionID);
-      self.goBack();
+    $scope.comment = self.answer.comment ? 'Comentário: '+ self.answer.comment: '';
+
+    $scope.label = self.question;
+    function onInit() {
+      console.log($scope.icon);
+      console.log(ICON.CalendarQuestion)
+      // _formatAnswer();
+    }
+
+    function formatDate(value, format = 'dd/MM/yyyy') {
+      return $filter('date')(new Date(value), format);
+    }
+
+    function formatTime(value, format = 'HH:mm') {
+      return $filter('date')(new Date(value), format);
+    }
+
+    function _formatAnswer() {
+      let answer = null;
+      if(self.answer.answer.value){
+        switch ($scope.icon){
+          case "date_range":
+            console.log(666)
+            answer = formatDate(self.answer.answer.value);
+            break;
+          case "access_time":
+            answer = formatTime(self.answer.answer.value);
+            break;
+          default:
+            answer = self.answer.answer.value;
+
+        }
+      }
+      return answer;
+
     }
   }
 })();

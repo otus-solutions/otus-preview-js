@@ -25,7 +25,7 @@
   function Controller($scope, $element, $compile, $location, $anchorScroll, ActivityFacadeService, PlayerService, ICON) {
     var self = this;
 
-    var SURVEY_ITEM = '<answer-view ng-repeat="item in questions" go-back="$ctrl.edit()" icon="item.objectType" answer="item.answer" question="{{item.label.ptBR.formattedText}}"></answer-view>' +
+    var SURVEY_ITEM = '<answer-view ng-repeat="item in questions" ng-show="questions.length" go-back="removeQuestion(item.templateID)" icon="item.objectType" answer="item.answer" question="{{item.label.ptBR.formattedText}}"></answer-view>' +
       '<otus-survey-item item-data="itemData" id="{{itemData.templateID}}" style="margin: 0;display:block;"/>';
     var SURVEY_COVER = '<otus-cover />';
 
@@ -46,38 +46,44 @@
       if (_shouldLoadItem(itemData)) {
         _destroyCurrentItem();
         _saveQuestion();
+        if(_getIndexQuestionId(itemData.templateID) > -1){
+          removeQuestion(itemData.templateID);
+        }
         $scope.itemData = itemData;
-        console.log(itemData);
-        console.log(ActivityFacadeService);
+        _setQuestionId(itemData.templateID);
         $element.find('#pagePlayer').empty();
         $element.find('#pagePlayer').append($compile(SURVEY_ITEM)($scope));
         _onGoBottom(itemData.templateID);
       }
 
+
+
       if(PlayerService.isGoingBack()){
         if(PlayerService.getGoBackTo() !== itemData.templateID){
           self.goBack()
-          _removeQuestion(itemData.templateID)
+          // removeQuestion(itemData.templateID)
         } else {
           PlayerService.setGoBackTo(null)
         }
       }
     }
 
-    function _removeQuestion(id) {
-      let index = 0;
-      $scope.questions.forEach((question) => {
-        if (question.templateID == id){
-          let removeIndexes = $scope.questions.length - index;
-          for(var i = 0; i < removeIndexes; i++){
-            $scope.questions.pop();
-          }
-          $scope.questions.pop();
 
-        } else {
-          index++;
-        }
-      });
+    $scope.removeQuestion = removeQuestion;
+
+    function removeQuestion(id) {
+      let index = _getIndexQuestionId(id);
+      let length = $scope.questions.length;
+      $scope.questions.splice(index, length);
+      self.ids.splice(index, length);
+    }
+
+    function _setQuestionId(id) {
+      self.ids.push(id);
+    }
+
+    function _getIndexQuestionId(id) {
+      return self.ids.indexOf(id);
     }
 
 function _onGoBottom(idQuestion) {
@@ -92,7 +98,7 @@ function _onGoBottom(idQuestion) {
         question.answer = ActivityFacadeService.fetchItemAnswerByTemplateID(question.templateID);
         self.edit = function () {
           PlayerService.setGoBackTo(question.templateID);
-          _removeQuestion(question.templateID)
+          removeQuestion(question.templateID)
           self.goBack();
         };
         $scope.questions.push(question)
