@@ -1,35 +1,31 @@
 <div layout-padding layout="column" flex layout-align="space-around center" style="position: fixed !important;">
-
-
-  <md-button id="previousQuestion" class="md-fab md-warn" aria-label="Voltar" ng-click="$ctrl.goBack()" style="padding-bottom: 10px !important;"
-             ng-disabled="$ctrl.isGoBackDisabled">
+  <md-button id="previousQuestion" class="md-fab md-warn md-mini" aria-label="Voltar" ng-click="$ctrl.goBack()" style="padding-bottom: 10px !important;"
+    ng-disabled="$ctrl.isGoBackDisabled">
     <md-icon md-font-set="material-icons">arrow_drop_up</md-icon>
     <md-tooltip md-direction="bottom">
       Voltar
     </md-tooltip>
   </md-button>
   <span flex="5"></span>
-  <md-button id="cancelActivity" class="md-fab md-raised" aria-label="Cancelar" ng-click="$ctrl.stop()" style="padding-bottom: 10px">
+  <md-button id="cancelActivity" class="md-fab md-raised md-mini" aria-label="Cancelar" ng-click="$ctrl.stop()" style="padding-bottom: 10px">
     <md-icon md-font-set="material-icons">close</md-icon>
     <md-tooltip md-direction="bottom">
       Cancelar
     </md-tooltip>
   </md-button>
   <span flex="5"></span>
-  <md-button id="saveActivity" class="md-fab md-accent" aria-label="Salvar" ng-click="$ctrl.pause()" style="padding-bottom: 10px">
+  <md-button id="saveActivity" class="md-fab md-accent md-mini" aria-label="Salvar" ng-click="$ctrl.pause()" style="padding-bottom: 10px">
     <md-icon md-font-set="material-icons">save</md-icon>
     <md-tooltip md-direction="bottom">
       Salvar
     </md-tooltip>
   </md-button>
   <span flex="5"></span>
-  <md-button id="nextQuestion" class="md-fab md-warn" aria-label="Avançar" ng-click="$ctrl.goAhead()"
-             ng-disabled="$ctrl.isGoAheadDisabled">
+  <md-button id="nextQuestion" class="md-fab md-warn md-mini" aria-label="Avançar" ng-click="$ctrl.goAhead()" ng-disabled="$ctrl.isGoAheadDisabled">
     <md-icon md-font-set="material-icons">arrow_drop_down</md-icon>
     <md-tooltip md-direction="bottom">
       Avançar
     </md-tooltip>
   </md-button>
   <span flex="5"></span>
-
 </div>

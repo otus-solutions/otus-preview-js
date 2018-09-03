@@ -286,7 +286,7 @@
   angular
     .module('otusjs.player.component')
     .component('otusPlayerCommander', {
-      template:'<div layout-padding layout="column" flex layout-align="space-around center" style="position: fixed !important;"><md-button id="previousQuestion" class="md-fab md-warn" aria-label="Voltar" ng-click="$ctrl.goBack()" style="padding-bottom: 10px !important;" ng-disabled="$ctrl.isGoBackDisabled"><md-icon md-font-set="material-icons">arrow_drop_up</md-icon><md-tooltip md-direction="bottom">Voltar</md-tooltip></md-button><span flex="5"></span><md-button id="cancelActivity" class="md-fab md-raised" aria-label="Cancelar" ng-click="$ctrl.stop()" style="padding-bottom: 10px"><md-icon md-font-set="material-icons">close</md-icon><md-tooltip md-direction="bottom">Cancelar</md-tooltip></md-button><span flex="5"></span><md-button id="saveActivity" class="md-fab md-accent" aria-label="Salvar" ng-click="$ctrl.pause()" style="padding-bottom: 10px"><md-icon md-font-set="material-icons">save</md-icon><md-tooltip md-direction="bottom">Salvar</md-tooltip></md-button><span flex="5"></span><md-button id="nextQuestion" class="md-fab md-warn" aria-label="Avançar" ng-click="$ctrl.goAhead()" ng-disabled="$ctrl.isGoAheadDisabled"><md-icon md-font-set="material-icons">arrow_drop_down</md-icon><md-tooltip md-direction="bottom">Avançar</md-tooltip></md-button><span flex="5"></span></div>',
+      template:'<div layout-padding layout="column" flex layout-align="space-around center" style="position: fixed !important;"><md-button id="previousQuestion" class="md-fab md-warn md-mini" aria-label="Voltar" ng-click="$ctrl.goBack()" style="padding-bottom: 10px !important;" ng-disabled="$ctrl.isGoBackDisabled"><md-icon md-font-set="material-icons">arrow_drop_up</md-icon><md-tooltip md-direction="bottom">Voltar</md-tooltip></md-button><span flex="5"></span><md-button id="cancelActivity" class="md-fab md-raised md-mini" aria-label="Cancelar" ng-click="$ctrl.stop()" style="padding-bottom: 10px"><md-icon md-font-set="material-icons">close</md-icon><md-tooltip md-direction="bottom">Cancelar</md-tooltip></md-button><span flex="5"></span><md-button id="saveActivity" class="md-fab md-accent md-mini" aria-label="Salvar" ng-click="$ctrl.pause()" style="padding-bottom: 10px"><md-icon md-font-set="material-icons">save</md-icon><md-tooltip md-direction="bottom">Salvar</md-tooltip></md-button><span flex="5"></span><md-button id="nextQuestion" class="md-fab md-warn md-mini" aria-label="Avançar" ng-click="$ctrl.goAhead()" ng-disabled="$ctrl.isGoAheadDisabled"><md-icon md-font-set="material-icons">arrow_drop_down</md-icon><md-tooltip md-direction="bottom">Avançar</md-tooltip></md-button><span flex="5"></span></div>',
       controller: Controller,
       bindings: {
         onGoAhead: '&',
@@ -459,7 +459,7 @@
   function Controller($scope, $element, $compile, $location, $anchorScroll, ActivityFacadeService, PlayerService, ICON) {
     var self = this;
 
-    var SURVEY_ITEM = '<answer-view ng-repeat="item in questions" ng-show="questions.length" go-back="removeQuestion(item.templateID)" icon="item.objectType" item-data="item" question="{{item.label.ptBR.plainText}}"></answer-view>' +
+    var SURVEY_ITEM = '<answer-view ng-repeat="item in questions" ng-show="questions.length" go-back="$ctrl.goBack()" icon="item.objectType" item-data="item" question="{{item.label.ptBR.plainText}}"></answer-view>' +
       '<otus-survey-item item-data="itemData" id="{{itemData.templateID}}" style="margin: 0;display:block;"/>';
     var SURVEY_COVER = '<otus-cover />';
 
@@ -480,8 +480,6 @@
       if (_shouldLoadItem(itemData)) {
         _destroyCurrentItem();
         _saveQuestion();
-
-
         removeQuestion(itemData.templateID);
         $scope.itemData = itemData;
         _setQuestionId(itemData.templateID);
@@ -495,7 +493,6 @@
       if(PlayerService.isGoingBack()){
         if(PlayerService.getGoBackTo() !== itemData.templateID){
           self.goBack()
-          // removeQuestion(itemData.templateID)
         } else {
           PlayerService.setGoBackTo(null)
         }
@@ -511,18 +508,16 @@
         let length = $scope.questions.length;
         $scope.questions.splice(index, length);
         self.ids.splice(index, length);
-
-        //TODO: TIAGO
-        $scope.tracks.splice(index, length);
-        if(PlayerService.isGoingBack()){
-          if(PlayerService.getGoBackTo() !== itemData.templateID){
-            self.goBack()
-            // removeQuestion(itemData.templateID)
-          } else {
-            PlayerService.setGoBackTo(null)
-          }
-        }
-
+        // TODO: TIAGO
+        // $scope.tracks.splice(index, length);
+        // if(PlayerService.isGoingBack()){
+        //   if(PlayerService.getGoBackTo() !== itemData.templateID){
+        //     self.goBack()
+        //     // removeQuestion(itemData.templateID)
+        //   } else {
+        //     PlayerService.setGoBackTo(null)
+        //   }
+        // }
       } else {
         return false;
       }
@@ -2322,7 +2317,7 @@
 (function () {
   angular.module('otusjs.player.component')
     .component('answerView',{
-      template:'<md-card flex layout="row"><md-card-header layout-fill style="padding: 0 !important;"><md-card><md-card-content><md-icon md-font-set="material-icons" class="material-icons ng-binding md-layoutTheme-theme">{{icon}}</md-icon></md-card-content></md-card><span></span><md-card-header-text layout-align="center start"><span class="md-title">{{label}}</span> <span class="md-subhead">{{answer}}</span> <span class="md-subhead">{{comment}}</span></md-card-header-text></md-card-header><md-button class="md-icon-button" ng-click><md-icon md-font-set="material-icons" class="material-icons ng-binding md-layoutTheme-theme">remove_red_eye</md-icon></md-button><md-button class="md-icon-button" ng-click="$ctrl.goBack()"><md-icon md-font-set="material-icons" class="material-icons ng-binding md-layoutTheme-theme">edit</md-icon></md-button></md-card>',
+      template:'<md-card flex layout="row"><md-card-header layout-fill style="padding: 0 !important;"><md-card><md-card-content><md-icon md-font-set="material-icons" class="material-icons ng-binding md-layoutTheme-theme">{{icon}}</md-icon></md-card-content></md-card><span></span><md-card-header-text layout-align="center start"><span class="md-title">{{label}}</span> <span class="md-subhead">{{answer}}</span> <span class="md-subhead">{{comment}}</span></md-card-header-text></md-card-header><md-button class="md-icon-button" ng-click><md-icon md-font-set="material-icons" class="material-icons ng-binding md-layoutTheme-theme">remove_red_eye</md-icon><md-tooltip md-direction="bottom">Visualizar</md-tooltip></md-button><md-button class="md-icon-button" ng-click="$ctrl.goingBack()"><md-icon md-font-set="material-icons" class="material-icons ng-binding md-layoutTheme-theme">edit</md-icon><md-tooltip md-direction="bottom">Editar</md-tooltip></md-button></md-card>',
       controller: Controller,
       bindings: {
         icon: '<',
@@ -2343,6 +2338,7 @@
     var self = this;
 
     self.$onInit = onInit;
+    self.goingBack = goingBack;
 
     const METADADO = ['Não quer responder', 'Não sabe', 'Não se aplica', 'Não há dados'];
 
@@ -2359,6 +2355,11 @@
     function onInit() {
       console.log($scope.icon);
       console.log(self.answer)
+    }
+
+    function goingBack() {
+      PlayerService.setGoBackTo(self.itemData.templateID);
+      self.goBack();
     }
 
     function formatDate(value, format = 'dd/MM/yyyy') {
