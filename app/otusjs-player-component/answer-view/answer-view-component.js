@@ -6,7 +6,7 @@
       bindings: {
         icon: '<',
         question: '@',
-        answer: '<',
+        itemData: '<',
         goBack: "&"
       }
     });
@@ -30,15 +30,14 @@
     self.question = self.question.replace(/<\w+>/g, ' ');
     self.question = self.question.replace(/<\/\w+>/g, ' ');
     // _formatAnswer();
-    $scope.answer = self.answer.answer.value ? 'Resposta: '+_formatAnswer() : 'Metadado: '+  METADADO[self.answer.metadata.value - 1];
+    $scope.answer = self.itemData.data.answer.value ? 'Resposta: '+_formatAnswer() : 'Metadado: '+  METADADO[self.answer.metadata.value - 1];
 
-    $scope.comment = self.answer.comment ? 'Comentário: '+ self.answer.comment: '';
+    $scope.comment = self.itemData.data.comment ? 'Comentário: '+ self.itemData.data.comment: '';
 
     $scope.label = self.question;
     function onInit() {
       console.log($scope.icon);
-      console.log(ICON.CalendarQuestion)
-      // _formatAnswer();
+      console.log(self.answer)
     }
 
     function formatDate(value, format = 'dd/MM/yyyy') {
@@ -51,17 +50,26 @@
 
     function _formatAnswer() {
       let answer = null;
-      if(self.answer.answer.value){
+      if(self.itemData.data.answer.value){
         switch ($scope.icon){
           case "date_range":
-            console.log(666)
-            answer = formatDate(self.answer.answer.value);
+            answer = formatDate(self.itemData.data.answer.value);
             break;
           case "access_time":
-            answer = formatTime(self.answer.answer.value);
+            answer = formatTime(self.itemData.data.answer.value);
             break;
+          case "radio_button_checked":
+            console.log(self.itemData.data.answer.value)
+            self.itemData.options.find((option) => {
+              if(option.value === parseInt(self.itemData.data.answer.value)){
+                answer = self.itemData.options[option.value - 1].label.ptBR.plainText;
+              }
+            });
+            break;
+          case "filter_none":
+
           default:
-            answer = self.answer.answer.value;
+            answer = self.itemData.data.answer.value;
 
         }
       }

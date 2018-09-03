@@ -1,27 +1,28 @@
-<md-content layout-padding layout="column" flex layout-align="space-between center" style="padding-top: 0 !important; padding-bottom: 0 !important">
-  <!--<md-toolbar style="border-radius: 3px" class="md-whiteframe-1dp">-->
-  <!--<div class="md-toolbar-tools" layout-align="space-around center">-->
-  <span flex="5"></span>
+<div layout-padding layout="column" flex layout-align="space-around center" style="position: fixed !important;">
 
-  <md-button id="previousQuestion" class="md-fab md-warn" aria-label="Voltar" ng-click="$ctrl.goBack()"
+
+  <md-button id="previousQuestion" class="md-fab md-warn" aria-label="Voltar" ng-click="$ctrl.goBack()" style="padding-bottom: 10px !important;"
              ng-disabled="$ctrl.isGoBackDisabled">
     <md-icon md-font-set="material-icons">arrow_drop_up</md-icon>
     <md-tooltip md-direction="bottom">
       Voltar
     </md-tooltip>
   </md-button>
-  <md-button id="cancelActivity" class="md-fab md-raised" aria-label="Cancelar" ng-click="$ctrl.stop()">
+  <span flex="5"></span>
+  <md-button id="cancelActivity" class="md-fab md-raised" aria-label="Cancelar" ng-click="$ctrl.stop()" style="padding-bottom: 10px">
     <md-icon md-font-set="material-icons">close</md-icon>
     <md-tooltip md-direction="bottom">
       Cancelar
     </md-tooltip>
   </md-button>
-  <md-button id="saveActivity" class="md-fab md-raised" aria-label="Salvar" ng-click="$ctrl.pause()">
+  <span flex="5"></span>
+  <md-button id="saveActivity" class="md-fab md-accent" aria-label="Salvar" ng-click="$ctrl.pause()" style="padding-bottom: 10px">
     <md-icon md-font-set="material-icons">save</md-icon>
     <md-tooltip md-direction="bottom">
       Salvar
     </md-tooltip>
   </md-button>
+  <span flex="5"></span>
   <md-button id="nextQuestion" class="md-fab md-warn" aria-label="Avançar" ng-click="$ctrl.goAhead()"
              ng-disabled="$ctrl.isGoAheadDisabled">
     <md-icon md-font-set="material-icons">arrow_drop_down</md-icon>
@@ -30,6 +31,5 @@
     </md-tooltip>
   </md-button>
   <span flex="5"></span>
-  <!--</div>-->
-  <!--</md-toolbar>-->
-</md-content>
+
+</div>

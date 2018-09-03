@@ -1,11 +1,11 @@
 <otus-survey-cover on-play="$ctrl.play()" phase-blocker="$ctrl.phaseBlocker" ng-show="$ctrl.showCover" layout-align="center center" layout="column" flex class="player-cover"></otus-survey-cover>
 <md-content layout="column" flex ng-show="$ctrl.showActivity">
   <otus-survey-header layout="row"></otus-survey-header>
-  <md-divider></md-divider>
+  <span flex="5"></span>
   <md-content layout="row" flex>
 
-    <otus-player-display  go-back="$ctrl.goBack()" layout="column" flex style="overflow: hidden !important; position: relative !important"></otus-player-display>
-  <otus-player-commander layout="column" flex="10" layout-align="space-between center"
+    <otus-player-display  go-back="$ctrl.goBack()" layout="column" flex style="position: relative !important"></otus-player-display>
+  <otus-player-commander layout="column" flex="10" layout-align="end center" layout-padding style="float: right"
   on-go-back="$ctrl.goBack()"
   on-pause="$ctrl.pause()"
   on-stop="$ctrl.stop()"
