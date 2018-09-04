@@ -5,7 +5,7 @@
         <md-icon md-font-set="material-icons" class="material-icons ng-binding md-layoutTheme-theme">{{icon}}</md-icon>
       </md-card-content>
     </md-card>
-    <md-card-header-text layout-align="center start" class="truncate" ng-if="!$ctrl.view">
+    <md-card-header-text layout-align="center start" layout="row" class="truncate" ng-if="!$ctrl.view" flex>
       <otus-label class="md-title truncate" item-label="label" style="display: inline-block; width: 90%"></otus-label>
       <span class="md-subhead">{{answer}}</span>
       <span class="md-subhead">{{comment}}</span>

@@ -127,6 +127,9 @@ function _metadadaBuilder() {
             break;
           case "filter_none":
             break;
+          case "check_box":
+            answer = "Multiplas respostas, clique em visualizar para ver mais";
+            break;
           case "attach_file":
             answer = formatFileUpload();
             break;
