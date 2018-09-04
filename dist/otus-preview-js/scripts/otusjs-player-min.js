@@ -720,7 +720,7 @@
   angular
     .module('otusjs.player.component')
     .component('otusSurveyItem', {
-      template:'<md-card flex><md-card-title layout="row" ng-if="!$ctrl.isItem()"><md-card-title-text layout="column" flex><div layout="row"><otus-label class="md-headline" item-label="$ctrl.itemData.label.ptBR.formattedText" flex layout-padding></otus-label></div></md-card-title-text></md-card-title><otus-validation-error error="$ctrl.$error" layout="row"></otus-validation-error><md-card-content layout="row" layout-align="space-between" flex><otus-question ng-if="$ctrl.isQuestion()" on-update="$ctrl.update(valueType, value)" item-data="$ctrl.itemData" layout="column" flex></otus-question><otus-misc-item ng-if="$ctrl.isItem()" item-data="$ctrl.itemData" layout="column" flex></otus-misc-item></md-card-content></md-card>',
+      template:'<md-card flex><md-card-title layout="row" ng-if="!$ctrl.isItem()"><md-card-title-text layout="column" flex><div layout="row"><otus-label class="md-headline" item-label="$ctrl.itemData.label.ptBR.formattedText" flex layout-padding></otus-label></div></md-card-title-text></md-card-title><md-card-content layout="row" layout-align="space-between" flex><otus-question ng-if="$ctrl.isQuestion()" on-update="$ctrl.update(valueType, value)" item-data="$ctrl.itemData" layout="column" flex></otus-question><otus-misc-item ng-if="$ctrl.isItem()" item-data="$ctrl.itemData" layout="column" flex></otus-misc-item></md-card-content><otus-validation-error error="$ctrl.$error" layout="row"></otus-validation-error></md-card>',
       controller: OtusSurveyItemController,
       bindings: {
         itemData: '<'
@@ -2330,8 +2330,8 @@
 
 (function () {
   angular.module('otusjs.player.component')
-    .component('answerView',{
-      template:'<md-card flex layout="column" ng-init="visible=false"><md-card-header layout="row" style="padding: 0 !important;"><md-card><md-card-content ng-if="!visible"><md-icon md-font-set="material-icons" class="material-icons ng-binding md-layoutTheme-theme">{{icon}}</md-icon></md-card-content></md-card><md-card-header-text layout-align="center start" class="truncate" ng-if="!visible"><otus-label class="md-title truncate" item-label="label" style="display: inline-block; width: 90%"></otus-label><span class="md-subhead">{{answer}}</span> <span class="md-subhead">{{comment}}</span></md-card-header-text><md-card-header-text layout-align="center start" ng-if="visible" layout-padding layout-margin><otus-label class="md-title md-headline" layout-padding item-label="labelFormatted"></otus-label></md-card-header-text><md-button class="md-icon-button" ng-click="visible=!visible"><md-icon md-font-set="material-icons" class="material-icons ng-binding md-layoutTheme-theme">remove_red_eye</md-icon></md-button><md-button class="md-icon-button" ng-click="$ctrl.goingBack()"><md-icon md-font-set="material-icons" class="material-icons ng-binding md-layoutTheme-theme">edit</md-icon></md-button></md-card-header><md-card-content layout="row" layout-align="space-between" flex ng-if="visible"><md-content layout="column" layout-fill flex><div layout="row" flex><md-tabs md-dynamic-height layout="column" flex="95"><md-tab label="Resposta"><md-content class="md-padding" bind-html-compile="$ctrl.template"></md-content></md-tab><md-tab label="Metadado"><md-content class="md-padding"><md-content layout-padding style="margin-left: 10px"><md-radio-group id="metadataGroupRadioGroup" ng-model="$ctrl.itemData.data.metadata.value" ng-change="$ctrl.update()" layout-padding flex><md-content value="{{option.value}}" ng-repeat="option in $ctrl.itemData.metadata.options" layout="row" style="margin: 10px"><md-radio-button aria-label="{{option.label}}" ng-click="$ctrl.blurOnClick()" value="{{option.value}}" style="outline: none;border: 0;" flex ng-disabled="true"><otus-label item-label="option.label.ptBR.formattedText"></otus-label></md-radio-button></md-content></md-radio-group></md-content></md-content></md-tab><md-tab label="Comentário"><md-content class="md-padding"><md-content layout-padding><div layout="row"><md-input-container md-no-float class="md-block" flex><textarea ng-model="$ctrl.itemData.data.comment" ng-disabled="true" aria-label="Comentário"></textarea></md-input-container></div></md-content></md-content></md-tab></md-tabs><div layout="column"></div></div></md-content></md-card-content></md-card>',
+    .component('answerView', {
+      template:'<md-card flex layout="column"><md-card-header layout="row" style="padding: 0 !important;"><md-card><md-card-content ng-if="!$ctrl.view"><md-icon md-font-set="material-icons" class="material-icons ng-binding md-layoutTheme-theme">{{icon}}</md-icon></md-card-content></md-card><md-card-header-text layout-align="center start" class="truncate" ng-if="!$ctrl.view"><otus-label class="md-title truncate" item-label="label" style="display: inline-block; width: 90%"></otus-label><span class="md-subhead">{{answer}}</span> <span class="md-subhead">{{comment}}</span></md-card-header-text><md-card-header-text layout-align="center start" ng-if="$ctrl.view" layout-padding layout-margin><otus-label class="md-title md-headline" layout-padding item-label="labelFormatted"></otus-label></md-card-header-text><md-button class="md-icon-button" ng-click="$ctrl.viewQuestion()" ng-if="!$ctrl.view"><md-icon md-font-set="material-icons" class="material-icons md-layoutTheme-theme">remove_red_eye</md-icon><md-tooltip md-direction="down">Visualizar questão</md-tooltip></md-button><md-button class="md-icon-button" ng-click="$ctrl.goingBack()"><md-icon md-font-set="material-icons" class="material-icons ng-binding md-layoutTheme-theme">edit</md-icon><md-tooltip md-direction="down">Editar questão</md-tooltip></md-button></md-card-header><div ng-if="$ctrl.view"><md-toolbar><div class="md-toolbar-tools"><h2 flex md-truncate>A questão está em modo de visualização</h2></div></md-toolbar><md-card-content layout="row" layout-align="space-between" flex><md-content layout="column" layout-fill flex><div layout="row" flex><md-tabs md-dynamic-height layout="column" flex="95"><md-tab label="Resposta"><md-content class="md-padding" bind-html-compile="$ctrl.template"></md-content></md-tab><md-tab label="Metadado"><md-content class="md-padding"><md-content layout-padding style="margin-left: 10px"><md-radio-group id="metadataGroupRadioGroup" ng-model="$ctrl.itemData.data.metadata.value" ng-change="$ctrl.update()" layout-padding flex><md-content value="{{option.value}}" ng-repeat="option in $ctrl.itemData.metadata.options" layout="row" style="margin: 10px"><md-radio-button aria-label="{{option.label}}" ng-click="$ctrl.blurOnClick()" value="{{option.value}}" style="outline: none;border: 0;" flex ng-disabled="true"><otus-label item-label="option.label.ptBR.formattedText"></otus-label></md-radio-button></md-content></md-radio-group></md-content></md-content></md-tab><md-tab label="Comentário"><md-content class="md-padding"><md-content layout-padding><div layout="row"><md-input-container md-no-float class="md-block" flex><textarea ng-model="$ctrl.itemData.data.comment" ng-disabled="true" aria-label="Comentário"></textarea></md-input-container></div></md-content></md-content></md-tab></md-tabs><div layout="column"></div></div></md-content></md-card-content></div></md-card>',
       controller: Controller,
       bindings: {
         icon: '<',
@@ -2350,21 +2350,27 @@
   ]
 
   function Controller($scope, ICON, $filter, PlayerService, TagComponentBuilderService) {
-    var self = this;
+    const METADADO = ['Não quer responder', 'Não sabe', 'Não se aplica', 'Não há dados'];
 
+    var self = this;
     self.$onInit = onInit;
     self.goingBack = goingBack;
+    self.viewQuestion = viewQuestion;
 
-    const METADADO = ['Não quer responder', 'Não sabe', 'Não se aplica', 'Não há dados'];
+    function onInit() {
+      _constructor();
+      self.view = false;
+      console.log(self.itemData)
+    }
 
     function _constructor() {
       self.template = TagComponentBuilderService.createTagElement(self.itemData.objectType, true);
       $scope.itemData = angular.copy(self.itemData);
       $scope.icon = ICON[self.icon];
-      if(self.itemData.data){
-        $scope.answer = self.itemData.data.answer.value ? 'Resposta: '+_formatAnswer() : 'Metadado: '+  METADADO[self.itemData.data.metadata.value - 1];
-        $scope.comment = self.itemData.data.comment ? 'Comentário: '+ self.itemData.data.comment: '';
-      } else if(self.itemData.dataType === "String"){
+      if (self.itemData.data) {
+        $scope.answer = self.itemData.data.answer.value ? 'Resposta: ' + _formatAnswer() : 'Metadado: ' + METADADO[self.itemData.data.metadata.value - 1];
+        $scope.comment = self.itemData.data.comment ? 'Comentário: ' + self.itemData.data.comment : '';
+      } else if (self.itemData.dataType === "String") {
         self.question = self.itemData.value.ptBR.formattedText;
       }
       $scope.labelFormatted = angular.copy(self.question);
@@ -2372,22 +2378,19 @@
       $scope.label = self.question;
     }
 
-
     function _clearQuestionLabel() {
       self.question = self.question.replace(/<\w+>/g, ' ');
       self.question = self.question.replace(/<\/\w+>/g, ' ');
       self.question = self.question.replace(/[\n]/g, ' ');
     }
 
-
-    function onInit() {
-      _constructor();
-      console.log(self.itemData)
-    }
-
     function goingBack() {
       PlayerService.setGoBackTo(self.itemData.templateID);
       self.goBack();
+    }
+
+    function viewQuestion() {
+      self.view = true;
     }
 
     function formatDate(value, format = 'dd/MM/yyyy') {
@@ -2400,8 +2403,8 @@
 
     function _formatAnswer() {
       let answer = null;
-      if(self.itemData.data.answer.value){
-        switch ($scope.icon){
+      if (self.itemData.data.answer.value) {
+        switch ($scope.icon) {
           case "date_range":
             answer = formatDate(self.itemData.data.answer.value);
             break;
@@ -2411,7 +2414,7 @@
           case "radio_button_checked":
             console.log(self.itemData.data.answer.value)
             self.itemData.options.find((option) => {
-              if(option.value === parseInt(self.itemData.data.answer.value)){
+              if (option.value === parseInt(self.itemData.data.answer.value)) {
                 answer = self.itemData.options[option.value - 1].label.ptBR.plainText;
               }
             });

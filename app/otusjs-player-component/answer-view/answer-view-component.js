@@ -1,6 +1,6 @@
 (function () {
   angular.module('otusjs.player.component')
-    .component('answerView',{
+    .component('answerView', {
       templateUrl: 'app/otusjs-player-component/answer-view/answer-view-template.html',
       controller: Controller,
       bindings: {
@@ -20,21 +20,27 @@
   ]
 
   function Controller($scope, ICON, $filter, PlayerService, TagComponentBuilderService) {
-    var self = this;
+    const METADADO = ['Não quer responder', 'Não sabe', 'Não se aplica', 'Não há dados'];
 
+    var self = this;
     self.$onInit = onInit;
     self.goingBack = goingBack;
+    self.viewQuestion = viewQuestion;
 
-    const METADADO = ['Não quer responder', 'Não sabe', 'Não se aplica', 'Não há dados'];
+    function onInit() {
+      _constructor();
+      self.view = false;
+      console.log(self.itemData)
+    }
 
     function _constructor() {
       self.template = TagComponentBuilderService.createTagElement(self.itemData.objectType, true);
       $scope.itemData = angular.copy(self.itemData);
       $scope.icon = ICON[self.icon];
-      if(self.itemData.data){
-        $scope.answer = self.itemData.data.answer.value ? 'Resposta: '+_formatAnswer() : 'Metadado: '+  METADADO[self.itemData.data.metadata.value - 1];
-        $scope.comment = self.itemData.data.comment ? 'Comentário: '+ self.itemData.data.comment: '';
-      } else if(self.itemData.dataType === "String"){
+      if (self.itemData.data) {
+        $scope.answer = self.itemData.data.answer.value ? 'Resposta: ' + _formatAnswer() : 'Metadado: ' + METADADO[self.itemData.data.metadata.value - 1];
+        $scope.comment = self.itemData.data.comment ? 'Comentário: ' + self.itemData.data.comment : '';
+      } else if (self.itemData.dataType === "String") {
         self.question = self.itemData.value.ptBR.formattedText;
       }
       $scope.labelFormatted = angular.copy(self.question);
@@ -42,22 +48,19 @@
       $scope.label = self.question;
     }
 
-
     function _clearQuestionLabel() {
       self.question = self.question.replace(/<\w+>/g, ' ');
       self.question = self.question.replace(/<\/\w+>/g, ' ');
       self.question = self.question.replace(/[\n]/g, ' ');
     }
 
-
-    function onInit() {
-      _constructor();
-      console.log(self.itemData)
-    }
-
     function goingBack() {
       PlayerService.setGoBackTo(self.itemData.templateID);
       self.goBack();
+    }
+
+    function viewQuestion() {
+      self.view = true;
     }
 
     function formatDate(value, format = 'dd/MM/yyyy') {
@@ -70,8 +73,8 @@
 
     function _formatAnswer() {
       let answer = null;
-      if(self.itemData.data.answer.value){
-        switch ($scope.icon){
+      if (self.itemData.data.answer.value) {
+        switch ($scope.icon) {
           case "date_range":
             answer = formatDate(self.itemData.data.answer.value);
             break;
@@ -81,7 +84,7 @@
           case "radio_button_checked":
             console.log(self.itemData.data.answer.value)
             self.itemData.options.find((option) => {
-              if(option.value === parseInt(self.itemData.data.answer.value)){
+              if (option.value === parseInt(self.itemData.data.answer.value)) {
                 answer = self.itemData.options[option.value - 1].label.ptBR.plainText;
               }
             });
