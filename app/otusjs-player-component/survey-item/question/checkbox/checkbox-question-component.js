@@ -29,6 +29,7 @@
       self.answerArray = CurrentItemService.getFilling().answer.value;
       self.otusQuestion.answer = self;
       _buildAnswerArray();
+      self.view = false;
     };
 
     self.update = function () {

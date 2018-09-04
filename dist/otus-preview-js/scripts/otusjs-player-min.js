@@ -1194,7 +1194,7 @@
   angular
     .module('otusjs.player.component')
     .component('otusCheckboxQuestion', {
-      template:'<md-content layout-padding style="margin-top: 12px"><md-content ng-repeat="option in $ctrl.itemData.options track by $index" flex><md-checkbox ng-model="$ctrl.answerArray[$index].state" ng-change="$ctrl.update($index)" layout="row" style="margin: 7px"><otus-label item-label="option.label.ptBR.formattedText"></otus-label></md-checkbox></md-content></md-content>',
+      template:'<md-content layout-padding style="margin-top: 12px"><md-content ng-repeat="option in $ctrl.itemData.options track by $index" flex><md-checkbox ng-model="$ctrl.answerArray[$index].state" ng-change="$ctrl.update($index)" layout="row" style="margin: 7px" ng-disabled="$ctrl.view"><otus-label item-label="option.label.ptBR.formattedText"></otus-label></md-checkbox></md-content></md-content>',
       controller: 'otusjs.player.component.CheckboxQuestionController as $ctrl',
       bindings: {
         itemData: '<',
@@ -1219,6 +1219,7 @@
       self.answerArray = CurrentItemService.getFilling().answer.value;
       self.otusQuestion.answer = self;
       _buildAnswerArray();
+      self.view = false;
     };
 
     self.update = function () {
@@ -1268,6 +1269,34 @@
 
 
 
+}());
+
+(function() {
+  'use strict';
+
+  angular
+    .module('otusjs.player.component')
+    .component('otusCheckboxQuestionView', {
+      template:'<md-content layout-padding style="margin-top: 12px"><md-content ng-repeat="option in $ctrl.itemData.options track by $index" flex><md-checkbox ng-model="$ctrl.answerArray[$index].state" ng-change="$ctrl.update($index)" layout="row" style="margin: 7px" ng-disabled="$ctrl.view"><otus-label item-label="option.label.ptBR.formattedText"></otus-label></md-checkbox></md-content></md-content>',
+      controller: Controller,
+      bindings: {
+        itemData: '<'
+      }
+    });
+
+   function Controller() {
+    var self = this;
+
+    self.$onInit = function() {
+      self.answerArray = self.itemData.data.answer.value;
+      self.view = true;
+    };
+
+    self.update = ()=>{};
+    self.blurOnClick=()=>{};
+
+
+  }
 }());
 
 (function () {
@@ -2331,7 +2360,7 @@
 (function () {
   angular.module('otusjs.player.component')
     .component('answerView', {
-      template:'<md-card flex layout="column"><md-card-header layout="row" style="padding: 0 !important;"><md-card><md-card-content ng-if="!$ctrl.view"><md-icon md-font-set="material-icons" class="material-icons ng-binding md-layoutTheme-theme">{{icon}}</md-icon></md-card-content></md-card><md-card-header-text layout-align="center start" class="truncate" ng-if="!$ctrl.view"><otus-label class="md-title truncate" item-label="label" style="display: inline-block; width: 90%"></otus-label><span class="md-subhead">{{answer}}</span> <span class="md-subhead">{{comment}}</span></md-card-header-text><md-card-header-text layout-align="center start" ng-if="$ctrl.view" layout-padding layout-margin><otus-label class="md-title md-headline" layout-padding item-label="labelFormatted"></otus-label></md-card-header-text><md-button class="md-icon-button" ng-click="$ctrl.viewQuestion()" ng-if="!$ctrl.view"><md-icon md-font-set="material-icons" class="material-icons md-layoutTheme-theme">remove_red_eye</md-icon><md-tooltip md-direction="down">Visualizar questão</md-tooltip></md-button><md-button class="md-icon-button" ng-click="$ctrl.goingBack()"><md-icon md-font-set="material-icons" class="material-icons ng-binding md-layoutTheme-theme">edit</md-icon><md-tooltip md-direction="down">Editar questão</md-tooltip></md-button></md-card-header><div ng-if="$ctrl.view"><md-toolbar><div class="md-toolbar-tools"><h2 flex md-truncate>A questão está em modo de visualização</h2></div></md-toolbar><md-card-content layout="row" layout-align="space-between" flex><md-content layout="column" layout-fill flex><div layout="row" flex><md-tabs md-dynamic-height layout="column" flex="95"><md-tab label="Resposta"><md-content class="md-padding" bind-html-compile="$ctrl.template"></md-content></md-tab><md-tab label="Metadado"><md-content class="md-padding"><md-content layout-padding style="margin-left: 10px"><md-radio-group id="metadataGroupRadioGroup" ng-model="$ctrl.itemData.data.metadata.value" ng-change="$ctrl.update()" layout-padding flex><md-content value="{{option.value}}" ng-repeat="option in $ctrl.itemData.metadata.options" layout="row" style="margin: 10px"><md-radio-button aria-label="{{option.label}}" ng-click="$ctrl.blurOnClick()" value="{{option.value}}" style="outline: none;border: 0;" flex ng-disabled="true"><otus-label item-label="option.label.ptBR.formattedText"></otus-label></md-radio-button></md-content></md-radio-group></md-content></md-content></md-tab><md-tab label="Comentário"><md-content class="md-padding"><md-content layout-padding><div layout="row"><md-input-container md-no-float class="md-block" flex><textarea ng-model="$ctrl.itemData.data.comment" ng-disabled="true" aria-label="Comentário"></textarea></md-input-container></div></md-content></md-content></md-tab></md-tabs><div layout="column"></div></div></md-content></md-card-content></div></md-card>',
+      template:'<md-card flex layout="column"><md-card-header layout="row" style="padding: 0 !important;"><md-card><md-card-content ng-if="!$ctrl.view"><md-icon md-font-set="material-icons" class="material-icons ng-binding md-layoutTheme-theme">{{icon}}</md-icon></md-card-content></md-card><md-card-header-text layout-align="center start" class="truncate" ng-if="!$ctrl.view"><otus-label class="md-title truncate" item-label="label" style="display: inline-block; width: 90%"></otus-label><span class="md-subhead">{{answer}}</span> <span class="md-subhead">{{comment}}</span></md-card-header-text><md-card-header-text layout-align="center start" ng-if="$ctrl.view" layout-padding layout-margin><otus-label class="md-title md-headline" layout-padding item-label="labelFormatted"></otus-label></md-card-header-text><div layout="row" layout-padding layout-margin layout-fill><md-button class="md-icon-button" ng-click="$ctrl.viewQuestion()" ng-if="!$ctrl.view"><md-icon md-font-set="material-icons" class="material-icons ng-binding md-layoutTheme-theme">remove_red_eye</md-icon><md-tooltip md-direction="down">Visualizar questão</md-tooltip></md-button><md-button class="md-icon-button" ng-click="$ctrl.goingBack()"><md-icon md-font-set="material-icons" class="material-icons ng-binding md-layoutTheme-theme">edit</md-icon><md-tooltip md-direction="down">Editar questão</md-tooltip></md-button></div></md-card-header><div ng-if="$ctrl.view"><md-toolbar><div class="md-toolbar-tools"><h2 flex md-truncate>A questão está em modo de visualização</h2></div></md-toolbar><md-card-content layout="row" layout-align="space-between" flex><md-content layout="column" layout-fill flex><div layout="row" flex><md-tabs md-dynamic-height layout="column" flex="95"><md-tab label="Resposta"><md-content class="md-padding" bind-html-compile="$ctrl.template"></md-content></md-tab><md-tab label="Metadado"><md-content class="md-padding"><md-content layout-padding style="margin-left: 10px"><md-radio-group id="metadataGroupRadioGroup" ng-model="$ctrl.itemData.data.metadata.value" ng-change="$ctrl.update()" layout-padding flex><md-content value="{{option.value}}" ng-repeat="option in $ctrl.itemData.metadata.options" layout="row" style="margin: 10px"><md-radio-button aria-label="{{option.label}}" ng-click="$ctrl.blurOnClick()" value="{{option.value}}" style="outline: none;border: 0;" flex ng-disabled="true"><otus-label item-label="option.label.ptBR.formattedText"></otus-label></md-radio-button></md-content></md-radio-group></md-content></md-content></md-tab><md-tab label="Comentário"><md-content class="md-padding"><md-content layout-padding><div layout="row"><md-input-container md-no-float class="md-block" flex><textarea ng-model="$ctrl.itemData.data.comment" ng-disabled="true" aria-label="Comentário"></textarea></md-input-container></div></md-content></md-content></md-tab></md-tabs><div layout="column"></div></div></md-content></md-card-content></div></md-card>',
       controller: Controller,
       bindings: {
         icon: '<',
@@ -2420,6 +2449,9 @@
             });
             break;
           case "filter_none":
+            break;
+          case "check_box":
+            answer = "Multiplas respostas, clique em visualizar para ver mais";
             break;
           case "attach_file":
             answer = "";
