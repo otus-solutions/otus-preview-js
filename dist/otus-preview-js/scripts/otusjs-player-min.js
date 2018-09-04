@@ -177,7 +177,7 @@
   angular
     .module('otusjs.player.component')
     .component('otusPlayer', {
-      template:'<otus-survey-cover on-play="$ctrl.play()" phase-blocker="$ctrl.phaseBlocker" ng-show="$ctrl.showCover" layout-align="center center" layout="column" flex class="player-cover"></otus-survey-cover><md-content layout="column" flex ng-show="$ctrl.showActivity"><otus-survey-header layout="row"></otus-survey-header><span flex="5"></span><md-content layout="row" flex><otus-player-display go-back="$ctrl.goBack()" layout="column" flex style="position: relative !important"></otus-player-display><otus-player-commander layout="column" flex="10" layout-align="center center" layout-fill on-go-back="$ctrl.goBack()" on-pause="$ctrl.pause()" on-stop="$ctrl.stop()" on-go-ahead="$ctrl.goAhead()" on-eject="$ctrl.eject()"></otus-player-commander></md-content></md-content><otus-survey-back-cover on-finalize="$ctrl.eject()" ng-show="$ctrl.showBackCover" layout-align="center center" layout="column" flex class="player-back-cover"></otus-survey-back-cover>',
+      template:'<otus-survey-cover on-play="$ctrl.play()" phase-blocker="$ctrl.phaseBlocker" ng-show="$ctrl.showCover" layout-align="center center" layout="column" flex class="player-cover"></otus-survey-cover><md-content layout="column" flex ng-show="$ctrl.showActivity"><otus-survey-header layout="row"></otus-survey-header><span flex="5"></span><md-content layout="row" flex><otus-player-display go-back="$ctrl.goBack()" layout="column" flex style="position: relative !important"></otus-player-display><otus-player-commander layout="column" flex="10" layout-align="center center" style="top: 40%" on-go-back="$ctrl.goBack()" on-pause="$ctrl.pause()" on-stop="$ctrl.stop()" on-go-ahead="$ctrl.goAhead()" on-eject="$ctrl.eject()"></otus-player-commander></md-content></md-content><otus-survey-back-cover on-finalize="$ctrl.eject()" ng-show="$ctrl.showBackCover" layout-align="center center" layout="column" flex class="player-back-cover"></otus-survey-back-cover>',
       controller: Controller
     });
 
@@ -2331,7 +2331,7 @@
 (function () {
   angular.module('otusjs.player.component')
     .component('answerView',{
-      template:'<md-card flex layout="column" ng-init="visible=false"><md-card-header layout="row" style="padding: 0 !important;"><md-card><md-card-content ng-if="!visible"><md-icon md-font-set="material-icons" class="material-icons ng-binding md-layoutTheme-theme">{{icon}}</md-icon></md-card-content></md-card><md-card-header-text layout-align="center start" class="truncate" ng-if="!visible"><otus-label class="md-title truncate" item-label="label" style="display: inline-block; width: 90%"></otus-label><span class="md-subhead">{{answer}}</span> <span class="md-subhead">{{comment}}</span></md-card-header-text><md-card-header-text layout-align="center start" ng-if="visible" layout-padding layout-margin><otus-label class="md-title md-headline" layout-padding item-label="labelFormatted"></otus-label></md-card-header-text><md-button class="md-icon-button" ng-click="visible=!visible"><md-icon md-font-set="material-icons" class="material-icons ng-binding md-layoutTheme-theme">remove_red_eye</md-icon></md-button><md-button class="md-icon-button" ng-click="$ctrl.goingBack()"><md-icon md-font-set="material-icons" class="material-icons ng-binding md-layoutTheme-theme">edit</md-icon></md-button></md-card-header><md-card-content layout="row" layout-align="space-between" flex ng-if="visible"><md-content layout="column" layout-fill flex><div layout="row" flex><md-tabs md-dynamic-height layout="column" flex="95"><md-tab label="Resposta"><md-content class="md-padding" bind-html-compile="$ctrl.template"></md-content></md-tab><md-tab label="Metadado"><md-content class="md-padding"><md-content layout-padding style="margin-left: 10px"><md-radio-group id="metadataGroupRadioGroup" ng-model="$ctrl.itemData.data.metadata.value" ng-change="$ctrl.update()" layout-padding flex><md-content value="{{option.value}}" ng-repeat="option in $ctrl.itemData.metadata.options" layout="row" style="margin: 10px"><md-radio-button aria-label="{{option.label}}" ng-click="$ctrl.blurOnClick()" value="{{option.value}}" style="outline: none;border: 0;" flex ng-disabled="true"><otus-label item-label="option.label.ptBR.formattedText"></otus-label></md-radio-button></md-content></md-radio-group></md-content></md-content></md-tab><md-tab label="Comentário"><md-content class="md-padding"><md-content layout-padding><div layout="row"><md-input-container md-no-float class="md-block" flex><textarea ng-model="$ctrl.itemData.data.comment" ng-disabled="true" aria-label="Comentário"></textarea></md-input-container></div></md-content></md-content></md-tab></md-tabs><div layout="column"></div></div></md-content></md-card-content></md-card>',
+      template:'<md-card flex layout="column" ng-init="visible=false"><md-card-header layout="row" style="padding: 0 !important;"><md-card><md-card-content ng-if="!visible"><md-icon md-font-set="material-icons" class="material-icons ng-binding md-layoutTheme-theme">{{icon}}</md-icon></md-card-content></md-card><md-card-header-text layout-align="center start" class="truncate" ng-if="!visible"><otus-label class="md-title truncate" item-label="label" style="display: inline-block; width: 90%"></otus-label><span class="md-subhead">{{answer}}</span> <span class="md-subhead">{{comment}}</span></md-card-header-text><md-card-header-text layout-align="center start" ng-if="visible" layout-padding layout-margin><otus-label class="md-title md-headline" layout-padding item-label="labelFormatted"></otus-label></md-card-header-text><md-button class="md-icon-button" ng-click="visible=!visible"><md-icon md-font-set="material-icons" class="material-icons ng-binding md-layoutTheme-theme">remove_red_eye</md-icon></md-button><md-button class="md-icon-button" ng-click="$ctrl.goingBack()" ng-show="$ctrl.itemData.data"><md-icon md-font-set="material-icons" class="material-icons ng-binding md-layoutTheme-theme">edit</md-icon></md-button></md-card-header><md-card-content layout="row" layout-align="space-between" flex ng-if="visible"><md-content layout="column" layout-fill flex ng-if="$ctrl.isQuestion()"><div layout="row" flex><md-tabs md-dynamic-height layout="column" flex="95"><md-tab label="Resposta"><md-content class="md-padding" bind-html-compile="$ctrl.template"></md-content></md-tab><md-tab label="Metadado"><md-content class="md-padding"><md-content layout-padding style="margin-left: 10px"><md-radio-group id="metadataGroupRadioGroup" ng-model="$ctrl.itemData.data.metadata.value" layout-padding flex><md-content value="{{option.value}}" ng-repeat="option in $ctrl.itemData.metadata.options" layout="row" style="margin: 10px"><md-radio-button aria-label="{{option.label}}" value="{{option.value}}" style="outline: none;border: 0;" flex ng-disabled="true"><otus-label item-label="option.label.ptBR.formattedText"></otus-label></md-radio-button></md-content></md-radio-group></md-content></md-content></md-tab><md-tab label="Comentário"><md-content class="md-padding"><md-content layout-padding><div layout="row"><md-input-container md-no-float class="md-block" flex><textarea ng-model="$ctrl.itemData.data.comment" ng-disabled="true" aria-label="Comentário"></textarea></md-input-container></div></md-content></md-content></md-tab></md-tabs></div></md-content><otus-misc-item ng-if="$ctrl.isItem()" item-data="$ctrl.itemData" layout="column" flex></otus-misc-item></md-card-content></md-card>',
       controller: Controller,
       bindings: {
         icon: '<',
@@ -2355,21 +2355,33 @@
     self.$onInit = onInit;
     self.goingBack = goingBack;
 
-    const METADADO = ['Não quer responder', 'Não sabe', 'Não se aplica', 'Não há dados'];
+    // const METADADO = ['Não quer responder', 'Não sabe', 'Não se aplica', 'Não há dados'];
 
     function _constructor() {
+
+
       self.template = TagComponentBuilderService.createTagElement(self.itemData.objectType, true);
-      $scope.itemData = angular.copy(self.itemData);
       $scope.icon = ICON[self.icon];
       if(self.itemData.data){
-        $scope.answer = self.itemData.data.answer.value ? 'Resposta: '+_formatAnswer() : 'Metadado: '+  METADADO[self.itemData.data.metadata.value - 1];
+        _metadadaBuilder();
+        $scope.answer = self.itemData.data.answer.value ? 'Resposta: '+_formatAnswer() : 'Metadado: '+  self.METADADA[self.itemData.data.metadata.value - 1];
         $scope.comment = self.itemData.data.comment ? 'Comentário: '+ self.itemData.data.comment: '';
-      } else if(self.itemData.dataType === "String"){
-        self.question = self.itemData.value.ptBR.formattedText;
+        _clearQuestionLabel();
+        $scope.label = self.question;
+      } else if(self.itemData.objectType === "TextItem"){
+        $scope.label = self.itemData.value.ptBR.formattedText;
+      } else if(self.itemData.objectType === "ImageItem"){
+        $scope.label = "[IMAGEM]";
       }
       $scope.labelFormatted = angular.copy(self.question);
-      _clearQuestionLabel();
-      $scope.label = self.question;
+
+    }
+
+    function _metadadaBuilder() {
+      self.METADADA = [];
+      self.itemData.metadata.options.forEach((option) => {
+        self.METADADA.push(option.label.ptBR.plainText);
+      })
     }
 
 
@@ -2381,6 +2393,7 @@
 
 
     function onInit() {
+      $scope.itemData = angular.copy(self.itemData);
       _constructor();
       console.log(self.itemData)
     }
@@ -2398,6 +2411,33 @@
       return $filter('date')(new Date(value), format);
     }
 
+    function formatSingleSelection() {
+      let _answer = '';
+      self.itemData.options.find((option) => {
+        if(option.value === parseInt(self.itemData.data.answer.value)){
+          _answer =  self.itemData.options[option.value - 1].label.ptBR.plainText;
+        }
+      });
+      return _answer;
+    }
+
+    function formatFileUpload() {
+      let _answer = "";
+      self.itemData.data.answer.value.forEach((value) => {
+        _answer = _answer + angular.copy(value.name) + "; ";
+      });
+      return  _answer;
+    }
+    self.isQuestion = isQuestion;
+    self.isItem = isItem;
+    function isQuestion() {
+      return (self.itemData.objectType === 'ImageItem') || (self.itemData.objectType === 'TextItem') ? false : true;
+    }
+
+    function isItem() {
+      return (self.itemData.objectType === 'ImageItem') || (self.itemData.objectType === 'TextItem') ? true : false;
+    }
+
     function _formatAnswer() {
       let answer = null;
       if(self.itemData.data.answer.value){
@@ -2409,22 +2449,13 @@
             answer = formatTime(self.itemData.data.answer.value);
             break;
           case "radio_button_checked":
-            console.log(self.itemData.data.answer.value)
-            self.itemData.options.find((option) => {
-              if(option.value === parseInt(self.itemData.data.answer.value)){
-                answer = self.itemData.options[option.value - 1].label.ptBR.plainText;
-              }
-            });
+            answer = formatSingleSelection();
+
             break;
           case "filter_none":
             break;
           case "attach_file":
-            answer = "";
-            self.itemData.data.answer.value.forEach((value) => {
-              console.log(value.name)
-              answer = answer + angular.copy(value.name) + "; ";
-              console.info(answer);
-            });
+            answer = formatFileUpload();
             break;
 
           default:

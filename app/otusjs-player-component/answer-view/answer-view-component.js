@@ -25,21 +25,33 @@
     self.$onInit = onInit;
     self.goingBack = goingBack;
 
-    const METADADO = ['Não quer responder', 'Não sabe', 'Não se aplica', 'Não há dados'];
+    // const METADADO = ['Não quer responder', 'Não sabe', 'Não se aplica', 'Não há dados'];
 
     function _constructor() {
+
+
       self.template = TagComponentBuilderService.createTagElement(self.itemData.objectType, true);
-      $scope.itemData = angular.copy(self.itemData);
       $scope.icon = ICON[self.icon];
       if(self.itemData.data){
-        $scope.answer = self.itemData.data.answer.value ? 'Resposta: '+_formatAnswer() : 'Metadado: '+  METADADO[self.itemData.data.metadata.value - 1];
+        _metadadaBuilder();
+        $scope.answer = self.itemData.data.answer.value ? 'Resposta: '+_formatAnswer() : 'Metadado: '+  self.METADADA[self.itemData.data.metadata.value - 1];
         $scope.comment = self.itemData.data.comment ? 'Comentário: '+ self.itemData.data.comment: '';
-      } else if(self.itemData.dataType === "String"){
-        self.question = self.itemData.value.ptBR.formattedText;
+        _clearQuestionLabel();
+        $scope.label = self.question;
+      } else if(self.itemData.objectType === "TextItem"){
+        $scope.label = self.itemData.value.ptBR.formattedText;
+      } else if(self.itemData.objectType === "ImageItem"){
+        $scope.label = "[IMAGEM]";
       }
       $scope.labelFormatted = angular.copy(self.question);
-      _clearQuestionLabel();
-      $scope.label = self.question;
+
+    }
+
+    function _metadadaBuilder() {
+      self.METADADA = [];
+      self.itemData.metadata.options.forEach((option) => {
+        self.METADADA.push(option.label.ptBR.plainText);
+      })
     }
 
 
@@ -51,6 +63,7 @@
 
 
     function onInit() {
+      $scope.itemData = angular.copy(self.itemData);
       _constructor();
       console.log(self.itemData)
     }
@@ -68,6 +81,33 @@
       return $filter('date')(new Date(value), format);
     }
 
+    function formatSingleSelection() {
+      let _answer = '';
+      self.itemData.options.find((option) => {
+        if(option.value === parseInt(self.itemData.data.answer.value)){
+          _answer =  self.itemData.options[option.value - 1].label.ptBR.plainText;
+        }
+      });
+      return _answer;
+    }
+
+    function formatFileUpload() {
+      let _answer = "";
+      self.itemData.data.answer.value.forEach((value) => {
+        _answer = _answer + angular.copy(value.name) + "; ";
+      });
+      return  _answer;
+    }
+    self.isQuestion = isQuestion;
+    self.isItem = isItem;
+    function isQuestion() {
+      return (self.itemData.objectType === 'ImageItem') || (self.itemData.objectType === 'TextItem') ? false : true;
+    }
+
+    function isItem() {
+      return (self.itemData.objectType === 'ImageItem') || (self.itemData.objectType === 'TextItem') ? true : false;
+    }
+
     function _formatAnswer() {
       let answer = null;
       if(self.itemData.data.answer.value){
@@ -79,22 +119,13 @@
             answer = formatTime(self.itemData.data.answer.value);
             break;
           case "radio_button_checked":
-            console.log(self.itemData.data.answer.value)
-            self.itemData.options.find((option) => {
-              if(option.value === parseInt(self.itemData.data.answer.value)){
-                answer = self.itemData.options[option.value - 1].label.ptBR.plainText;
-              }
-            });
+            answer = formatSingleSelection();
+
             break;
           case "filter_none":
             break;
           case "attach_file":
-            answer = "";
-            self.itemData.data.answer.value.forEach((value) => {
-              console.log(value.name)
-              answer = answer + angular.copy(value.name) + "; ";
-              console.info(answer);
-            });
+            answer = formatFileUpload();
             break;
 
           default:
