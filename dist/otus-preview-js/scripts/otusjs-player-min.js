@@ -1969,7 +1969,7 @@
   angular
     .module('otusjs.player.component')
     .component('otusGridIntegerQuestion', {
-      template:'<div ng-repeat="line in ::$ctrl.itemData.getLinesList()" ng-init="outerIndex=$index" layout="row" flex><div ng-repeat="gridNumber in ::line.getGridIntegerList()" ng-init="innerIndex=$index" layout-padding layout="row" flex><md-input-container flex><label>{{ ::gridNumber.label.ptBR.formattedText }}</label><div><input type="text" numbers-only ng-model="$ctrl.answerArray[outerIndex][innerIndex].value" ng-blur="$ctrl.update(outerIndex, innerIndex)"></div><div style="color: gray;">{{::gridNumber.unit.ptBR.plainText}}</div></md-input-container></div></div>',
+      template:'<div ng-repeat="line in ::$ctrl.itemData.getLinesList()" ng-init="outerIndex=$index" layout="row" flex><div ng-repeat="gridNumber in ::line.getGridIntegerList()" ng-init="innerIndex=$index" layout-padding layout="row" flex><md-input-container flex><label>{{ ::gridNumber.label.ptBR.formattedText }}</label><div><input type="text" numbers-only ng-model="$ctrl.answerArray[outerIndex][innerIndex].value" ng-blur="$ctrl.update(outerIndex, innerIndex)" ng-disabled="$ctrl.view"></div><div style="color: gray;">{{::gridNumber.unit.ptBR.plainText}}</div></md-input-container></div></div>',
       controller: Controller,
       bindings: {
         itemData: '<',
@@ -1996,6 +1996,7 @@
       self.answerArray = CurrentItemService.getFilling().answer.value;
       self.otusQuestion.answer = self;
       _fixArray();
+      self.view = false;
     }
 
     function update(outerIndex, innerIndex) {
@@ -2069,6 +2070,34 @@
       delete self.answerArray;
       _fixArray();
     }
+  }
+}());
+
+(function() {
+  'use strict';
+
+  angular
+    .module('otusjs.player.component')
+    .component('otusGridIntegerQuestionView', {
+      template:'<div ng-repeat="line in ::$ctrl.itemData.getLinesList()" ng-init="outerIndex=$index" layout="row" flex><div ng-repeat="gridNumber in ::line.getGridIntegerList()" ng-init="innerIndex=$index" layout-padding layout="row" flex><md-input-container flex><label>{{ ::gridNumber.label.ptBR.formattedText }}</label><div><input type="text" numbers-only ng-model="$ctrl.answerArray[outerIndex][innerIndex].value" ng-blur="$ctrl.update(outerIndex, innerIndex)" ng-disabled="$ctrl.view"></div><div style="color: gray;">{{::gridNumber.unit.ptBR.plainText}}</div></md-input-container></div></div>',
+      controller: Controller,
+      bindings: {
+        itemData: '<'
+      }
+    });
+
+   function Controller() {
+    var self = this;
+
+    self.$onInit = function() {
+      self.answerArray = self.itemData.data.answer.value;
+      self.view = true;
+    };
+
+    self.update = ()=>{};
+    self.blurOnClick=()=>{};
+
+
   }
 }());
 
@@ -2389,7 +2418,7 @@
 (function () {
   angular.module('otusjs.player.component')
     .component('answerView', {
-      template:'<md-card flex layout="column"><md-card-header layout="row" style="padding: 0 !important;" ng-show="!$ctrl.view" flex><md-card><md-card-content ng-show="!$ctrl.view"><md-icon md-font-set="material-icons" class="material-icons ng-binding md-layoutTheme-theme">{{icon}}</md-icon></md-card-content></md-card><md-card-header-text layout="column" layout-fill class="truncate" ng-show="!$ctrl.view" flex="80"><otus-label class="md-title truncate" item-label="label" style="display: inline-block;"></otus-label><span class="md-subhead" style="display: inline-block;">{{answer}}</span> <span class="md-subhead">{{comment}}</span></md-card-header-text><div layout="row" layout-padding layout-margin layout-align="end start"><md-button class="md-icon-button" ng-click="$ctrl.viewQuestion()"><md-icon md-font-set="material-icons" class="material-icons ng-binding md-layoutTheme-theme">remove_red_eye</md-icon><md-tooltip md-direction="down">Visualizar questão</md-tooltip></md-button><md-button class="md-icon-button" ng-click="$ctrl.goingBack()"><md-icon md-font-set="material-icons" class="material-icons ng-binding md-layoutTheme-theme">edit</md-icon><md-tooltip md-direction="down">Editar questão</md-tooltip></md-button></div></md-card-header><div ng-if="$ctrl.view"><md-toolbar><div class="md-toolbar-tools" layout="row"><h2 flex md-truncate>A questão está em modo de visualização</h2><span flex></span><md-button class="md-icon-button" ng-click="$ctrl.viewQuestion()"><md-icon md-font-set="material-icons" class="material-icons ng-binding md-layoutTheme-theme">remove_red_eye</md-icon><md-tooltip md-direction="down">Visualizar questão</md-tooltip></md-button><md-button class="md-icon-button" ng-click="$ctrl.goingBack()"><md-icon md-font-set="material-icons" class="material-icons ng-binding md-layoutTheme-theme">edit</md-icon><md-tooltip md-direction="down">Editar questão</md-tooltip></md-button></div></md-toolbar><md-card-header layout="row" flex><md-card-header-text layout-align="center start" ng-show="$ctrl.view" layout-padding layout-margin><otus-label class="md-title md-headline" layout-padding item-label="labelFormatted"></otus-label></md-card-header-text></md-card-header><md-card-content layout="row" layout-align="space-between" flex><md-content layout="column" layout-fill flex><div layout="row" flex><md-tabs md-dynamic-height layout="column" flex="95"><md-tab label="Resposta"><md-content class="md-padding" bind-html-compile="$ctrl.template"></md-content></md-tab><md-tab label="Metadado"><md-content class="md-padding"><md-content layout-padding style="margin-left: 10px"><md-radio-group id="metadataGroupRadioGroup" ng-model="$ctrl.itemData.data.metadata.value" layout-padding flex><md-content value="{{option.value}}" ng-repeat="option in $ctrl.itemData.metadata.options" layout="row" style="margin: 10px"><md-radio-button aria-label="{{option.label}}" value="{{option.value}}" style="outline: none;border: 0;" flex ng-disabled="true"><otus-label item-label="option.label.ptBR.formattedText"></otus-label></md-radio-button></md-content></md-radio-group></md-content></md-content></md-tab><md-tab label="Comentário"><md-content class="md-padding"><md-content layout-padding><div layout="row"><md-input-container md-no-float class="md-block" flex><textarea ng-model="$ctrl.itemData.data.comment" ng-disabled="true" aria-label="Comentário"></textarea></md-input-container></div></md-content></md-content></md-tab></md-tabs></div></md-content><otus-misc-item ng-show="$ctrl.isItem()" item-data="$ctrl.itemData" layout="column" flex></otus-misc-item></md-card-content></div></md-card>',
+      template:'<md-card flex layout="column"><md-card-header layout="row" style="padding: 0 !important;" ng-show="!$ctrl.view" flex><md-card><md-card-content ng-show="!$ctrl.view"><md-icon md-font-set="material-icons" class="material-icons ng-binding md-layoutTheme-theme">{{icon}}</md-icon></md-card-content></md-card><md-card-header-text layout="column" layout-fill class="truncate" ng-show="!$ctrl.view" flex="80"><otus-label class="md-title truncate" item-label="label" style="display: inline-block;"></otus-label><span class="md-subhead" style="display: inline-block;">{{answer}}</span> <span class="md-subhead">{{comment}}</span></md-card-header-text><div layout="row" layout-padding layout-margin layout-align="end start"><md-button class="md-icon-button" ng-click="$ctrl.viewQuestion()"><md-icon md-font-set="material-icons" class="material-icons ng-binding md-layoutTheme-theme">remove_red_eye</md-icon><md-tooltip md-direction="down">Visualizar questão</md-tooltip></md-button><md-button class="md-icon-button" ng-click="$ctrl.goingBack()"><md-icon md-font-set="material-icons" class="material-icons ng-binding md-layoutTheme-theme">edit</md-icon><md-tooltip md-direction="down">Editar questão</md-tooltip></md-button></div></md-card-header><div ng-show="$ctrl.view"><md-toolbar><div class="md-toolbar-tools" layout="row"><h2 flex md-truncate>A questão está em modo de visualização</h2><span flex></span><md-button class="md-icon-button" ng-click="$ctrl.viewQuestion()"><md-icon md-font-set="material-icons" class="material-icons ng-binding md-layoutTheme-theme">remove_red_eye</md-icon><md-tooltip md-direction="down">Visualizar questão</md-tooltip></md-button><md-button class="md-icon-button" ng-click="$ctrl.goingBack()"><md-icon md-font-set="material-icons" class="material-icons ng-binding md-layoutTheme-theme">edit</md-icon><md-tooltip md-direction="down">Editar questão</md-tooltip></md-button></div></md-toolbar><md-card-header layout="row" flex><md-card-header-text layout-align="center start" ng-show="$ctrl.view" layout-padding layout-margin><otus-label class="md-title md-headline" layout-padding item-label="labelFormatted"></otus-label></md-card-header-text></md-card-header><md-card-content layout="row" layout-align="space-between" flex><md-content layout="column" layout-fill flex><div layout="row" flex><md-tabs md-dynamic-height layout="column" flex="95"><md-tab label="Resposta"><md-content class="md-padding" bind-html-compile="$ctrl.template"></md-content></md-tab><md-tab label="Metadado"><md-content class="md-padding"><md-content layout-padding style="margin-left: 10px"><md-radio-group id="metadataGroupRadioGroup" ng-model="$ctrl.itemData.data.metadata.value" layout-padding flex><md-content value="{{option.value}}" ng-repeat="option in $ctrl.itemData.metadata.options" layout="row" style="margin: 10px"><md-radio-button aria-label="{{option.label}}" value="{{option.value}}" style="outline: none;border: 0;" flex ng-disabled="true"><otus-label item-label="option.label.ptBR.formattedText"></otus-label></md-radio-button></md-content></md-radio-group></md-content></md-content></md-tab><md-tab label="Comentário"><md-content class="md-padding"><md-content layout-padding><div layout="row"><md-input-container md-no-float class="md-block" flex><textarea ng-model="$ctrl.itemData.data.comment" ng-disabled="true" aria-label="Comentário"></textarea></md-input-container></div></md-content></md-content></md-tab></md-tabs></div></md-content><otus-misc-item ng-show="$ctrl.isItem()" item-data="$ctrl.itemData" layout="column" flex></otus-misc-item></md-card-content></div></md-card>',
       controller: Controller,
       bindings: {
         icon: '<',
@@ -2517,6 +2546,9 @@ function _metadadaBuilder() {
             answer = "Multiplas respostas, clique em visualizar questão.";
             break;
           case "filter_none":
+            answer = "Multiplas respostas, clique em visualizar questão.";
+            break;
+          case "filter_1":
             answer = "Multiplas respostas, clique em visualizar questão.";
             break;
           case "attach_file":

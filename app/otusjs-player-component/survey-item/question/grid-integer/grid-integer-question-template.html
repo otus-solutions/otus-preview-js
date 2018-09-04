@@ -3,7 +3,7 @@
         <md-input-container flex>
             <label>{{ ::gridNumber.label.ptBR.formattedText }}</label>
             <div>
-                <input type="text" numbers-only ng-model="$ctrl.answerArray[outerIndex][innerIndex].value" ng-blur="$ctrl.update(outerIndex, innerIndex)"></input>
+                <input type="text" numbers-only ng-model="$ctrl.answerArray[outerIndex][innerIndex].value" ng-blur="$ctrl.update(outerIndex, innerIndex)" ng-disabled="$ctrl.view">
             </div>
             <div style="color: gray;">{{::gridNumber.unit.ptBR.plainText}}</div>
         </md-input-container>

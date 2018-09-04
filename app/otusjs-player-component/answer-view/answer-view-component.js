@@ -131,6 +131,9 @@ function _metadadaBuilder() {
           case "filter_none":
             answer = "Multiplas respostas, clique em visualizar questão.";
             break;
+          case "filter_1":
+            answer = "Multiplas respostas, clique em visualizar questão.";
+            break;
           case "attach_file":
             answer = formatFileUpload();
             break;
