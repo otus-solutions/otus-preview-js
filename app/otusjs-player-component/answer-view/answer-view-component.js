@@ -113,6 +113,7 @@ function _metadadaBuilder() {
 
     function _formatAnswer() {
       let answer = null;
+      console.log($scope.icon);
       if(self.itemData.data.answer.value){
         switch ($scope.icon){
           case "date_range":
@@ -123,12 +124,11 @@ function _metadadaBuilder() {
             break;
           case "radio_button_checked":
             answer = formatSingleSelection();
-
-            break;
-          case "filter_none":
             break;
           case "check_box":
-            console.log(66)
+            answer = "Multiplas respostas, clique em visualizar questão.";
+            break;
+          case "filter_none":
             answer = "Multiplas respostas, clique em visualizar questão.";
             break;
           case "attach_file":
