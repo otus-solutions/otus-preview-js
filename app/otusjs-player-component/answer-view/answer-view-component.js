@@ -1,6 +1,6 @@
 (function () {
   angular.module('otusjs.player.component')
-    .component('answerView',{
+    .component('answerView', {
       templateUrl: 'app/otusjs-player-component/answer-view/answer-view-template.html',
       controller: Controller,
       bindings: {
@@ -24,13 +24,12 @@
 
     self.$onInit = onInit;
     self.goingBack = goingBack;
+    self.viewQuestion = viewQuestion;
 
-    // const METADADO = ['Não quer responder', 'Não sabe', 'Não se aplica', 'Não há dados'];
 
     function _constructor() {
-
-
       self.template = TagComponentBuilderService.createTagElement(self.itemData.objectType, true);
+      $scope.itemData = angular.copy(self.itemData);
       $scope.icon = ICON[self.icon];
       if(self.itemData.data){
         _metadadaBuilder();
@@ -44,16 +43,16 @@
         $scope.label = "[IMAGEM]";
       }
       $scope.labelFormatted = angular.copy(self.question);
-
+      _clearQuestionLabel();
+      $scope.label = self.question;
     }
 
-    function _metadadaBuilder() {
+function _metadadaBuilder() {
       self.METADADA = [];
       self.itemData.metadata.options.forEach((option) => {
         self.METADADA.push(option.label.ptBR.plainText);
       })
     }
-
 
     function _clearQuestionLabel() {
       self.question = self.question.replace(/<\w+>/g, ' ');
@@ -71,6 +70,10 @@
     function goingBack() {
       PlayerService.setGoBackTo(self.itemData.templateID);
       self.goBack();
+    }
+
+    function viewQuestion() {
+      self.view = !self.view;
     }
 
     function formatDate(value, format = 'dd/MM/yyyy') {
