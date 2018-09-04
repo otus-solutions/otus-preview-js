@@ -25,8 +25,8 @@
   function Controller($scope, $element, $compile, $location, $anchorScroll, ActivityFacadeService, PlayerService, ICON) {
     var self = this;
 
-    var SURVEY_ITEM = '<answer-view ng-repeat="item in questions" ng-show="questions.length" go-back="$ctrl.goBack()" icon="item.objectType" item-data="item" question="{{item.label.ptBR.plainText}}"></answer-view>' +
-      '<otus-survey-item item-data="itemData" id="{{itemData.templateID}}" style="margin: 0;display:block;"/>';
+    var SURVEY_ITEM = '<answer-view ng-repeat="item in questions" ng-show="questions.length" go-back="$ctrl.goBack()" icon="item.objectType" item-data="item" question="{{item.label.ptBR.formattedText}}"></answer-view>' +
+      '<otus-survey-item item-data="itemData" id="{{itemData.templateID}}" style="margin: 0;display:block;" class="animate-switch"/>';
     var SURVEY_COVER = '<otus-cover />';
 
     /* Public methods */
@@ -74,16 +74,7 @@
         let length = $scope.questions.length;
         $scope.questions.splice(index, length);
         self.ids.splice(index, length);
-        // TODO: TIAGO
-        // $scope.tracks.splice(index, length);
-        // if(PlayerService.isGoingBack()){
-        //   if(PlayerService.getGoBackTo() !== itemData.templateID){
-        //     self.goBack()
-        //     // removeQuestion(itemData.templateID)
-        //   } else {
-        //     PlayerService.setGoBackTo(null)
-        //   }
-        // }
+
       } else {
         return false;
       }

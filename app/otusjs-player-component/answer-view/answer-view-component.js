@@ -15,10 +15,11 @@
     '$scope',
     'ICON',
     '$filter',
-    'otusjs.player.core.player.PlayerService'
+    'otusjs.player.core.player.PlayerService',
+    'otusjs.player.core.renderer.TagComponentBuilderService'
   ]
 
-  function Controller($scope, ICON, $filter, PlayerService) {
+  function Controller($scope, ICON, $filter, PlayerService, TagComponentBuilderService) {
     var self = this;
 
     self.$onInit = onInit;
@@ -26,19 +27,32 @@
 
     const METADADO = ['Não quer responder', 'Não sabe', 'Não se aplica', 'Não há dados'];
 
+    function _constructor() {
+      self.template = TagComponentBuilderService.createTagElement(self.itemData.objectType, true);
+      $scope.itemData = angular.copy(self.itemData);
+      $scope.icon = ICON[self.icon];
+      if(self.itemData.data){
+        $scope.answer = self.itemData.data.answer.value ? 'Resposta: '+_formatAnswer() : 'Metadado: '+  METADADO[self.itemData.data.metadata.value - 1];
+        $scope.comment = self.itemData.data.comment ? 'Comentário: '+ self.itemData.data.comment: '';
+      } else if(self.itemData.dataType === "String"){
+        self.question = self.itemData.value.ptBR.formattedText;
+      }
+      $scope.labelFormatted = angular.copy(self.question);
+      _clearQuestionLabel();
+      $scope.label = self.question;
+    }
 
-    $scope.icon = ICON[self.icon];
-    self.question = self.question.replace(/<\w+>/g, ' ');
-    self.question = self.question.replace(/<\/\w+>/g, ' ');
-    // _formatAnswer();
-    $scope.answer = self.itemData.data.answer.value ? 'Resposta: '+_formatAnswer() : 'Metadado: '+  METADADO[self.answer.metadata.value - 1];
 
-    $scope.comment = self.itemData.data.comment ? 'Comentário: '+ self.itemData.data.comment: '';
+    function _clearQuestionLabel() {
+      self.question = self.question.replace(/<\w+>/g, ' ');
+      self.question = self.question.replace(/<\/\w+>/g, ' ');
+      self.question = self.question.replace(/[\n]/g, ' ');
+    }
 
-    $scope.label = self.question;
+
     function onInit() {
-      console.log($scope.icon);
-      console.log(self.answer)
+      _constructor();
+      console.log(self.itemData)
     }
 
     function goingBack() {
@@ -73,6 +87,15 @@
             });
             break;
           case "filter_none":
+            break;
+          case "attach_file":
+            answer = "";
+            self.itemData.data.answer.value.forEach((value) => {
+              console.log(value.name)
+              answer = answer + angular.copy(value.name) + "; ";
+              console.info(answer);
+            });
+            break;
 
           default:
             answer = self.itemData.data.answer.value;

@@ -26,6 +26,7 @@
     self.$onInit = function() {
       self.answer = CurrentItemService.getFilling().answer.value;
       self.otusQuestion.answer = self;
+      self.view = false;
     };
 
     self.update = function() {

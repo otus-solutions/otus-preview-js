@@ -14,12 +14,18 @@
 
     self.createTagElement = createTagElement;
 
-    function createTagElement(elementType) {
-      return _replace(HtmlBuilderService.generateTagName(elementType));
+    function createTagElement(elementType, onlyView) {
+      return _replace(HtmlBuilderService.generateTagName(elementType), onlyView);
     }
 
-    function _replace(tagName) {
-      return '<otus-' + tagName + ' item-data="$ctrl.itemData" on-update="$ctrl.update(valueType, value)" />';
+    function _replace(tagName, onlyView = false) {
+      if(onlyView){
+
+        return '<otus-' + tagName + '-view item-data="$ctrl.itemData" />';
+      }else {
+
+        return '<otus-' + tagName + ' item-data="$ctrl.itemData" on-update="$ctrl.update(valueType, value)" />';
+      }
     }
   }
 })();

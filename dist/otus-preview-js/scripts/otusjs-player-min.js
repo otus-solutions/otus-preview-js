@@ -177,7 +177,7 @@
   angular
     .module('otusjs.player.component')
     .component('otusPlayer', {
-      template:'<otus-survey-cover on-play="$ctrl.play()" phase-blocker="$ctrl.phaseBlocker" ng-show="$ctrl.showCover" layout-align="center center" layout="column" flex class="player-cover"></otus-survey-cover><md-content layout="column" flex ng-show="$ctrl.showActivity"><otus-survey-header layout="row"></otus-survey-header><span flex="5"></span><md-content layout="row" flex><otus-player-display go-back="$ctrl.goBack()" layout="column" flex style="position: relative !important"></otus-player-display><otus-player-commander layout="column" flex="10" layout-align="end center" layout-padding style="float: right" on-go-back="$ctrl.goBack()" on-pause="$ctrl.pause()" on-stop="$ctrl.stop()" on-go-ahead="$ctrl.goAhead()" on-eject="$ctrl.eject()"></otus-player-commander></md-content></md-content><otus-survey-back-cover on-finalize="$ctrl.eject()" ng-show="$ctrl.showBackCover" layout-align="center center" layout="column" flex class="player-back-cover"></otus-survey-back-cover>',
+      template:'<otus-survey-cover on-play="$ctrl.play()" phase-blocker="$ctrl.phaseBlocker" ng-show="$ctrl.showCover" layout-align="center center" layout="column" flex class="player-cover"></otus-survey-cover><md-content layout="column" flex ng-show="$ctrl.showActivity"><otus-survey-header layout="row"></otus-survey-header><span flex="5"></span><md-content layout="row" flex><otus-player-display go-back="$ctrl.goBack()" layout="column" flex style="position: relative !important"></otus-player-display><otus-player-commander layout="column" flex="10" layout-align="center center" layout-fill on-go-back="$ctrl.goBack()" on-pause="$ctrl.pause()" on-stop="$ctrl.stop()" on-go-ahead="$ctrl.goAhead()" on-eject="$ctrl.eject()"></otus-player-commander></md-content></md-content><otus-survey-back-cover on-finalize="$ctrl.eject()" ng-show="$ctrl.showBackCover" layout-align="center center" layout="column" flex class="player-back-cover"></otus-survey-back-cover>',
       controller: Controller
     });
 
@@ -459,8 +459,8 @@
   function Controller($scope, $element, $compile, $location, $anchorScroll, ActivityFacadeService, PlayerService, ICON) {
     var self = this;
 
-    var SURVEY_ITEM = '<answer-view ng-repeat="item in questions" ng-show="questions.length" go-back="$ctrl.goBack()" icon="item.objectType" item-data="item" question="{{item.label.ptBR.plainText}}"></answer-view>' +
-      '<otus-survey-item item-data="itemData" id="{{itemData.templateID}}" style="margin: 0;display:block;"/>';
+    var SURVEY_ITEM = '<answer-view ng-repeat="item in questions" ng-show="questions.length" go-back="$ctrl.goBack()" icon="item.objectType" item-data="item" question="{{item.label.ptBR.formattedText}}"></answer-view>' +
+      '<otus-survey-item item-data="itemData" id="{{itemData.templateID}}" style="margin: 0;display:block;" class="animate-switch"/>';
     var SURVEY_COVER = '<otus-cover />';
 
     /* Public methods */
@@ -508,16 +508,7 @@
         let length = $scope.questions.length;
         $scope.questions.splice(index, length);
         self.ids.splice(index, length);
-        // TODO: TIAGO
-        // $scope.tracks.splice(index, length);
-        // if(PlayerService.isGoingBack()){
-        //   if(PlayerService.getGoBackTo() !== itemData.templateID){
-        //     self.goBack()
-        //     // removeQuestion(itemData.templateID)
-        //   } else {
-        //     PlayerService.setGoBackTo(null)
-        //   }
-        // }
+
       } else {
         return false;
       }
@@ -1123,7 +1114,7 @@
   angular
     .module('otusjs.player.component')
     .component('otusSingleSelectionQuestion', {
-      template:'<md-content layout-padding style="margin-left: 10px"><md-radio-group id="singleSelectionQuestionRadioGroup" ng-model="$ctrl.answer" ng-change="$ctrl.update()" layout-padding flex><md-radio-button value="{{option.value}}" ng-click="$ctrl.blurOnClick()" ng-repeat="option in $ctrl.itemData.options" layout="row" style="margin: 10px;outline: none;border: 0;"><otus-label item-label="option.label.ptBR.formattedText"></otus-label></md-radio-button></md-radio-group></md-content>',
+      template:'<md-content layout-padding style="margin-left: 10px"><md-radio-group id="singleSelectionQuestionRadioGroup" ng-model="$ctrl.answer" ng-change="$ctrl.update()" layout-padding flex><md-radio-button value="{{option.value}}" ng-click="$ctrl.blurOnClick()" ng-repeat="option in $ctrl.itemData.options" layout="row" style="margin: 10px;outline: none;border: 0;" ng-disabled="$ctrl.view"><otus-label item-label="option.label.ptBR.formattedText"></otus-label></md-radio-button></md-radio-group></md-content>',
       controller: Controller,
       bindings: {
         itemData: '<',
@@ -1145,6 +1136,7 @@
     self.$onInit = function() {
       self.answer = CurrentItemService.getFilling().answer.value;
       self.otusQuestion.answer = self;
+      self.view = false;
     };
 
     self.update = function() {
@@ -1167,6 +1159,35 @@
   }
 }());
 
+(function() {
+  'use strict';
+
+  angular
+    .module('otusjs.player.component')
+    .component('otusSingleSelectionQuestionView', {
+      template:'<md-content layout-padding style="margin-left: 10px"><md-radio-group id="singleSelectionQuestionRadioGroup" ng-model="$ctrl.answer" ng-change="$ctrl.update()" layout-padding flex><md-radio-button value="{{option.value}}" ng-click="$ctrl.blurOnClick()" ng-repeat="option in $ctrl.itemData.options" layout="row" style="margin: 10px;outline: none;border: 0;" ng-disabled="$ctrl.view"><otus-label item-label="option.label.ptBR.formattedText"></otus-label></md-radio-button></md-radio-group></md-content>',
+      controller: Controller,
+      bindings: {
+        itemData: '<'
+      }
+    });
+
+   function Controller() {
+    var self = this;
+
+    self.$onInit = function() {
+      self.answer = self.itemData.data.answer.value;
+      // self.otusQuestion.answer = self;
+      self.view = true;
+    };
+
+    self.update = ()=>{};
+    self.blurOnClick=()=>{};
+
+
+  }
+}());
+
 (function () {
   'use strict';
 
@@ -1182,16 +1203,7 @@
       require: {
         otusQuestion: '^otusQuestion'
       }
-    });
-
-
-}());
-
-(function(){
-  'use strict';
-
-  angular
-    .module('otusjs.player.component')
+    })
     .controller('otusjs.player.component.CheckboxQuestionController', Controller);
 
 
@@ -1255,7 +1267,9 @@
   }
 
 
+
 }());
+
 (function () {
   'use strict';
 
@@ -2317,7 +2331,7 @@
 (function () {
   angular.module('otusjs.player.component')
     .component('answerView',{
-      template:'<md-card flex layout="row"><md-card-header layout-fill style="padding: 0 !important;"><md-card><md-card-content><md-icon md-font-set="material-icons" class="material-icons ng-binding md-layoutTheme-theme">{{icon}}</md-icon></md-card-content></md-card><span></span><md-card-header-text layout-align="center start"><span class="md-title">{{label}}</span> <span class="md-subhead">{{answer}}</span> <span class="md-subhead">{{comment}}</span></md-card-header-text></md-card-header><md-button class="md-icon-button" ng-click><md-icon md-font-set="material-icons" class="material-icons ng-binding md-layoutTheme-theme">remove_red_eye</md-icon><md-tooltip md-direction="bottom">Visualizar</md-tooltip></md-button><md-button class="md-icon-button" ng-click="$ctrl.goingBack()"><md-icon md-font-set="material-icons" class="material-icons ng-binding md-layoutTheme-theme">edit</md-icon><md-tooltip md-direction="bottom">Editar</md-tooltip></md-button></md-card>',
+      template:'<md-card flex layout="column" ng-init="visible=false"><md-card-header layout="row" style="padding: 0 !important;"><md-card><md-card-content ng-if="!visible"><md-icon md-font-set="material-icons" class="material-icons ng-binding md-layoutTheme-theme">{{icon}}</md-icon></md-card-content></md-card><md-card-header-text layout-align="center start" class="truncate" ng-if="!visible"><otus-label class="md-title truncate" item-label="label" style="display: inline-block; width: 90%"></otus-label><span class="md-subhead">{{answer}}</span> <span class="md-subhead">{{comment}}</span></md-card-header-text><md-card-header-text layout-align="center start" ng-if="visible" layout-padding layout-margin><otus-label class="md-title md-headline" layout-padding item-label="labelFormatted"></otus-label></md-card-header-text><md-button class="md-icon-button" ng-click="visible=!visible"><md-icon md-font-set="material-icons" class="material-icons ng-binding md-layoutTheme-theme">remove_red_eye</md-icon></md-button><md-button class="md-icon-button" ng-click="$ctrl.goingBack()"><md-icon md-font-set="material-icons" class="material-icons ng-binding md-layoutTheme-theme">edit</md-icon></md-button></md-card-header><md-card-content layout="row" layout-align="space-between" flex ng-if="visible"><md-content layout="column" layout-fill flex><div layout="row" flex><md-tabs md-dynamic-height layout="column" flex="95"><md-tab label="Resposta"><md-content class="md-padding" bind-html-compile="$ctrl.template"></md-content></md-tab><md-tab label="Metadado"><md-content class="md-padding"><md-content layout-padding style="margin-left: 10px"><md-radio-group id="metadataGroupRadioGroup" ng-model="$ctrl.itemData.data.metadata.value" ng-change="$ctrl.update()" layout-padding flex><md-content value="{{option.value}}" ng-repeat="option in $ctrl.itemData.metadata.options" layout="row" style="margin: 10px"><md-radio-button aria-label="{{option.label}}" ng-click="$ctrl.blurOnClick()" value="{{option.value}}" style="outline: none;border: 0;" flex ng-disabled="true"><otus-label item-label="option.label.ptBR.formattedText"></otus-label></md-radio-button></md-content></md-radio-group></md-content></md-content></md-tab><md-tab label="Comentário"><md-content class="md-padding"><md-content layout-padding><div layout="row"><md-input-container md-no-float class="md-block" flex><textarea ng-model="$ctrl.itemData.data.comment" ng-disabled="true" aria-label="Comentário"></textarea></md-input-container></div></md-content></md-content></md-tab></md-tabs><div layout="column"></div></div></md-content></md-card-content></md-card>',
       controller: Controller,
       bindings: {
         icon: '<',
@@ -2331,10 +2345,11 @@
     '$scope',
     'ICON',
     '$filter',
-    'otusjs.player.core.player.PlayerService'
+    'otusjs.player.core.player.PlayerService',
+    'otusjs.player.core.renderer.TagComponentBuilderService'
   ]
 
-  function Controller($scope, ICON, $filter, PlayerService) {
+  function Controller($scope, ICON, $filter, PlayerService, TagComponentBuilderService) {
     var self = this;
 
     self.$onInit = onInit;
@@ -2342,19 +2357,32 @@
 
     const METADADO = ['Não quer responder', 'Não sabe', 'Não se aplica', 'Não há dados'];
 
+    function _constructor() {
+      self.template = TagComponentBuilderService.createTagElement(self.itemData.objectType, true);
+      $scope.itemData = angular.copy(self.itemData);
+      $scope.icon = ICON[self.icon];
+      if(self.itemData.data){
+        $scope.answer = self.itemData.data.answer.value ? 'Resposta: '+_formatAnswer() : 'Metadado: '+  METADADO[self.itemData.data.metadata.value - 1];
+        $scope.comment = self.itemData.data.comment ? 'Comentário: '+ self.itemData.data.comment: '';
+      } else if(self.itemData.dataType === "String"){
+        self.question = self.itemData.value.ptBR.formattedText;
+      }
+      $scope.labelFormatted = angular.copy(self.question);
+      _clearQuestionLabel();
+      $scope.label = self.question;
+    }
 
-    $scope.icon = ICON[self.icon];
-    self.question = self.question.replace(/<\w+>/g, ' ');
-    self.question = self.question.replace(/<\/\w+>/g, ' ');
-    // _formatAnswer();
-    $scope.answer = self.itemData.data.answer.value ? 'Resposta: '+_formatAnswer() : 'Metadado: '+  METADADO[self.answer.metadata.value - 1];
 
-    $scope.comment = self.itemData.data.comment ? 'Comentário: '+ self.itemData.data.comment: '';
+    function _clearQuestionLabel() {
+      self.question = self.question.replace(/<\w+>/g, ' ');
+      self.question = self.question.replace(/<\/\w+>/g, ' ');
+      self.question = self.question.replace(/[\n]/g, ' ');
+    }
 
-    $scope.label = self.question;
+
     function onInit() {
-      console.log($scope.icon);
-      console.log(self.answer)
+      _constructor();
+      console.log(self.itemData)
     }
 
     function goingBack() {
@@ -2389,6 +2417,15 @@
             });
             break;
           case "filter_none":
+            break;
+          case "attach_file":
+            answer = "";
+            self.itemData.data.answer.value.forEach((value) => {
+              console.log(value.name)
+              answer = answer + angular.copy(value.name) + "; ";
+              console.info(answer);
+            });
+            break;
 
           default:
             answer = self.itemData.data.answer.value;
@@ -4118,12 +4155,18 @@
 
     self.createTagElement = createTagElement;
 
-    function createTagElement(elementType) {
-      return _replace(HtmlBuilderService.generateTagName(elementType));
+    function createTagElement(elementType, onlyView) {
+      return _replace(HtmlBuilderService.generateTagName(elementType), onlyView);
     }
 
-    function _replace(tagName) {
-      return '<otus-' + tagName + ' item-data="$ctrl.itemData" on-update="$ctrl.update(valueType, value)" />';
+    function _replace(tagName, onlyView = false) {
+      if(onlyView){
+
+        return '<otus-' + tagName + '-view item-data="$ctrl.itemData" />';
+      }else {
+
+        return '<otus-' + tagName + ' item-data="$ctrl.itemData" on-update="$ctrl.update(valueType, value)" />';
+      }
     }
   }
 })();
