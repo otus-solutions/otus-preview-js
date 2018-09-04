@@ -1,18 +1,20 @@
 <md-card flex layout="column">
-  <md-card-header layout="row" style="padding: 0 !important;" ng-if="!$ctrl.view" flex>
-    <md-card>
-      <md-card-content ng-if="!$ctrl.view">
+  <md-card-header layout="row" style="padding: 0 !important;" ng-show="!$ctrl.view" flex>
+
+    <md-card">
+      <md-card-content ng-show="!$ctrl.view">
         <md-icon md-font-set="material-icons" class="material-icons ng-binding md-layoutTheme-theme">{{icon}}</md-icon>
       </md-card-content>
     </md-card>
-    <md-card-header-text layout-align="center start" layout="row" class="truncate" ng-if="!$ctrl.view" flex>
-      <otus-label class="md-title truncate" item-label="label" style="display: inline-block; width: 90%"></otus-label>
-      <span class="md-subhead">{{answer}}</span>
+
+    <md-card-header-text  layout="column" layout-fill class="truncate" ng-show="!$ctrl.view">
+      <otus-label class="md-title truncate" item-label="label" style="display: inline-block;"></otus-label>
+      <span class="md-subhead" style="display: inline-block;">{{answer}}</span>
       <span class="md-subhead">{{comment}}</span>
     </md-card-header-text>
 
 
-    <div layout="row" layout-padding layout-margin layout-fill layout-align="end start" >
+    <div layout="row" layout-padding layout-margin layout-align="end start">
       <md-button class="md-icon-button" ng-click="$ctrl.viewQuestion()" >
         <md-icon md-font-set="material-icons" class="material-icons ng-binding md-layoutTheme-theme">remove_red_eye</md-icon>
         <md-tooltip md-direction="down">
@@ -28,7 +30,7 @@
     </div>
   </md-card-header>
 
-  <div ng-if="$ctrl.view">
+  <div ng-show="$ctrl.view">
     <md-toolbar>
       <div class="md-toolbar-tools" layout="row">
         <h2 flex md-truncate>A questão está em modo de visualização</h2>
@@ -48,7 +50,7 @@
       </div>
     </md-toolbar>
     <md-card-header layout="row" flex>
-      <md-card-header-text layout-align="center start" ng-if="$ctrl.view" layout-padding layout-margin>
+      <md-card-header-text layout-align="center start" ng-show="$ctrl.view" layout-padding layout-margin>
         <otus-label class="md-title md-headline" layout-padding item-label="labelFormatted"></otus-label>
       </md-card-header-text>
     </md-card-header>
@@ -91,6 +93,6 @@
 
       </div>
     </md-content>
-    <otus-misc-item ng-if="$ctrl.isItem()" item-data="$ctrl.itemData" layout="column" flex></otus-misc-item>
+    <otus-misc-item ng-show="$ctrl.isItem()" item-data="$ctrl.itemData" layout="column" flex></otus-misc-item>
   </md-card-content>
 </md-card>

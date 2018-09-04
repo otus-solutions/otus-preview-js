@@ -128,7 +128,8 @@ function _metadadaBuilder() {
           case "filter_none":
             break;
           case "check_box":
-            answer = "Multiplas respostas, clique em visualizar para ver mais";
+            console.log(66)
+            answer = "Multiplas respostas, clique em visualizar questão.";
             break;
           case "attach_file":
             answer = formatFileUpload();

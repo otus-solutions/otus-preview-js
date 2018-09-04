@@ -1,0 +1,62 @@
+<!doctype html>
+<html lang="en" ng-app="otusjs.player.standalone">
+
+  <head>
+    <meta charset="utf-8"/>
+    <base href="/otus-preview-js/"/>
+    <link href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700,400italic" rel="stylesheet"/>
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet"/>
+    <link href="node_modules/angular-material/angular-material.min.css" rel="stylesheet"/>
+    <link href="app/assets/otusjs-player-standalone.css" rel="stylesheet"/>
+
+    
+
+    <title>OtusJS Player Standalone</title>
+  </head>
+
+  <body layout="column" flex>
+    <div ui-view layout="row" flex layout-align="center start"></div>
+
+    <!-- OTUSJS PLAYER STANDALONE APP DEPENDECIES -->
+    <!-- jQuery -->
+    <script src="node_modules/jquery/dist/jquery.min.js"></script>
+
+    <!-- AngularJS -->
+    <script src="node_modules/angular/angular.min.js"></script>
+    <!-- ui-router -->
+    <script src="node_modules/angular-ui-router/release/angular-ui-router.min.js"></script>
+    <!-- Angular Material & Dependencies -->
+    <script src="node_modules/angular-material/angular-material.min.js"></script>
+    <script src="node_modules/angular-aria/angular-aria.min.js"></script>
+    <script src="node_modules/angular-animate/angular-animate.min.js"></script>
+    <script src="node_modules/angular-messages/angular-messages.min.js"></script>
+    <!-- Bind HTML Compile -->
+    <script src="node_modules/angular-bind-html-compile-ci-dev/angular-bind-html-compile.js"></script>
+    <script src="node_modules/angular-mousewheel/mousewheel.js"></script>
+    <!-- Otus Model JS -->
+    <script src="node_modules/otus-model-js/dist/otus-model.min.js"></script>
+    <script src="node_modules/otus-model-js/dist/st-utils-min.js"></script>
+    <!-- Otus Validation JS -->
+    <script src="node_modules/otus-validation-js/dist/otus-validation-min.js"></script>
+
+
+    <!-- OTUSJS PLAYER STANDALONE -->
+    <script src="app/app.js"></script>
+    <!-- CONFIG -->
+    <script src="app/config/otusjs-config-module.js"></script>
+    <script src="app/config/state-configuration.js"></script>
+    <script src="app/config/theme-configuration.js"></script>
+    <script src="app/config/locale-configuration.js"></script>
+    <!-- DATA -->
+    <script src="app/otusjs-player-data/otusjs-player-data-module.js"></script>
+    <script src="app/otusjs-player-data/fake-data-service.js"></script>
+    <!-- VIEWER -->
+    <script src="app/otusjs-player-viewer/otusjs-player-viewer-module.js"></script>
+    <script src="app/otusjs-player-viewer/sheet-view-controller.js"></script>
+
+    <!-- OTUSJS PLAYER -->
+    <script src="scripts/otusjs-player-min.js"></script>
+    <!-- END OTUSJS PLAYER -->
+  </body>
+
+</html>
