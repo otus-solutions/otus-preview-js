@@ -18,7 +18,7 @@
       return _replace(HtmlBuilderService.generateTagName(elementType), onlyView);
     }
 
-    function _replace(tagName, onlyView = false) {
+    function _replace(tagName, onlyView) {
       if(onlyView){
 
         return '<otus-' + tagName + '-view item-data="$ctrl.itemData" />';

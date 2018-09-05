@@ -1,11 +1,11 @@
-fdescribe('checkbox question controller component', function () {
+describe('checkbox question controller component', function () {
   var Mock = {};
   var controller;
 
   beforeEach(function () {
     mockCurrentItemService();
 
-    module('otusjs.player.component', function ($provide) {
+    angular.mock.module('otusjs.player.component', function ($provide) {
       $provide.value('otusjs.player.data.activity.CurrentItemService', Mock.CurrentItemService);
     });
 
@@ -22,8 +22,6 @@ fdescribe('checkbox question controller component', function () {
     mockBindings();
   });
 
-  beforeEach(function () {
-  });
 
   describe('the initialization', function () {
     it('should have a defined controller', function () {
@@ -46,10 +44,25 @@ fdescribe('checkbox question controller component', function () {
       controller.$onInit();
 
       expect(controller.answerArray).toEqual(Mock.arrayAnswer.answer.value);
+      expect(controller.view).toEqual(false);
 
     });
 
   });
+
+  describe('the clear function call', function () {
+    beforeEach(function () {
+      spyOn(controller, 'clear').and.callThrough();
+      spyOn(Mock.CurrentItemService, 'getFilling').and.returnValue(Mock.arrayAnswer);
+      // controller.answerArray = [];
+      controller.clear();
+    });
+
+    it('should call clear function with success', function () {
+      expect(controller.answerArray).not.toBeUndefined();
+    });
+  });
+
 
 
   describe('the update function and the parent onUpdate function call', function () {
@@ -119,7 +132,8 @@ fdescribe('checkbox question controller component', function () {
           }
         ],
         'objectType': 'AnswerFill',
-        'type': 'CheckboxQuestion'
+        'type': 'CheckboxQuestion',
+        clear: function () {}
       }
     };
 

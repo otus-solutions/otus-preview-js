@@ -1,4 +1,4 @@
-describe('surveyItem component', function() {
+xdescribe('surveyItem component', function() {
 
   var $ctrl;
   var $componentController;

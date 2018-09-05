@@ -20,9 +20,5 @@
       self.view = true;
     };
 
-    self.update = ()=>{};
-    self.blurOnClick=()=>{};
-
-
   }
 }());

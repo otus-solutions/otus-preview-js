@@ -2,14 +2,14 @@
   angular.module('otusjs.player.component')
     .component('answerView', {
       templateUrl: 'app/otusjs-player-component/answer-view/answer-view-template.html',
-      controller: Controller,
+      controller: "answerViewCtrl as $ctrl",
       bindings: {
         icon: '<',
         question: '@',
         itemData: '<',
         goBack: "&"
       }
-    });
+    }).controller("answerViewCtrl", Controller);
 
   Controller.$inject = [
     '$scope',
@@ -17,7 +17,7 @@
     '$filter',
     'otusjs.player.core.player.PlayerService',
     'otusjs.player.core.renderer.TagComponentBuilderService'
-  ]
+  ];
 
   function Controller($scope, ICON, $filter, PlayerService, TagComponentBuilderService) {
     var self = this;
@@ -25,6 +25,8 @@
     self.$onInit = onInit;
     self.goingBack = goingBack;
     self.viewQuestion = viewQuestion;
+    self.isQuestion = isQuestion;
+    self.isItem = isItem;
 
 
     function _constructor() {
@@ -47,9 +49,9 @@
       $scope.label = self.question;
     }
 
-function _metadadaBuilder() {
+    function _metadadaBuilder() {
       self.METADADA = [];
-      self.itemData.metadata.options.forEach((option) => {
+      self.itemData.metadata.options.forEach(function(option) {
         self.METADADA.push(option.label.ptBR.plainText);
       })
     }
@@ -64,7 +66,6 @@ function _metadadaBuilder() {
     function onInit() {
       $scope.itemData = angular.copy(self.itemData);
       _constructor();
-      console.log(self.itemData)
     }
 
     function goingBack() {
@@ -76,17 +77,19 @@ function _metadadaBuilder() {
       self.view = !self.view;
     }
 
-    function formatDate(value, format = 'dd/MM/yyyy') {
+    function formatDate(value) {
+      var format = 'dd/MM/yyyy'
       return $filter('date')(new Date(value), format);
     }
 
-    function formatTime(value, format = 'HH:mm') {
+    function formatTime(value) {
+      var format = 'HH:mm';
       return $filter('date')(new Date(value), format);
     }
 
     function formatSingleSelection() {
-      let _answer = '';
-      self.itemData.options.find((option) => {
+      var _answer = '';
+      self.itemData.options.find(function(option){
         if(option.value === parseInt(self.itemData.data.answer.value)){
           _answer =  self.itemData.options[option.value - 1].label.ptBR.plainText;
         }
@@ -95,14 +98,13 @@ function _metadadaBuilder() {
     }
 
     function formatFileUpload() {
-      let _answer = "";
-      self.itemData.data.answer.value.forEach((value) => {
+      var _answer = "";
+      self.itemData.data.answer.value.forEach(function(value){
         _answer = _answer + angular.copy(value.name) + "; ";
       });
       return  _answer;
     }
-    self.isQuestion = isQuestion;
-    self.isItem = isItem;
+
     function isQuestion() {
       return (self.itemData.objectType === 'ImageItem') || (self.itemData.objectType === 'TextItem') ? false : true;
     }
@@ -112,8 +114,7 @@ function _metadadaBuilder() {
     }
 
     function _formatAnswer() {
-      let answer = null;
-      console.log($scope.icon);
+      var answer = null;
       if(self.itemData.data.answer.value){
         switch ($scope.icon){
           case "date_range":
@@ -147,4 +148,4 @@ function _metadadaBuilder() {
 
     }
   }
-})();
+}());

@@ -1,4 +1,4 @@
-describe('otusPlayerCommander component', function() {
+xdescribe('otusPlayerCommander component', function() {
 
   var UNIT_NAME = 'otusPlayerCommander';
   var Mock = {};

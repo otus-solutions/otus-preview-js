@@ -69,9 +69,9 @@
     $scope.removeQuestion = removeQuestion;
 
     function removeQuestion(id) {
-      let index = _getIndexQuestionId(id);
+      var index = _getIndexQuestionId(id);
       if(index > -1){
-        let length = $scope.questions.length;
+        var length = $scope.questions.length;
         $scope.questions.splice(index, length);
         self.ids.splice(index, length);
 
@@ -97,7 +97,7 @@
 
     function _saveQuestion() {
       if($scope.itemData.templateID){
-        let question = angular.copy($scope.itemData);
+        var question = angular.copy($scope.itemData);
         // _trailConstructor(question)
         question.data = ActivityFacadeService.fetchItemAnswerByTemplateID(question.templateID);
 
@@ -113,20 +113,6 @@
 
     function remove() {
       $element.find('#pagePlayer').remove();
-    }
-
-    function _trailConstructor(item) {
-      $scope.tracks.push({
-        id: item.customID,
-        icon: ICON[item.objectType],
-        text: item.customID,
-        time: "",
-        styleClass:"md-accent",
-        click: () => {
-          PlayerService.setGoBackTo(item.templateID);
-          self.goBack();
-        }
-      })
     }
 
     function onInit() {
