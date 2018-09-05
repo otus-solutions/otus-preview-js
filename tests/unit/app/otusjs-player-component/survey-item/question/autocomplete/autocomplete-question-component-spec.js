@@ -47,7 +47,7 @@ describe('autocomplete question controller component', function () {
 
   });
 
-  describe('the clear function call', function () {
+  xdescribe('the clear function call', function () {
     beforeEach(function () {
       controller.answer = [];
       spyOn(controller, 'clear').and.callThrough();
@@ -63,7 +63,7 @@ describe('autocomplete question controller component', function () {
 
 
 
-  describe('the update function and the parent onUpdate function call', function () {
+  xdescribe('the update function and the parent onUpdate function call', function () {
     beforeEach(function () {
       spyOn(Mock.CurrentItemService, 'getFilling').and.returnValue(Mock.arrayAnswer);
       spyOn(controller, 'onUpdate').and.callThrough();

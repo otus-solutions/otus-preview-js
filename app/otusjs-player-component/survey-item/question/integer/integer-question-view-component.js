@@ -9,9 +9,7 @@
       bindings: {
         itemData: '<'
       }
-    }).controller("otusIntegerQuestionViewCtrl", Controller);
-
-  Controller.$inject = [];
+    }).controller("otusIntegerQuestionViewCtrl", Controller);  
 
   function Controller() {
     var self = this;

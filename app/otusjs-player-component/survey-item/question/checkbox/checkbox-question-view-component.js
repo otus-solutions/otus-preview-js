@@ -1,4 +1,4 @@
-(function() {
+(function () {
   'use strict';
 
   angular
@@ -11,13 +11,12 @@
       }
     }).controller("otusCheckboxQuestionViewCtrl", Controller);
 
-   function Controller() {
+  function Controller() {
     var self = this;
 
-    self.$onInit = function() {
+    self.$onInit = function () {
       self.answerArray = self.itemData.data.answer.value;
       self.view = true;
     };
-
   }
 }());
