@@ -17,6 +17,7 @@ module.exports = function(config) {
             /* External dependencies */
             NODE_MODULES_ROOT_PATH + 'jquery/dist/jquery.min.js',
             NODE_MODULES_ROOT_PATH + 'angular/angular.min.js',
+            NODE_MODULES_ROOT_PATH + 'babel-polyfill/dist/polyfill.js',
             NODE_MODULES_ROOT_PATH + 'angular-animate/angular-animate.min.js',
             NODE_MODULES_ROOT_PATH + 'angular-aria/angular-aria.min.js',
             NODE_MODULES_ROOT_PATH + 'angular-bind-html-compile-ci-dev/angular-bind-html-compile.js',

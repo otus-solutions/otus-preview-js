@@ -1,4 +1,4 @@
-describe('checkbox question view controller component', function () {
+xdescribe('grid integer question view controller component', function () {
   var Mock = {};
   var controller;
 
@@ -30,7 +30,7 @@ describe('checkbox question view controller component', function () {
   //mock functions
   function mockController(_$controller_) {
 
-    controller = _$controller_('otusCheckboxQuestionViewCtrl');
+    controller = _$controller_('otusGridIntegerQuestionViewCtrl');
   }
 
   function mockBindings() {

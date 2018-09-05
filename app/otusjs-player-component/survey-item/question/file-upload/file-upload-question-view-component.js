@@ -12,16 +12,13 @@
     }).controller("otusFileUploadQuestionViewCtrl", Controller);
 
   Controller.$inject = [
-    '$mdToast',
-    '$q',
-    '$mdDialog',
     'otusjs.player.data.activity.CurrentItemService',
     'otusjs.utils.FileUploadFactory',
     '$scope',
     'otusjs.surveyItem.customAnswer.FileUploadAnswerFactory',
   ];
 
-  function Controller($mdToast, $q, $mdDialog, CurrentItemService, FileUploadService, $scope, FileUploadAnswerFactory) {
+  function Controller(CurrentItemService, FileUploadService, $scope, FileUploadAnswerFactory) {
     var self = this;
 
     var _uploadInterface;
@@ -59,8 +56,6 @@
           link.download = responseBlob.name;
           document.body.appendChild(link);
           link.click();
-        }, function(err) {
-          _toastError('transferir');
         });
     }
 

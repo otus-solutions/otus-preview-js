@@ -7,8 +7,8 @@ describe('autocomplete question controller component', function () {
 
     angular.mock.module('otusjs.player.component', function ($provide) {
       $provide.value('otusjs.player.data.activity.CurrentItemService', Mock.CurrentItemService);
-      $provide.value('otusjs.utils.DatasourceService', Mock.CurrentItemService);
-      $provide.value('otusjs.utils.SearchQueryFactory', Mock.CurrentItemService);
+      $provide.value('otusjs.utils.DatasourceService', Mock.DatasourceService);
+      $provide.value('otusjs.utils.SearchQueryFactory', Mock.SearchQueryFactory);
     });
 
 
@@ -30,22 +30,18 @@ describe('autocomplete question controller component', function () {
       expect(controller).toBeDefined();
     });
 
-    it('should build an new option array using the itemData when CurrentItemService provides a null answer', function () {
+    it('should build an new answer the itemData when CurrentItemService provides a null answer', function () {
       spyOn(Mock.CurrentItemService, 'getFilling').and.returnValue(Mock.nullAnswer);
       controller.$onInit();
 
-      expect(controller.answerArray.length).toEqual(controller.itemData.options.length);
-
-      controller.answerArray.forEach(function (answer, index) {
-        expect(answer.option).toEqual(controller.itemData.options[index].customOptionID);
-      });
     });
 
-    it('should build an not empty array when CurrentItemService provides a not empty array as answer', function () {
+    it('should build an not empty answer when CurrentItemService provides a not empty answer', function () {
       spyOn(Mock.CurrentItemService, 'getFilling').and.returnValue(Mock.arrayAnswer);
       controller.$onInit();
 
-      expect(controller.answerArray).toEqual(Mock.arrayAnswer.answer.value);
+      expect(controller.answer).toEqual(Mock.arrayAnswer.answer.value);
+      expect(controller.view).toEqual(false);
 
     });
 
@@ -53,14 +49,15 @@ describe('autocomplete question controller component', function () {
 
   describe('the clear function call', function () {
     beforeEach(function () {
+      controller.answer = [];
       spyOn(controller, 'clear').and.callThrough();
       spyOn(Mock.CurrentItemService, 'getFilling').and.returnValue(Mock.arrayAnswer);
-      // controller.answerArray = [];
+
       controller.clear();
     });
 
     it('should call clear function with success', function () {
-      expect(controller.answerArray).not.toBeUndefined();
+      expect(controller.answer).toBeUndefined();
     });
   });
 
@@ -68,31 +65,28 @@ describe('autocomplete question controller component', function () {
 
   describe('the update function and the parent onUpdate function call', function () {
     beforeEach(function () {
-      spyOn(Mock.CurrentItemService, 'getFilling').and.returnValue(Mock.nullAnswer);
+      spyOn(Mock.CurrentItemService, 'getFilling').and.returnValue(Mock.arrayAnswer);
       spyOn(controller, 'onUpdate').and.callThrough();
 
 
       controller.$onInit();
     });
 
-    it('should  call with self.answerArray if some option is true', function () {
-      controller.answerArray = Mock.arrayAnswer.answer.value;
+    it('should  call with self.answer if some option is true', function () {
+      controller.answer = {value: Mock.arrayAnswer.answer.value};
       controller.update();
 
       var answerObject = {
         valueType: 'answer',
-        value: controller.answerArray
+        value: Mock.arrayAnswer.answer.value
       };
       expect(controller.onUpdate).toHaveBeenCalledWith(answerObject);
 
     });
 
     it('should  call with null if any option is true', function () {
-      controller.answerArray = Mock.arrayAnswer.answer.value;
+      controller.answer = null;
 
-      controller.answerArray.forEach(function (answer) {
-        answer.state = false;
-      });
       controller.update();
 
       var answerObject = {
@@ -114,7 +108,7 @@ describe('autocomplete question controller component', function () {
     Mock.nullAnswer = {answer: {value: null}};
     Mock.arrayAnswer = {
       answer: {
-        'value': 'MEDICAMENTO',
+        value: 'Medicamentos',
         'objectType': 'AnswerFill',
         'type': 'AutocompleteQuestion',
         clear: function () {}
@@ -123,13 +117,26 @@ describe('autocomplete question controller component', function () {
 
     Mock.CurrentItemService = {
       getFilling: function () {
-        return Mock.answerArray;
+        return Mock.answer;
       }
     };
 
     Mock.DatasourceService = {
       fetchDatasources: function (templateID) {
         return Promise.resolve("medicamentos");
+      }
+    };
+
+    Mock.SearchQueryFactory = {
+      newStringSearch : function () {
+        var self = this;
+        self.perform = perform;
+
+        function perform(text) {
+          return Promise.resolve(text);
+        }
+
+        return self;
       }
     };
   }
