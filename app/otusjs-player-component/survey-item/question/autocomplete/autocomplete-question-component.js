@@ -5,7 +5,7 @@
     .module('otusjs.player.component')
     .component('otusAutocompleteQuestion', {
       templateUrl: 'app/otusjs-player-component/survey-item/question/autocomplete/autocomplete-question-template.html',
-      controller: Controller,
+      controller: "otusAutocompleteQuestionCtrl as $ctrl",
       bindings: {
         itemData: '<',
         onUpdate: '&'
@@ -13,7 +13,8 @@
       require: {
         otusQuestion: '^otusQuestion'
       }
-    });
+    })
+    .controller("otusAutocompleteQuestionCtrl", Controller);
 
   Controller.$inject = [
     'otusjs.player.data.activity.CurrentItemService',
@@ -28,6 +29,7 @@
     /* Question Methods */
     self.$onInit = function() {
       self.dataReady = false;
+      self.view = false;
       self.answer = CurrentItemService.getFilling().answer.value;
       self.otusQuestion.answer = self;
       _setupDatasourceQuery();

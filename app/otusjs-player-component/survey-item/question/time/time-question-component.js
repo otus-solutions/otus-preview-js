@@ -5,7 +5,7 @@
     .module('otusjs.player.component')
     .component('otusTimeQuestion', {
       templateUrl: 'app/otusjs-player-component/survey-item/question/time/time-question-template.html',
-      controller: Controller,
+      controller: "otusTimeQuestionCtrl as $ctrl",
       bindings: {
         itemData: '<',
         onUpdate: '&'
@@ -13,7 +13,7 @@
       require: {
         otusQuestion: '^otusQuestion'
       }
-    });
+    }).controller("otusTimeQuestionCtrl", Controller);
 
   Controller.$inject = [
     'otusjs.player.data.activity.CurrentItemService',
@@ -27,6 +27,7 @@
     self.$onInit = function() {
       self.answer = CurrentItemService.getFilling().answer.value || new ImmutableDate(null);
       self.otusQuestion.answer = self;
+      self.view = false;
     };
 
     self.update = function(e) {

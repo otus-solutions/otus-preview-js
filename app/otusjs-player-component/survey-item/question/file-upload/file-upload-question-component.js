@@ -5,7 +5,7 @@
     .module('otusjs.player.component')
     .component('otusFileUploadQuestion', {
       templateUrl: 'app/otusjs-player-component/survey-item/question/file-upload/file-upload-question-template.html',
-      controller: Controller,
+      controller: "otusFileUploadQuestionCtrl as $ctrl",
       bindings: {
         itemData: '<',
         onUpdate: '&'
@@ -13,7 +13,7 @@
       require: {
         otusQuestion: '^otusQuestion'
       }
-    });
+    }).controller("otusFileUploadQuestionCtrl", Controller);
 
   Controller.$inject = [
     '$mdToast',
@@ -61,6 +61,7 @@
       _deleteDialog = _createDeleteDialog();
       _pendingArrayControl = 0;
       self.pendingCounter = 0;
+      self.view = false;
     }
 
 

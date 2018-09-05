@@ -5,7 +5,7 @@
     .module('otusjs.player.component')
     .component('otusEmailQuestion', {
       templateUrl: 'app/otusjs-player-component/survey-item/question/email/email-question-template.html',
-      controller: Controller,
+      controller: "otusEmailQuestionCtrl as $ctrl",
       bindings: {
         itemData: '<',
         onUpdate: '&'
@@ -13,7 +13,7 @@
       require : {
         otusQuestion: '^otusQuestion'
       }
-    });
+    }).controller("otusEmailQuestionCtrl", Controller);
 
   Controller.$inject = [
     'otusjs.player.data.activity.CurrentItemService'
@@ -25,6 +25,7 @@
     self.$onInit = function() {
       self.answer = CurrentItemService.getFilling().answer.value;
       self.otusQuestion.answer = self;
+      self.view = false;
     };
 
     self.update = function() {

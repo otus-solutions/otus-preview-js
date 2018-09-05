@@ -5,7 +5,7 @@
     .module('otusjs.player.component')
     .component('otusGridTextQuestion', {
       templateUrl: 'app/otusjs-player-component/survey-item/question/grid-text/grid-text-question-template.html',
-      controller: Controller,
+      controller: "otusGridTextQuestionCtrl as $ctrl",
       bindings: {
         itemData: '<',
         onUpdate: '&'
@@ -13,7 +13,7 @@
       require: {
         otusQuestion: '^otusQuestion'
       }
-    });
+    }).controller("otusGridTextQuestionCtrl", Controller);
 
   Controller.$inject = [
     'otusjs.player.data.activity.CurrentItemService'
@@ -31,6 +31,7 @@
       self.answerArray = CurrentItemService.getFilling().answer.value;
       self.otusQuestion.answer = self;
       _fixArray();
+      self.view = false;
     }
 
     function update(outerIndex, innerIndex) {

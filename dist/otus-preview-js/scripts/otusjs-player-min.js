@@ -923,8 +923,8 @@
   angular
     .module('otusjs.player.component')
     .component('otusCalendarQuestion', {
-      template:'<md-content layout-padding><div layout="row" style="margin-top: 15px"><md-datepicker ng-model="$ctrl.answer.date" ng-blur="$ctrl.update()" md-placeholder="Insira a data"></md-datepicker></div></md-content>',
-      controller: Controller,
+      template:'<md-content layout-padding><div layout="row" style="margin-top: 15px"><md-datepicker ng-model="$ctrl.answer.date" ng-blur="$ctrl.update()" md-placeholder="Insira a data" ng-disabled="$ctrl.view"></md-datepicker></div></md-content>',
+      controller: "otusCalendarQuestionCtrl as $ctrl",
       bindings: {
         itemData: '<',
         onUpdate: '&'
@@ -932,7 +932,7 @@
       require: {
         otusQuestion: '^otusQuestion'
       }
-    });
+    }).controller("otusCalendarQuestionCtrl", Controller);
 
   Controller.$inject = [
     'otusjs.player.data.activity.CurrentItemService',
@@ -945,6 +945,7 @@
     self.$onInit = function() {
       self.answer = CurrentItemService.getFilling().answer.value || new ImmutableDate(null);
       self.otusQuestion.answer = self;
+      self.view = false;
     };
 
     self.update = function() {
@@ -966,9 +967,34 @@
 
   angular
     .module('otusjs.player.component')
+    .component('otusCalendarQuestionView', {
+      template:'<md-content layout-padding><div layout="row" style="margin-top: 15px"><md-datepicker ng-model="$ctrl.answer.date" ng-blur="$ctrl.update()" md-placeholder="Insira a data" ng-disabled="$ctrl.view"></md-datepicker></div></md-content>',
+      controller: "otusCalendarQuestionViewCtrl as $ctrl",
+      bindings: {
+        itemData: '<'
+      }
+    }).controller("otusCalendarQuestionViewCtrl", Controller);
+
+  Controller.$inject = [];
+
+  function Controller() {
+    var self = this;
+
+    self.$onInit = function() {
+      self.answer = self.itemData.data.answer.value;
+      self.view = true;
+    };
+  }
+}());
+
+(function() {
+  'use strict';
+
+  angular
+    .module('otusjs.player.component')
     .component('otusIntegerQuestion', {
-      template:'<md-content layout-padding><div layout="row"><md-input-container md-no-float class="md-block" flex-gt-sm="45"><input type="number" step="1" ng-model="$ctrl.answer" ng-change="$ctrl.update()" ui-integer placeholder="Insira um valor inteiro"></md-input-container><md-input-container class="md-block" flex-gt-sm="45"><otus-label item-label="$ctrl.itemData.unit"></otus-label></md-input-container></div></md-content>',
-      controller: Controller,
+      template:'<md-content layout-padding><div layout="row"><md-input-container md-no-float class="md-block" flex-gt-sm="45"><input type="number" step="1" ng-model="$ctrl.answer" ng-change="$ctrl.update()" ui-integer placeholder="Insira um valor inteiro" ng-disabled="$ctrl.view"></md-input-container><md-input-container class="md-block" flex-gt-sm="45"><otus-label item-label="$ctrl.itemData.unit"></otus-label></md-input-container></div></md-content>',
+      controller: "otusIntegerQuestionCtrl as $ctrl",
       bindings: {
         itemData: '<',
         onUpdate: '&'
@@ -976,7 +1002,7 @@
       require: {
         otusQuestion: '^otusQuestion'
       }
-    });
+    }).controller("otusIntegerQuestionCtrl", Controller);
 
   Controller.$inject = [
     'otusjs.player.data.activity.CurrentItemService'
@@ -988,6 +1014,7 @@
     self.$onInit = function() {
       self.answer = CurrentItemService.getFilling().answer.value;
       self.otusQuestion.answer = self;
+      self.view = false;
     };
 
     self.update = function() {
@@ -1001,6 +1028,32 @@
       CurrentItemService.getFilling().answer.clear();
       delete self.answer;
     }
+  }
+}());
+
+(function() {
+  'use strict';
+
+  angular
+    .module('otusjs.player.component')
+    .component('otusIntegerQuestionView', {
+      template:'<md-content layout-padding><div layout="row"><md-input-container md-no-float class="md-block" flex-gt-sm="45"><input type="number" step="1" ng-model="$ctrl.answer" ng-change="$ctrl.update()" ui-integer placeholder="Insira um valor inteiro" ng-disabled="$ctrl.view"></md-input-container><md-input-container class="md-block" flex-gt-sm="45"><otus-label item-label="$ctrl.itemData.unit"></otus-label></md-input-container></div></md-content>',
+      controller: "otusIntegerQuestionViewCtrl as $ctrl",
+      bindings: {
+        itemData: '<'
+      }
+    }).controller("otusIntegerQuestionViewCtrl", Controller);
+
+  Controller.$inject = [];
+
+  function Controller() {
+    var self = this;
+
+    self.$onInit = function() {
+      self.answer = self.itemData.data.answer.value;
+      self.view = true;
+    };
+
   }
 }());
 
@@ -1071,8 +1124,8 @@
   angular
     .module('otusjs.player.component')
     .component('otusDecimalQuestion', {
-      template:'<md-content layout-padding><div layout="row"><md-input-container md-no-float class="md-block" flex-gt-sm="45"><input type="number" step="any" ng-model="$ctrl.answer" ng-change="$ctrl.update()" ui-decimal placeholder="Insira um valor decimal"></md-input-container><md-input-container class="md-block" flex-gt-sm="45"><otus-label item-label="$ctrl.itemData.unit"></otus-label></md-input-container></div></md-content>',
-      controller: Controller,
+      template:'<md-content layout-padding><div layout="row"><md-input-container md-no-float class="md-block" flex-gt-sm="45"><input type="number" step="any" ng-model="$ctrl.answer" ng-change="$ctrl.update()" ui-decimal placeholder="Insira um valor decimal" ng-disabled="$ctrl.view"></md-input-container><md-input-container class="md-block" flex-gt-sm="45"><otus-label item-label="$ctrl.itemData.unit"></otus-label></md-input-container></div></md-content>',
+      controller: "otusDecimalQuestionCtrl as $ctrl",
       bindings: {
         itemData: '<',
         onUpdate: '&'
@@ -1080,7 +1133,7 @@
       require : {
         otusQuestion: '^otusQuestion'
       }
-    });
+    }).controller("otusDecimalQuestionCtrl", Controller);
 
   Controller.$inject = [
     'otusjs.player.data.activity.CurrentItemService'
@@ -1092,6 +1145,7 @@
     self.$onInit = function() {
       self.answer = CurrentItemService.getFilling().answer.value;
       self.otusQuestion.answer = self;
+      self.view = false;
     };
 
     self.update = function() {
@@ -1105,6 +1159,32 @@
       CurrentItemService.getFilling().answer.clear();
       delete self.answer;
     }
+  }
+}());
+
+(function() {
+  'use strict';
+
+  angular
+    .module('otusjs.player.component')
+    .component('otusDecimalQuestionView', {
+      template:'<md-content layout-padding><div layout="row"><md-input-container md-no-float class="md-block" flex-gt-sm="45"><input type="number" step="any" ng-model="$ctrl.answer" ng-change="$ctrl.update()" ui-decimal placeholder="Insira um valor decimal" ng-disabled="$ctrl.view"></md-input-container><md-input-container class="md-block" flex-gt-sm="45"><otus-label item-label="$ctrl.itemData.unit"></otus-label></md-input-container></div></md-content>',
+      controller: "otusDecimalQuestionViewCtrl as $ctrl",
+      bindings: {
+        itemData: '<'
+      }
+    }).controller("otusDecimalQuestionViewCtrl", Controller);
+
+  Controller.$inject = [];
+
+  function Controller() {
+    var self = this;
+
+    self.$onInit = function() {
+      self.answer = self.itemData.data.answer.value;
+      self.view = true;
+    };
+
   }
 }());
 
@@ -1278,11 +1358,11 @@
     .module('otusjs.player.component')
     .component('otusCheckboxQuestionView', {
       template:'<md-content layout-padding style="margin-top: 12px"><md-content ng-repeat="option in $ctrl.itemData.options track by $index" flex><md-checkbox ng-model="$ctrl.answerArray[$index].state" ng-change="$ctrl.update($index)" layout="row" style="margin: 7px" ng-disabled="$ctrl.view"><otus-label item-label="option.label.ptBR.formattedText"></otus-label></md-checkbox></md-content></md-content>',
-      controller: Controller,
+      controller: "otusCheckboxQuestionViewCtrl as $ctrl",
       bindings: {
         itemData: '<'
       }
-    });
+    }).controller("otusCheckboxQuestionViewCtrl", Controller);
 
    function Controller() {
     var self = this;
@@ -1291,10 +1371,6 @@
       self.answerArray = self.itemData.data.answer.value;
       self.view = true;
     };
-
-    self.update = ()=>{};
-    self.blurOnClick=()=>{};
-
 
   }
 }());
@@ -1305,8 +1381,8 @@
   angular
     .module('otusjs.player.component')
     .component('otusTextQuestion', {
-      template:'<md-content id="text-question" layout-padding><div layout="row"><md-input-container md-no-float class="md-block" flex><textarea id="textQuestion" ng-class="{lowercase: $ctrl.hasLowerCase, uppercase: $ctrl.hasUpperCase}" ng-model="$ctrl.answer" ng-change="$ctrl.update()" placeholder="Digite o texto aqui"></textarea></md-input-container></div></md-content>',
-      controller: Controller,
+      template:'<md-content id="text-question" layout-padding><div layout="row"><md-input-container md-no-float class="md-block" flex><textarea id="textQuestion" ng-class="{lowercase: $ctrl.hasLowerCase, uppercase: $ctrl.hasUpperCase}" ng-model="$ctrl.answer" ng-disabled="$ctrl.view" ng-change="$ctrl.update()" placeholder="Digite o texto aqui"></textarea></md-input-container></div></md-content>',
+      controller: "otusTextQuestionCtrl as $ctrl",
       bindings: {
         itemData: '<',
         onUpdate: '&'
@@ -1314,7 +1390,7 @@
       require: {
         otusQuestion: '^otusQuestion'
       }
-    });
+    }).controller("otusTextQuestionCtrl", Controller);
 
   Controller.$inject = [
     '$element',
@@ -1331,6 +1407,7 @@
       self.hasUpperCase = CurrentItemService.getFillingRules().upperCase;
       self.hasLowerCase = CurrentItemService.getFillingRules().lowerCase;
       self.otusQuestion.answer = self;
+      self.view = false;
     };
 
     self.update = function () {
@@ -1380,14 +1457,40 @@
   }
 }());
 
+(function () {
+  'use strict';
+
+  angular
+    .module('otusjs.player.component')
+    .component('otusTextQuestionView', {
+      template:'<md-content id="text-question" layout-padding><div layout="row"><md-input-container md-no-float class="md-block" flex><textarea id="textQuestion" ng-class="{lowercase: $ctrl.hasLowerCase, uppercase: $ctrl.hasUpperCase}" ng-model="$ctrl.answer" ng-disabled="$ctrl.view" ng-change="$ctrl.update()" placeholder="Digite o texto aqui"></textarea></md-input-container></div></md-content>',
+      controller: "otusTextQuestionViewCtrl as $ctrl",
+      bindings: {
+        itemData: '<'
+      }
+    }).controller("otusTextQuestionViewCtrl", Controller);
+
+  Controller.$inject = [];
+
+  function Controller() {
+    var self = this;
+
+    self.$onInit = function () {
+      self.answer = self.itemData.data.answer.value;
+      self.view = true;
+    };
+
+  }
+}());
+
 (function() {
   'use strict';
 
   angular
     .module('otusjs.player.component')
     .component('otusEmailQuestion', {
-      template:'<md-content layout-padding><div layout="row"><md-input-container md-no-float class="md-block" flex-gt-sm="45"><md-icon class="material-icons">email</md-icon><input name="email" type="email" ng-model="$ctrl.answer" ng-change="$ctrl.update()" placeholder="email@email.com" aria-label="{{$ctrl.ariaLabel()}}"></md-input-container></div></md-content>',
-      controller: Controller,
+      template:'<md-content layout-padding><div layout="row"><md-input-container md-no-float class="md-block" flex-gt-sm="45"><md-icon class="material-icons">email</md-icon><input name="email" type="email" ng-model="$ctrl.answer" ng-change="$ctrl.update()" placeholder="email@email.com" aria-label="{{$ctrl.ariaLabel()}}" ng-disabled="$ctrl.view"></md-input-container></div></md-content>',
+      controller: "otusEmailQuestionCtrl as $ctrl",
       bindings: {
         itemData: '<',
         onUpdate: '&'
@@ -1395,7 +1498,7 @@
       require : {
         otusQuestion: '^otusQuestion'
       }
-    });
+    }).controller("otusEmailQuestionCtrl", Controller);
 
   Controller.$inject = [
     'otusjs.player.data.activity.CurrentItemService'
@@ -1407,6 +1510,7 @@
     self.$onInit = function() {
       self.answer = CurrentItemService.getFilling().answer.value;
       self.otusQuestion.answer = self;
+      self.view = false;
     };
 
     self.update = function() {
@@ -1432,9 +1536,40 @@
 
   angular
     .module('otusjs.player.component')
+    .component('otusEmailQuestionView', {
+      template:'<md-content layout-padding><div layout="row"><md-input-container md-no-float class="md-block" flex-gt-sm="45"><md-icon class="material-icons">email</md-icon><input name="email" type="email" ng-model="$ctrl.answer" ng-change="$ctrl.update()" placeholder="email@email.com" aria-label="{{$ctrl.ariaLabel()}}" ng-disabled="$ctrl.view"></md-input-container></div></md-content>',
+      controller: "otusEmailQuestionViewCtrl as $ctrl",
+      bindings: {
+        itemData: '<'
+      }
+    }).controller("otusEmailQuestionViewCtrl", Controller);
+
+  Controller.$inject = [];
+
+  function Controller() {
+    var self = this;
+
+    self.$onInit = function() {
+      self.answer = self.itemData.data.answer.value;
+      self.view = true;
+    };
+
+    self.ariaLabel = function() {
+      return self.itemData.label.ptBR.plainText;
+    };
+
+
+  }
+}());
+
+(function() {
+  'use strict';
+
+  angular
+    .module('otusjs.player.component')
     .component('otusTimeQuestion', {
-      template:'<md-content layout-padding><div layout="row"><md-button ng-click="$ctrl.currentTime()" class="md-fab md-raised md-mini" aria-label="Hora Atual" ng-disabled="$ctrl.itemData.options.data.disabledButton.value"><md-icon>access_time</md-icon><md-tooltip md-direction="down">Hora Atual</md-tooltip></md-button><md-input-container class="md-block" flex-gt-sm="45"><input id="inputtime" type="time" ng-model="$ctrl.answer.date" ng-blur="$ctrl.update($event)" aria-label="Tempo"></md-input-container></div></md-content>',
-      controller: Controller,
+      template:'<md-content layout-padding><div layout="row"><md-button ng-click="$ctrl.currentTime()" class="md-fab md-raised md-mini" aria-label="Hora Atual" ng-disabled="$ctrl.itemData.options.data.disabledButton.value || $ctrl.view"><md-icon>access_time</md-icon><md-tooltip md-direction="down">Hora Atual</md-tooltip></md-button><md-input-container class="md-block" flex-gt-sm="45"><input id="inputtime" type="time" ng-model="$ctrl.answer.date" ng-blur="$ctrl.update($event)" ng-disabled="$ctrl.view" aria-label="Tempo"></md-input-container></div></md-content>',
+      controller: "otusTimeQuestionCtrl as $ctrl",
       bindings: {
         itemData: '<',
         onUpdate: '&'
@@ -1442,7 +1577,7 @@
       require: {
         otusQuestion: '^otusQuestion'
       }
-    });
+    }).controller("otusTimeQuestionCtrl", Controller);
 
   Controller.$inject = [
     'otusjs.player.data.activity.CurrentItemService',
@@ -1456,6 +1591,7 @@
     self.$onInit = function() {
       self.answer = CurrentItemService.getFilling().answer.value || new ImmutableDate(null);
       self.otusQuestion.answer = self;
+      self.view = false;
     };
 
     self.update = function(e) {
@@ -1509,9 +1645,36 @@
 
   angular
     .module('otusjs.player.component')
+    .component('otusTimeQuestionView', {
+      template:'<md-content layout-padding><div layout="row"><md-button ng-click="$ctrl.currentTime()" class="md-fab md-raised md-mini" aria-label="Hora Atual" ng-disabled="$ctrl.itemData.options.data.disabledButton.value || $ctrl.view"><md-icon>access_time</md-icon><md-tooltip md-direction="down">Hora Atual</md-tooltip></md-button><md-input-container class="md-block" flex-gt-sm="45"><input id="inputtime" type="time" ng-model="$ctrl.answer.date" ng-blur="$ctrl.update($event)" ng-disabled="$ctrl.view" aria-label="Tempo"></md-input-container></div></md-content>',
+      controller: "otusTimeQuestionViewCtrl as $ctrl",
+      bindings: {
+        itemData: '<'
+      }
+    }).controller("otusTimeQuestionViewCtrl", Controller);
+
+  Controller.$inject = [];
+
+  function Controller() {
+    var self = this;
+
+    self.$onInit = function() {
+      self.answer = self.itemData.data.answer.value;
+      self.view = true;
+    };
+
+  }
+
+}());
+
+(function() {
+  'use strict';
+
+  angular
+    .module('otusjs.player.component')
     .component('otusPhoneQuestion', {
-      template:'<md-content layout-padding><div><md-input-container md-no-float class="md-block" flex-gt-sm="45"><md-icon class="material-icons">phone</md-icon><input type="text" ng-model="$ctrl.answer" ng-change="$ctrl.update()" placeholder="(XX) XXXXX-XXXX" ui-br-phone-number></md-input-container></div></md-content>',
-      controller: Controller,
+      template:'<md-content layout-padding><div><md-input-container md-no-float class="md-block" flex-gt-sm="45"><md-icon class="material-icons">phone</md-icon><input type="text" ng-model="$ctrl.answer" ng-change="$ctrl.update()" placeholder="(XX) XXXXX-XXXX" ui-br-phone-number ng-disabled="$ctrl.view"></md-input-container></div></md-content>',
+      controller: "otusPhoneQuestionCtrl as $ctrl",
       bindings: {
         itemData: '<',
         onUpdate: '&'
@@ -1519,7 +1682,7 @@
       require : {
         otusQuestion: '^otusQuestion'
       }
-    });
+    }).controller("otusPhoneQuestionCtrl", Controller);
 
   Controller.$inject = [
     'otusjs.player.data.activity.CurrentItemService'
@@ -1531,6 +1694,7 @@
     self.$onInit = function() {
       self.answer = CurrentItemService.getFilling().answer.value;
       self.otusQuestion.answer = self;
+      self.view = false;
     };
 
     self.update = function() {
@@ -1552,9 +1716,35 @@
 
   angular
     .module('otusjs.player.component')
+    .component('otusPhoneQuestionView', {
+      template:'<md-content layout-padding><div><md-input-container md-no-float class="md-block" flex-gt-sm="45"><md-icon class="material-icons">phone</md-icon><input type="text" ng-model="$ctrl.answer" ng-change="$ctrl.update()" placeholder="(XX) XXXXX-XXXX" ui-br-phone-number ng-disabled="$ctrl.view"></md-input-container></div></md-content>',
+      controller: "otusPhoneQuestionViewCtrl as $ctrl",
+      bindings: {
+        itemData: '<'
+      }
+    }).controller("otusPhoneQuestionViewCtrl", Controller);
+
+  Controller.$inject = [];
+
+  function Controller() {
+    var self = this;
+
+    self.$onInit = function() {
+      self.answer = self.itemData.data.answer.value;
+      self.view = true;
+    };
+
+  }
+}());
+
+(function() {
+  'use strict';
+
+  angular
+    .module('otusjs.player.component')
     .component('otusFileUploadQuestion', {
-      template:'<md-content layout-padding><div layout="row"><md-button class="md-primary md-raised" upload-tool="$ctrl.uploadConfig"><md-icon md-font-set="material-icons">attach_file</md-icon>Adicionar Arquivos</md-button><md-button class="md-primary md-raised" ng-show="$ctrl.pendingList.length != 0" ng-click="$ctrl.uploadMultiple()" ng-disabled="$ctrl.pendingCounter > 0"><md-icon md-font-set="material-icons">attach_file</md-icon>Enviar Todos</md-button></div><div md-whiteframe="3" layout="column" md-padding><md-list layout="column" class="md-dense" flex><md-subheader class="md-no-sticky">Arquivos a Enviar</md-subheader><md-list-item ng-hide="$ctrl.pendingList.length != 0"><p>Nenhum arquivo selecionado</p><md-divider></md-divider></md-list-item><md-content ng-show="$ctrl.pendingList.length != 0" style="max-height: 300px;"><md-list-item ng-repeat="file in $ctrl.pendingList track by $index"><span class="md-subhead md-truncate">{{ file.name }}</span><div class="uploading-panel" ng-if="file.status == \'uploading\'"><md-progress-circular class="md-secondary" md-mode="indeterminate" md-diameter="20px" ng-if="file.status == \'uploading\'"></md-progress-circular></div><div class="action-panel" flex="20"><md-button class="md-icon-button md-secondary" aria-label="Enviar Arquivo" ng-click="$ctrl.uploadFile($index)" ng-hide="file.status == \'uploading\'" ng-disabled="$ctrl.pendingCounter >= 5"><md-icon md-font-set="material-icons">file_upload</md-icon><md-tooltip md-direction="bottom">Enviar Arquivo</md-tooltip></md-button><md-button class="md-icon-button md-secondary" aria-label="Excluir" ng-click="$ctrl.popFromPending($index)" ng-hide="file.status == \'uploading\'"><md-icon md-font-set="material-icons">delete</md-icon><md-tooltip md-direction="bottom">Excluir</md-tooltip></md-button></div></md-list-item></md-content><md-divider></md-divider><md-divider></md-divider><md-content ng-show="$ctrl.sentFiles.length != 0" style="background-color:#ebebeb; margin-top: 25px;"><md-subheader class="md-no-sticky">Arquivos Enviados</md-subheader><md-list-item class="md-2-line" ng-repeat="file in $ctrl.sentFiles track by $index"><div class="md-list-item-text" layout="column"><span class="md-subhead md-truncate">{{ file.name }}</span><p>Tamanho: {{ file.printableSize }}</p></div><div class="action-panel" flex="20"><md-button class="md-icon-button md-secondary" aria-label="Download" ng-click="$ctrl.downloadFile($index)"><md-icon md-font-set="material-icons">file_download</md-icon><md-tooltip md-direction="bottom">Download</md-tooltip></md-button><md-button class="md-icon-button md-secondary" aria-label="Delete" ng-click="$ctrl.deleteFile($index, $event)"><md-icon md-font-set="material-icons">delete_forever</md-icon><md-tooltip md-direction="bottom">Apagar Arquivo</md-tooltip></md-button></div></md-list-item><md-divider></md-divider></md-content></md-list></div></md-content>',
-      controller: Controller,
+      template:'<md-content layout-padding><div layout="row"><md-button class="md-primary md-raised" upload-tool="$ctrl.uploadConfig" ng-disabled="$ctrl.view"><md-icon md-font-set="material-icons">attach_file</md-icon>Adicionar Arquivos</md-button><md-button class="md-primary md-raised" ng-show="$ctrl.pendingList.length != 0" ng-click="$ctrl.uploadMultiple()" ng-disabled="$ctrl.pendingCounter > 0"><md-icon md-font-set="material-icons">attach_file</md-icon>Enviar Todos</md-button></div><div md-whiteframe="3" layout="column" md-padding><md-list layout="column" class="md-dense" flex><md-subheader class="md-no-sticky">Arquivos a Enviar</md-subheader><md-list-item ng-hide="$ctrl.pendingList.length != 0"><p>Nenhum arquivo selecionado</p><md-divider></md-divider></md-list-item><md-content ng-show="$ctrl.pendingList.length != 0" style="max-height: 300px;"><md-list-item ng-repeat="file in $ctrl.pendingList track by $index"><span class="md-subhead md-truncate">{{ file.name }}</span><div class="uploading-panel" ng-if="file.status == \'uploading\'"><md-progress-circular class="md-secondary" md-mode="indeterminate" md-diameter="20px" ng-if="file.status == \'uploading\'"></md-progress-circular></div><div class="action-panel" flex="20" ng-if="!$ctrl.view"><md-button class="md-icon-button md-secondary" aria-label="Enviar Arquivo" ng-click="$ctrl.uploadFile($index)" ng-hide="file.status == \'uploading\'" ng-disabled="$ctrl.pendingCounter >= 5"><md-icon md-font-set="material-icons">file_upload</md-icon><md-tooltip md-direction="bottom">Enviar Arquivo</md-tooltip></md-button><md-button class="md-icon-button md-secondary" aria-label="Excluir" ng-click="$ctrl.popFromPending($index)" ng-hide="file.status == \'uploading\'"><md-icon md-font-set="material-icons">delete</md-icon><md-tooltip md-direction="bottom">Excluir</md-tooltip></md-button></div></md-list-item></md-content><md-divider></md-divider><md-divider></md-divider><md-content ng-show="$ctrl.sentFiles.length != 0" style="background-color:#ebebeb; margin-top: 25px;"><md-subheader class="md-no-sticky">Arquivos Enviados</md-subheader><md-list-item class="md-2-line" ng-repeat="file in $ctrl.sentFiles track by $index"><div class="md-list-item-text" layout="column"><span class="md-subhead md-truncate">{{ file.name }}</span><p>Tamanho: {{ file.printableSize }}</p></div><div class="action-panel" flex="20"><md-button class="md-icon-button md-secondary" aria-label="Download" ng-click="$ctrl.downloadFile($index)"><md-icon md-font-set="material-icons">file_download</md-icon><md-tooltip md-direction="bottom">Download</md-tooltip></md-button><md-button class="md-icon-button md-secondary" aria-label="Delete" ng-if="!$ctrl.view" ng-click="$ctrl.deleteFile($index, $event)"><md-icon md-font-set="material-icons">delete_forever</md-icon><md-tooltip md-direction="bottom">Apagar Arquivo</md-tooltip></md-button></div></md-list-item><md-divider></md-divider></md-content></md-list></div></md-content>',
+      controller: "otusFileUploadQuestionCtrl as $ctrl",
       bindings: {
         itemData: '<',
         onUpdate: '&'
@@ -1562,7 +1752,7 @@
       require: {
         otusQuestion: '^otusQuestion'
       }
-    });
+    }).controller("otusFileUploadQuestionCtrl", Controller);
 
   Controller.$inject = [
     '$mdToast',
@@ -1610,6 +1800,7 @@
       _deleteDialog = _createDeleteDialog();
       _pendingArrayControl = 0;
       self.pendingCounter = 0;
+      self.view = false;
     }
 
 
@@ -1759,9 +1950,96 @@
 
   angular
     .module('otusjs.player.component')
+    .component('otusFileUploadQuestionView', {
+      template:'<md-content layout-padding><div layout="row"><md-button class="md-primary md-raised" upload-tool="$ctrl.uploadConfig" ng-disabled="$ctrl.view"><md-icon md-font-set="material-icons">attach_file</md-icon>Adicionar Arquivos</md-button><md-button class="md-primary md-raised" ng-show="$ctrl.pendingList.length != 0" ng-click="$ctrl.uploadMultiple()" ng-disabled="$ctrl.pendingCounter > 0"><md-icon md-font-set="material-icons">attach_file</md-icon>Enviar Todos</md-button></div><div md-whiteframe="3" layout="column" md-padding><md-list layout="column" class="md-dense" flex><md-subheader class="md-no-sticky">Arquivos a Enviar</md-subheader><md-list-item ng-hide="$ctrl.pendingList.length != 0"><p>Nenhum arquivo selecionado</p><md-divider></md-divider></md-list-item><md-content ng-show="$ctrl.pendingList.length != 0" style="max-height: 300px;"><md-list-item ng-repeat="file in $ctrl.pendingList track by $index"><span class="md-subhead md-truncate">{{ file.name }}</span><div class="uploading-panel" ng-if="file.status == \'uploading\'"><md-progress-circular class="md-secondary" md-mode="indeterminate" md-diameter="20px" ng-if="file.status == \'uploading\'"></md-progress-circular></div><div class="action-panel" flex="20" ng-if="!$ctrl.view"><md-button class="md-icon-button md-secondary" aria-label="Enviar Arquivo" ng-click="$ctrl.uploadFile($index)" ng-hide="file.status == \'uploading\'" ng-disabled="$ctrl.pendingCounter >= 5"><md-icon md-font-set="material-icons">file_upload</md-icon><md-tooltip md-direction="bottom">Enviar Arquivo</md-tooltip></md-button><md-button class="md-icon-button md-secondary" aria-label="Excluir" ng-click="$ctrl.popFromPending($index)" ng-hide="file.status == \'uploading\'"><md-icon md-font-set="material-icons">delete</md-icon><md-tooltip md-direction="bottom">Excluir</md-tooltip></md-button></div></md-list-item></md-content><md-divider></md-divider><md-divider></md-divider><md-content ng-show="$ctrl.sentFiles.length != 0" style="background-color:#ebebeb; margin-top: 25px;"><md-subheader class="md-no-sticky">Arquivos Enviados</md-subheader><md-list-item class="md-2-line" ng-repeat="file in $ctrl.sentFiles track by $index"><div class="md-list-item-text" layout="column"><span class="md-subhead md-truncate">{{ file.name }}</span><p>Tamanho: {{ file.printableSize }}</p></div><div class="action-panel" flex="20"><md-button class="md-icon-button md-secondary" aria-label="Download" ng-click="$ctrl.downloadFile($index)"><md-icon md-font-set="material-icons">file_download</md-icon><md-tooltip md-direction="bottom">Download</md-tooltip></md-button><md-button class="md-icon-button md-secondary" aria-label="Delete" ng-if="!$ctrl.view" ng-click="$ctrl.deleteFile($index, $event)"><md-icon md-font-set="material-icons">delete_forever</md-icon><md-tooltip md-direction="bottom">Apagar Arquivo</md-tooltip></md-button></div></md-list-item><md-divider></md-divider></md-content></md-list></div></md-content>',
+      controller: "otusFileUploadQuestionViewCtrl as $ctrl",
+      bindings: {
+        itemData: '<'
+      }
+    }).controller("otusFileUploadQuestionViewCtrl", Controller);
+
+  Controller.$inject = [
+    '$mdToast',
+    '$q',
+    '$mdDialog',
+    'otusjs.player.data.activity.CurrentItemService',
+    'otusjs.utils.FileUploadFactory',
+    '$scope',
+    'otusjs.surveyItem.customAnswer.FileUploadAnswerFactory',
+  ];
+
+  function Controller($mdToast, $q, $mdDialog, CurrentItemService, FileUploadService, $scope, FileUploadAnswerFactory) {
+    var self = this;
+
+    var _uploadInterface;
+    var _pendingArrayControl;
+
+
+    /* Public Interface */
+    self.$onInit = onInit;
+    self.downloadFile = downloadFile;
+
+    function onInit() {
+      self.view = true;
+      var answerFiles = self.itemData.data.answer.value || [];
+      self.sentFiles = FileUploadAnswerFactory.buildFromJson(answerFiles);
+      self.pendingList = [];
+      self.promise = 0;
+
+      self.uploadConfig = {
+        callback: _populatePendingList,
+        type: 'any',
+        multiple: true
+      };
+      _uploadInterface = FileUploadService.getUploadInterface();
+      _pendingArrayControl = 0;
+      self.pendingCounter = 0;
+    }
+
+    function downloadFile(idx) {
+      var fileInfo = self.sentFiles[idx];
+      _uploadInterface.getFile(fileInfo)
+        .then(function(responseBlob) {
+          var link = document.createElement('a');
+          var downloadUrl = URL.createObjectURL(responseBlob);
+          link.setAttribute('href', downloadUrl);
+          link.download = responseBlob.name;
+          document.body.appendChild(link);
+          link.click();
+        }, function(err) {
+          _toastError('transferir');
+        });
+    }
+
+    function _populatePendingList(filesArray) {
+      self.pendingList = self.pendingList.concat(filesArray.map(function(file) {
+        file.status = 'pending';
+        file.control = _pendingArrayControl++;
+        return file;
+      }));
+      _updateView();
+    }
+
+    function _updateView() {
+      var phase = $scope.$root.$$phase;
+      if (phase == '$apply' || phase == '$digest') {
+        return;
+      } else {
+        $scope.$apply();
+      }
+    }
+
+  }
+}());
+
+(function() {
+  'use strict';
+
+  angular
+    .module('otusjs.player.component')
     .component('otusAutocompleteQuestion', {
       template:'<md-content layout-padding><div layout="row" style="margin-top: 15px" layout-fill><div layout="column" flex><p layout="row" ng-hide="$ctrl.dataReady || $ctrl.dataError">Aguarde. Preparando lista de opções.</p><p layout="row" md-warn ng-show="$ctrl.dataError">Erro ao carregar opções.</p><md-autocomplete flex ng-disabled="!$ctrl.dataReady || $ctrl.answer" md-search-text="$ctrl.autoCompleteSettings.searchText" md-selected-item="$ctrl.answer" md-selected-item-change="$ctrl.update()" md-items="meds in $ctrl.searchQuery($ctrl.autoCompleteSettings.searchText)" md-item-text="meds.value" md-min-length="3" placeholder="Inicie a digitação"><md-item-template layout-fill flex><span md-highlight-text="$ctrl.autoCompleteSettings.searchText" md-highlight-flags="gi">{{meds.value}}</span></md-item-template><md-not-found><span ng-click="$ctrl.setOther()">"{{$ctrl.autoCompleteSettings.searchText}}" não encontrado. Clique para responder com "Outro"</span></md-not-found></md-autocomplete></div></div></md-content>',
-      controller: Controller,
+      controller: "otusAutocompleteQuestionCtrl as $ctrl",
       bindings: {
         itemData: '<',
         onUpdate: '&'
@@ -1769,7 +2047,8 @@
       require: {
         otusQuestion: '^otusQuestion'
       }
-    });
+    })
+    .controller("otusAutocompleteQuestionCtrl", Controller);
 
   Controller.$inject = [
     'otusjs.player.data.activity.CurrentItemService',
@@ -1784,6 +2063,7 @@
     /* Question Methods */
     self.$onInit = function() {
       self.dataReady = false;
+      self.view = false;
       self.answer = CurrentItemService.getFilling().answer.value;
       self.otusQuestion.answer = self;
       _setupDatasourceQuery();
@@ -1832,14 +2112,43 @@
   }
 }());
 
+(function() {
+  'use strict';
+
+  angular
+    .module('otusjs.player.component')
+    .component('otusAutocompleteQuestionView', {
+      template:'<md-content layout-padding><div layout="row" style="margin-top: 15px" layout-fill><div layout="column" flex><p layout="row" ng-hide="$ctrl.dataReady || $ctrl.dataError">Aguarde. Preparando lista de opções.</p><p layout="row" md-warn ng-show="$ctrl.dataError">Erro ao carregar opções.</p><md-autocomplete flex ng-disabled="!$ctrl.dataReady || $ctrl.answer" md-search-text="$ctrl.autoCompleteSettings.searchText" md-selected-item="$ctrl.answer" md-selected-item-change="$ctrl.update()" md-items="meds in $ctrl.searchQuery($ctrl.autoCompleteSettings.searchText)" md-item-text="meds.value" md-min-length="3" placeholder="Inicie a digitação"><md-item-template layout-fill flex><span md-highlight-text="$ctrl.autoCompleteSettings.searchText" md-highlight-flags="gi">{{meds.value}}</span></md-item-template><md-not-found><span ng-click="$ctrl.setOther()">"{{$ctrl.autoCompleteSettings.searchText}}" não encontrado. Clique para responder com "Outro"</span></md-not-found></md-autocomplete></div></div></md-content>',
+      controller: "otusAutocompleteViewCtrl as $ctrl",
+      bindings: {
+        itemData: '<'
+      }
+    })
+    .controller("otusAutocompleteViewCtrl", Controller);
+
+  Controller.$inject = [];
+
+  function Controller() {
+    var self = this;
+
+
+    /* Question Methods */
+    self.$onInit = function() {
+      self.view = true;
+      self.answer = self.itemData.data.answer.value;
+    };
+
+  }
+}());
+
 (function () {
   'use strict';
 
   angular
     .module('otusjs.player.component')
     .component('otusGridTextQuestion', {
-      template:'<div ng-repeat="line in ::$ctrl.itemData.getLinesList()" ng-init="outerIndex=$index" layout="row" flex><div ng-repeat="gridText in ::line.getGridTextList()" ng-init="innerIndex=$index" layout-padding layout="row" flex><md-input-container flex><label>{{ ::gridText.label.ptBR.formattedText }}</label><div><textarea ng-model="$ctrl.answerArray[outerIndex][innerIndex].value" ng-blur="$ctrl.update(outerIndex, innerIndex)"></textarea></div><div style="color: gray;">{{::gridText.unit.ptBR.plainText}}</div></md-input-container></div></div>',
-      controller: Controller,
+      template:'<div ng-repeat="line in ::$ctrl.itemData.getLinesList()" ng-init="outerIndex=$index" layout="row" flex><div ng-repeat="gridText in ::line.getGridTextList()" ng-init="innerIndex=$index" layout-padding layout="row" flex><md-input-container flex><label>{{ ::gridText.label.ptBR.formattedText }}</label><div><textarea ng-model="$ctrl.answerArray[outerIndex][innerIndex].value" ng-blur="$ctrl.update(outerIndex, innerIndex)" ng-disabled="$ctrl.view"></textarea></div><div style="color: gray;">{{::gridText.unit.ptBR.plainText}}</div></md-input-container></div></div>',
+      controller: "otusGridTextQuestionCtrl as $ctrl",
       bindings: {
         itemData: '<',
         onUpdate: '&'
@@ -1847,7 +2156,7 @@
       require: {
         otusQuestion: '^otusQuestion'
       }
-    });
+    }).controller("otusGridTextQuestionCtrl", Controller);
 
   Controller.$inject = [
     'otusjs.player.data.activity.CurrentItemService'
@@ -1865,6 +2174,7 @@
       self.answerArray = CurrentItemService.getFilling().answer.value;
       self.otusQuestion.answer = self;
       _fixArray();
+      self.view = false;
     }
 
     function update(outerIndex, innerIndex) {
@@ -1934,14 +2244,65 @@
   }
 }());
 
+(function () {
+  'use strict';
+
+  angular
+    .module('otusjs.player.component')
+    .component('otusGridTextQuestionView', {
+      template:'<div ng-repeat="line in ::$ctrl.itemData.getLinesList()" ng-init="outerIndex=$index" layout="row" flex><div ng-repeat="gridText in ::line.getGridTextList()" ng-init="innerIndex=$index" layout-padding layout="row" flex><md-input-container flex><label>{{ ::gridText.label.ptBR.formattedText }}</label><div><textarea ng-model="$ctrl.answerArray[outerIndex][innerIndex].value" ng-blur="$ctrl.update(outerIndex, innerIndex)" ng-disabled="$ctrl.view"></textarea></div><div style="color: gray;">{{::gridText.unit.ptBR.plainText}}</div></md-input-container></div></div>',
+      controller: "otusGridTextQuestionViewCtrl as $ctrl",
+      bindings: {
+        itemData: '<'
+      }
+    }).controller("otusGridTextQuestionViewCtrl", Controller);
+
+  Controller.$inject = [];
+
+  function Controller() {
+    var self = this;
+
+    /* Public Interface */
+    self.$onInit = onInit;
+
+    function onInit() {
+      self.answerArray = self.itemData.data.answer.value;
+      _fixArray();
+      self.view = true;
+    }
+
+    function _fixArray() {
+      if (!self.answerArray) {
+        self.answerArray = [[]];
+
+        self.itemData.getLinesList().forEach(function (line, outerIndex) {
+          self.answerArray[outerIndex] = [];
+          line.getGridTextList().forEach(function (gridText, innerIndex) {
+            self.answerArray[outerIndex][innerIndex] = _buildAnswerObject(gridText);
+          });
+        });
+      }
+    }
+
+    function _buildAnswerObject(gridText) {
+      return {
+        objectType: 'GridTextAnswer',
+        gridText: gridText.customID,
+        value: (gridText.value === undefined || gridText.value === '') ? null : gridText.value
+      };
+    }
+
+  }
+}());
+
 (function() {
   'use strict';
 
   angular
     .module('otusjs.player.component')
     .component('otusGridIntegerQuestion', {
-      template:'<div ng-repeat="line in ::$ctrl.itemData.getLinesList()" ng-init="outerIndex=$index" layout="row" flex><div ng-repeat="gridNumber in ::line.getGridIntegerList()" ng-init="innerIndex=$index" layout-padding layout="row" flex><md-input-container flex><label>{{ ::gridNumber.label.ptBR.formattedText }}</label><div><input type="text" numbers-only ng-model="$ctrl.answerArray[outerIndex][innerIndex].value" ng-blur="$ctrl.update(outerIndex, innerIndex)"></div><div style="color: gray;">{{::gridNumber.unit.ptBR.plainText}}</div></md-input-container></div></div>',
-      controller: Controller,
+      template:'<div ng-repeat="line in ::$ctrl.itemData.getLinesList()" ng-init="outerIndex=$index" layout="row" flex><div ng-repeat="gridNumber in ::line.getGridIntegerList()" ng-init="innerIndex=$index" layout-padding layout="row" flex><md-input-container flex><label>{{ ::gridNumber.label.ptBR.formattedText }}</label><div><input type="text" numbers-only ng-model="$ctrl.answerArray[outerIndex][innerIndex].value" ng-blur="$ctrl.update(outerIndex, innerIndex)" ng-disabled="$ctrl.view"></div><div style="color: gray;">{{::gridNumber.unit.ptBR.plainText}}</div></md-input-container></div></div>',
+      controller: "otusGridIntegerQuestionCtrl as $ctrl",
       bindings: {
         itemData: '<',
         onUpdate: '&'
@@ -1949,7 +2310,7 @@
       require: {
         otusQuestion: '^otusQuestion'
       }
-    });
+    }).controller("otusGridIntegerQuestionCtrl", Controller);
 
   Controller.$inject = [
     'otusjs.player.data.activity.CurrentItemService'
@@ -1967,6 +2328,7 @@
       self.answerArray = CurrentItemService.getFilling().answer.value;
       self.otusQuestion.answer = self;
       _fixArray();
+      self.view = false;
     }
 
     function update(outerIndex, innerIndex) {
@@ -2040,6 +2402,61 @@
       delete self.answerArray;
       _fixArray();
     }
+  }
+}());
+
+(function() {
+  'use strict';
+
+  angular
+    .module('otusjs.player.component')
+    .component('otusGridIntegerQuestionView', {
+      template:'<div ng-repeat="line in ::$ctrl.itemData.getLinesList()" ng-init="outerIndex=$index" layout="row" flex><div ng-repeat="gridNumber in ::line.getGridIntegerList()" ng-init="innerIndex=$index" layout-padding layout="row" flex><md-input-container flex><label>{{ ::gridNumber.label.ptBR.formattedText }}</label><div><input type="text" numbers-only ng-model="$ctrl.answerArray[outerIndex][innerIndex].value" ng-blur="$ctrl.update(outerIndex, innerIndex)" ng-disabled="$ctrl.view"></div><div style="color: gray;">{{::gridNumber.unit.ptBR.plainText}}</div></md-input-container></div></div>',
+      controller: "otusGridIntegerQuestionViewCtrl as $ctrl",
+      bindings: {
+        itemData: '<'
+      }
+    }).controller("otusGridIntegerQuestionViewCtrl", Controller);
+
+  Controller.$inject = [];
+
+  function Controller() {
+    var self = this;
+
+    /* Public Interface */
+    self.$onInit = onInit;
+
+    function onInit() {
+      self.answerArray = self.itemData.data.answer.value;
+      _fixArray();
+      self.view = false;
+    }
+
+    function _fixArray() {
+      if (!Array.isArray(self.answerArray)) {
+        self.answerArray = [
+          []
+        ];
+
+        self.itemData.getLinesList().forEach(function (line, outerIndex) {
+          self.answerArray[outerIndex] = [];
+          line.getGridIntegerList().forEach(function (gridInteger,
+            innerIndex) {
+            self.answerArray[outerIndex][innerIndex] =
+              _buildAnswerObject(gridInteger);
+          });
+        });
+      }
+    }
+
+    function _buildAnswerObject(gridInteger) {
+      return {
+        objectType: 'GridIntegerAnswer',
+        customID: gridInteger.customID,
+        value: (gridInteger.value === undefined || gridInteger.value === '') ? null : Number(gridInteger.value)
+      };
+    }
+
   }
 }());
 

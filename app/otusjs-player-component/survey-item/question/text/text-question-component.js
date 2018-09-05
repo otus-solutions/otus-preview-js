@@ -5,7 +5,7 @@
     .module('otusjs.player.component')
     .component('otusTextQuestion', {
       templateUrl: 'app/otusjs-player-component/survey-item/question/text/text-question-template.html',
-      controller: Controller,
+      controller: "otusTextQuestionCtrl as $ctrl",
       bindings: {
         itemData: '<',
         onUpdate: '&'
@@ -13,7 +13,7 @@
       require: {
         otusQuestion: '^otusQuestion'
       }
-    });
+    }).controller("otusTextQuestionCtrl", Controller);
 
   Controller.$inject = [
     '$element',
@@ -30,6 +30,7 @@
       self.hasUpperCase = CurrentItemService.getFillingRules().upperCase;
       self.hasLowerCase = CurrentItemService.getFillingRules().lowerCase;
       self.otusQuestion.answer = self;
+      self.view = false;
     };
 
     self.update = function () {
