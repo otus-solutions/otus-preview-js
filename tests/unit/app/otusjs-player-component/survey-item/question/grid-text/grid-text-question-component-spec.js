@@ -1,4 +1,4 @@
-describe('grid integer question view controller component', function () {
+describe('grid text question view controller component', function () {
   var Mock = {};
   var controller;
   var Injections = {};
@@ -34,7 +34,7 @@ describe('grid integer question view controller component', function () {
   //mock functions
   function mockController(_$controller_) {
     Injections = [Mock.CurrentItemService]
-    controller = _$controller_('otusGridIntegerQuestionCtrl', Injections);
+    controller = _$controller_('otusGridTextQuestionCtrl', Injections);
 
   }
 

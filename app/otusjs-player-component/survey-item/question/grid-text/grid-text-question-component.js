@@ -26,12 +26,12 @@
     self.$onInit = onInit;
     self.update = update;
     self.clear = clear;
+    self.view = false;
 
     function onInit() {
       self.answerArray = CurrentItemService.getFilling().answer.value;
       self.otusQuestion.answer = self;
       _fixArray();
-      self.view = false;
     }
 
     function update(outerIndex, innerIndex) {

@@ -47,57 +47,6 @@ describe('autocomplete question controller component', function () {
 
   });
 
-  xdescribe('the clear function call', function () {
-    beforeEach(function () {
-      controller.answer = [];
-      spyOn(controller, 'clear').and.callThrough();
-      spyOn(Mock.CurrentItemService, 'getFilling').and.returnValue(Mock.arrayAnswer);
-
-      controller.clear();
-    });
-
-    it('should call clear function with success', function () {
-      expect(controller.answer).toBeUndefined();
-    });
-  });
-
-
-
-  xdescribe('the update function and the parent onUpdate function call', function () {
-    beforeEach(function () {
-      spyOn(Mock.CurrentItemService, 'getFilling').and.returnValue(Mock.arrayAnswer);
-      spyOn(controller, 'onUpdate').and.callThrough();
-
-
-      controller.$onInit();
-    });
-
-    it('should  call with self.answer if some option is true', function () {
-      controller.answer = {value: Mock.arrayAnswer.answer.value};
-      controller.update();
-
-      var answerObject = {
-        valueType: 'answer',
-        value: Mock.arrayAnswer.answer.value
-      };
-      expect(controller.onUpdate).toHaveBeenCalledWith(answerObject);
-
-    });
-
-    it('should  call with null if any option is true', function () {
-      controller.answer = null;
-
-      controller.update();
-
-      var answerObject = {
-        valueType: 'answer',
-        value: null
-      };
-      expect(controller.onUpdate).toHaveBeenCalledWith(answerObject);
-
-    });
-  });
-
 
   //mock functions
   function mockController(_$controller_, injections) {
@@ -117,7 +66,7 @@ describe('autocomplete question controller component', function () {
 
     Mock.CurrentItemService = {
       getFilling: function () {
-        return Mock.answer;
+        return Mock.arrayAnswer;
       }
     };
 

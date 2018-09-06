@@ -23,6 +23,8 @@
   function Controller($element, CurrentItemService) {
     var self = this;
 
+    self.view = false;
+
     self.$onInit = function () {
       self.answer = CurrentItemService.getFilling().answer.value;
       self.hasAlphanumeric = CurrentItemService.getFillingRules().alphanumeric;
@@ -30,7 +32,6 @@
       self.hasUpperCase = CurrentItemService.getFillingRules().upperCase;
       self.hasLowerCase = CurrentItemService.getFillingRules().lowerCase;
       self.otusQuestion.answer = self;
-      self.view = false;
     };
 
     self.update = function () {

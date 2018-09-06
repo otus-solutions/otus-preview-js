@@ -28,9 +28,10 @@
     /* Public Interface */
     self.$onInit = onInit;
     self.downloadFile = downloadFile;
+    self.view = true;
 
     function onInit() {
-      self.view = true;
+
       var answerFiles = self.itemData.data.answer.value || [];
       self.sentFiles = FileUploadAnswerFactory.buildFromJson(answerFiles);
       self.pendingList = [];

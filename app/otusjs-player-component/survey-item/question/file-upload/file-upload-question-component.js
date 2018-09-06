@@ -43,6 +43,7 @@
     self.deleteFile = deleteFile;
     self.clear = clear;
     self.cancelUpload = cancelUpload;
+    self.view = false;
 
     function onInit() {
       var answerFiles = CurrentItemService.getFilling().answer.value || [];
@@ -61,7 +62,6 @@
       _deleteDialog = _createDeleteDialog();
       _pendingArrayControl = 0;
       self.pendingCounter = 0;
-      self.view = false;
     }
 
 

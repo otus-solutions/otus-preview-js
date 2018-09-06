@@ -23,10 +23,11 @@
   function Controller(CurrentItemService, ImmutableDate) {
     var self = this;
 
+    self.view = false;
+
     self.$onInit = function() {
       self.answer = CurrentItemService.getFilling().answer.value || new ImmutableDate(null);
       self.otusQuestion.answer = self;
-      self.view = false;
     };
 
     self.update = function() {

@@ -1,4 +1,4 @@
-describe('grid integer question view controller component', function () {
+describe('grid text question view controller component', function () {
   var Mock = {};
   var controller;
 
@@ -30,7 +30,7 @@ describe('grid integer question view controller component', function () {
   //mock functions
   function mockController(_$controller_) {
 
-    controller = _$controller_('otusGridIntegerQuestionViewCtrl');
+    controller = _$controller_('otusGridTextQuestionViewCtrl');
   }
 
   function mockBindings() {
@@ -39,9 +39,9 @@ describe('grid integer question view controller component', function () {
         "answer":{
           "value": [
             [
-              {"objectType":"GridIntegerAnswer","customID":"TST31a","value":5},
-              {"objectType":"GridIntegerAnswer","customID":"TST31b","value":5},
-              {"objectType":"GridIntegerAnswer","customID":"TST31c","value":5}
+              {"objectType":"GridIntegerAnswer","customID":"TST31a","value":"5"},
+              {"objectType":"GridIntegerAnswer","customID":"TST31b","value":"5"},
+              {"objectType":"GridIntegerAnswer","customID":"TST31c","value":"5"}
               ]
           ]
         }
