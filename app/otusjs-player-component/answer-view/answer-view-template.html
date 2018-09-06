@@ -1,20 +1,14 @@
 <md-card flex layout="column">
-  <md-card-header layout="row" style="padding: 0 !important;" ng-show="!$ctrl.view" flex>
-
-    <md-card>
-      <md-card-content ng-show="!$ctrl.view">
-        <md-icon md-font-set="material-icons" class="material-icons ng-binding md-layoutTheme-theme">{{icon}}</md-icon>
-      </md-card-content>
-    </md-card>
-
-    <md-card-header-text  layout="column" layout-fill class="truncate" ng-show="!$ctrl.view" flex="80">
-      <otus-label class="md-title truncate" item-label="label" style="display: inline-block;"></otus-label>
-      <span class="md-subhead" style="display: inline-block;">{{answer}}</span>
-      <span class="md-subhead">{{comment}}</span>
+  <md-toolbar layout="row" ng-class="$ctrl.hueClass">
+    <md-icon md-font-set="material-icons" class="material-icons ng-binding md-layoutTheme-theme" layout="column" flex="10" layout-align="center center">{{$ctrl.icon}}</md-icon>
+    <md-card-header-text ng-show="!$ctrl.view" layout="column" layout-fill class="truncate" ng-show="!$ctrl.view" flex>
+      <otus-label class="md-title truncate" item-label="$ctrl.label" style="display: inline-block;"></otus-label>
+      <span class="md-subhead" style="display: inline-block;">{{$ctrl.answer}}</span>
+      <span class="md-subhead">{{$ctrl.comment}}</span>
     </md-card-header-text>
-
-
-    <div layout="row" layout-padding layout-margin layout-align="end start">
+    <div class="md-toolbar-tools" layout="row" flex layout-align="center center">
+      <h4 flex md-truncate ng-show="$ctrl.view" flex style="margin: 0 !important;">Modo de visualização</h4>
+      <span flex ng-show="!$ctrl.view"></span>
       <md-button class="md-icon-button" ng-click="$ctrl.viewQuestion()" >
         <md-icon md-font-set="material-icons" class="material-icons ng-binding md-layoutTheme-theme">remove_red_eye</md-icon>
         <md-tooltip md-direction="down">
@@ -28,30 +22,11 @@
         </md-tooltip>
       </md-button>
     </div>
-  </md-card-header>
-
+  </md-toolbar>
   <div ng-show="$ctrl.view">
-    <md-toolbar>
-      <div class="md-toolbar-tools" layout="row">
-        <h2 flex md-truncate>A questão está em modo de visualização</h2>
-        <span flex></span>
-        <md-button class="md-icon-button" ng-click="$ctrl.viewQuestion()" >
-          <md-icon md-font-set="material-icons" class="material-icons ng-binding md-layoutTheme-theme">remove_red_eye</md-icon>
-          <md-tooltip md-direction="down">
-            Visualizar questão
-          </md-tooltip>
-        </md-button>
-        <md-button class="md-icon-button" ng-click="$ctrl.goingBack()">
-          <md-icon md-font-set="material-icons" class="material-icons ng-binding md-layoutTheme-theme">edit</md-icon>
-          <md-tooltip md-direction="down">
-            Editar questão
-          </md-tooltip>
-        </md-button>
-      </div>
-    </md-toolbar>
     <md-card-header layout="row" flex>
       <md-card-header-text layout-align="center start" ng-show="$ctrl.view" layout-padding layout-margin>
-        <otus-label class="md-title md-headline" layout-padding item-label="labelFormatted"></otus-label>
+        <otus-label class="md-title md-headline" layout-padding item-label="$ctrl.labelFormatted"></otus-label>
       </md-card-header-text>
     </md-card-header>
 

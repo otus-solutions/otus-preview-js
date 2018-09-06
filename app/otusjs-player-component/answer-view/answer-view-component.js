@@ -12,14 +12,13 @@
     }).controller("answerViewCtrl", Controller);
 
   Controller.$inject = [
-    '$scope',
     'ICON',
     '$filter',
     'otusjs.player.core.player.PlayerService',
     'otusjs.player.core.renderer.TagComponentBuilderService'
   ];
 
-  function Controller($scope, ICON, $filter, PlayerService, TagComponentBuilderService) {
+  function Controller(ICON, $filter, PlayerService, TagComponentBuilderService) {
     var self = this;
 
     self.$onInit = onInit;
@@ -29,24 +28,30 @@
     self.isItem = isItem;
 
 
+    function onInit() {
+      self.hueClass='md-accent md-hue-1'
+      self.itemData = angular.copy(self.itemData);
+      _constructor();
+    }
+
     function _constructor() {
       self.template = TagComponentBuilderService.createTagElement(self.itemData.objectType, true);
-      $scope.itemData = angular.copy(self.itemData);
-      $scope.icon = ICON[self.icon];
+      self.itemData = angular.copy(self.itemData);
+      self.icon = ICON[self.icon];
       if(self.itemData.data){
         _metadadaBuilder();
-        $scope.answer = self.itemData.data.answer.value ? 'Resposta: '+_formatAnswer() : 'Metadado: '+  self.METADADA[self.itemData.data.metadata.value - 1];
-        $scope.comment = self.itemData.data.comment ? 'Comentário: '+ self.itemData.data.comment: '';
+        self.answer = self.itemData.data.answer.value ? 'Resposta: '+_formatAnswer() : 'Metadado: '+  self.METADADA[self.itemData.data.metadata.value - 1];
+        self.comment = self.itemData.data.comment ? 'Comentário: '+ self.itemData.data.comment: '';
         _clearQuestionLabel();
-        $scope.label = self.question;
+        self.label = self.question;
       } else if(self.itemData.objectType === "TextItem"){
-        $scope.label = self.itemData.value.ptBR.formattedText;
+        self.label = self.itemData.value.ptBR.formattedText;
       } else if(self.itemData.objectType === "ImageItem"){
-        $scope.label = "[IMAGEM]";
+        self.label = "[IMAGEM]";
       }
-      $scope.labelFormatted = angular.copy(self.question);
+      self.labelFormatted = angular.copy(self.question);
       _clearQuestionLabel();
-      $scope.label = self.question;
+      self.label = self.question;
     }
 
     function _metadadaBuilder() {
@@ -56,16 +61,11 @@
       })
     }
 
+
     function _clearQuestionLabel() {
       self.question = self.question.replace(/<\w+>/g, ' ');
       self.question = self.question.replace(/<\/\w+>/g, ' ');
       self.question = self.question.replace(/[\n]/g, ' ');
-    }
-
-
-    function onInit() {
-      $scope.itemData = angular.copy(self.itemData);
-      _constructor();
     }
 
     function goingBack() {
@@ -75,6 +75,11 @@
 
     function viewQuestion() {
       self.view = !self.view;
+      if(self.view){
+        self.hueClass = 'md-primary md-hue-1'
+      } else {
+        self.hueClass = 'md-accent md-hue-1'
+      }
     }
 
     function formatDate(value) {
@@ -116,7 +121,7 @@
     function _formatAnswer() {
       var answer = null;
       if(self.itemData.data.answer.value){
-        switch ($scope.icon){
+        switch (self.icon){
           case "date_range":
             answer = formatDate(self.itemData.data.answer.value);
             break;
