@@ -18,7 +18,7 @@ describe('checkbox question view controller component', function () {
       expect(controller).toBeDefined();
     });
 
-    xit('should build an new component with values', function () {
+    it('should build an new component with values', function () {
       controller.$onInit();
       expect(controller.answerArray).toEqual(1);
       expect(controller.view).toEqual(true);

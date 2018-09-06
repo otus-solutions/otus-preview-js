@@ -22,8 +22,6 @@ describe('integer question view controller component', function () {
       controller.$onInit();
       expect(controller.answer).toEqual(1);
       expect(controller.view).toEqual(true);
-
-
     });
   });
 
