@@ -5,18 +5,17 @@
     .module('otusjs.player.component')
     .component('otusSingleSelectionQuestionView', {
       templateUrl: 'app/otusjs-player-component/survey-item/question/single-selection/single-selection-question-template.html',
-      controller: Controller,
+      controller: "otusSingleSelectionQuestionViewCtrl as $ctrl",
       bindings: {
         itemData: '<'
       }
-    });
+    }).controller("otusSingleSelectionQuestionViewCtrl", Controller);
 
    function Controller() {
     var self = this;
 
     self.$onInit = function() {
-      self.answer = self.itemData.data.answer.value;
-      // self.otusQuestion.answer = self;
+      self.answer = self.itemData.data.answer.value;      
       self.view = true;
     };
 
