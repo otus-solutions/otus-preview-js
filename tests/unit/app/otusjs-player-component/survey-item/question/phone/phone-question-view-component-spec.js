@@ -7,11 +7,9 @@ describe('phone question view controller component', function () {
   
       inject(function (_$controller_) {
         mockController(_$controller_);
-      });
-  
+      });  
        mockBindings();
-    });
-  
+    });  
   
     describe('the initialization', function () {
       it('should have a defined controller', function () {
@@ -22,14 +20,11 @@ describe('phone question view controller component', function () {
         controller.$onInit();
         expect(controller.answer).toEqual(1);
         expect(controller.view).toEqual(true);
-      });
-  
-  
+      });  
     });
   
     //mock functions
-    function mockController(_$controller_) {
-  
+    function mockController(_$controller_) {  
       controller = _$controller_('otusPhoneQuestionViewCtrl');
     }
   
