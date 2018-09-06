@@ -26,10 +26,11 @@
     var self = this;
     var _datasource = [];
 
+    self.view = false;
+
     /* Question Methods */
     self.$onInit = function() {
       self.dataReady = false;
-      self.view = false;
       self.answer = CurrentItemService.getFilling().answer.value;
       self.otusQuestion.answer = self;
       _setupDatasourceQuery();

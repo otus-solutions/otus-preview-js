@@ -14,9 +14,10 @@
   function Controller() {
     var self = this;
 
+    self.view = true;
+
     self.$onInit = function () {
       self.answerArray = self.itemData.data.answer.value;
-      self.view = true;
     };
   }
 }());

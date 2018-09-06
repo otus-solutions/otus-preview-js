@@ -9,14 +9,15 @@
       bindings: {
         itemData: '<'
       }
-    }).controller("otusIntegerQuestionViewCtrl", Controller);  
+    }).controller("otusIntegerQuestionViewCtrl", Controller);
 
   function Controller() {
     var self = this;
 
+    self.view = true;
+
     self.$onInit = function() {
       self.answer = self.itemData.data.answer.value;
-      self.view = true;
     };
 
   }

@@ -17,10 +17,10 @@
   function Controller() {
     var self = this;
 
+    self.view = true;
 
     /* Question Methods */
     self.$onInit = function() {
-      self.view = true;
       self.answer = self.itemData.data.answer.value;
     };
 
