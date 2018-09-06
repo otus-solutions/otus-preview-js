@@ -77,8 +77,12 @@
     function viewQuestion() {
       self.view = !self.view;
       if(self.view){
+        self.fadeleft = 'fade-in';
+        self.fadeRight = 'fade-out';
         self.hueClass = 'md-primary md-hue-1'
       } else {
+        self.fadeleft = 'fade-out';
+        self.fadeRight = 'fade-in';
         self.hueClass = 'md-accent md-hue-1'
       }
     }

@@ -21,7 +21,8 @@ otus-survey-header md-chips-wrap {
 /* SURVEY ITEM */
 
 otus-survey-item {
-  min-height: 510px
+  min-height: 510px;
+  transition: opacity 2s linear;
 }
 
 .truncate {
@@ -29,3 +30,71 @@ otus-survey-item {
   overflow: hidden;
   text-overflow: ellipsis;
 }
+@-webkit-keyframes fadeIn {
+0% { opacity: 0; }
+100% { opacity: 1; }
+}
+@-moz-keyframes fadeIn {
+0% { opacity: 0;}
+100% { opacity: 1; }
+}
+@-o-keyframes fadeIn {
+0% { opacity: 0; }
+100% { opacity: 1; }
+}
+@keyframes fadeIn {
+0% { opacity: 0; }
+100% { opacity: 1; }
+}
+
+.visiblequestion {
+  -webkit-animation: fadeIn 1s ease-in-out;
+  -moz-animation: fadeIn 1s ease-in-out;
+  -o-animation: fadeIn 1s ease-in-out;
+  animation: fadeIn 1s ease-in-out;
+}
+.visiblequestiondelay {animation-delay: 6s;
+  -webkit-animation: fadeIn 1s ease-in-out;
+  -moz-animation: fadeIn 1s ease-in-out;
+  -o-animation: fadeIn 1s ease-in-out;
+  animation: fadeIn 1s ease-in-out;
+}
+
+.hiddenquestion {
+  visibility: hidden;
+  opacity: 0;
+  transition: visibility 0s 2s, opacity 2s linear;
+}
+@-webkit-keyframes viewSlide {
+0% { opacity: 0;}
+100% { opacity: 1;}
+}
+@-moz-keyframes viewSlide {
+0% { opacity: 0;}
+100% { opacity: 1;}
+}
+@-o-keyframes viewSlide {
+0% { opacity: 0;}
+100% { opacity: 1;}
+}
+@keyframes viewSlide {
+0% { opacity: 0;}
+100% { opacity: 1;}
+}
+
+.viewwitheffect{
+color: #0092f8!important;
+  -webkit-animation: viewSlide 2s ease-in-out;
+  -moz-animation: viewSlide 2s ease-in-out;
+  -o-animation: viewSlide 2s ease-in-out;
+  animation: viewSlide 2s ease-in-out;
+
+}
+.barrabranca {
+    background-color: rgb(255,255,255)!important;
+    color: rgb(68,138,255)!important;
+}
+.iconeeditar{color:#262626!important;}
+
+.fade-out { opacity: 0; transition: 0s!important; }
+.fade-in { opacity: 1; transition: 2s!important; }

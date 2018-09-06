@@ -1,15 +1,21 @@
 <md-card flex layout="column">
   <md-toolbar layout="row" ng-class="$ctrl.hueClass">
-    <md-icon md-font-set="material-icons" class="material-icons ng-binding md-layoutTheme-theme" layout="column" flex="10" layout-align="center center">{{$ctrl.icon}}</md-icon>
+    <md-icon ng-show="!$ctrl.view" md-font-set="material-icons" class="material-icons ng-binding md-layoutTheme-theme" layout="column" flex="10" layout-align="center center">{{$ctrl.icon}}</md-icon>
     <md-card-header-text ng-show="!$ctrl.view" layout="column" layout-fill class="truncate" ng-show="!$ctrl.view" flex="70">
       <otus-label class="md-title truncate" item-label="$ctrl.label" style="display: inline-block;width: 95%"></otus-label>
       <span class="md-subhead" class="truncate" style="display: inline-block; width: 95%">{{$ctrl.answer}}</span>
       <span class="md-subhead">{{$ctrl.comment}}</span>
     </md-card-header-text>
     <div class="md-toolbar-tools" layout="row" flex layout-align="center center">
+      <md-button class="md-icon-button" ng-class="$ctrl.fadeleft" ng-show="$ctrl.view" ng-click="$ctrl.viewQuestion()" >
+        <md-icon md-font-set="material-icons" class="material-icons ng-binding md-layoutTheme-theme">remove_red_eye</md-icon>
+        <md-tooltip md-direction="down">
+          Visualizar questão
+        </md-tooltip>
+      </md-button>
       <h4 flex md-truncate ng-show="$ctrl.view" flex style="margin: 0 !important;">Modo de visualização</h4>
       <span flex ng-show="!$ctrl.view"></span>
-      <md-button class="md-icon-button" ng-click="$ctrl.viewQuestion()" >
+      <md-button class="md-icon-button" ng-class="$ctrl.fadeRight" ng-show="!$ctrl.view" ng-click="$ctrl.viewQuestion()"  >
         <md-icon md-font-set="material-icons" class="material-icons ng-binding md-layoutTheme-theme">remove_red_eye</md-icon>
         <md-tooltip md-direction="down">
           Visualizar questão

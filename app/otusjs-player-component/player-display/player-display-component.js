@@ -25,7 +25,7 @@
   function Controller($scope, $element, $compile, $location, $anchorScroll, ActivityFacadeService, PlayerService, ICON) {
     var self = this;
 
-    var SURVEY_ITEM = '<answer-view ng-repeat="item in questions" ng-show="questions.length" go-back="$ctrl.goBack()" icon="item.objectType" item-data="item" question="{{item.label.ptBR.formattedText}}"></answer-view>' +
+    var SURVEY_ITEM = '<answer-view ng-repeat="item in questions" ng-show="questions.length" go-back="$ctrl.goBack()" class="visiblequestion" icon="item.objectType" item-data="item" question="{{item.label.ptBR.formattedText}}"></answer-view>' +
       '<otus-survey-item item-data="itemData" id="{{itemData.templateID}}" style="margin: 0;display:block;" class="animate-switch"/>';
     var SURVEY_COVER = '<otus-cover />';
 
