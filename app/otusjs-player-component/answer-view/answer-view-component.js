@@ -29,7 +29,8 @@
 
 
     function onInit() {
-      self.hueClass='md-accent md-hue-1'
+      self.hueClass='md-accent md-hue-1';
+      self.view = false;
       self.itemData = angular.copy(self.itemData);
       _constructor();
     }
@@ -143,10 +144,8 @@
           case "attach_file":
             answer = formatFileUpload();
             break;
-
           default:
             answer = self.itemData.data.answer.value;
-
         }
       }
       return answer;
