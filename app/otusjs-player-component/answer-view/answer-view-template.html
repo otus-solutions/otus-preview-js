@@ -21,7 +21,7 @@
           Visualizar questão
         </md-tooltip>
       </md-button>
-      <md-button class="md-icon-button" ng-click="$ctrl.goingBack()">
+      <md-button class="md-icon-button" ng-click="$ctrl.goingBack()" ng-show="!$ctrl.isItem()">
         <md-icon md-font-set="material-icons" class="material-icons ng-binding md-layoutTheme-theme">edit</md-icon>
         <md-tooltip md-direction="down">
           Editar questão
@@ -37,7 +37,8 @@
     </md-card-header>
 
     <md-card-content layout="row" layout-align="space-between" flex>
-      <md-content layout="column" layout-fill="" flex>
+      <otus-misc-item ng-show="$ctrl.isItem() && ($ctrl.itemData.objectType === 'ImageItem')" item-data="$ctrl.itemData" layout="column" flex></otus-misc-item>
+      <md-content ng-show="!$ctrl.isItem()" layout="column" layout-fill="" flex>
         <div layout="row" flex>
           <md-tabs md-dynamic-height layout="column" flex=95>
             <md-tab label="Resposta">
@@ -73,8 +74,6 @@
 
         </div>
       </md-content>
-
-      <otus-misc-item ng-show="$ctrl.isItem()" item-data="$ctrl.itemData" layout="column" flex></otus-misc-item>
     </md-card-content>
   </div>
 </md-card>

@@ -43,16 +43,16 @@
         _metadadaBuilder();
         self.answer = self.itemData.data.answer.value ? 'Resposta: '+_formatAnswer() : 'Metadado: '+  self.METADADA[self.itemData.data.metadata.value - 1];
         self.comment = self.itemData.data.comment ? 'Comentário: '+ self.itemData.data.comment: '';
-        _clearQuestionLabel();
         self.label = self.question;
+        _clearQuestionLabel();
       } else if(self.itemData.objectType === "TextItem"){
+        self.question = self.itemData.value.ptBR.plainText;
         self.label = self.itemData.value.ptBR.formattedText;
+        _clearQuestionLabel();
       } else if(self.itemData.objectType === "ImageItem"){
         self.label = "[IMAGEM]";
       }
-      self.labelFormatted = angular.copy(self.question);
-      _clearQuestionLabel();
-      self.label = self.question;
+
     }
 
     function _metadadaBuilder() {
@@ -64,9 +64,11 @@
 
 
     function _clearQuestionLabel() {
+      self.labelFormatted = angular.copy(self.label);
       self.question = self.question.replace(/<\w+>/g, ' ');
       self.question = self.question.replace(/<\/\w+>/g, ' ');
       self.question = self.question.replace(/[\n]/g, ' ');
+      self.label = self.question;
     }
 
     function goingBack() {
