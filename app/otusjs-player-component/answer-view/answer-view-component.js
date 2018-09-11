@@ -46,6 +46,7 @@
         self.label = self.itemData.label.ptBR.plainText;
         self.labelFormatted = self.itemData.label.ptBR.formattedText;
       } else if(self.itemData.objectType === "TextItem"){
+        self.txtqst = "txtqst"
         self.label = self.itemData.value.ptBR.plainText;
         self.labelFormatted = self.itemData.value.ptBR.formattedText;
       } else if(self.itemData.objectType === "ImageItem"){

@@ -2,8 +2,8 @@
   <md-toolbar layout="row" ng-class="$ctrl.hueClass">
     <md-icon ng-show="!$ctrl.view" md-font-set="material-icons" class="material-icons ng-binding md-layoutTheme-theme" layout="column" flex="10" layout-align="center center">{{$ctrl.icon}}</md-icon>
     <md-card-header-text ng-show="!$ctrl.view" layout="column" layout-fill class="truncate" ng-show="!$ctrl.view" flex="70">
-      <otus-label class="md-title truncate" item-label="$ctrl.label" style="display: inline-block;width: 95%"></otus-label>
-      <span class="md-subhead" class="truncate" style="display: inline-block; width: 95%">{{$ctrl.answer}}</span>
+      <otus-label ng-class="$ctrl.txtqst" class="md-title truncate" item-label="$ctrl.label" style="display: inline-block;"></otus-label>
+      <span class="md-subhead" class="truncate" style="display: inline-block; ">{{$ctrl.answer}}</span>
       <span class="md-subhead">{{$ctrl.comment}}</span>
     </md-card-header-text>
     <div class="md-toolbar-tools" layout="row" flex layout-align="center center">
