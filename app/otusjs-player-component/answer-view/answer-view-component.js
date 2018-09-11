@@ -30,6 +30,7 @@
 
     function onInit() {
       self.hueClass='md-accent md-hue-1';
+      self.iconEye = 'remove_red_eye';
       self.view = false;
       self.itemData = angular.copy(self.itemData);
       _constructor();
@@ -69,13 +70,15 @@
     function viewQuestion() {
       self.view = !self.view;
       if(self.view){
-        self.fadeleft = 'fade-in';
-        self.fadeRight = 'fade-out';
-        self.hueClass = 'md-primary md-hue-1'
+        // self.fadeleft = 'fade-in';
+        // self.fadeRight = 'fade-out';
+        self.hueClass = 'md-primary md-hue-1';
+        self.iconEye = 'visibility_off';
       } else {
-        self.fadeleft = 'fade-out';
-        self.fadeRight = 'fade-in';
+        // self.fadeleft = 'fade-out';
+        // self.fadeRight = 'fade-in';
         self.hueClass = 'md-accent md-hue-1'
+        self.iconEye = 'remove_red_eye';
       }
     }
 
