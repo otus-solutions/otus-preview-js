@@ -15,10 +15,17 @@
       </h4>
 
       <span flex ng-show="!$ctrl.view"></span>
+      <md-button class="md-icon-button md-whiteframe-3dp" ng-click="$ctrl.goingBack()" ng-show="!$ctrl.isItem() && $ctrl.view">
+        <md-icon md-font-set="material-icons" class="material-icons ng-binding md-layoutTheme-theme">edit</md-icon>
+        <md-tooltip md-direction="down">
+          Editar questão
+        </md-tooltip>
+      </md-button>
+      <span flex="5"></span>
       <md-button class="md-icon-button" ng-click="$ctrl.viewQuestion()"  >
         <md-icon md-font-set="material-icons" class="material-icons ng-binding md-layoutTheme-theme">{{$ctrl.iconEye}}</md-icon>
         <md-tooltip md-direction="down">
-          Visualizar questão
+          {{$ctrl.iconTooltip}}
         </md-tooltip>
       </md-button>
     </div>
@@ -33,15 +40,15 @@
     <md-card-content layout="row" layout-align="space-between" flex>
       <otus-misc-item ng-show="$ctrl.isItem() && ($ctrl.itemData.objectType === 'ImageItem')" item-data="$ctrl.itemData" layout="column" flex></otus-misc-item>
       <md-content ng-show="!$ctrl.isItem()" layout="column" layout-fill="" flex>
-        <div layout="row" flex layout-align="center center">
-          <md-button class="md-primary md-button" ng-click="$ctrl.goingBack()" ng-show="!$ctrl.isItem() && $ctrl.view">
-            EDITAR QUESTÃO
-            <md-icon md-font-set="material-icons" class="material-icons ng-binding md-layoutTheme-theme">edit</md-icon>
-            <md-tooltip md-direction="down">
-              Editar questão
-            </md-tooltip>
-          </md-button>
-        </div>
+        <!--<div layout="row" flex layout-align="center center">-->
+          <!--<md-button class="md-primary md-button" ng-click="$ctrl.goingBack()" ng-show="!$ctrl.isItem() && $ctrl.view">-->
+            <!--EDITAR QUESTÃO-->
+            <!--<md-icon md-font-set="material-icons" class="material-icons ng-binding md-layoutTheme-theme">edit</md-icon>-->
+            <!--<md-tooltip md-direction="down">-->
+              <!--Editar questão-->
+            <!--</md-tooltip>-->
+          <!--</md-button>-->
+        <!--</div>-->
         <div layout="row" flex>
           <md-tabs md-dynamic-height layout="column" flex=95>
             <md-tab label="Resposta">

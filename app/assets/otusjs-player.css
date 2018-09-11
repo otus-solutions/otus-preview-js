@@ -31,13 +31,6 @@ otus-survey-item {
   text-overflow: ellipsis;
 }
 
-
-.barrabranca {
-    background-color: rgb(255,255,255)!important;
-    color: rgb(68,138,255)!important;
-}
-.iconeeditar{color:#262626!important;}
-
 .fade-out { opacity: 0; transition: 0s!important; }
 .fade-in { opacity: 1; transition: 1s!important; }
 .txtqst{width: 100%!important; margin-top:2%!important;}
