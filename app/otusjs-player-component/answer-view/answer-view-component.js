@@ -71,8 +71,6 @@
     function viewQuestion() {
       self.view = !self.view;
       if(self.view){
-        // self.fadeleft = 'fade-in';
-        // self.fadeRight = 'fade-out';
         self.hueClass = 'md-primary md-hue-1';
         self.iconEye = 'visibility_off';
       } else {
