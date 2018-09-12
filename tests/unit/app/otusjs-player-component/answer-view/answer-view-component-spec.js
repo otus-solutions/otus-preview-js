@@ -40,12 +40,12 @@ describe('answer view component', function () {
 
     it('should fill the component fields', function () {
       controller.$onInit();
-      expect(controller.hueClass).toEqual('md-accent md-hue-1');
+      expect(controller.hueClass).toEqual('md-accent');
       expect(controller.itemData).toEqual(Mock.itemData);
       expect(controller.template).toEqual(Mock.mountedTag);
       expect(controller.icon).toEqual(Mock.icon);
       expect(controller.labelFormatted).toEqual(Mock.question);
-      expect(controller.label).toEqual(Mock.question);
+      expect(controller.label).toEqual(Mock.label);
       expect(controller.answer).toEqual(Mock.answer);
       expect(controller.comment).toEqual(Mock.comment);
       expect(controller.METADADA).toEqual(Mock.metadata);
@@ -67,10 +67,10 @@ describe('answer view component', function () {
       controller.$onInit();
       controller.viewQuestion();
       expect(controller.view).toEqual(true);
-      expect(controller.hueClass).toEqual("md-primary md-hue-1");
+      expect(controller.hueClass).toEqual("md-primary");
       controller.viewQuestion();
       expect(controller.view).toEqual(false);
-      expect(controller.hueClass).toEqual("md-accent md-hue-1");
+      expect(controller.hueClass).toEqual("md-accent");
     });
   });
 
@@ -244,7 +244,8 @@ describe('answer view component', function () {
       goBack: function () {}
     };
 
-    Mock.question = "LABEL";
+    Mock.question = '<div style=\'text-align: justify;\'><b>ENTREVISTADOR: </b></div>';
+    Mock.label = "ENTREVISTADOR"
 
     Mock.itemData = {
       'dataSources' : [

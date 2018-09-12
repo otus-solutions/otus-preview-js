@@ -29,7 +29,7 @@
 
 
     function onInit() {
-      self.hueClass='md-accent md-hue-1';
+      self.hueClass='md-accent';
       self.iconEye = 'remove_red_eye';
       self.iconTooltip = 'Visualizar questão';
       self.view = false;
@@ -73,11 +73,11 @@
       self.view = !self.view;
       if(self.view){
         self.iconTooltip = 'Ocultar questão';
-        self.hueClass = 'md-primary md-hue-1';
+        self.hueClass = 'md-primary';
         self.iconEye = 'visibility_off';
       } else {
         self.iconTooltip = 'Visualizar questão';
-        self.hueClass = 'md-accent md-hue-1'
+        self.hueClass = 'md-accent'
         self.iconEye = 'remove_red_eye';
       }
     }
