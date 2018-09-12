@@ -43,7 +43,7 @@
       self.icon = ICON[self.icon];
       if(self.itemData.data){
         _metadadaBuilder();
-        self.answer = self.itemData.data.answer.value ? 'Resposta: '+_formatAnswer() : 'Metadado: '+  self.METADADA[self.itemData.data.metadata.value - 1];
+        self.answer = self.itemData.data.answer.value !== null ? 'Resposta: '+_formatAnswer() : 'Metadado: '+  self.METADADA[self.itemData.data.metadata.value - 1];
         self.comment = self.itemData.data.comment ? 'Comentário: '+ self.itemData.data.comment: '';
         self.label = self.itemData.label.ptBR.plainText;
         self.labelFormatted = self.itemData.label.ptBR.formattedText;
@@ -120,7 +120,6 @@
 
     function _formatAnswer() {
       var answer = null;
-      if(self.itemData.data.answer.value){
         switch (self.icon){
           case "date_range":
             answer = formatDate(self.itemData.data.answer.value);
@@ -146,7 +145,7 @@
           default:
             answer = self.itemData.data.answer.value;
         }
-      }
+
       return answer;
 
     }
