@@ -100,8 +100,20 @@
       if($scope.itemData.templateID){
         var question = angular.copy($scope.itemData);
         question.data = ActivityFacadeService.fetchItemAnswerByTemplateID(question.templateID);
-        $scope.questions.push(question)
+        question.data = question.data ? question.data : _setAnswerBlank();
+        $scope.questions.push(question);
       }
+    }
+
+    function _setAnswerBlank() {
+      return {
+        metadata: {
+          value: null
+        },
+        answer : {
+          value: null
+        }
+      };
     }
 
     function showCover() {

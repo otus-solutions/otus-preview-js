@@ -6,10 +6,16 @@
         Editar questão
       </md-tooltip>
     </md-button>
-    <md-card-header-text ng-show="!$ctrl.view" layout-align="start center" layout="column" layout-fill class="truncate md-toolbar-tools" ng-show="!$ctrl.view" flex="80">
+    <md-button class="md-icon-button md-whiteframe-3dp" ng-show="!$ctrl.isItem() && !$ctrl.view">
+      <md-icon md-font-set="material-icons" class="material-icons ng-binding md-layoutTheme-theme">question_answer</md-icon>
+      <md-tooltip md-direction="down">
+        Questão respondida
+      </md-tooltip>
+    </md-button>
+    <md-card-header-text ng-show="!$ctrl.view" layout-align="start start" layout="column" layout-fill class="truncate md-toolbar-tools" ng-show="!$ctrl.view" flex="80">
       <otus-label class="md-title truncate" item-label="$ctrl.label" style="display: inline-block;width: 95%"></otus-label>
-      <span class="md-subhead" class="truncate" style="display: inline-block; width: 95%">{{$ctrl.answer}}</span>
-      <span class="md-subhead">{{$ctrl.comment}}</span>
+      <span class="md-caption" class="truncate" style="display: inline-block;margin-top:-5px; width: 95%">{{$ctrl.answer}}</span>
+      <span class="md-caption" class="truncate" style="display: inline-block;margin-top:-5px; width: 95%">{{$ctrl.comment}}</span>
     </md-card-header-text>
     <div class="md-toolbar-tools" layout="row" flex layout-align="center center">
       <h4 flex ng-show="$ctrl.view" flex style="margin: 0 !important;text-align: center">

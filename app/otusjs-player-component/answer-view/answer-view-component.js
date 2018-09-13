@@ -41,10 +41,12 @@
       self.template = TagComponentBuilderService.createTagElement(self.itemData.objectType, true);
       self.itemData = angular.copy(self.itemData);
       self.icon = ICON[self.icon];
-      if(self.itemData.data){
+      if(self.itemData.isQuestion()){
         _metadadaBuilder();
-        self.answer = self.itemData.data.answer.value !== null ? 'Resposta: '+_formatAnswer() : 'Metadado: '+  self.METADADA[self.itemData.data.metadata.value - 1];
-        self.comment = self.itemData.data.comment ? 'Comentário: '+ self.itemData.data.comment: '';
+
+          self.answer = _containMetadada() ? 'Metadado: '+  self.METADADA[self.itemData.data.metadata.value - 1] : 'Resposta: '+_formatAnswer();
+          self.comment = self.itemData.data.comment ? 'Contém comentário(s)': '';
+
         self.label = self.itemData.label.ptBR.plainText;
         self.labelFormatted = self.itemData.label.ptBR.formattedText;
       } else if(self.itemData.objectType === "TextItem"){
@@ -55,6 +57,12 @@
         self.label = "[IMAGEM]";
       }
 
+    }
+
+
+
+    function _containMetadada() {
+      return self.itemData.data.metadata.value !== null ? true : false;
     }
 
     function _metadadaBuilder() {
@@ -119,7 +127,7 @@
     }
 
     function _formatAnswer() {
-      var answer = null;
+      var answer = "";
         switch (self.icon){
           case "date_range":
             answer = formatDate(self.itemData.data.answer.value);
@@ -143,7 +151,7 @@
             answer = formatFileUpload();
             break;
           default:
-            answer = self.itemData.data.answer.value;
+            answer = self.itemData.data.answer.value !== null ? self.itemData.data.answer.value : '';
         }
 
       return answer;
