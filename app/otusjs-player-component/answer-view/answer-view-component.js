@@ -92,12 +92,12 @@
 
     function formatDate(value) {
       var format = 'dd/MM/yyyy'
-      return $filter('date')(new Date(value), format);
+      return value ? $filter('date')(new Date(value), format): "";
     }
 
     function formatTime(value) {
       var format = 'HH:mm';
-      return $filter('date')(new Date(value), format);
+      return value ? $filter('date')(new Date(value), format) : "";
     }
 
     function formatSingleSelection() {
