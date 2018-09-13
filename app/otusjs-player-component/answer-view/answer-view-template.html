@@ -12,10 +12,10 @@
         Questão respondida
       </md-tooltip>
     </md-button>
-    <md-card-header-text ng-if="!$ctrl.view" layout-align="start center" layout="column" layout-fill class="truncate" ng-if="!$ctrl.view" flex="80">
-      <otus-label class="md-title truncate" item-label="$ctrl.label" style="display: inline-block;width: 95%"></otus-label>
-      <span class="md-caption" class="truncate" ng-if="$ctrl.answer" style="display: inline-block;margin-top:-5px; width: 95%">{{$ctrl.answer}}</span>
-      <span class="md-caption" class="truncate" ng-if="$ctrl.comment" style="display: inline-block;margin-top:-5px; width: 95%">{{$ctrl.comment}}</span>
+    <md-card-header-text ng-if="!$ctrl.view" layout-align="start center" layout="column" style="display: flex" layout-fill class="truncate" ng-if="!$ctrl.view" flex="80">
+      <otus-label class="md-title truncate" item-label="$ctrl.label" style="width: 95%"></otus-label>
+      <span class="md-caption truncate" ng-if="$ctrl.answer" style="margin-top:-5px; width: 95%">{{$ctrl.answer}}</span>
+      <span class="md-caption truncate" ng-if="$ctrl.comment" style="margin-top:-5px; width: 95%">{{$ctrl.comment}}</span>
     </md-card-header-text>
     <div class="md-toolbar-tools" layout="row" flex layout-align="center center">
       <h4 flex ng-if="$ctrl.view" flex style="margin: 0 !important;text-align: center">
