@@ -29,7 +29,7 @@
 
 
     function onInit() {
-      self.hueClass='md-accent';
+      self.hueClass='md-primary';
       self.iconEye = 'remove_red_eye';
       self.iconTooltip = 'Visualizar questão';
       self.view = false;
@@ -81,11 +81,11 @@
       self.view = !self.view;
       if(self.view){
         self.iconTooltip = 'Ocultar questão';
-        self.hueClass = 'md-primary';
+        self.hueClass = 'md-accent';
         self.iconEye = 'visibility_off';
       } else {
         self.iconTooltip = 'Visualizar questão';
-        self.hueClass = 'md-accent'
+        self.hueClass = 'md-primary'
         self.iconEye = 'remove_red_eye';
       }
     }
