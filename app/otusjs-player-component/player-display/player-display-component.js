@@ -19,15 +19,13 @@
     '$location',
     '$anchorScroll',
     'otusjs.player.data.activity.ActivityFacadeService',
-    'otusjs.player.core.player.PlayerService',
-    'ICON'
+    'otusjs.player.core.player.PlayerService'
   ];
 
-  function Controller($scope, $document, $element, $compile, $location, $anchorScroll, ActivityFacadeService, PlayerService, ICON) {
+  function Controller($scope, $document, $element, $compile, $location, $anchorScroll, ActivityFacadeService, PlayerService) {
     var self = this;
 
-    var SURVEY_ITEM = '<answer-view ng-repeat="item in questions" ng-show="questions.length" go-back="$ctrl.goBack()" icon="item.objectType" item-data="item" question="{{item.label.ptBR.formattedText}}"></answer-view>' +
-      '<otus-survey-item item-data="itemData" id="{{itemData.templateID}}" style="margin: 0;display:block;" class="animate-switch"/>';
+    var SURVEY_ITEM = '<otus-survey-item item-data="itemData" id="{{itemData.templateID}}" style="margin: 0;display:block;" class="animate-switch"/>';
     var SURVEY_COVER = '<otus-cover />';
 
     /* Public methods */
@@ -131,7 +129,6 @@
       $scope.itemData = {};
       $scope.itemData.customID = '';
       $scope.questions = [];
-      $scope.tracks = [];
     }
 
     function _shouldLoadItem(itemData) {
