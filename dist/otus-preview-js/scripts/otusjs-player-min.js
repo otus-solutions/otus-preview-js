@@ -75,7 +75,7 @@
     };
 
     self.clear = function() {
-      CurrentItemService.getFilling().comment;
+      CurrentItemService.getFilling().comment = "";
       delete self.comment;
     };
   }

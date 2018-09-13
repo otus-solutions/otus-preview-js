@@ -7,7 +7,7 @@ describe('answer view component', function () {
     Mock.mountedTag ='<otus-autocomplete-question-view item-data="$ctrl.itemData" />';
     Mock.icon = 'youtube_searched_for';
     Mock.answer = "Resposta: Medicamentos";
-    Mock.comment = "Comentário: comment";
+    Mock.comment = "Contém comentário(s)";
     Mock.metadata = ["Não quer responder","Não sabe","Não se aplica","Não há dados"];
     var date = new Date();
     Mock.dateString = date.toISOString();
@@ -87,6 +87,9 @@ describe('answer view component', function () {
   describe('formatTime', function () {
     it('should return Time', function () {
       controller.icon = "TimeQuestion";
+      controller.itemData.data = getData();
+
+      controller.itemData.data.metadata.value = null;
       controller.itemData.data.answer.value = Mock.dateString;
       controller.$onInit();
       var time = 'Resposta: '+Mock.filter('date')(new Date(Mock.dateString), 'HH:mm');
@@ -162,6 +165,9 @@ describe('answer view component', function () {
       controller.itemData.data = {
         answer: {
           value: 1
+        },
+        metadata: {
+          value: null
         }
       };
 
@@ -175,8 +181,8 @@ describe('answer view component', function () {
     it('should file name', function () {
       controller.icon = "FileUploadQuestion";
       controller.objectType = "FileUploadQuestion";
-      controller.itemData.data = {
-        "answer": {
+      controller.itemData.data = getData();
+      controller.itemData.data.answer = {
           "value": [
             {
               "objectType": "FileAnswer",
@@ -187,7 +193,6 @@ describe('answer view component', function () {
               "oid": ""
             }
           ]
-        }
       };
       controller.$onInit();
       var response = 'Resposta: '+'ELSABOX.txt; ';
@@ -202,14 +207,14 @@ describe('answer view component', function () {
     });
 
     it('should return false with ImageItem', function () {
-      controller.itemData.data = false;
+      controller.itemData.data = getData();
       controller.itemData.objectType = "ImageItem";
       controller.$onInit();
       expect(controller.isQuestion()).toEqual(false);
     });
 
     it('should return false with TextItem', function () {
-      controller.itemData.data = false;
+      controller.itemData.data = getData();
       controller.itemData.value = {"ptBR": {"formattedText" :" TextItem"}};
       controller.itemData.objectType = "TextItem";
       controller.$onInit();
@@ -224,20 +229,32 @@ describe('answer view component', function () {
     });
 
     it('should return true with ImageItem', function () {
-      controller.itemData.data = false;
+      controller.itemData.data = getData();
       controller.itemData.objectType = "ImageItem";
       controller.$onInit();
       expect(controller.isItem()).toEqual(true);
     });
 
     it('should return true with TextItem', function () {
-      controller.itemData.data = false;
+      controller.itemData.data = getData();
       controller.itemData.value = {"ptBR": {"formattedText" :" TextItem"}};
       controller.itemData.objectType = "TextItem";
       controller.$onInit();
       expect(controller.isItem()).toEqual(true);
     });
   });
+
+  function getData() {
+    return {
+      'metadata': {
+        'value': null
+      },
+      'answer': {
+        'value': 'Medicamentos'
+      },
+      'comment':'comment'
+    }
+  }
 
   function mockBindings() {
     Mock.parentContainer = {
@@ -251,12 +268,10 @@ describe('answer view component', function () {
       'dataSources' : [
         'medicamentos'
       ],
-      'data': {
-        'answer': {
-          'value': 'Medicamentos'
-        },
-        'comment':'comment'
+      'isQuestion': function () {
+        return true;
       },
+      'data': getData(),
       'label' : {
         'ptBR' : {
           'extends' : 'StudioObject',
