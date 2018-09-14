@@ -40,7 +40,7 @@ describe('answer view component', function () {
 
     it('should fill the component fields', function () {
       controller.$onInit();
-      expect(controller.hueClass).toEqual('md-accent');
+      expect(controller.hueClass).toEqual('md-primary');
       expect(controller.itemData).toEqual(Mock.itemData);
       expect(controller.template).toEqual(Mock.mountedTag);
       expect(controller.icon).toEqual(Mock.icon);
@@ -67,10 +67,10 @@ describe('answer view component', function () {
       controller.$onInit();
       controller.viewQuestion();
       expect(controller.view).toEqual(true);
-      expect(controller.hueClass).toEqual("md-primary");
+      expect(controller.hueClass).toEqual("md-accent");
       controller.viewQuestion();
       expect(controller.view).toEqual(false);
-      expect(controller.hueClass).toEqual("md-accent");
+      expect(controller.hueClass).toEqual("md-primary");
     });
   });
 
