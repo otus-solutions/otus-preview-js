@@ -74,12 +74,8 @@
         });
 
         function _saveLabel() {
-            self.ngModel.ptBR.formattedText = _removeSpecialCharacters(event.target.innerHTML);
+            self.ngModel.ptBR.formattedText = event.target.innerHTML;
             self.ngModel.ptBR.plainText = event.target.innerText;
-        }
-
-        function _removeSpecialCharacters(value) {
-            return value.replace(/"/g, '\'');
         }
 
         function _loadLabel() {
