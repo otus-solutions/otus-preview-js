@@ -5,19 +5,27 @@
     .module('otusjs.player.component')
     .component('otusPlayerDisplay', {
       templateUrl: 'app/otusjs-player-component/player-display/player-display-template.html',
-      controller: Controller
+      controller: Controller,
+      bindings:{
+        goBack: "&"
+      }
     });
 
   Controller.$inject = [
     '$scope',
+    '$document',
     '$element',
-    '$compile'
+    '$compile',
+    '$location',
+    '$anchorScroll',
+    'otusjs.player.data.activity.ActivityFacadeService',
+    'otusjs.player.core.player.PlayerService'
   ];
 
-  function Controller($scope, $element, $compile) {
+  function Controller($scope, $document, $element, $compile, $location, $anchorScroll, ActivityFacadeService, PlayerService) {
     var self = this;
 
-    var SURVEY_ITEM = '<otus-survey-item item-data="itemData" flex style="overflow: auto; position: relative; margin-right: -15px;"/>';
+    var SURVEY_ITEM = '<otus-survey-item item-data="itemData" id="{{itemData.templateID}}" style="margin: 0;display:block;" class="animate-switch"/>';
     var SURVEY_COVER = '<otus-cover />';
 
     /* Public methods */
@@ -25,6 +33,7 @@
     self.showCover = showCover;
     self.remove = remove;
     self.$onInit = onInit;
+    self.ids = [];
 
     function _destroyCurrentItem() {
       if (self.currentItem) {
@@ -35,26 +44,91 @@
     function loadItem(itemData) {
       if (_shouldLoadItem(itemData)) {
         _destroyCurrentItem();
+        _saveQuestion();
+        removeQuestion(itemData.templateID);
         $scope.itemData = itemData;
-        $element.empty();
-        $element.append($compile(SURVEY_ITEM)($scope));
+        _setQuestionId(itemData.templateID);
+        $element.find('#pagePlayer').empty();
+        $element.find('#pagePlayer').append($compile(SURVEY_ITEM)($scope));
+        _onGoBottom(itemData.templateID);
       }
+
+
+
+      if(PlayerService.isGoingBack()){
+        if(PlayerService.getGoBackTo() !== itemData.templateID){
+          self.goBack()
+        } else {
+          PlayerService.setGoBackTo(null)
+        }
+      }
+    }
+
+
+    $scope.removeQuestion = removeQuestion;
+
+    function removeQuestion(id) {
+      var index = _getIndexQuestionId(id);
+      if(index > -1){
+        var length = $scope.questions.length;
+        $scope.questions.splice(index, length);
+        self.ids.splice(index, length);
+
+      } else {
+        return false;
+      }
+      return true;
+
+    }
+
+    function _setQuestionId(id) {
+      self.ids.push(id);
+    }
+
+    function _getIndexQuestionId(id) {
+      return self.ids.indexOf(id);
+    }
+
+    function _onGoBottom(idQuestion) {
+      $location.hash(idQuestion);
+      $anchorScroll();
+    }
+
+    function _saveQuestion() {
+      if($scope.itemData.templateID){
+        var question = angular.copy($scope.itemData);
+        question.data = ActivityFacadeService.fetchItemAnswerByTemplateID(question.templateID);
+        question.data = question.data ? question.data : _setAnswerBlank();
+        $scope.questions.push(question);
+      }
+    }
+
+    function _setAnswerBlank() {
+      return {
+        metadata: {
+          value: null
+        },
+        answer : {
+          value: null
+        }
+      };
     }
 
     function showCover() {
       _destroyCurrentItem();
-      $element.empty();
-      $element.append($compile(SURVEY_COVER)($scope));
+      $element.find('#pagePlayer').empty();
+      $element.find('#pagePlayer').append($compile(SURVEY_COVER)($scope));
     }
 
     function remove() {
-      $element.remove();
+      $element.find('#pagePlayer').remove();
     }
 
     function onInit() {
       $scope.$parent.$ctrl.playerDisplay = self;
       $scope.itemData = {};
       $scope.itemData.customID = '';
+      $scope.questions = [];
     }
 
     function _shouldLoadItem(itemData) {

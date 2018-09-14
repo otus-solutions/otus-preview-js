@@ -1,6 +1,6 @@
 <md-content layout-padding style="margin-top: 12px">
     <md-content ng-repeat="option in $ctrl.itemData.options track by $index" flex>
-        <md-checkbox ng-model="$ctrl.answerArray[$index].state" ng-change="$ctrl.update($index)" layout="row" style="margin: 7px">
+        <md-checkbox ng-model="$ctrl.answerArray[$index].state" ng-change="$ctrl.update($index)" layout="row" style="margin: 7px" ng-disabled="$ctrl.view">
             <otus-label item-label="option.label.ptBR.formattedText" />
         </md-checkbox>
     </md-content>

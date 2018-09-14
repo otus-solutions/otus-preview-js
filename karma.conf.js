@@ -17,6 +17,7 @@ module.exports = function(config) {
             /* External dependencies */
             NODE_MODULES_ROOT_PATH + 'jquery/dist/jquery.min.js',
             NODE_MODULES_ROOT_PATH + 'angular/angular.min.js',
+            NODE_MODULES_ROOT_PATH + 'babel-polyfill/dist/polyfill.js',
             NODE_MODULES_ROOT_PATH + 'angular-animate/angular-animate.min.js',
             NODE_MODULES_ROOT_PATH + 'angular-aria/angular-aria.min.js',
             NODE_MODULES_ROOT_PATH + 'angular-bind-html-compile-ci-dev/angular-bind-html-compile.js',
@@ -28,6 +29,7 @@ module.exports = function(config) {
             NODE_MODULES_ROOT_PATH + 'otus-model-js/dist/otus-model.min.js',
             NODE_MODULES_ROOT_PATH + 'otus-model-js/dist/st-utils.min.js',
             NODE_MODULES_ROOT_PATH + 'otus-validation-js/dist/otus-validation-min.js',
+            NODE_MODULES_ROOT_PATH + 'trail-js/dist/trail-min.js',
 
             APP_ROOT_PATH + 'app.js',
             APP_ROOT_PATH + '**/*-module.js',
