@@ -5,7 +5,7 @@
     .module('otusjs.player.component')
     .component('otusTextQuestion', {
       templateUrl: 'app/otusjs-player-component/survey-item/question/text/text-question-template.html',
-      controller: Controller,
+      controller: "otusTextQuestionCtrl as $ctrl",
       bindings: {
         itemData: '<',
         onUpdate: '&'
@@ -13,7 +13,7 @@
       require: {
         otusQuestion: '^otusQuestion'
       }
-    });
+    }).controller("otusTextQuestionCtrl", Controller);
 
   Controller.$inject = [
     '$element',
@@ -22,6 +22,8 @@
 
   function Controller($element, CurrentItemService) {
     var self = this;
+
+    self.view = false;
 
     self.$onInit = function () {
       self.answer = CurrentItemService.getFilling().answer.value;

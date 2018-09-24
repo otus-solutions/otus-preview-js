@@ -15,10 +15,10 @@
   var embedTemplates = require('gulp-angular-embed-templates');
 
   gulp.task('compress', function() {
-    return gulp.src('app/index.html')
+    return gulp.src('app/index.html',{allowEmpty: true})
       .pipe(useref({
         transformPath: function(filePath) {
-          return filePath.replace('app', '');
+          return filePath.replace('app/', '');
         }
       }))
       .pipe(gulpif('*.js', embedTemplates({

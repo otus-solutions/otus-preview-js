@@ -1,6 +1,6 @@
 <md-content layout-padding>
   <div layout="row">
-    <md-button class="md-primary md-raised" upload-tool="$ctrl.uploadConfig">
+    <md-button class="md-primary md-raised" upload-tool="$ctrl.uploadConfig" ng-disabled="$ctrl.view">
       <md-icon md-font-set="material-icons">attach_file</md-icon>Adicionar Arquivos</md-button>
     <md-button class="md-primary md-raised" ng-show="$ctrl.pendingList.length != 0" ng-click="$ctrl.uploadMultiple()" ng-disabled="$ctrl.pendingCounter > 0">
       <md-icon md-font-set="material-icons">attach_file</md-icon>Enviar Todos</md-button>
@@ -28,7 +28,7 @@
             </md-button> -->
           </div>
 
-          <div class="action-panel" flex="20">
+          <div class="action-panel" flex="20" ng-if="!$ctrl.view">
             <md-button class="md-icon-button md-secondary" aria-label="Enviar Arquivo" ng-click="$ctrl.uploadFile($index)" ng-hide="file.status == 'uploading'" ng-disabled="$ctrl.pendingCounter >= 5">
               <md-icon md-font-set="material-icons">file_upload</md-icon>
               <md-tooltip md-direction="bottom">
@@ -65,7 +65,7 @@
                 Download
               </md-tooltip>
             </md-button>
-            <md-button class="md-icon-button md-secondary" aria-label="Delete" ng-click="$ctrl.deleteFile($index, $event)">
+            <md-button class="md-icon-button md-secondary" aria-label="Delete" ng-if="!$ctrl.view" ng-click="$ctrl.deleteFile($index, $event)">
               <md-icon md-font-set="material-icons">delete_forever</md-icon>
               <md-tooltip md-direction="bottom">
                 Apagar Arquivo

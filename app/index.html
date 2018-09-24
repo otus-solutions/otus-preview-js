@@ -12,6 +12,7 @@
     <!-- build:js css/otus-player-min.css -->
     <link href="app/assets/otusjs-player.css" rel="stylesheet"/>
     <link href="app/assets/otusjs-survey-item.css" rel="stylesheet"/>
+    <link rel="stylesheet" href="node_modules/trail-js/dist/style.css">
     <!-- endbuild -->
 
     <title>OtusJS Player Standalone</title>
@@ -42,6 +43,7 @@
     <!-- Otus Validation JS -->
     <script src="node_modules/otus-validation-js/dist/otus-validation-min.js"></script>
 
+
     <!-- OTUSJS PLAYER STANDALONE -->
     <script src="app/app.js"></script>
     <!-- CONFIG -->
@@ -64,6 +66,7 @@
     <!-- OTUSJS-PLAYER-CORE -->
     <script src="app/otusjs-player-component/component-module.js"></script>
 
+    <script src="app/otusjs-player-component/question-icons/icon-constant.js"></script>
     <script src="app/otusjs-player-component/comment/comment-component.js"></script>
     <script src="app/otusjs-player-component/label/otus-label-component.js"></script>
     <script src="app/otusjs-player-component/metadata/metadata-component.js"></script>
@@ -76,26 +79,39 @@
     <script src="app/otusjs-player-component/survey-item/survey-item-component.js"></script>
     <script src="app/otusjs-player-component/survey-item/question/question-component.js"></script>
     <script src="app/otusjs-player-component/survey-item/question/calendar/calendar-question-component.js"></script>
+    <script src="app/otusjs-player-component/survey-item/question/calendar/calendar-question-view-component.js"></script>
     <script src="app/otusjs-player-component/survey-item/question/integer/integer-question-component.js"></script>
+    <script src="app/otusjs-player-component/survey-item/question/integer/integer-question-view-component.js"></script>
     <script src="app/otusjs-player-component/survey-item/question/integer/ui-integer-directive.js"></script>
     <script src="app/otusjs-player-component/survey-item/question/decimal/decimal-question-component.js"></script>
+    <script src="app/otusjs-player-component/survey-item/question/decimal/decimal-question-view-component.js"></script>
     <script src="app/otusjs-player-component/survey-item/question/single-selection/single-selection-question-component.js"></script>
+    <script src="app/otusjs-player-component/survey-item/question/single-selection/single-selection-question-view-component.js"></script>
     <script src="app/otusjs-player-component/survey-item/question/checkbox/checkbox-question-component.js"></script>
-    <script src="app/otusjs-player-component/survey-item/question/checkbox/checkbox-question-controller.js"></script>
+    <script src="app/otusjs-player-component/survey-item/question/checkbox/checkbox-question-view-component.js"></script>
     <script src="app/otusjs-player-component/survey-item/question/text/text-question-component.js"></script>
+    <script src="app/otusjs-player-component/survey-item/question/text/text-question-view-component.js"></script>
     <script src="app/otusjs-player-component/survey-item/question/email/email-question-component.js"></script>
+    <script src="app/otusjs-player-component/survey-item/question/email/email-question-view-component.js"></script>
     <script src="app/otusjs-player-component/survey-item/question/time/time-question-component.js"></script>
+    <script src="app/otusjs-player-component/survey-item/question/time/time-question-view-component.js"></script>
     <script src="app/otusjs-player-component/survey-item/question/phone/phone-question-component.js"></script>
+    <script src="app/otusjs-player-component/survey-item/question/phone/phone-question-view-component.js"></script>
     <script src="app/otusjs-player-component/survey-item/question/file-upload/file-upload-question-component.js"></script>
+    <script src="app/otusjs-player-component/survey-item/question/file-upload/file-upload-question-view-component.js"></script>
     <script src="app/otusjs-player-component/survey-item/question/autocomplete/autocomplete-question-component.js"></script>
+    <script src="app/otusjs-player-component/survey-item/question/autocomplete/autocomplete-question-view-component.js"></script>
     <script src="app/otusjs-player-component/survey-item/question/grid-text/grid-text-question-component.js"></script>
+    <script src="app/otusjs-player-component/survey-item/question/grid-text/grid-text-question-view-component.js"></script>
     <script src="app/otusjs-player-component/survey-item/question/grid-integer/grid-integer-question-component.js"></script>
+    <script src="app/otusjs-player-component/survey-item/question/grid-integer/grid-integer-question-view-component.js"></script>
     <script src="app/otusjs-player-component/survey-item/question/grid-integer/numbers-only-directive.js"></script>
     <script src="app/otusjs-player-component/survey-item/misc/misc-item-component.js"></script>
     <script src="app/otusjs-player-component/survey-item/misc/image/image-item-component.js"></script>
     <script src="app/otusjs-player-component/survey-item/misc/text/text-item-component.js"></script>
     <script src="app/otusjs-player-component/validation-error/validation-error-component.js"></script>
     <script src="app/otusjs-player-component/question-menu/question-menu-component.js"></script>
+    <script src="app/otusjs-player-component/answer-view/answer-view-component.js"></script>
 
     <!-- /OTUSJS-PLAYER-CORE -->
     <!-- -------------------------------------------------------------------------------------- -->
@@ -208,6 +224,8 @@
     <!-- /OTUSJS-PLAYER-DATA -->
     <!-- -------------------------------------------------------------------------------------- -->
 
+    <!-- Trail JS -->
+    <script src="node_modules/trail-js/dist/trail-min.js"></script>
     <!-- endbuild -->
     <!-- END OTUSJS PLAYER -->
   </body>

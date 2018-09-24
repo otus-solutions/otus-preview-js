@@ -21,5 +21,18 @@ otus-survey-header md-chips-wrap {
 /* SURVEY ITEM */
 
 otus-survey-item {
-  min-height: 510px
+  min-height: 510px;
+  transition: opacity 2s linear;
 }
+
+.truncate {
+  flex: 1;
+  min-width: 0;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.fade-out { opacity: 0; transition: 0s!important; }
+.fade-in { opacity: 1; transition: 1s!important; }
+.txtqst{width: 100%!important; margin-top:2%!important;}

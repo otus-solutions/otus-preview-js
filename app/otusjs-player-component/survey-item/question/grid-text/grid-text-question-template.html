@@ -3,7 +3,7 @@
         <md-input-container flex>
             <label>{{ ::gridText.label.ptBR.formattedText }}</label>
             <div>
-                <textarea ng-model="$ctrl.answerArray[outerIndex][innerIndex].value" ng-blur="$ctrl.update(outerIndex, innerIndex)"></textarea>
+                <textarea ng-model="$ctrl.answerArray[outerIndex][innerIndex].value" ng-blur="$ctrl.update(outerIndex, innerIndex)" ng-disabled="$ctrl.view"></textarea>
             </div>
             <div style="color: gray;">{{::gridText.unit.ptBR.plainText}}</div>
         </md-input-container>

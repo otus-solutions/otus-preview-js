@@ -2,7 +2,7 @@
     <div>
         <md-input-container md-no-float class="md-block" flex-gt-sm="45">
             <md-icon class="material-icons">phone</md-icon>
-            <input type="text" ng-model="$ctrl.answer" ng-change="$ctrl.update()" placeholder="(XX) XXXXX-XXXX" ui-br-phone-number>
+            <input type="text" ng-model="$ctrl.answer" ng-change="$ctrl.update()" placeholder="(XX) XXXXX-XXXX" ui-br-phone-number ng-disabled="$ctrl.view">
         </md-input-container>
     </div>
 </md-content>
