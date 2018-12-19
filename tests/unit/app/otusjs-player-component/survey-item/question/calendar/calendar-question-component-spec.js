@@ -16,8 +16,6 @@ describe('calendar question controller component', function () {
             mockController(_$controller_);
         });
         mockBindings();
-        // var cSpy = spyOn(window, 'ImmutableDate').and.callThrough();
-        // spyOn(window,"ImmutableDate").and.returnValue(new Date(1,1,2018));
     });
 
     describe('the initialization', function () {
