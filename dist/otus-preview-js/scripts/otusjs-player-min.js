@@ -926,11 +926,37 @@
       require: {
         otusQuestion: '^otusQuestion'
       }
-    }).controller("otusCalendarQuestionCtrl", Controller);
+    })
+    .config(function($mdDateLocaleProvider) {
+      /**
+       * @param date {Date}
+       * @returns {string} string representation of the provided date
+       */
+      $mdDateLocaleProvider.formatDate = function(date) {
+        return date ? moment(date).format('L') : '';
+      };
+
+      /**
+       * @param dateString {string} string that can be converted to a Date
+       * @returns {Date} JavaScript Date object created from the provided dateString
+       */
+      $mdDateLocaleProvider.parseDate = function(dateString) {
+        var m = moment(dateString, 'L', true);
+        return m.isValid() ? m.toDate() : new Date(NaN);
+      };
+
+      $mdDateLocaleProvider.isDateComplete = function(dateString) {
+        dateString = dateString.trim();
+        // Look for two chunks of content (either numbers or text) separated by delimiters.
+        var re = /^(0?[1-9]|[12][0-9]|3[01])[\/\-](0?[1-9]|1[012])[\/\-]\d{4}$/;
+        return re.test(dateString);
+      };
+    })
+    .controller("otusCalendarQuestionCtrl", Controller);
 
   Controller.$inject = [
     'otusjs.player.data.activity.CurrentItemService',
-    'otusjs.utils.ImmutableDate'
+    'otusjs.utils.ImmutableDate',
   ];
 
   function Controller(CurrentItemService, ImmutableDate) {
@@ -953,6 +979,7 @@
     self.clear = function() {
       CurrentItemService.getFilling().answer.clear();
       delete self.answer;
+      self.$onInit();
     };
   }
 }());
