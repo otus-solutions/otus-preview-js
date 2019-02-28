@@ -15,3 +15,6 @@ target/
 **/.sonar
 package-lock.json
 bin/
+.project
+.classpath
+.settings
