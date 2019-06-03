@@ -280,6 +280,37 @@
   }
 }());
 
+(function() {
+  'use strict';
+
+  angular
+    .module('otusjs.player.component')
+    .component('otusVisualizer', {
+      template:'<md-content><md-progress-circular ng-if="!$ctrl.ready" class="md-primary" md-diameter="70"></md-progress-circular><div ng-if="$ctrl.ready">{{$ctrl.activityData.acronym}} - {{$ctrl.activityData.name}}<md-list><md-list-item ng-repeat="item in $ctrl.activityData.itemContainer"><md-divider md-inset></md-divider>{{item.customID}} {{item.answer.value}}</md-list-item></md-list></div></md-content>',
+      controller: Controller
+    });
+
+  Controller.$inject = [
+    'otusjs.player.data.visualization.SurveyItemVisualizationFactory'
+  ];
+
+  function Controller(SurveyItemVisualizationFactory) {
+    var SURVEY_ITEM = '<otus-survey-item item-data="itemData" />';
+    var self = this;
+
+    self.$onInit = onInit;
+    self.ready = false;
+
+    /* Public methods */
+
+
+    function onInit() {
+      self.activityData = SurveyItemVisualizationFactory.create();
+      self.ready = true;
+    }
+  }
+}());
+
 (function () {
   'use strict';
 
@@ -5424,6 +5455,7 @@
       'otusjs',
       'otusjs.player.data.activity',
       'otusjs.player.data.navigation',
+      'otusjs.player.data.visualization',
       'otusjs.player.data.validation'
     ]);
 
@@ -6026,6 +6058,100 @@
     }
 
   }
+}());
+
+(function() {
+  'use strict';
+
+  angular
+    .module('otusjs.player.data.visualization', []);
+
+}());
+
+(function () {
+  'use strict';
+
+  angular
+    .module('otusjs.player.data.visualization')
+    .factory('otusjs.player.data.visualization.SurveyItemVisualizationFactory', Factory);
+
+  Factory.$inject = [
+    'otusjs.model.activity.ActivityFacadeService'
+  ];
+
+  function Factory(ActivityFacadeService) {
+    var self = this;
+
+    self.create = create;
+
+    function create() {
+      return new ActivityVisualization(ActivityFacadeService);
+    }
+
+    function ActivityVisualization(ActivityFacadeService) {
+      var self = this;
+
+      let act = ActivityFacadeService.surveyActivity;
+      self.acronym = act.getIdentity().acronym;
+      self.name = act.getName();
+      self.participantData = act.participantData;
+      self.lastStatus = act.statusHistory.getLastStatus();  //todo improve
+      self.mode = act.mode;
+
+
+      let items = ActivityFacadeService.surveyActivity.getItems();
+      let navigationTrackerItems = ActivityFacadeService.getNavigationTracker().getItems();
+
+      self.itemContainer = items.map(item => {
+        let trackingItem = navigationTrackerItems[item.templateID];
+        let filling = ActivityFacadeService.getFillingByQuestionID(item.templateID);  //todo check for performance
+
+        return new SurveyItemVisualization(item, trackingItem, filling);
+      });
+
+      self.itemsCount = self.itemContainer.length;
+
+
+      return self;
+    }
+
+    function SurveyItemVisualization(item, navigationTrackingItem, filling) {
+      var self = this;
+
+      self.templateID = item.templateID;
+      self.customID = item.customID;
+      self.label = item.label;
+      self.isQuestion = item.isQuestion();
+      self.dataType = item.dataType;
+
+      //todo; else what?
+      if (filling) {
+        self.forceAnswer = filling.forceAnswer;
+        self.answer = filling.answer;
+        self.hasAnswer = filling.answer.isFilled();
+        self.metadata = filling.metadata;
+        self.hasMetadata = filling.metadata.isFilled();
+        self.comment = filling.comment;
+        self.hasComment = !!self.comment;
+      }
+      self.navigationState = navigationTrackingItem.getState();
+      self.index = navigationTrackingItem.getIndex();
+      self.isAnswered = navigationTrackingItem.isAnswered; //answer or metadata
+      self.isIgnored = navigationTrackingItem.isIgnored; //answer or metadata
+      self.isSkipped = navigationTrackingItem.isSkipped; //answer or metadata
+
+
+      //ux
+      self.navigationStatusIcon = undefined;
+
+
+      return self;
+    }
+
+    return self;
+
+  }
+
 }());
 
 (function() {

@@ -2,7 +2,6 @@
   'use strict';
 
   angular
-    .module('otusjs.player.data.visualization', [
-    ]);
+    .module('otusjs.player.data.visualization', []);
 
 }());

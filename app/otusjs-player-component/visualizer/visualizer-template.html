@@ -1,0 +1,17 @@
+<md-content>
+  <md-progress-circular ng-if="!$ctrl.ready" class="md-primary" md-diameter="70"></md-progress-circular>
+  <div ng-if="$ctrl.ready" >
+    {{$ctrl.activityData.acronym}} - {{$ctrl.activityData.name}}
+  <md-list>
+
+    <md-list-item ng-repeat="item in $ctrl.activityData.itemContainer">
+<!--      <md-divider md-inset ng-if="!$first"></md-divider>-->
+      <md-divider md-inset></md-divider>
+      {{item.customID}}
+      {{item.answer.value}}
+
+    </md-list-item>
+
+  </md-list>
+  </div>
+</md-content>
