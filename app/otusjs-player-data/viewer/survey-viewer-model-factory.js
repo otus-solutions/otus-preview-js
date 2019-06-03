@@ -2,8 +2,8 @@
   'use strict';
 
   angular
-    .module('otusjs.player.data.visualization')
-    .factory('otusjs.player.data.visualization.SurveyItemVisualizationFactory', Factory);
+    .module('otusjs.player.data.viewer')
+    .factory('otusjs.player.data.viewer.SurveyViewerFactory', Factory);
 
   Factory.$inject = [
     'otusjs.model.activity.ActivityFacadeService'

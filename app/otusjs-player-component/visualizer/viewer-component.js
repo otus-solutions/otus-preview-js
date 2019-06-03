@@ -3,16 +3,16 @@
 
   angular
     .module('otusjs.player.component')
-    .component('otusVisualizer', {
-      templateUrl: 'app/otusjs-player-component/visualizer/visualizer-template.html',
+    .component('otusViewer', {
+      templateUrl: 'app/otusjs-player-component/visualizer/viewer-template.html',
       controller: Controller
     });
 
   Controller.$inject = [
-    'otusjs.player.data.visualization.SurveyItemVisualizationFactory'
+    'otusjs.player.data.viewer.SurveyViewerFactory'
   ];
 
-  function Controller(SurveyItemVisualizationFactory) {
+  function Controller(SurveyViewerFactory) {
     var SURVEY_ITEM = '<otus-survey-item item-data="itemData" />';
     var self = this;
 
@@ -23,7 +23,7 @@
 
 
     function onInit() {
-      self.activityData = SurveyItemVisualizationFactory.create();
+      self.activityData = SurveyViewerFactory.create();
       self.ready = true;
     }
   }

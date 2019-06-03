@@ -285,16 +285,16 @@
 
   angular
     .module('otusjs.player.component')
-    .component('otusVisualizer', {
+    .component('otusViewer', {
       template:'<md-content><md-progress-circular ng-if="!$ctrl.ready" class="md-primary" md-diameter="70"></md-progress-circular><div ng-if="$ctrl.ready">{{$ctrl.activityData.acronym}} - {{$ctrl.activityData.name}}<md-list><md-list-item ng-repeat="item in $ctrl.activityData.itemContainer"><md-divider md-inset></md-divider>{{item.customID}} {{item.answer.value}}</md-list-item></md-list></div></md-content>',
       controller: Controller
     });
 
   Controller.$inject = [
-    'otusjs.player.data.visualization.SurveyItemVisualizationFactory'
+    'otusjs.player.data.viewer.SurveyViewerFactory'
   ];
 
-  function Controller(SurveyItemVisualizationFactory) {
+  function Controller(SurveyViewerFactory) {
     var SURVEY_ITEM = '<otus-survey-item item-data="itemData" />';
     var self = this;
 
@@ -305,7 +305,7 @@
 
 
     function onInit() {
-      self.activityData = SurveyItemVisualizationFactory.create();
+      self.activityData = SurveyViewerFactory.create();
       self.ready = true;
     }
   }
@@ -5455,7 +5455,7 @@
       'otusjs',
       'otusjs.player.data.activity',
       'otusjs.player.data.navigation',
-      'otusjs.player.data.visualization',
+      'otusjs.player.data.viewer',
       'otusjs.player.data.validation'
     ]);
 
@@ -6064,7 +6064,7 @@
   'use strict';
 
   angular
-    .module('otusjs.player.data.visualization', []);
+    .module('otusjs.player.data.viewer', []);
 
 }());
 
@@ -6072,8 +6072,8 @@
   'use strict';
 
   angular
-    .module('otusjs.player.data.visualization')
-    .factory('otusjs.player.data.visualization.SurveyItemVisualizationFactory', Factory);
+    .module('otusjs.player.data.viewer')
+    .factory('otusjs.player.data.viewer.SurveyViewerFactory', Factory);
 
   Factory.$inject = [
     'otusjs.model.activity.ActivityFacadeService'
