@@ -24,6 +24,7 @@
 
     function onInit() {
       self.activityData = SurveyViewerFactory.create();
+      console.log(self);
       self.ready = true;
     }
   }

@@ -286,7 +286,7 @@
   angular
     .module('otusjs.player.component')
     .component('otusViewer', {
-      template:'<md-content><md-progress-circular ng-if="!$ctrl.ready" class="md-primary" md-diameter="70"></md-progress-circular><div ng-if="$ctrl.ready">{{$ctrl.activityData.acronym}} - {{$ctrl.activityData.name}}<md-list><md-list-item ng-repeat="item in $ctrl.activityData.itemContainer"><md-divider md-inset></md-divider>{{item.customID}} {{item.answer.value}}</md-list-item></md-list></div></md-content>',
+      template:'<md-content layout="column" flex><md-progress-circular ng-if="!$ctrl.ready" class="md-primary" md-diameter="70"></md-progress-circular><div ng-if="$ctrl.ready" layout="column"><div id="header" layout="row"></div>{{$ctrl.activityData.acronym}} - {{$ctrl.activityData.name}}<md-list layout="column"><md-list-item ng-repeat="item in $ctrl.activityData.itemContainer" layout="column"><md-divider></md-divider><md-subheader>{{item.customID}}</md-subheader><span>state: {{item.navigationState}}</span> <span>label: {{item.label.ptBR.formattedText}}</span><div id="fillingBox" ng-if="item.isQuestion && item.isAnswered"><div id="answer" ng-if="item.hasAnswer">answer: {{item.answer.value}}</div><div id="metadata" ng-if="item.hasMetadata">metadata: {{item.metadata.label.ptBR.formattedText}}</div><div id="comment" ng-if="item.hasComment">comment: {{item.comment}}</div></div></md-list-item></md-list></div></md-content>',
       controller: Controller
     });
 
@@ -306,6 +306,7 @@
 
     function onInit() {
       self.activityData = SurveyViewerFactory.create();
+      console.log(self);
       self.ready = true;
     }
   }
@@ -6106,7 +6107,7 @@
         let trackingItem = navigationTrackerItems[item.templateID];
         let filling = ActivityFacadeService.getFillingByQuestionID(item.templateID);  //todo check for performance
 
-        return new SurveyItemVisualization(item, trackingItem, filling);
+        return mapper(item, trackingItem, filling);
       });
 
       self.itemsCount = self.itemContainer.length;
@@ -6115,30 +6116,70 @@
       return self;
     }
 
-    function SurveyItemVisualization(item, navigationTrackingItem, filling) {
-      var self = this;
+    function mapper(item, trackingItem, filling) {
+      let objectType = item.objectType;
 
-      self.templateID = item.templateID;
-      self.customID = item.customID;
-      self.label = item.label;
-      self.isQuestion = item.isQuestion();
+      switch (objectType) {
+        case "TextItem": return new TextItemVisualization(item, trackingItem, filling);
+          break;
+        case "ImageItem": return new ImageItemVisualization(item, trackingItem, filling);
+          break;
+        default: return new DefaultQuestionVisualization(item, trackingItem, filling);
+      }
+    }
+
+    function TextItemVisualization(item, navigationTrackingItem, filling) {
+      var self = new SurveyItemVisualization(item, navigationTrackingItem, filling);
+
+
+      self.value = item.value;
+      return self;
+    }
+
+    function ImageItemVisualization(item, navigationTrackingItem, filling) {
+      var self = new SurveyItemVisualization(item, navigationTrackingItem, filling);
+
+      self.value = item.url;
+      return self;
+    }
+
+    function DefaultQuestionVisualization(item, navigationTrackingItem, filling) {
+      var self = new SurveyItemVisualization(item, navigationTrackingItem, filling);
+
       self.dataType = item.dataType;
 
-      //todo; else what?
+      self.isAnswered = !!filling; //answer or metadata
+
       if (filling) {
         self.forceAnswer = filling.forceAnswer;
         self.answer = filling.answer;
         self.hasAnswer = filling.answer.isFilled();
-        self.metadata = filling.metadata;
         self.hasMetadata = filling.metadata.isFilled();
+        if (self.hasMetadata) {
+          self.metadata = item.metadata.options.find(metadata => metadata.value.toString() === filling.metadata.value.toString());
+        }
+
         self.comment = filling.comment;
         self.hasComment = !!self.comment;
       }
+
+      return self;
+    }
+
+    function SurveyItemVisualization(item, navigationTrackingItem, filling) {
+      var self = this;
+
+      self.objectType = item.objectType;
+      self.templateID = item.templateID;
+      self.customID = item.customID;
+      self.label = item.label;
+      self.isQuestion = item.isQuestion();
+
+
       self.navigationState = navigationTrackingItem.getState();
       self.index = navigationTrackingItem.getIndex();
-      self.isAnswered = navigationTrackingItem.isAnswered; //answer or metadata
       self.isIgnored = navigationTrackingItem.isIgnored; //answer or metadata
-      self.isSkipped = navigationTrackingItem.isSkipped; //answer or metadata
+      self.isSkipped = navigationTrackingItem.isSkipped;
 
 
       //ux
