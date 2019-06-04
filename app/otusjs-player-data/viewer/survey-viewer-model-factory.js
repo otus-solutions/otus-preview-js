@@ -49,11 +49,20 @@
       let objectType = item.objectType;
 
       switch (objectType) {
-        case "TextItem": return new TextItemVisualization(item, trackingItem, filling);
+        case 'TextItem':
+          return new TextItemVisualization(item, trackingItem, filling);
           break;
-        case "ImageItem": return new ImageItemVisualization(item, trackingItem, filling);
+        case 'ImageItem':
+          return new ImageItemVisualization(item, trackingItem, filling);
           break;
-        default: return new DefaultQuestionVisualization(item, trackingItem, filling);
+        case 'CheckboxQuestion':
+          return new CheckboxQuestionVisualization(item, trackingItem, filling);
+          break;
+        case 'SingleSelectionQuestion':
+          return new SingleSelectionQuestionVisualization(item, trackingItem, filling);
+          break;
+        default:
+          return new QuestionVisualization(item, trackingItem, filling);
       }
     }
 
@@ -62,6 +71,7 @@
 
 
       self.value = item.value;
+      console.log(self);
       return self;
     }
 
@@ -69,19 +79,67 @@
       var self = new SurveyItemVisualization(item, navigationTrackingItem, filling);
 
       self.value = item.url;
+      console.log(self);
       return self;
     }
 
-    function DefaultQuestionVisualization(item, navigationTrackingItem, filling) {
+    function CheckboxQuestionVisualization(item, navigationTrackingItem, filling) {
+      var self = new QuestionVisualization(item, navigationTrackingItem, filling);
+
+      if (filling && filling.answer) {
+        self.answer = item.options.map(item => {
+          item.value = filling.answer.value.find(value => value.option === item.customOptionID).state;
+          return item;
+        });
+      } else {
+        self.answer = item.options;
+      }
+
+
+      return self;
+    }
+
+    function SingleSelectionQuestionVisualization(item, navigationTrackingItem, filling) {
+      var self = new QuestionVisualization(item, navigationTrackingItem, filling);
+
+      if (filling && filling.answer) {
+        self.answer = item.options.map(op => {
+          if (op.value.toString() === filling.answer.value.toString()) {
+            op.value = 1;
+          } else {
+            op.value = 0;
+          }
+          return op;
+        });
+      } else {
+        self.answer = item.options.map(op => {
+          op.value = 0;
+          return op;
+        });
+      }
+
+
+      return self;
+    }
+
+    function QuestionVisualization(item, navigationTrackingItem, filling) {
       var self = new SurveyItemVisualization(item, navigationTrackingItem, filling);
 
       self.dataType = item.dataType;
 
-      self.isAnswered = !!filling; //answer or metadata
+      self.forceAnswer = undefined;
+      self.answer = undefined;
+      self.hasAnswer = undefined;
+      self.hasMetadata = undefined;
+      self.metadata = undefined;
+      self.comment = undefined;
+      self.hasComment = undefined;
 
-      if (filling) {
+      self.isAnswered = !!filling; //answer, metadata or comment
+
+      if (self.isAnswered) {
         self.forceAnswer = filling.forceAnswer;
-        self.answer = filling.answer;
+        self.answer = filling.answer.value;
         self.hasAnswer = filling.answer.isFilled();
         self.hasMetadata = filling.metadata.isFilled();
         if (self.hasMetadata) {
@@ -92,6 +150,7 @@
         self.hasComment = !!self.comment;
       }
 
+      console.log(self);
       return self;
     }
 
@@ -107,8 +166,8 @@
 
       self.navigationState = navigationTrackingItem.getState();
       self.index = navigationTrackingItem.getIndex();
-      self.isIgnored = navigationTrackingItem.isIgnored; //answer or metadata
-      self.isSkipped = navigationTrackingItem.isSkipped;
+      self.isIgnored = navigationTrackingItem.isIgnored(); //answer or metadata
+      self.isSkipped = navigationTrackingItem.isSkipped();
 
 
       //ux

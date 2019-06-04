@@ -280,21 +280,22 @@
   }
 }());
 
-(function() {
+(function () {
   'use strict';
 
   angular
     .module('otusjs.player.component')
     .component('otusViewer', {
-      template:'<md-content layout="column" flex><md-progress-circular ng-if="!$ctrl.ready" class="md-primary" md-diameter="70"></md-progress-circular><div ng-if="$ctrl.ready" layout="column"><div id="header" layout="row"></div>{{$ctrl.activityData.acronym}} - {{$ctrl.activityData.name}}<md-list layout="column"><md-list-item ng-repeat="item in $ctrl.activityData.itemContainer" layout="column"><md-divider></md-divider><md-subheader>{{item.customID}}</md-subheader><span>state: {{item.navigationState}}</span> <span>label: {{item.label.ptBR.formattedText}}</span><div id="fillingBox" ng-if="item.isQuestion && item.isAnswered"><div id="answer" ng-if="item.hasAnswer">answer: {{item.answer.value}}</div><div id="metadata" ng-if="item.hasMetadata">metadata: {{item.metadata.label.ptBR.formattedText}}</div><div id="comment" ng-if="item.hasComment">comment: {{item.comment}}</div></div></md-list-item></md-list></div></md-content>',
+      template:'<md-content layout="column" flex><md-progress-circular ng-if="!$ctrl.ready" class="md-primary" md-diameter="70"></md-progress-circular><div ng-if="$ctrl.ready" layout="column"><div id="header" layout="row"><otus-viewer-filters filters="$ctrl.filters"></otus-viewer-filters><md-button ng-click="$ctrl.exit()">sair</md-button></div>{{$ctrl.activityData.acronym}} - {{$ctrl.activityData.name}}<div layout="row">{{$ctrl.filters.state}}<md-list layout="column"><md-list-item ng-repeat="item in $ctrl.activityData.itemContainer" layout="column"><md-divider></md-divider><md-subheader>{{item.customID}}</md-subheader><md-subheader>{{item.objectType}}</md-subheader><span>state: {{item.navigationState}}</span> <span>label: {{item.label.ptBR.formattedText}}</span><div id="fillingBox" ng-if="item.isQuestion && item.isAnswered"><div id="answer" ng-if="item.hasAnswer">answer: {{item.answer}}</div><div id="metadata" ng-if="item.hasMetadata">metadata: {{item.metadata.label.ptBR.formattedText}}</div><div id="comment" ng-if="item.hasComment">comment: {{item.comment}}</div></div></md-list-item></md-list></div></div></md-content>',
       controller: Controller
     });
 
   Controller.$inject = [
-    'otusjs.player.data.viewer.SurveyViewerFactory'
+    'otusjs.player.data.viewer.SurveyViewerFactory',
+    'otusjs.player.core.player.PlayerService'
   ];
 
-  function Controller(SurveyViewerFactory) {
+  function Controller(SurveyViewerFactory, PlayerService) {
     var SURVEY_ITEM = '<otus-survey-item item-data="itemData" />';
     var self = this;
 
@@ -302,12 +303,41 @@
     self.ready = false;
 
     /* Public methods */
-
+    self.exit = exit;
 
     function onInit() {
       self.activityData = SurveyViewerFactory.create();
       console.log(self);
       self.ready = true;
+    }
+
+    function exit() {
+      PlayerService.stop();
+    }
+
+    self.filters = {};
+  }
+}());
+
+(function () {
+  'use strict';
+
+  angular
+    .module('otusjs.player.component')
+    .component('otusViewerFilters', {
+      template:'<md-checkbox ng-model="$ctrl.filters.state">Show state</md-checkbox>',
+      controller: Controller,
+      bindings: {
+        filters: '='
+      }
+    });
+
+  function Controller() {
+    var self = this;
+    self.$onInit = onInit;
+
+    function onInit() {
+      console.log(self.filters);
     }
   }
 }());
@@ -6120,11 +6150,20 @@
       let objectType = item.objectType;
 
       switch (objectType) {
-        case "TextItem": return new TextItemVisualization(item, trackingItem, filling);
+        case 'TextItem':
+          return new TextItemVisualization(item, trackingItem, filling);
           break;
-        case "ImageItem": return new ImageItemVisualization(item, trackingItem, filling);
+        case 'ImageItem':
+          return new ImageItemVisualization(item, trackingItem, filling);
           break;
-        default: return new DefaultQuestionVisualization(item, trackingItem, filling);
+        case 'CheckboxQuestion':
+          return new CheckboxQuestionVisualization(item, trackingItem, filling);
+          break;
+        case 'SingleSelectionQuestion':
+          return new SingleSelectionQuestionVisualization(item, trackingItem, filling);
+          break;
+        default:
+          return new QuestionVisualization(item, trackingItem, filling);
       }
     }
 
@@ -6133,6 +6172,7 @@
 
 
       self.value = item.value;
+      console.log(self);
       return self;
     }
 
@@ -6140,19 +6180,67 @@
       var self = new SurveyItemVisualization(item, navigationTrackingItem, filling);
 
       self.value = item.url;
+      console.log(self);
       return self;
     }
 
-    function DefaultQuestionVisualization(item, navigationTrackingItem, filling) {
+    function CheckboxQuestionVisualization(item, navigationTrackingItem, filling) {
+      var self = new QuestionVisualization(item, navigationTrackingItem, filling);
+
+      if (filling && filling.answer) {
+        self.answer = item.options.map(item => {
+          item.value = filling.answer.value.find(value => value.option === item.customOptionID).state;
+          return item;
+        });
+      } else {
+        self.answer = item.options;
+      }
+
+
+      return self;
+    }
+
+    function SingleSelectionQuestionVisualization(item, navigationTrackingItem, filling) {
+      var self = new QuestionVisualization(item, navigationTrackingItem, filling);
+
+      if (filling && filling.answer) {
+        self.answer = item.options.map(op => {
+          if (op.value.toString() === filling.answer.value.toString()) {
+            op.value = 1;
+          } else {
+            op.value = 0;
+          }
+          return op;
+        });
+      } else {
+        self.answer = item.options.map(op => {
+          op.value = 0;
+          return op;
+        });
+      }
+
+
+      return self;
+    }
+
+    function QuestionVisualization(item, navigationTrackingItem, filling) {
       var self = new SurveyItemVisualization(item, navigationTrackingItem, filling);
 
       self.dataType = item.dataType;
 
-      self.isAnswered = !!filling; //answer or metadata
+      self.forceAnswer = undefined;
+      self.answer = undefined;
+      self.hasAnswer = undefined;
+      self.hasMetadata = undefined;
+      self.metadata = undefined;
+      self.comment = undefined;
+      self.hasComment = undefined;
 
-      if (filling) {
+      self.isAnswered = !!filling; //answer, metadata or comment
+
+      if (self.isAnswered) {
         self.forceAnswer = filling.forceAnswer;
-        self.answer = filling.answer;
+        self.answer = filling.answer.value;
         self.hasAnswer = filling.answer.isFilled();
         self.hasMetadata = filling.metadata.isFilled();
         if (self.hasMetadata) {
@@ -6163,6 +6251,7 @@
         self.hasComment = !!self.comment;
       }
 
+      console.log(self);
       return self;
     }
 
@@ -6178,8 +6267,8 @@
 
       self.navigationState = navigationTrackingItem.getState();
       self.index = navigationTrackingItem.getIndex();
-      self.isIgnored = navigationTrackingItem.isIgnored; //answer or metadata
-      self.isSkipped = navigationTrackingItem.isSkipped;
+      self.isIgnored = navigationTrackingItem.isIgnored(); //answer or metadata
+      self.isSkipped = navigationTrackingItem.isSkipped();
 
 
       //ux

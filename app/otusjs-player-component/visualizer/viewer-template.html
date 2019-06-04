@@ -1,30 +1,36 @@
 <md-content layout="column" flex>
   <md-progress-circular ng-if="!$ctrl.ready" class="md-primary" md-diameter="70"></md-progress-circular>
-  <div ng-if="$ctrl.ready" layout="column" >
+  <div ng-if="$ctrl.ready" layout="column">
 
-    <div id="header" layout="row" >
+    <div id="header" layout="row">
+      <otus-viewer-filters filters="$ctrl.filters"></otus-viewer-filters>
+      <md-button ng-click="$ctrl.exit()">sair</md-button>
     </div>
 
     {{$ctrl.activityData.acronym}} - {{$ctrl.activityData.name}}
-  <md-list layout="column" >
+    <div layout="row">
+      {{$ctrl.filters.state}}
+      <md-list layout="column">
 
-    <md-list-item ng-repeat="item in $ctrl.activityData.itemContainer" layout="column">
+        <md-list-item ng-repeat="item in $ctrl.activityData.itemContainer" layout="column">
 
-      <md-divider></md-divider>
-      <md-subheader>{{item.customID}}</md-subheader>
-      <span>state: {{item.navigationState}}</span>
+          <md-divider></md-divider>
+          <md-subheader>{{item.customID}}</md-subheader>
+          <md-subheader>{{item.objectType}}</md-subheader>
+          <span>state: {{item.navigationState}}</span>
 
-      <span> label: {{item.label.ptBR.formattedText}}</span>
+          <span> label: {{item.label.ptBR.formattedText}}</span>
 
-      <div id="fillingBox" ng-if="item.isQuestion && item.isAnswered">
-        <div id="answer" ng-if="item.hasAnswer">answer: {{item.answer.value}} </div>
-        <div id="metadata" ng-if="item.hasMetadata">metadata: {{item.metadata.label.ptBR.formattedText}} </div>
-        <div id="comment" ng-if="item.hasComment">comment: {{item.comment}} </div>
-      </div>
+          <div id="fillingBox" ng-if="item.isQuestion && item.isAnswered">
+            <div id="answer" ng-if="item.hasAnswer">answer: {{item.answer}}</div>
+            <div id="metadata" ng-if="item.hasMetadata">metadata: {{item.metadata.label.ptBR.formattedText}}</div>
+            <div id="comment" ng-if="item.hasComment">comment: {{item.comment}}</div>
+          </div>
 
-    </md-list-item>
+        </md-list-item>
 
-  </md-list>
+      </md-list>
+    </div>
 
   </div>
 </md-content>
