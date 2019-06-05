@@ -4,12 +4,12 @@
   angular
     .module('otusjs.player.component')
     .component('otusViewer', {
-      templateUrl: 'app/otusjs-player-component/visualizer/viewer-template.html',
+      templateUrl: 'app/otusjs-player-component/viewer/viewer-template.html',
       controller: Controller
     });
 
   Controller.$inject = [
-    'otusjs.player.data.viewer.SurveyViewerFactory',
+    'otusjs.player.data.viewer.SurveyViewFactory',
     'otusjs.player.core.player.PlayerService'
   ];
 
@@ -43,7 +43,7 @@
   angular
     .module('otusjs.player.component')
     .component('otusViewerFilters', {
-      templateUrl: 'app/otusjs-player-component/visualizer/viewer-filters-template.html',
+      templateUrl: 'app/otusjs-player-component/viewer/viewer-filters-template.html',
       controller: Controller,
       bindings: {
         filters: '='

@@ -3,7 +3,7 @@
 
   angular
     .module('otusjs.player.data.viewer')
-    .factory('otusjs.player.data.viewer.SurveyViewerFactory', Factory);
+    .factory('otusjs.player.data.viewer.SurveyViewFactory', Factory);
 
   Factory.$inject = [
     'otusjs.model.activity.ActivityFacadeService'
@@ -15,10 +15,10 @@
     self.create = create;
 
     function create() {
-      return new ActivityVisualization(ActivityFacadeService);
+      return new ActivityView(ActivityFacadeService);
     }
 
-    function ActivityVisualization(ActivityFacadeService) {
+    function ActivityView(ActivityFacadeService) {
       var self = this;
 
       let act = ActivityFacadeService.surveyActivity;
@@ -50,24 +50,24 @@
 
       switch (objectType) {
         case 'TextItem':
-          return new TextItemVisualization(item, trackingItem, filling);
+          return new TextItemView(item, trackingItem, filling);
           break;
         case 'ImageItem':
-          return new ImageItemVisualization(item, trackingItem, filling);
+          return new ImageItemView(item, trackingItem, filling);
           break;
         case 'CheckboxQuestion':
-          return new CheckboxQuestionVisualization(item, trackingItem, filling);
+          return new CheckboxQuestionView(item, trackingItem, filling);
           break;
         case 'SingleSelectionQuestion':
-          return new SingleSelectionQuestionVisualization(item, trackingItem, filling);
+          return new SingleSelectionQuestionView(item, trackingItem, filling);
           break;
         default:
-          return new QuestionVisualization(item, trackingItem, filling);
+          return new QuestionView(item, trackingItem, filling);
       }
     }
 
-    function TextItemVisualization(item, navigationTrackingItem, filling) {
-      var self = new SurveyItemVisualization(item, navigationTrackingItem, filling);
+    function TextItemView(item, navigationTrackingItem, filling) {
+      var self = new SurveyItemView(item, navigationTrackingItem, filling);
 
 
       self.value = item.value;
@@ -75,16 +75,16 @@
       return self;
     }
 
-    function ImageItemVisualization(item, navigationTrackingItem, filling) {
-      var self = new SurveyItemVisualization(item, navigationTrackingItem, filling);
+    function ImageItemView(item, navigationTrackingItem, filling) {
+      var self = new SurveyItemView(item, navigationTrackingItem, filling);
 
       self.value = item.url;
       console.log(self);
       return self;
     }
 
-    function CheckboxQuestionVisualization(item, navigationTrackingItem, filling) {
-      var self = new QuestionVisualization(item, navigationTrackingItem, filling);
+    function CheckboxQuestionView(item, navigationTrackingItem, filling) {
+      var self = new QuestionView(item, navigationTrackingItem, filling);
 
       if (filling && filling.answer) {
         self.answer = item.options.map(item => {
@@ -99,8 +99,8 @@
       return self;
     }
 
-    function SingleSelectionQuestionVisualization(item, navigationTrackingItem, filling) {
-      var self = new QuestionVisualization(item, navigationTrackingItem, filling);
+    function SingleSelectionQuestionView(item, navigationTrackingItem, filling) {
+      var self = new QuestionView(item, navigationTrackingItem, filling);
 
       if (filling && filling.answer) {
         self.answer = item.options.map(op => {
@@ -122,8 +122,8 @@
       return self;
     }
 
-    function QuestionVisualization(item, navigationTrackingItem, filling) {
-      var self = new SurveyItemVisualization(item, navigationTrackingItem, filling);
+    function QuestionView(item, navigationTrackingItem, filling) {
+      var self = new SurveyItemView(item, navigationTrackingItem, filling);
 
       self.dataType = item.dataType;
 
@@ -154,7 +154,7 @@
       return self;
     }
 
-    function SurveyItemVisualization(item, navigationTrackingItem, filling) {
+    function SurveyItemView(item, navigationTrackingItem, filling) {
       var self = this;
 
       self.objectType = item.objectType;
