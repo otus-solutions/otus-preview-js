@@ -11,24 +11,9 @@
     <div layout="row">
       {{$ctrl.filters.state}}
       <md-list layout="column">
-
-        <md-list-item ng-repeat="item in $ctrl.activityData.itemContainer" layout="column">
-
-          <md-divider></md-divider>
-          <md-subheader>{{item.customID}}</md-subheader>
-          <md-subheader>{{item.objectType}}</md-subheader>
-          <span>state: {{item.navigationState}}</span>
-
-          <span> label: {{item.label.ptBR.formattedText}}</span>
-
-          <div id="fillingBox" ng-if="item.isQuestion && item.isAnswered">
-            <div id="answer" ng-if="item.hasAnswer">answer: {{item.answer}}</div>
-            <div id="metadata" ng-if="item.hasMetadata">metadata: {{item.metadata.label.ptBR.formattedText}}</div>
-            <div id="comment" ng-if="item.hasComment">comment: {{item.comment}}</div>
-          </div>
-
+        <md-list-item ng-repeat="item in $ctrl.activityData.itemContainer">
+          <survey-item-view-template item="item"></survey-item-view-template>
         </md-list-item>
-
       </md-list>
     </div>
 

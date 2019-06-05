@@ -1,0 +1,16 @@
+<div layout="column">
+
+  <md-divider></md-divider>
+  <md-subheader>{{$ctrl.item.customID}}</md-subheader>
+  <md-subheader>{{$ctrl.item.objectType}}</md-subheader>
+  <span>state: {{$ctrl.item.navigationState}}</span>
+
+  <span> label: {{$ctrl.item.label.ptBR.formattedText}}</span>
+
+  <div id="fillingBox" ng-if="$ctrl.item.isQuestion && $ctrl.item.isAnswered">
+    <div id="answer" ng-if="$ctrl.item.hasAnswer">answer: {{$ctrl.item.answer}}</div>
+    <div id="metadata" ng-if="$ctrl.item.hasMetadata">metadata: {{$ctrl.item.metadata.label.ptBR.formattedText}}</div>
+    <div id="comment" ng-if="$ctrl.item.hasComment">comment: {{$ctrl.item.comment}}</div>
+  </div>
+
+</div>

@@ -286,7 +286,7 @@
   angular
     .module('otusjs.player.component')
     .component('otusViewer', {
-      template:'<md-content layout="column" flex><md-progress-circular ng-if="!$ctrl.ready" class="md-primary" md-diameter="70"></md-progress-circular><div ng-if="$ctrl.ready" layout="column"><div id="header" layout="row"><otus-viewer-filters filters="$ctrl.filters"></otus-viewer-filters><md-button ng-click="$ctrl.exit()">sair</md-button></div>{{$ctrl.activityData.acronym}} - {{$ctrl.activityData.name}}<div layout="row">{{$ctrl.filters.state}}<md-list layout="column"><md-list-item ng-repeat="item in $ctrl.activityData.itemContainer" layout="column"><md-divider></md-divider><md-subheader>{{item.customID}}</md-subheader><md-subheader>{{item.objectType}}</md-subheader><span>state: {{item.navigationState}}</span> <span>label: {{item.label.ptBR.formattedText}}</span><div id="fillingBox" ng-if="item.isQuestion && item.isAnswered"><div id="answer" ng-if="item.hasAnswer">answer: {{item.answer}}</div><div id="metadata" ng-if="item.hasMetadata">metadata: {{item.metadata.label.ptBR.formattedText}}</div><div id="comment" ng-if="item.hasComment">comment: {{item.comment}}</div></div></md-list-item></md-list></div></div></md-content>',
+      template:'<md-content layout="column" flex><md-progress-circular ng-if="!$ctrl.ready" class="md-primary" md-diameter="70"></md-progress-circular><div ng-if="$ctrl.ready" layout="column"><div id="header" layout="row"><otus-viewer-filters filters="$ctrl.filters"></otus-viewer-filters><md-button ng-click="$ctrl.exit()">sair</md-button></div>{{$ctrl.activityData.acronym}} - {{$ctrl.activityData.name}}<div layout="row">{{$ctrl.filters.state}}<md-list layout="column"><md-list-item ng-repeat="item in $ctrl.activityData.itemContainer"><survey-item-view-template item="item"></survey-item-view-template></md-list-item></md-list></div></div></md-content>',
       controller: Controller
     });
 
@@ -296,7 +296,7 @@
   ];
 
   function Controller(SurveyViewerFactory, PlayerService) {
-    var SURVEY_ITEM = '<otus-survey-item item-data="itemData" />';
+    var SURVEY_ITEM = '<otus-survey-item item-data="item" />';
     var self = this;
 
     self.$onInit = onInit;
@@ -308,7 +308,12 @@
     function onInit() {
       self.activityData = SurveyViewerFactory.create();
       console.log(self);
+
+      self.name = 'breno';
+      self.test = '<span>{{$ctrl.name}}</span>';
+
       self.ready = true;
+
     }
 
     function exit() {
@@ -340,6 +345,161 @@
       console.log(self.filters);
     }
   }
+}());
+
+(function () {
+  'use strict';
+
+  angular
+    .module('otusjs.player.component')
+    .component('surveyItemViewTemplate', {
+      template:'<div class="md-padding" bind-html-compile="$ctrl.template"></div>',
+      controller: Controller,
+      bindings: {
+        item: '='
+      }
+    });
+
+  Controller.$inject = [
+    'otusjs.player.core.renderer.HtmlBuilderService',
+    'otusjs.player.core.renderer.TagComponentBuilderService'
+  ];
+
+  function Controller(HtmlBuilderService, TagComponentBuilderService) {
+    var self = this;
+    self.$onInit = onInit;
+
+    function onInit() {
+      let _templateName = HtmlBuilderService.generateTagName(self.item.templateName);
+      self.template = '<' + _templateName + ' item="$ctrl.item"/>';
+      console.log(self.template);
+    }
+  }
+}());
+
+(function () {
+  'use strict';
+
+  angular
+    .module('otusjs.player.component')
+    .component('questionView', {
+      template:'<div layout="column"><md-divider></md-divider><md-subheader>{{$ctrl.item.customID}}</md-subheader><md-subheader>{{$ctrl.item.objectType}}</md-subheader><span>state: {{$ctrl.item.navigationState}}</span> <span>label: {{$ctrl.item.label.ptBR.formattedText}}</span><div id="fillingBox" ng-if="$ctrl.item.isQuestion && $ctrl.item.isAnswered"><div id="answer" ng-if="$ctrl.item.hasAnswer">answer: {{$ctrl.item.answer}}</div><div id="metadata" ng-if="$ctrl.item.hasMetadata">metadata: {{$ctrl.item.metadata.label.ptBR.formattedText}}</div><div id="comment" ng-if="$ctrl.item.hasComment">comment: {{$ctrl.item.comment}}</div></div></div>',
+      controller: Controller,
+      bindings: {
+        item: '='
+      }
+    });
+
+
+  function Controller() {
+    var self = this;
+    self.$onInit = onInit;
+
+    function onInit() {
+
+    }
+  }
+
+}());
+
+(function () {
+  'use strict';
+
+  angular
+    .module('otusjs.player.component')
+    .component('checkboxQuestionView', {
+      template:'<div layout="column"><md-divider></md-divider><md-subheader>{{$ctrl.item.customID}}</md-subheader><md-subheader>{{$ctrl.item.objectType}}</md-subheader><span>state: {{$ctrl.item.navigationState}}</span> <span>label: {{$ctrl.item.label.ptBR.formattedText}}</span><div id="fillingBox" ng-if="$ctrl.item.isQuestion && $ctrl.item.isAnswered"><div id="answer" ng-if="$ctrl.item.hasAnswer">answer: {{$ctrl.item.answer}}</div><div id="metadata" ng-if="$ctrl.item.hasMetadata">metadata: {{$ctrl.item.metadata.label.ptBR.formattedText}}</div><div id="comment" ng-if="$ctrl.item.hasComment">comment: {{$ctrl.item.comment}}</div></div></div>',
+      controller: Controller,
+      bindings: {
+        item: '='
+      }
+    });
+
+
+  function Controller() {
+    var self = this;
+    self.$onInit = onInit;
+
+    function onInit() {
+
+    }
+  }
+
+}());
+
+(function () {
+  'use strict';
+
+  angular
+    .module('otusjs.player.component')
+    .component('singleSelectionQuestionView', {
+      template:'<div layout="column"><md-divider></md-divider><md-subheader>{{$ctrl.item.customID}}</md-subheader><md-subheader>{{$ctrl.item.objectType}}</md-subheader><span>state: {{$ctrl.item.navigationState}}</span> <span>label: {{$ctrl.item.label.ptBR.formattedText}}</span><div id="fillingBox" ng-if="$ctrl.item.isQuestion && $ctrl.item.isAnswered"><div id="answer" ng-if="$ctrl.item.hasAnswer">answer: {{$ctrl.item.answer}}</div><div id="metadata" ng-if="$ctrl.item.hasMetadata">metadata: {{$ctrl.item.metadata.label.ptBR.formattedText}}</div><div id="comment" ng-if="$ctrl.item.hasComment">comment: {{$ctrl.item.comment}}</div></div></div>',
+      controller: Controller,
+      bindings: {
+        item: '='
+      }
+    });
+
+
+  function Controller() {
+    var self = this;
+    self.$onInit = onInit;
+
+    function onInit() {
+
+    }
+  }
+
+}());
+
+(function () {
+  'use strict';
+
+  angular
+    .module('otusjs.player.component')
+    .component('textItemView', {
+      template:'<div layout="column"><md-divider></md-divider><md-subheader>{{$ctrl.item.customID}}</md-subheader><md-subheader>{{$ctrl.item.objectType}}</md-subheader><span>state: {{$ctrl.item.navigationState}}</span> <span>label: {{$ctrl.item.label.ptBR.formattedText}}</span><div id="fillingBox" ng-if="$ctrl.item.isQuestion && $ctrl.item.isAnswered"><div id="answer" ng-if="$ctrl.item.hasAnswer">answer: {{$ctrl.item.answer}}</div><div id="metadata" ng-if="$ctrl.item.hasMetadata">metadata: {{$ctrl.item.metadata.label.ptBR.formattedText}}</div><div id="comment" ng-if="$ctrl.item.hasComment">comment: {{$ctrl.item.comment}}</div></div></div>',
+      controller: Controller,
+      bindings: {
+        item: '='
+      }
+    });
+
+
+  function Controller() {
+    var self = this;
+    self.$onInit = onInit;
+
+    function onInit() {
+
+    }
+  }
+
+}());
+
+(function () {
+  'use strict';
+
+  angular
+    .module('otusjs.player.component')
+    .component('imageItemView', {
+      template:'<div layout="column"><md-divider></md-divider><md-subheader>{{$ctrl.item.customID}}</md-subheader><md-subheader>{{$ctrl.item.objectType}}</md-subheader><span>state: {{$ctrl.item.navigationState}}</span> <span>label: {{$ctrl.item.label.ptBR.formattedText}}</span><div id="fillingBox" ng-if="$ctrl.item.isQuestion && $ctrl.item.isAnswered"><div id="answer" ng-if="$ctrl.item.hasAnswer">answer: {{$ctrl.item.answer}}</div><div id="metadata" ng-if="$ctrl.item.hasMetadata">metadata: {{$ctrl.item.metadata.label.ptBR.formattedText}}</div><div id="comment" ng-if="$ctrl.item.hasComment">comment: {{$ctrl.item.comment}}</div></div></div>',
+      controller: Controller,
+      bindings: {
+        item: '='
+      }
+    });
+
+
+  function Controller() {
+    var self = this;
+    self.$onInit = onInit;
+
+    function onInit() {
+
+    }
+  }
+
 }());
 
 (function () {
@@ -6170,6 +6330,7 @@
     function TextItemView(item, navigationTrackingItem, filling) {
       var self = new SurveyItemView(item, navigationTrackingItem, filling);
 
+      self.templateName = 'textItemView';
 
       self.value = item.value;
       console.log(self);
@@ -6179,6 +6340,8 @@
     function ImageItemView(item, navigationTrackingItem, filling) {
       var self = new SurveyItemView(item, navigationTrackingItem, filling);
 
+      self.templateName = 'imageItemView';
+
       self.value = item.url;
       console.log(self);
       return self;
@@ -6186,6 +6349,8 @@
 
     function CheckboxQuestionView(item, navigationTrackingItem, filling) {
       var self = new QuestionView(item, navigationTrackingItem, filling);
+
+      self.templateName = "checkboxQuestionView";
 
       if (filling && filling.answer) {
         self.answer = item.options.map(item => {
@@ -6202,6 +6367,8 @@
 
     function SingleSelectionQuestionView(item, navigationTrackingItem, filling) {
       var self = new QuestionView(item, navigationTrackingItem, filling);
+
+      self.templateName = "singleSelectionQuestionView";
 
       if (filling && filling.answer) {
         self.answer = item.options.map(op => {
@@ -6227,6 +6394,7 @@
       var self = new SurveyItemView(item, navigationTrackingItem, filling);
 
       self.dataType = item.dataType;
+      self.templateName = "questionView";
 
       self.forceAnswer = undefined;
       self.answer = undefined;

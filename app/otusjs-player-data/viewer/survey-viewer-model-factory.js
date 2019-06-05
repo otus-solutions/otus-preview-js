@@ -66,9 +66,14 @@
       }
     }
 
+    function GridIntegerQuestionView(item, navigationTrackingItem, filling) {
+      
+    }
+
     function TextItemView(item, navigationTrackingItem, filling) {
       var self = new SurveyItemView(item, navigationTrackingItem, filling);
 
+      self.templateName = 'textItemView';
 
       self.value = item.value;
       console.log(self);
@@ -78,6 +83,8 @@
     function ImageItemView(item, navigationTrackingItem, filling) {
       var self = new SurveyItemView(item, navigationTrackingItem, filling);
 
+      self.templateName = 'imageItemView';
+
       self.value = item.url;
       console.log(self);
       return self;
@@ -85,6 +92,8 @@
 
     function CheckboxQuestionView(item, navigationTrackingItem, filling) {
       var self = new QuestionView(item, navigationTrackingItem, filling);
+
+      self.templateName = "checkboxQuestionView";
 
       if (filling && filling.answer) {
         self.answer = item.options.map(item => {
@@ -101,6 +110,8 @@
 
     function SingleSelectionQuestionView(item, navigationTrackingItem, filling) {
       var self = new QuestionView(item, navigationTrackingItem, filling);
+
+      self.templateName = "singleSelectionQuestionView";
 
       if (filling && filling.answer) {
         self.answer = item.options.map(op => {
@@ -126,6 +137,7 @@
       var self = new SurveyItemView(item, navigationTrackingItem, filling);
 
       self.dataType = item.dataType;
+      self.templateName = "questionView";
 
       self.forceAnswer = undefined;
       self.answer = undefined;
