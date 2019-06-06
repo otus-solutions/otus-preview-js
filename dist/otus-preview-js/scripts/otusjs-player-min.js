@@ -372,7 +372,6 @@
     function onInit() {
       let _templateName = HtmlBuilderService.generateTagName(self.item.templateName);
       self.template = '<' + _templateName + ' item="$ctrl.item"/>';
-      console.log(self.template);
     }
   }
 }());
@@ -441,6 +440,56 @@
     });
 
 
+  function Controller() {
+    var self = this;
+    self.$onInit = onInit;
+
+    function onInit() {
+
+    }
+  }
+
+}());
+
+(function () {
+  'use strict';
+
+  angular
+    .module('otusjs.player.component')
+    .component('gridIntegerQuestionView', {
+      template:'<div layout="column"><md-divider></md-divider><md-subheader>{{$ctrl.item.customID}}</md-subheader><md-subheader>{{$ctrl.item.objectType}}</md-subheader><span>state: {{$ctrl.item.navigationState}}</span> <span>label: {{$ctrl.item.label.ptBR.formattedText}}</span><div id="fillingBox" ng-if="$ctrl.item.isQuestion && $ctrl.item.isAnswered"><div id="answer" ng-if="$ctrl.item.hasAnswer">answer: {{$ctrl.item.answer}}</div><div id="metadata" ng-if="$ctrl.item.hasMetadata">metadata: {{$ctrl.item.metadata.label.ptBR.formattedText}}</div><div id="comment" ng-if="$ctrl.item.hasComment">comment: {{$ctrl.item.comment}}</div></div></div>',
+      controller: Controller,
+      bindings: {
+        item: '='
+      }
+    });
+
+
+  function Controller() {
+    var self = this;
+    self.$onInit = onInit;
+
+    function onInit() {
+
+    }
+  }
+
+}());
+
+(function () {
+  'use strict';
+
+  angular
+    .module('otusjs.player.component')
+    .component('gridTextQuestionView', {
+      template:'<div layout="column"><md-divider></md-divider><md-subheader>{{$ctrl.item.customID}}</md-subheader><md-subheader>{{$ctrl.item.objectType}}</md-subheader><span>state: {{$ctrl.item.navigationState}}</span> <span>label: {{$ctrl.item.label.ptBR.formattedText}}</span><div id="fillingBox" ng-if="$ctrl.item.isQuestion && $ctrl.item.isAnswered"><div id="answer" ng-if="$ctrl.item.hasAnswer">answer: {{$ctrl.item.answer}}</div><div id="metadata" ng-if="$ctrl.item.hasMetadata">metadata: {{$ctrl.item.metadata.label.ptBR.formattedText}}</div><div id="comment" ng-if="$ctrl.item.hasComment">comment: {{$ctrl.item.comment}}</div></div></div>',
+      controller: Controller,
+      bindings: {
+        item: '='
+      }
+    });
+
+//todo: use the same component for both grid questions?
   function Controller() {
     var self = this;
     self.$onInit = onInit;
@@ -6312,16 +6361,22 @@
       switch (objectType) {
         case 'TextItem':
           return new TextItemView(item, trackingItem, filling);
-          break;
+
         case 'ImageItem':
           return new ImageItemView(item, trackingItem, filling);
-          break;
+
         case 'CheckboxQuestion':
           return new CheckboxQuestionView(item, trackingItem, filling);
-          break;
+
         case 'SingleSelectionQuestion':
           return new SingleSelectionQuestionView(item, trackingItem, filling);
-          break;
+
+        case 'GridIntegerQuestion':
+          return new GridIntegerQuestionView(item, trackingItem, filling);
+
+        case 'GridTextQuestion':
+          return new GridTextQuestionView(item, trackingItem, filling);
+
         default:
           return new QuestionView(item, trackingItem, filling);
       }
@@ -6350,16 +6405,14 @@
     function CheckboxQuestionView(item, navigationTrackingItem, filling) {
       var self = new QuestionView(item, navigationTrackingItem, filling);
 
-      self.templateName = "checkboxQuestionView";
+      self.templateName = 'checkboxQuestionView';
 
-      if (filling && filling.answer) {
-        self.answer = item.options.map(item => {
+      self.answer = item.options.map(item => {
+        if (filling && filling.answer) {
           item.value = filling.answer.value.find(value => value.option === item.customOptionID).state;
-          return item;
-        });
-      } else {
-        self.answer = item.options;
-      }
+        }
+        return item;
+      });
 
 
       return self;
@@ -6368,7 +6421,7 @@
     function SingleSelectionQuestionView(item, navigationTrackingItem, filling) {
       var self = new QuestionView(item, navigationTrackingItem, filling);
 
-      self.templateName = "singleSelectionQuestionView";
+      self.templateName = 'singleSelectionQuestionView';
 
       if (filling && filling.answer) {
         self.answer = item.options.map(op => {
@@ -6390,11 +6443,48 @@
       return self;
     }
 
+    function GridIntegerQuestionView(item, navigationTrackingItem, filling) {
+      var self = new QuestionView(item, navigationTrackingItem, filling);
+
+      self.templateName = 'gridIntegerQuestionView';
+
+      self.answer = item.getLinesList().map((line, lineIx) => {
+        if (filling && filling.answer) {
+          filling.answer.value[lineIx].forEach((pos, posIx) => {
+            line.getGridIntegerList()[posIx].value = pos.value;
+          });
+        }
+
+        return {positions: line.getGridIntegerList()};
+      });
+
+      return self;
+    }
+
+    function GridTextQuestionView(item, navigationTrackingItem, filling) {
+      var self = new QuestionView(item, navigationTrackingItem, filling);
+
+      self.templateName = 'gridTextQuestionView';
+
+      self.answer = item.getLinesList().map((line, lineIx) => {
+        if (filling && filling.answer) {
+          filling.answer.value[lineIx].forEach((pos, posIx) => {
+            line.getGridTextList()[posIx].value = pos.value;
+          });
+        }
+
+        return {positions: line.getGridTextList()};
+      });
+
+      return self;
+    }
+
+
     function QuestionView(item, navigationTrackingItem, filling) {
       var self = new SurveyItemView(item, navigationTrackingItem, filling);
 
       self.dataType = item.dataType;
-      self.templateName = "questionView";
+      self.templateName = 'questionView';
 
       self.forceAnswer = undefined;
       self.answer = undefined;

@@ -90,7 +90,6 @@
     function onInit() {
       let _templateName = HtmlBuilderService.generateTagName(self.item.templateName);
       self.template = '<' + _templateName + ' item="$ctrl.item"/>';
-      console.log(self.template);
     }
   }
 }());
@@ -159,6 +158,56 @@
     });
 
 
+  function Controller() {
+    var self = this;
+    self.$onInit = onInit;
+
+    function onInit() {
+
+    }
+  }
+
+}());
+
+(function () {
+  'use strict';
+
+  angular
+    .module('otusjs.player.component')
+    .component('gridIntegerQuestionView', {
+      templateUrl: 'app/otusjs-player-component/viewer/question-view-template.html',
+      controller: Controller,
+      bindings: {
+        item: '='
+      }
+    });
+
+
+  function Controller() {
+    var self = this;
+    self.$onInit = onInit;
+
+    function onInit() {
+
+    }
+  }
+
+}());
+
+(function () {
+  'use strict';
+
+  angular
+    .module('otusjs.player.component')
+    .component('gridTextQuestionView', {
+      templateUrl: 'app/otusjs-player-component/viewer/question-view-template.html',
+      controller: Controller,
+      bindings: {
+        item: '='
+      }
+    });
+
+//todo: use the same component for both grid questions?
   function Controller() {
     var self = this;
     self.$onInit = onInit;
