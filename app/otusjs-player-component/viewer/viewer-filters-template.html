@@ -1,1 +1,6 @@
-<md-checkbox ng-model="$ctrl.filters.state">Show state</md-checkbox>
+<div layout="column" layout-padding layout-wrap>
+  <md-checkbox value = "$ctrl.filters.state" ng-model="$ctrl.filters.state">Estado da quetão</md-checkbox>
+  <md-checkbox ng-model="$ctrl.filters.customID">Id de questão</md-checkbox>
+  <md-checkbox ng-model="$ctrl.filters.skippedQuestions">Mostrar questões puladas</md-checkbox>
+  <md-checkbox ng-model="$ctrl.filters.notVisitedQuestions">Mostrar não visitadas</md-checkbox>
+</div>

@@ -14,56 +14,30 @@
   ];
 
   function Controller(SurveyViewerFactory, PlayerService) {
-    var SURVEY_ITEM = '<otus-survey-item item-data="item" />';
     var self = this;
 
     self.$onInit = onInit;
     self.ready = false;
+    self.filters = {};
 
     /* Public methods */
     self.exit = exit;
 
     function onInit() {
       self.activityData = SurveyViewerFactory.create();
-      console.log(self);
-
-      self.name = 'breno';
-      self.test = '<span>{{$ctrl.name}}</span>';
-
       self.ready = true;
-
     }
 
     function exit() {
       PlayerService.stop();
     }
 
-    self.filters = {};
-  }
-}());
+    function updateFilter() {
 
-(function () {
-  'use strict';
-
-  angular
-    .module('otusjs.player.component')
-    .component('otusViewerFilters', {
-      templateUrl: 'app/otusjs-player-component/viewer/viewer-filters-template.html',
-      controller: Controller,
-      bindings: {
-        filters: '='
-      }
-    });
-
-  function Controller() {
-    var self = this;
-    self.$onInit = onInit;
-
-    function onInit() {
-      console.log(self.filters);
     }
   }
 }());
+
 
 (function () {
   'use strict';
@@ -80,18 +54,47 @@
 
   Controller.$inject = [
     'otusjs.player.core.renderer.HtmlBuilderService',
-    'otusjs.player.core.renderer.TagComponentBuilderService'
+    'aservice'
   ];
 
-  function Controller(HtmlBuilderService, TagComponentBuilderService) {
+  function Controller(HtmlBuilderService, service) {
     var self = this;
     self.$onInit = onInit;
+
+    self.print = function () {
+      service.print();
+    };
 
     function onInit() {
       let _templateName = HtmlBuilderService.generateTagName(self.item.templateName);
       self.template = '<' + _templateName + ' item="$ctrl.item"/>';
     }
+
+    function f() {
+
+    }
   }
+}());
+
+(function () {
+  'use strict';
+
+  angular
+    .module('otusjs.player.component')
+    .service('aservice', Service);
+
+
+  function Service() {
+    var self = this;
+
+    self.data = false;
+
+    self.print = function () {
+      console.log(self.data);
+    };
+
+  }
+
 }());
 
 (function () {
