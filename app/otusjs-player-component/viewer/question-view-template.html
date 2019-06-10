@@ -1,15 +1,17 @@
-<md-divider></md-divider>
-<md-content layout-padding>
-  <md-list>
-    <div layout="column" layout-padding>
+<div>
+  <md-divider></md-divider>
+  <div layout="row" layout-align="center center" layout-margin>
+    <div flex="15"></div>
+    <div layout="column" flex="70">
       <md-subheader>{{$ctrl.item.customID}}</md-subheader>
-      <span>state: {{$ctrl.item.navigationState}}</span>
-      <span> label: {{$ctrl.item.label.ptBR.formattedText}}</span>
+      <span>{{$ctrl.item.navigationState}}</span>
+      <span ng-bind-html="$ctrl.item.label.ptBR.formattedText"></span>
       <div id="fillingBox" ng-if="$ctrl.item.isQuestion && $ctrl.item.isAnswered">
         <div id="answer" ng-if="$ctrl.item.hasAnswer">answer: {{$ctrl.item.answer}}</div>
         <div id="metadata" ng-if="$ctrl.item.hasMetadata">metadata: {{$ctrl.item.metadata.label.ptBR.formattedText}}</div>
         <div id="comment" ng-if="$ctrl.item.hasComment">comment: {{$ctrl.item.comment}}</div>
       </div>
     </div>
-  </md-list>
-</md-content>
+    <div flex></div>
+  </div>
+</div>

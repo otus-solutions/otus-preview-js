@@ -1,5 +1,6 @@
 <md-content layout="column" layout-align="start center" flex>
   <md-progress-circular ng-if="!$ctrl.ready" class="md-primary" md-diameter="70"></md-progress-circular>
+  <div ng-if="$ctrl.ready" layout="column">
 
   <div ng-if="$ctrl.ready" layout="column">
     <div id="header" layout="row">
@@ -11,9 +12,12 @@
 
     {{$ctrl.activityData.acronym}} - {{$ctrl.activityData.name}}
     <div layout="row">
-      <md-list layout="column">
-        <md-list-item ng-repeat="item in $ctrl.activityData.itemContainer">
-          <survey-item-view-template item="item" filters="$ctrl.filters"></survey-item-view-template>
+      {{$ctrl.filters.state}}
+      <md-list>
+        <md-list-item layout="row" layout-align="center center" ng-repeat="item in $ctrl.activityData.itemContainer">
+          <div flex="20"></div>
+          <survey-item-view-template item="item" filters="$ctrl.filters" flex></survey-item-view-template>
+          <div flex="20"></div>
         </md-list-item>
       </md-list>
     </div>
