@@ -4,7 +4,7 @@
   angular
     .module('otusjs.player.component')
     .component('otusViewerFilters', {
-      templateUrl: 'app/otusjs-player-component/viewer/viewer-filters-template.html',
+      templateUrl: 'app/otusjs-player-component/viewer/filters/viewer-filters-template.html',
       controller: Controller,
       bindings: {
         filters: '='

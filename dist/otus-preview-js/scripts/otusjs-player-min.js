@@ -286,7 +286,7 @@
   angular
     .module('otusjs.player.component')
     .component('otusViewer', {
-      template:'<md-content layout="column" layout-align="start center" flex><md-progress-circular ng-if="!$ctrl.ready" class="md-primary" md-diameter="70"></md-progress-circular><div ng-if="$ctrl.ready" layout="column"><div ng-if="$ctrl.ready" layout="column"><div id="header" layout="row"><md-button ng-click="$ctrl.exit()">sair</md-button><md-button ng-click="$ctrl.showFilters = !$ctrl.showFilters">Filtros</md-button><otus-viewer-filters filters="$ctrl.filters" ng-show="$ctrl.showFilters"></otus-viewer-filters></div>{{$ctrl.activityData.acronym}} - {{$ctrl.activityData.name}}<div layout="row">{{$ctrl.filters.state}}<md-list><md-list-item layout="row" layout-align="center center" ng-repeat="item in $ctrl.activityData.itemContainer"><div flex="20"></div><survey-item-view-template item="item" filters="$ctrl.filters" flex></survey-item-view-template><div flex="20"></div></md-list-item></md-list></div></div></div></md-content>',
+      template:'<md-content layout="column" layout-align="start center" flex><md-progress-circular ng-if="!$ctrl.ready" class="md-primary" md-diameter="70"></md-progress-circular><div ng-if="$ctrl.ready" layout="column"><div ng-if="$ctrl.ready" layout="column"><div id="header" layout="row"><md-button ng-click="$ctrl.exit()">sair</md-button><md-button ng-click="$ctrl.showFilters = !$ctrl.showFilters">Filtros</md-button><otus-viewer-filters filters="$ctrl.filters" ng-show="$ctrl.showFilters"></otus-viewer-filters></div>{{$ctrl.activityData.acronym}} - {{$ctrl.activityData.name}}<div layout="row"><md-list><md-list-item layout="row" layout-align="center center" ng-repeat="item in $ctrl.activityData.itemContainer"><div flex="20"></div><survey-item-view item="item" filters="$ctrl.filters" flex></survey-item-view><div flex="20"></div></md-list-item></md-list></div></div></div></md-content>',
       controller: Controller
     });
 
@@ -318,13 +318,51 @@
   }
 }());
 
+(function () {
+  'use strict';
+
+  angular
+    .module('otusjs.player.component')
+    .component('otusViewerFilters', {
+      template:'<div layout="column" layout-wrap><md-checkbox ng-model="$ctrl.filters.displayState">Estado da quetão</md-checkbox><md-checkbox ng-model="$ctrl.filters.customID">Id de questão</md-checkbox><md-checkbox ng-model="$ctrl.filters.state.SKIPPED">Mostrar questões puladas</md-checkbox><md-checkbox ng-model="$ctrl.filters.state.NOT_VISITED">Mostrar não visitadas</md-checkbox></div>',
+      controller: Controller,
+      bindings: {
+        filters: '='
+      }
+    });
+
+
+  function Controller() {
+    var self = this;
+    self.$onInit = onInit;
+
+    function onInit() {
+      _setInitialFilters();
+    }
+
+    function _setInitialFilters() {
+      self.filters = {
+        displayState: false,
+        customID: true,
+        state: {
+          SKIPPED: false,
+          NOT_VISITED: true,
+          ANSWERED: true,
+          IGNORED: false,
+          VISITED: true
+        },
+        fillingBox: true
+      };
+    }
+  }
+}());
 
 (function () {
   'use strict';
 
   angular
     .module('otusjs.player.component')
-    .component('surveyItemViewTemplate', {
+    .component('surveyItemView', {
       template:'<div class="md-padding" ng-show="$ctrl.filters.state[$ctrl.item.navigationState]" bind-html-compile="$ctrl.template"></div>',
       controller: Controller,
       bindings: {
@@ -348,7 +386,6 @@
 
   }
 }());
-
 (function () {
   'use strict';
 
@@ -375,7 +412,6 @@
   }
 
 }());
-
 (function () {
   'use strict';
 
@@ -400,7 +436,6 @@
   }
 
 }());
-
 (function () {
   'use strict';
 
@@ -450,7 +485,6 @@
   }
 
 }());
-
 (function () {
   'use strict';
 
@@ -465,31 +499,6 @@
     });
 
 //todo: use the same component for both grid questions?
-  function Controller() {
-    var self = this;
-    self.$onInit = onInit;
-
-    function onInit() {
-
-    }
-  }
-
-}());
-
-(function () {
-  'use strict';
-
-  angular
-    .module('otusjs.player.component')
-    .component('textItemView', {
-      template:'<div><md-divider></md-divider><div layout="row" layout-align="center center" layout-margin><div flex="15"></div><div layout="column" flex="70"><md-subheader>{{$ctrl.item.customID}}</md-subheader><span>{{$ctrl.item.navigationState}}</span> <span ng-bind-html="$ctrl.item.label.ptBR.formattedText"></span><div id="fillingBox" ng-if="$ctrl.item.isQuestion && $ctrl.item.isAnswered"><div id="answer" ng-if="$ctrl.item.hasAnswer">answer: {{$ctrl.item.answer}}</div><div id="metadata" ng-if="$ctrl.item.hasMetadata">metadata: {{$ctrl.item.metadata.label.ptBR.formattedText}}</div><div id="comment" ng-if="$ctrl.item.hasComment">comment: {{$ctrl.item.comment}}</div></div></div><div flex></div></div></div>',
-      controller: Controller,
-      bindings: {
-        item: '='
-      }
-    });
-
-
   function Controller() {
     var self = this;
     self.$onInit = onInit;
@@ -525,17 +534,16 @@
   }
 
 }());
-
 (function () {
   'use strict';
 
   angular
     .module('otusjs.player.component')
-    .component('otusViewerFilters', {
-      template:'<div layout="column" layout-wrap><md-checkbox ng-model="$ctrl.filters.displayState">Estado da quetão</md-checkbox><md-checkbox ng-model="$ctrl.filters.customID">Id de questão</md-checkbox><md-checkbox ng-model="$ctrl.filters.state.SKIPPED">Mostrar questões puladas</md-checkbox><md-checkbox ng-model="$ctrl.filters.state.NOT_VISITED">Mostrar não visitadas</md-checkbox></div>',
+    .component('textItemView', {
+      template:'<div><md-divider></md-divider><div layout="row" layout-align="center center" layout-margin><div flex="15"></div><div layout="column" flex="70"><md-subheader>{{$ctrl.item.customID}}</md-subheader><span>{{$ctrl.item.navigationState}}</span> <span ng-bind-html="$ctrl.item.label.ptBR.formattedText"></span><div id="fillingBox" ng-if="$ctrl.item.isQuestion && $ctrl.item.isAnswered"><div id="answer" ng-if="$ctrl.item.hasAnswer">answer: {{$ctrl.item.answer}}</div><div id="metadata" ng-if="$ctrl.item.hasMetadata">metadata: {{$ctrl.item.metadata.label.ptBR.formattedText}}</div><div id="comment" ng-if="$ctrl.item.hasComment">comment: {{$ctrl.item.comment}}</div></div></div><div flex></div></div></div>',
       controller: Controller,
       bindings: {
-        filters: '='
+        item: '='
       }
     });
 
@@ -545,24 +553,10 @@
     self.$onInit = onInit;
 
     function onInit() {
-      _setInitialFilters();
-    }
 
-    function _setInitialFilters() {
-      self.filters = {
-        displayState: false,
-        customID: true,
-        state: {
-          SKIPPED: false,
-          NOT_VISITED: true,
-          ANSWERED: true,
-          IGNORED: false,
-          VISITED: true
-        },
-        fillingBox: true
-      };
     }
   }
+
 }());
 
 (function () {

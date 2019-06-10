@@ -12,11 +12,10 @@
 
     {{$ctrl.activityData.acronym}} - {{$ctrl.activityData.name}}
     <div layout="row">
-      {{$ctrl.filters.state}}
       <md-list>
         <md-list-item layout="row" layout-align="center center" ng-repeat="item in $ctrl.activityData.itemContainer">
           <div flex="20"></div>
-          <survey-item-view-template item="item" filters="$ctrl.filters" flex></survey-item-view-template>
+          <survey-item-view item="item" filters="$ctrl.filters" flex></survey-item-view>
           <div flex="20"></div>
         </md-list-item>
       </md-list>
