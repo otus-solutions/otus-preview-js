@@ -286,7 +286,7 @@
   angular
     .module('otusjs.player.component')
     .component('otusViewer', {
-      template:'<md-content layout="column" ng-if="(true)" flex><md-progress-circular ng-if="!$ctrl.ready" class="md-primary" md-diameter="70"></md-progress-circular><div ng-if="$ctrl.ready" layout="column"><div id="header" layout="row"><otus-viewer-filters filters="$ctrl.filters"></otus-viewer-filters><md-button ng-click="$ctrl.exit()">sair</md-button></div>{{$ctrl.activityData.acronym}} - {{$ctrl.activityData.name}}<div layout="row"><md-list layout="column"><md-list-item ng-repeat="item in $ctrl.activityData.itemContainer"><survey-item-view-template item="item" filters="$ctrl.filters"></survey-item-view-template></md-list-item></md-list></div></div></md-content>',
+      template:'<md-content layout="column" layout-align="start center" flex><md-progress-circular ng-if="!$ctrl.ready" class="md-primary" md-diameter="70"></md-progress-circular><div ng-if="$ctrl.ready" layout="column"><div id="header" layout="row"><md-button ng-click="$ctrl.exit()">sair</md-button><md-button ng-click="$ctrl.showFilters = !$ctrl.showFilters">Filtros</md-button><otus-viewer-filters filters="$ctrl.filters" ng-show="$ctrl.showFilters"></otus-viewer-filters></div>{{$ctrl.activityData.acronym}} - {{$ctrl.activityData.name}}<div layout="row"><md-list layout="column"><md-list-item ng-repeat="item in $ctrl.activityData.itemContainer"><survey-item-view-template item="item" filters="$ctrl.filters"></survey-item-view-template></md-list-item></md-list></div></div></md-content>',
       controller: Controller
     });
 
@@ -301,6 +301,7 @@
     self.$onInit = onInit;
     self.ready = false;
     self.filters = {};
+    self.showFilters = false;
 
     /* Public methods */
     self.exit = exit;
@@ -369,12 +370,6 @@
 
 
     function onInit() {
-
-    }
-
-    self.test = function () {
-      console.log('test');
-      return true;
     }
   }
 
@@ -536,7 +531,7 @@
   angular
     .module('otusjs.player.component')
     .component('otusViewerFilters', {
-      template:'<div layout="column" layout-padding layout-wrap><md-checkbox value="$ctrl.filters.state" ng-model="$ctrl.filters.state">Estado da quetão</md-checkbox><md-checkbox ng-model="$ctrl.filters.customID">Id de questão</md-checkbox><md-checkbox ng-model="$ctrl.filters.state.SKIPPED">Mostrar questões puladas</md-checkbox><md-checkbox ng-model="$ctrl.filters.state.NOT_VISITED">Mostrar não visitadas</md-checkbox><md-checkbox ng-model="$ctrl.data">data</md-checkbox></div>',
+      template:'<div layout="column" layout-wrap><md-checkbox ng-model="$ctrl.filters.displayState">Estado da quetão</md-checkbox><md-checkbox ng-model="$ctrl.filters.customID">Id de questão</md-checkbox><md-checkbox ng-model="$ctrl.filters.state.SKIPPED">Mostrar questões puladas</md-checkbox><md-checkbox ng-model="$ctrl.filters.state.NOT_VISITED">Mostrar não visitadas</md-checkbox></div>',
       controller: Controller,
       bindings: {
         filters: '='
@@ -559,7 +554,9 @@
         state: {
           SKIPPED: false,
           NOT_VISITED: true,
-          ANSWERED: true
+          ANSWERED: true,
+          IGNORED: false,
+          VISITED: true
         },
         fillingBox: true
       };

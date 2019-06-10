@@ -19,9 +19,11 @@
     self.$onInit = onInit;
     self.ready = false;
     self.filters = {};
+    self.showFilters = false;
 
     /* Public methods */
     self.exit = exit;
+
 
     function onInit() {
       self.activityData = SurveyViewerFactory.create();
@@ -87,12 +89,6 @@
 
 
     function onInit() {
-
-    }
-
-    self.test = function () {
-      console.log('test');
-      return true;
     }
   }
 

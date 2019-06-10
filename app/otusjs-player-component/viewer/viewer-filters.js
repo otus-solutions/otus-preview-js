@@ -27,7 +27,9 @@
         state: {
           SKIPPED: false,
           NOT_VISITED: true,
-          ANSWERED: true
+          ANSWERED: true,
+          IGNORED: false,
+          VISITED: true
         },
         fillingBox: true
       };

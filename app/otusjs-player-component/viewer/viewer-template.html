@@ -1,10 +1,11 @@
-<md-content layout="column" ng-if="(true)" flex>
+<md-content layout="column" layout-align="start center" flex>
   <md-progress-circular ng-if="!$ctrl.ready" class="md-primary" md-diameter="70"></md-progress-circular>
-  <div ng-if="$ctrl.ready" layout="column">
 
+  <div ng-if="$ctrl.ready" layout="column">
     <div id="header" layout="row">
-      <otus-viewer-filters filters="$ctrl.filters"></otus-viewer-filters>
       <md-button ng-click="$ctrl.exit()">sair</md-button>
+      <md-button ng-click="$ctrl.showFilters = !$ctrl.showFilters">Filtros</md-button>
+      <otus-viewer-filters filters="$ctrl.filters" ng-show="$ctrl.showFilters"></otus-viewer-filters>
     </div>
 
 
