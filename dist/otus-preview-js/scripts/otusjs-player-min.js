@@ -286,7 +286,7 @@
   angular
     .module('otusjs.player.component')
     .component('otusViewer', {
-      template:'<md-content layout="column" ng-if="(true)" flex><md-progress-circular ng-if="!$ctrl.ready" class="md-primary" md-diameter="70"></md-progress-circular><div ng-if="$ctrl.ready" layout="column"><div id="header" layout="row" layout-padding><otus-viewer-filters filters="$ctrl.filters"></otus-viewer-filters><md-button ng-click="$ctrl.exit()">sair</md-button></div>{{$ctrl.activityData.acronym}} - {{$ctrl.activityData.name}}<div layout="row">{{$ctrl.filters.state}}<md-list><md-list-item layout="row" layout-align="center center" ng-repeat="item in $ctrl.activityData.itemContainer"><div flex="20"></div><survey-item-view-template item="item" flex></survey-item-view-template><div flex="20"></div></md-list-item></md-list></div></div></md-content>',
+      template:'<md-content layout="column" ng-if="(true)" flex><md-progress-circular ng-if="!$ctrl.ready" class="md-primary" md-diameter="70"></md-progress-circular><div ng-if="$ctrl.ready" layout="column"><div id="header" layout="row" layout-padding><otus-viewer-filters filters="$ctrl.filters"></otus-viewer-filters><md-button ng-click="$ctrl.exit()">sair</md-button></div>{{$ctrl.activityData.acronym}} - {{$ctrl.activityData.name}}<div layout="row">{{$ctrl.filters.state}}<md-list><md-list-item layout="row" layout-align="center center" ng-repeat="item in $ctrl.activityData.itemContainer"><div flex="20"></div><survey-item-view-template item="item" filters="$ctrl.filters" flex></survey-item-view-template><div flex="20"></div></md-list-item></md-list></div></div></md-content>',
       controller: Controller
     });
 
@@ -313,10 +313,6 @@
     function exit() {
       PlayerService.stop();
     }
-
-    function updateFilter() {
-
-    }
   }
 }());
 
@@ -327,56 +323,28 @@
   angular
     .module('otusjs.player.component')
     .component('surveyItemViewTemplate', {
-      template:'<div class="md-padding" bind-html-compile="$ctrl.template"></div>',
+      template:'<div class="md-padding" ng-show="$ctrl.filters.state[$ctrl.item.navigationState]" bind-html-compile="$ctrl.template"></div>',
       controller: Controller,
       bindings: {
-        item: '='
+        item: '=',
+        filters: '='
       }
     });
 
   Controller.$inject = [
-    'otusjs.player.core.renderer.HtmlBuilderService',
-    'aservice'
+    'otusjs.player.core.renderer.HtmlBuilderService'
   ];
 
-  function Controller(HtmlBuilderService, service) {
+  function Controller(HtmlBuilderService) {
     var self = this;
     self.$onInit = onInit;
 
-    self.print = function () {
-      service.print();
-    };
-
     function onInit() {
       let _templateName = HtmlBuilderService.generateTagName(self.item.templateName);
-      self.template = '<' + _templateName + ' item="$ctrl.item"/>';
+      self.template = '<' + _templateName + ' item="$ctrl.item" filters="$ctrl.filters"/>';
     }
 
-    function f() {
-
-    }
   }
-}());
-
-(function () {
-  'use strict';
-
-  angular
-    .module('otusjs.player.component')
-    .service('aservice', Service);
-
-
-  function Service() {
-    var self = this;
-
-    self.data = false;
-
-    self.print = function () {
-      console.log(self.data);
-    };
-
-  }
-
 }());
 
 (function () {
@@ -388,17 +356,25 @@
       template:'<div><md-divider></md-divider><div layout="row" layout-align="center center" layout-margin><div flex="15"></div><div layout="column" flex="70"><md-subheader>{{$ctrl.item.customID}}</md-subheader><span>{{$ctrl.item.navigationState}}</span> <span ng-bind-html="$ctrl.item.label.ptBR.formattedText"></span><div id="fillingBox" ng-if="$ctrl.item.isQuestion && $ctrl.item.isAnswered"><div id="answer" ng-if="$ctrl.item.hasAnswer">answer: {{$ctrl.item.answer}}</div><div id="metadata" ng-if="$ctrl.item.hasMetadata">metadata: {{$ctrl.item.metadata.label.ptBR.formattedText}}</div><div id="comment" ng-if="$ctrl.item.hasComment">comment: {{$ctrl.item.comment}}</div></div></div><div flex></div></div></div>',
       controller: Controller,
       bindings: {
-        item: '='
+        item: '=',
+        filters: '='
       }
     });
+
 
 
   function Controller() {
     var self = this;
     self.$onInit = onInit;
 
+
     function onInit() {
 
+    }
+
+    self.test = function () {
+      console.log('test');
+      return true;
     }
   }
 
@@ -552,6 +528,43 @@
     }
   }
 
+}());
+
+(function () {
+  'use strict';
+
+  angular
+    .module('otusjs.player.component')
+    .component('otusViewerFilters', {
+      template:'<div layout="column" layout-padding layout-wrap><md-checkbox value="$ctrl.filters.state" ng-model="$ctrl.filters.state">Estado da quetão</md-checkbox><md-checkbox ng-model="$ctrl.filters.customID">Id de questão</md-checkbox><md-checkbox ng-model="$ctrl.filters.state.SKIPPED">Mostrar questões puladas</md-checkbox><md-checkbox ng-model="$ctrl.filters.state.NOT_VISITED">Mostrar não visitadas</md-checkbox><md-checkbox ng-model="$ctrl.data">data</md-checkbox></div>',
+      controller: Controller,
+      bindings: {
+        filters: '='
+      }
+    });
+
+
+  function Controller() {
+    var self = this;
+    self.$onInit = onInit;
+
+    function onInit() {
+      _setInitialFilters();
+    }
+
+    function _setInitialFilters() {
+      self.filters = {
+        displayState: false,
+        customID: true,
+        state: {
+          SKIPPED: false,
+          NOT_VISITED: true,
+          ANSWERED: true
+        },
+        fillingBox: true
+      };
+    }
+  }
 }());
 
 (function () {

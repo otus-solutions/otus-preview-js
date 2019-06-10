@@ -1,1 +1,4 @@
-<div class="md-padding" bind-html-compile="$ctrl.template"></div>
+<div class="md-padding"
+     ng-show="$ctrl.filters.state[$ctrl.item.navigationState]"
+     bind-html-compile="$ctrl.template">
+</div>

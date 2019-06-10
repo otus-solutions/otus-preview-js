@@ -31,10 +31,6 @@
     function exit() {
       PlayerService.stop();
     }
-
-    function updateFilter() {
-
-    }
   }
 }());
 
@@ -48,53 +44,25 @@
       templateUrl: 'app/otusjs-player-component/viewer/survey-item-viewer-template.html',
       controller: Controller,
       bindings: {
-        item: '='
+        item: '=',
+        filters: '='
       }
     });
 
   Controller.$inject = [
-    'otusjs.player.core.renderer.HtmlBuilderService',
-    'aservice'
+    'otusjs.player.core.renderer.HtmlBuilderService'
   ];
 
-  function Controller(HtmlBuilderService, service) {
+  function Controller(HtmlBuilderService) {
     var self = this;
     self.$onInit = onInit;
 
-    self.print = function () {
-      service.print();
-    };
-
     function onInit() {
       let _templateName = HtmlBuilderService.generateTagName(self.item.templateName);
-      self.template = '<' + _templateName + ' item="$ctrl.item"/>';
+      self.template = '<' + _templateName + ' item="$ctrl.item" filters="$ctrl.filters"/>';
     }
 
-    function f() {
-
-    }
   }
-}());
-
-(function () {
-  'use strict';
-
-  angular
-    .module('otusjs.player.component')
-    .service('aservice', Service);
-
-
-  function Service() {
-    var self = this;
-
-    self.data = false;
-
-    self.print = function () {
-      console.log(self.data);
-    };
-
-  }
-
 }());
 
 (function () {
@@ -106,17 +74,25 @@
       templateUrl: 'app/otusjs-player-component/viewer/question-view-template.html',
       controller: Controller,
       bindings: {
-        item: '='
+        item: '=',
+        filters: '='
       }
     });
+
 
 
   function Controller() {
     var self = this;
     self.$onInit = onInit;
 
+
     function onInit() {
 
+    }
+
+    self.test = function () {
+      console.log('test');
+      return true;
     }
   }
 
