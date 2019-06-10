@@ -2,7 +2,7 @@
   <md-progress-circular ng-if="!$ctrl.ready" class="md-primary" md-diameter="70"></md-progress-circular>
   <div ng-if="$ctrl.ready" layout="column">
 
-    <div id="header" layout="row">
+    <div id="header" layout="row" layout-padding>
       <otus-viewer-filters filters="$ctrl.filters"></otus-viewer-filters>
       <md-button ng-click="$ctrl.exit()">sair</md-button>
     </div>
@@ -10,9 +10,11 @@
     {{$ctrl.activityData.acronym}} - {{$ctrl.activityData.name}}
     <div layout="row">
       {{$ctrl.filters.state}}
-      <md-list layout="column">
-        <md-list-item ng-repeat="item in $ctrl.activityData.itemContainer">
-          <survey-item-view-template item="item"></survey-item-view-template>
+      <md-list>
+        <md-list-item layout="row" layout-align="center center" ng-repeat="item in $ctrl.activityData.itemContainer">
+          <div flex="20"></div>
+          <survey-item-view-template item="item" flex></survey-item-view-template>
+          <div flex="20"></div>
         </md-list-item>
       </md-list>
     </div>
