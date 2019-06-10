@@ -320,61 +320,6 @@
   }
 }());
 
-(function () {
-  'use strict';
-
-  angular
-    .module('otusjs.player.component')
-    .component('otusViewerFilters', {
-      template:'<div layout="column" layout-padding layout-wrap><md-checkbox value="$ctrl.filters.state" ng-model="$ctrl.filters.state">Estado da quetão</md-checkbox><md-checkbox ng-model="$ctrl.filters.customID">Id de questão</md-checkbox><md-checkbox ng-model="$ctrl.filters.skippedQuestions">Mostrar questões puladas</md-checkbox><md-checkbox ng-model="$ctrl.filters.notVisitedQuestions">Mostrar não visitadas</md-checkbox></div>',
-      controller: Controller,
-      bindings: {
-        filters: '='
-      }
-    });
-
-  function Controller() {
-    var self = this;
-    self.$onInit = onInit;
-
-    function onInit() {
-      _setInitialFilters();
-    }
-
-    var a = {
-      answer: '',
-      comment: '',
-      customID: 'ATSTOQ1',
-      dataType: 'LocalDate',
-      forceAnswer: false,
-      hasAnswer: true,
-      hasComment: false,
-      hasMetadata: false,
-      index: 0,
-      isAnswered: true,
-      isIgnored: false,
-      isQuestion: true,
-      isSkipped: false,
-      label: "",
-      metadata: undefined,
-      navigationState: 'ANSWERED',
-      navigationStatusIcon: undefined,
-      objectType: 'CalendarQuestion',
-      templateID: 'ATSTOQ1',
-      templateName: 'questionView'
-    };
-
-    function _setInitialFilters() {
-      self.filters = {
-        state: false,
-        customID: true,
-        skippedQuestions: true,
-        notVisitedQuestions: true,
-        fillingBox: true
-      };
-    }
-  }
-}());
 
 (function () {
   'use strict';
@@ -391,12 +336,16 @@
 
   Controller.$inject = [
     'otusjs.player.core.renderer.HtmlBuilderService',
-    'otusjs.player.core.renderer.TagComponentBuilderService'
+    'aservice'
   ];
 
-  function Controller(HtmlBuilderService, TagComponentBuilderService) {
+  function Controller(HtmlBuilderService, service) {
     var self = this;
     self.$onInit = onInit;
+
+    self.print = function () {
+      service.print();
+    };
 
     function onInit() {
       let _templateName = HtmlBuilderService.generateTagName(self.item.templateName);
@@ -414,8 +363,29 @@
 
   angular
     .module('otusjs.player.component')
+    .service('aservice', Service);
+
+
+  function Service() {
+    var self = this;
+
+    self.data = false;
+
+    self.print = function () {
+      console.log(self.data);
+    };
+
+  }
+
+}());
+
+(function () {
+  'use strict';
+
+  angular
+    .module('otusjs.player.component')
     .component('questionView', {
-      template:'<div layout="column"><md-divider></md-divider><md-subheader>{{$ctrl.item.customID}}</md-subheader><span>state: {{$ctrl.item.navigationState}}</span> <span>label: {{$ctrl.item.label.ptBR.formattedText}}</span><div id="fillingBox" ng-if="$ctrl.item.isQuestion && $ctrl.item.isAnswered"><div id="answer" ng-if="$ctrl.item.hasAnswer">answer: {{$ctrl.item.answer}}</div><div id="metadata" ng-if="$ctrl.item.hasMetadata">metadata: {{$ctrl.item.metadata.label.ptBR.formattedText}}</div><div id="comment" ng-if="$ctrl.item.hasComment">comment: {{$ctrl.item.comment}}</div></div></div>',
+      template:'<md-divider></md-divider><md-content layout-padding><md-list><div layout="column" layout-padding><md-subheader>{{$ctrl.item.customID}}</md-subheader><span>state: {{$ctrl.item.navigationState}}</span> <span>label: {{$ctrl.item.label.ptBR.formattedText}}</span><div id="fillingBox" ng-if="$ctrl.item.isQuestion && $ctrl.item.isAnswered"><div id="answer" ng-if="$ctrl.item.hasAnswer">answer: {{$ctrl.item.answer}}</div><div id="metadata" ng-if="$ctrl.item.hasMetadata">metadata: {{$ctrl.item.metadata.label.ptBR.formattedText}}</div><div id="comment" ng-if="$ctrl.item.hasComment">comment: {{$ctrl.item.comment}}</div></div></div></md-list></md-content>',
       controller: Controller,
       bindings: {
         item: '='
@@ -440,7 +410,7 @@
   angular
     .module('otusjs.player.component')
     .component('checkboxQuestionView', {
-      template:'<div layout="column"><md-divider></md-divider><md-subheader>{{$ctrl.item.customID}}</md-subheader><span>state: {{$ctrl.item.navigationState}}</span> <span>label: {{$ctrl.item.label.ptBR.formattedText}}</span><div id="fillingBox" ng-if="$ctrl.item.isQuestion && $ctrl.item.isAnswered"><div id="answer" ng-if="$ctrl.item.hasAnswer">answer: {{$ctrl.item.answer}}</div><div id="metadata" ng-if="$ctrl.item.hasMetadata">metadata: {{$ctrl.item.metadata.label.ptBR.formattedText}}</div><div id="comment" ng-if="$ctrl.item.hasComment">comment: {{$ctrl.item.comment}}</div></div></div>',
+      template:'<md-divider></md-divider><md-content layout-padding><md-list><div layout="column" layout-padding><md-subheader>{{$ctrl.item.customID}}</md-subheader><span>state: {{$ctrl.item.navigationState}}</span> <span>label: {{$ctrl.item.label.ptBR.formattedText}}</span><div id="fillingBox" ng-if="$ctrl.item.isQuestion && $ctrl.item.isAnswered"><div id="answer" ng-if="$ctrl.item.hasAnswer">answer: {{$ctrl.item.answer}}</div><div id="metadata" ng-if="$ctrl.item.hasMetadata">metadata: {{$ctrl.item.metadata.label.ptBR.formattedText}}</div><div id="comment" ng-if="$ctrl.item.hasComment">comment: {{$ctrl.item.comment}}</div></div></div></md-list></md-content>',
       controller: Controller,
       bindings: {
         item: '='
@@ -465,7 +435,7 @@
   angular
     .module('otusjs.player.component')
     .component('singleSelectionQuestionView', {
-      template:'<div layout="column"><md-divider></md-divider><md-subheader>{{$ctrl.item.customID}}</md-subheader><span>state: {{$ctrl.item.navigationState}}</span> <span>label: {{$ctrl.item.label.ptBR.formattedText}}</span><div id="fillingBox" ng-if="$ctrl.item.isQuestion && $ctrl.item.isAnswered"><div id="answer" ng-if="$ctrl.item.hasAnswer">answer: {{$ctrl.item.answer}}</div><div id="metadata" ng-if="$ctrl.item.hasMetadata">metadata: {{$ctrl.item.metadata.label.ptBR.formattedText}}</div><div id="comment" ng-if="$ctrl.item.hasComment">comment: {{$ctrl.item.comment}}</div></div></div>',
+      template:'<md-divider></md-divider><md-content layout-padding><md-list><div layout="column" layout-padding><md-subheader>{{$ctrl.item.customID}}</md-subheader><span>state: {{$ctrl.item.navigationState}}</span> <span>label: {{$ctrl.item.label.ptBR.formattedText}}</span><div id="fillingBox" ng-if="$ctrl.item.isQuestion && $ctrl.item.isAnswered"><div id="answer" ng-if="$ctrl.item.hasAnswer">answer: {{$ctrl.item.answer}}</div><div id="metadata" ng-if="$ctrl.item.hasMetadata">metadata: {{$ctrl.item.metadata.label.ptBR.formattedText}}</div><div id="comment" ng-if="$ctrl.item.hasComment">comment: {{$ctrl.item.comment}}</div></div></div></md-list></md-content>',
       controller: Controller,
       bindings: {
         item: '='
@@ -490,7 +460,7 @@
   angular
     .module('otusjs.player.component')
     .component('gridIntegerQuestionView', {
-      template:'<div layout="column"><md-divider></md-divider><md-subheader>{{$ctrl.item.customID}}</md-subheader><span>state: {{$ctrl.item.navigationState}}</span> <span>label: {{$ctrl.item.label.ptBR.formattedText}}</span><div id="fillingBox" ng-if="$ctrl.item.isQuestion && $ctrl.item.isAnswered"><div id="answer" ng-if="$ctrl.item.hasAnswer">answer: {{$ctrl.item.answer}}</div><div id="metadata" ng-if="$ctrl.item.hasMetadata">metadata: {{$ctrl.item.metadata.label.ptBR.formattedText}}</div><div id="comment" ng-if="$ctrl.item.hasComment">comment: {{$ctrl.item.comment}}</div></div></div>',
+      template:'<md-divider></md-divider><md-content layout-padding><md-list><div layout="column" layout-padding><md-subheader>{{$ctrl.item.customID}}</md-subheader><span>state: {{$ctrl.item.navigationState}}</span> <span>label: {{$ctrl.item.label.ptBR.formattedText}}</span><div id="fillingBox" ng-if="$ctrl.item.isQuestion && $ctrl.item.isAnswered"><div id="answer" ng-if="$ctrl.item.hasAnswer">answer: {{$ctrl.item.answer}}</div><div id="metadata" ng-if="$ctrl.item.hasMetadata">metadata: {{$ctrl.item.metadata.label.ptBR.formattedText}}</div><div id="comment" ng-if="$ctrl.item.hasComment">comment: {{$ctrl.item.comment}}</div></div></div></md-list></md-content>',
       controller: Controller,
       bindings: {
         item: '='
@@ -515,7 +485,7 @@
   angular
     .module('otusjs.player.component')
     .component('gridTextQuestionView', {
-      template:'<div layout="column"><md-divider></md-divider><md-subheader>{{$ctrl.item.customID}}</md-subheader><span>state: {{$ctrl.item.navigationState}}</span> <span>label: {{$ctrl.item.label.ptBR.formattedText}}</span><div id="fillingBox" ng-if="$ctrl.item.isQuestion && $ctrl.item.isAnswered"><div id="answer" ng-if="$ctrl.item.hasAnswer">answer: {{$ctrl.item.answer}}</div><div id="metadata" ng-if="$ctrl.item.hasMetadata">metadata: {{$ctrl.item.metadata.label.ptBR.formattedText}}</div><div id="comment" ng-if="$ctrl.item.hasComment">comment: {{$ctrl.item.comment}}</div></div></div>',
+      template:'<md-divider></md-divider><md-content layout-padding><md-list><div layout="column" layout-padding><md-subheader>{{$ctrl.item.customID}}</md-subheader><span>state: {{$ctrl.item.navigationState}}</span> <span>label: {{$ctrl.item.label.ptBR.formattedText}}</span><div id="fillingBox" ng-if="$ctrl.item.isQuestion && $ctrl.item.isAnswered"><div id="answer" ng-if="$ctrl.item.hasAnswer">answer: {{$ctrl.item.answer}}</div><div id="metadata" ng-if="$ctrl.item.hasMetadata">metadata: {{$ctrl.item.metadata.label.ptBR.formattedText}}</div><div id="comment" ng-if="$ctrl.item.hasComment">comment: {{$ctrl.item.comment}}</div></div></div></md-list></md-content>',
       controller: Controller,
       bindings: {
         item: '='
@@ -540,7 +510,7 @@
   angular
     .module('otusjs.player.component')
     .component('textItemView', {
-      template:'<div layout="column"><md-divider></md-divider><md-subheader>{{$ctrl.item.customID}}</md-subheader><span>state: {{$ctrl.item.navigationState}}</span> <span>label: {{$ctrl.item.label.ptBR.formattedText}}</span><div id="fillingBox" ng-if="$ctrl.item.isQuestion && $ctrl.item.isAnswered"><div id="answer" ng-if="$ctrl.item.hasAnswer">answer: {{$ctrl.item.answer}}</div><div id="metadata" ng-if="$ctrl.item.hasMetadata">metadata: {{$ctrl.item.metadata.label.ptBR.formattedText}}</div><div id="comment" ng-if="$ctrl.item.hasComment">comment: {{$ctrl.item.comment}}</div></div></div>',
+      template:'<md-divider></md-divider><md-content layout-padding><md-list><div layout="column" layout-padding><md-subheader>{{$ctrl.item.customID}}</md-subheader><span>state: {{$ctrl.item.navigationState}}</span> <span>label: {{$ctrl.item.label.ptBR.formattedText}}</span><div id="fillingBox" ng-if="$ctrl.item.isQuestion && $ctrl.item.isAnswered"><div id="answer" ng-if="$ctrl.item.hasAnswer">answer: {{$ctrl.item.answer}}</div><div id="metadata" ng-if="$ctrl.item.hasMetadata">metadata: {{$ctrl.item.metadata.label.ptBR.formattedText}}</div><div id="comment" ng-if="$ctrl.item.hasComment">comment: {{$ctrl.item.comment}}</div></div></div></md-list></md-content>',
       controller: Controller,
       bindings: {
         item: '='
@@ -565,7 +535,7 @@
   angular
     .module('otusjs.player.component')
     .component('imageItemView', {
-      template:'<div layout="column"><md-divider></md-divider><md-subheader>{{$ctrl.item.customID}}</md-subheader><span>state: {{$ctrl.item.navigationState}}</span> <span>label: {{$ctrl.item.label.ptBR.formattedText}}</span><div id="fillingBox" ng-if="$ctrl.item.isQuestion && $ctrl.item.isAnswered"><div id="answer" ng-if="$ctrl.item.hasAnswer">answer: {{$ctrl.item.answer}}</div><div id="metadata" ng-if="$ctrl.item.hasMetadata">metadata: {{$ctrl.item.metadata.label.ptBR.formattedText}}</div><div id="comment" ng-if="$ctrl.item.hasComment">comment: {{$ctrl.item.comment}}</div></div></div>',
+      template:'<md-divider></md-divider><md-content layout-padding><md-list><div layout="column" layout-padding><md-subheader>{{$ctrl.item.customID}}</md-subheader><span>state: {{$ctrl.item.navigationState}}</span> <span>label: {{$ctrl.item.label.ptBR.formattedText}}</span><div id="fillingBox" ng-if="$ctrl.item.isQuestion && $ctrl.item.isAnswered"><div id="answer" ng-if="$ctrl.item.hasAnswer">answer: {{$ctrl.item.answer}}</div><div id="metadata" ng-if="$ctrl.item.hasMetadata">metadata: {{$ctrl.item.metadata.label.ptBR.formattedText}}</div><div id="comment" ng-if="$ctrl.item.hasComment">comment: {{$ctrl.item.comment}}</div></div></div></md-list></md-content>',
       controller: Controller,
       bindings: {
         item: '='
