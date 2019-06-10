@@ -418,7 +418,7 @@
   angular
     .module('otusjs.player.component')
     .component('checkboxQuestionView', {
-      template:'<div><md-divider></md-divider><div layout="row" layout-align="center center" layout-margin><div flex="15"></div><div layout="column" flex="70"><md-subheader>{{$ctrl.item.customID}}</md-subheader><span>{{$ctrl.item.navigationState}}</span> <span ng-bind-html="$ctrl.item.label.ptBR.formattedText"></span><div id="fillingBox" ng-if="$ctrl.item.isQuestion && $ctrl.item.isAnswered"><div id="answer" ng-if="$ctrl.item.hasAnswer">answer: {{$ctrl.item.answer}}</div><div id="metadata" ng-if="$ctrl.item.hasMetadata">metadata: {{$ctrl.item.metadata.label.ptBR.formattedText}}</div><div id="comment" ng-if="$ctrl.item.hasComment">comment: {{$ctrl.item.comment}}</div></div></div><div flex></div></div></div>',
+      template:'<div><md-divider></md-divider><div layout="row" layout-align="center center" layout-margin><div flex="15"></div><div layout="column" flex="70"><md-subheader>{{$ctrl.item.customID}}</md-subheader><span>{{$ctrl.item.navigationState}}</span> <span ng-bind-html="$ctrl.item.label.ptBR.formattedText"></span><div id="fillingBox" ng-if="$ctrl.item.isQuestion && $ctrl.item.isAnswered"><div id="answer" ng-if="$ctrl.item.hasAnswer" layout="column" layout-align="start start"><md-checkbox ng-repeat="option in $ctrl.item.answer" ng-model="option.value" disabled="true">{{option.label.ptBR.formattedText}}</md-checkbox></div><div id="metadata" ng-if="$ctrl.item.hasMetadata">metadata: {{$ctrl.item.metadata.label.ptBR.formattedText}}</div><div id="comment" ng-if="$ctrl.item.hasComment">comment: {{$ctrl.item.comment}}</div></div></div><div flex></div></div></div>',
       controller: Controller,
       bindings: {
         item: '='

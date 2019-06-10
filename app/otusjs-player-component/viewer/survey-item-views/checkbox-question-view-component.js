@@ -4,7 +4,7 @@
   angular
     .module('otusjs.player.component')
     .component('checkboxQuestionView', {
-      templateUrl: 'app/otusjs-player-component/viewer/survey-item-views/question-view-template.html',
+      templateUrl: 'app/otusjs-player-component/viewer/survey-item-views/checkbox-question-view-template.html',
       controller: Controller,
       bindings: {
         item: '='
