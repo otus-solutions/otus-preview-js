@@ -98,7 +98,7 @@
       self.templateName = 'checkboxQuestionView';
 
       self.answer = item.options.map(item => {
-        if (filling && filling.answer) {
+        if (filling && filling.answer.value) {
           item.value = filling.answer.value.find(value => value.option === item.customOptionID).state;
         }
         return item;
@@ -113,7 +113,7 @@
 
       self.templateName = 'singleSelectionQuestionView';
 
-      if (filling && filling.answer) {
+      if (filling && filling.answer.value) {
         self.answer = item.options.map(op => {
           if (op.value.toString() === filling.answer.value.toString()) {
             op.value = 1;
@@ -139,7 +139,7 @@
       self.templateName = 'gridIntegerQuestionView';
 
       self.answer = item.getLinesList().map((line, lineIx) => {
-        if (filling && filling.answer) {
+        if (filling && filling.answer.value) {
           filling.answer.value[lineIx].forEach((pos, posIx) => {
             line.getGridIntegerList()[posIx].value = pos.value;
           });
@@ -157,7 +157,7 @@
       self.templateName = 'gridTextQuestionView';
 
       self.answer = item.getLinesList().map((line, lineIx) => {
-        if (filling && filling.answer) {
+        if (filling && filling.answer.value) {
           filling.answer.value[lineIx].forEach((pos, posIx) => {
             line.getGridTextList()[posIx].value = pos.value;
           });

@@ -1,9 +1,8 @@
 <div>
   <md-divider></md-divider>
   <div layout="row" layout-align="center center" layout-margin>
-    <div flex="15"></div>
     <div layout="column" flex="70">
-      <md-subheader>{{$ctrl.item.customID}}</md-subheader>
+      <span>{{$ctrl.item.customID}}</span>
       <span>{{$ctrl.item.navigationState}}</span>
       <span ng-bind-html="$ctrl.item.label.ptBR.formattedText"></span>
       <div id="fillingBox" ng-if="$ctrl.item.isQuestion && $ctrl.item.isAnswered">

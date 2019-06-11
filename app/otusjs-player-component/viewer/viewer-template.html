@@ -1,24 +1,24 @@
-<md-content layout="column" layout-align="start center" flex>
+<md-content id="activity-viewer" layout="column" layout-fill>
+  <div id="viewer-header" layout="row">
+    <md-button ng-click="$ctrl.exit()">sair</md-button>
+    <md-button ng-click="$ctrl.showFilters = !$ctrl.showFilters">Filtros</md-button>
+    <otus-viewer-filters filters="$ctrl.filters" ng-show="$ctrl.showFilters"></otus-viewer-filters>
+  </div>
+
+
   <md-progress-circular ng-if="!$ctrl.ready" class="md-primary" md-diameter="70"></md-progress-circular>
-  <div ng-if="$ctrl.ready" layout="column">
 
-  <div ng-if="$ctrl.ready" layout="column">
-    <div id="header" layout="row">
-      <md-button ng-click="$ctrl.exit()">sair</md-button>
-      <md-button ng-click="$ctrl.showFilters = !$ctrl.showFilters">Filtros</md-button>
-      <otus-viewer-filters filters="$ctrl.filters" ng-show="$ctrl.showFilters"></otus-viewer-filters>
-    </div>
+  <div ng-if="$ctrl.ready" layout="column" flex>
 
-
-    {{$ctrl.activityData.acronym}} - {{$ctrl.activityData.name}}
-    <div layout="row">
-      <md-list>
-        <md-list-item layout="row" layout-align="center center" ng-repeat="item in $ctrl.activityData.itemContainer">
-          <div flex="20"></div>
-          <survey-item-view item="item" filters="$ctrl.filters" flex></survey-item-view>
-          <div flex="20"></div>
-        </md-list-item>
-      </md-list>
+    <div layout="row" flex>
+      <div layout="column" id="sheet" flex>
+        <span>{{$ctrl.activityData.acronym}} - {{$ctrl.activityData.name}}</span>
+        <md-list>
+          <md-list-item layout="row" layout-align="center center" ng-repeat="item in $ctrl.activityData.itemContainer">
+            <survey-item-view item="item" filters="$ctrl.filters" flex></survey-item-view>
+          </md-list-item>
+        </md-list>
+      </div>
     </div>
 
   </div>

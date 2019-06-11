@@ -1,7 +1,6 @@
 <div>
   <md-divider></md-divider>
   <div layout="row" layout-align="center center" layout-margin>
-    <div flex="15"></div>
     <div layout="column" flex="70">
       <md-subheader>{{$ctrl.item.customID}}</md-subheader>
       <span>{{$ctrl.item.navigationState}}</span>
@@ -16,8 +15,6 @@
         <div id="metadata" ng-if="$ctrl.item.hasMetadata">metadata: {{$ctrl.item.metadata.label.ptBR.formattedText}}</div>
         <div id="comment" ng-if="$ctrl.item.hasComment">comment: {{$ctrl.item.comment}}</div>
       </div>
-
-
 
     </div>
     <div flex></div>
