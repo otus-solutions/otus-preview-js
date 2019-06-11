@@ -1,0 +1,12 @@
+<div>
+  <md-divider></md-divider>
+  <div layout="row" layout-align="center center" layout-margin>
+    <div layout="column" flex="70">
+      <span>{{$ctrl.item.customID}}</span>
+      <span>{{$ctrl.item.navigationState}}</span>
+      <span ng-bind-html="$ctrl.item.label.ptBR.formattedText"></span>
+      <div id="answer" ng-if="$ctrl.item.value" layout-padding>{{$ctrl.item.value.ptBR.formattedText}}</div>
+    </div>
+    <div flex></div>
+  </div>
+</div>

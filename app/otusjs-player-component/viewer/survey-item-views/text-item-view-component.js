@@ -4,7 +4,7 @@
   angular
     .module('otusjs.player.component')
     .component('textItemView', {
-      templateUrl: 'app/otusjs-player-component/viewer/survey-item-views/question-view-template.html',
+      templateUrl: 'app/otusjs-player-component/viewer/survey-item-views/text-item-question-view-template.html',
       controller: Controller,
       bindings: {
         item: '='
