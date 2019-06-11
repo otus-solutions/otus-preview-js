@@ -1,15 +1,14 @@
 <div>
   <md-divider></md-divider>
   <div layout="row" layout-align="center center" layout-margin>
-    <div flex="5"></div>
-    <div layout="column" flex="90">
-      <md-subheader>{{$ctrl.item.customID}}</md-subheader>
-      <span layout-padding>{{$ctrl.item.navigationState}}</span>
-      <span ng-bind-html="$ctrl.item.label.ptBR.formattedText" layout-padding></span>
+    <div layout="column" flex="70">
+      <span>{{$ctrl.item.customID}}</span>
+      <span>{{$ctrl.item.navigationState}}</span>
+      <span ng-bind-html="$ctrl.item.label.ptBR.formattedText"></span>
 
       <div id="fillingBox" ng-if="$ctrl.item.isQuestion && $ctrl.item.isAnswered">
 
-        <div id="answer" ng-if="$ctrl.item.hasAnswer" layout="column" layout-align="start start" layout-padding>
+        <div id="answer" ng-if="$ctrl.item.hasAnswer" layout="column" layout-align="start start">
           <md-checkbox ng-repeat="option in $ctrl.item.answer" ng-model="option.value" disabled="true">{{option.label.ptBR.formattedText}}</md-checkbox>
         </div>
 

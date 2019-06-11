@@ -9,11 +9,16 @@
       <div id="fillingBox" ng-if="$ctrl.item.isQuestion && $ctrl.item.isAnswered">
 
         <div id="answer" ng-if="$ctrl.item.hasAnswer" layout="column" layout-align="start start">
-          <md-radio-group ng-model="1">
-            <md-radio-button ng-repeat="option in $ctrl.item.answer" ng-value="option.value" ng-disabled="true">
-              <span ng-bind-html="option.label.ptBR.formattedText"></span>
-            </md-radio-button>
-          </md-radio-group>
+
+          <div ng-repeat="position in $ctrl.item.answer" layout="row">
+            <div ng-repeat="gridInteger in position.positions" layout="column" flex layout-margin>
+              <md-input-container>
+                <label>{{gridInteger.label.ptBR.formattedText}}</label>
+                <input type="text" ng-model="gridInteger.value" ng-disabled="true">
+                <div style="color: gray;" ng-bind-html="gridInteger.unit.ptBR.formattedText"></div>
+              </md-input-container>
+            </div>
+          </div>
         </div>
 
         <div id="metadata" ng-if="$ctrl.item.hasMetadata" layout-padding>metadata: {{$ctrl.item.metadata.label.ptBR.formattedText}}</div>
