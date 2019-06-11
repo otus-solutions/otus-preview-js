@@ -4,7 +4,7 @@
   angular
     .module('otusjs.player.component')
     .component('gridTextQuestionView', {
-      templateUrl: 'app/otusjs-player-component/viewer/survey-item-views/question-view-template.html',
+      templateUrl: 'app/otusjs-player-component/viewer/survey-item-views/grid-text-question-view-template.html',
       controller: Controller,
       bindings: {
         item: '='
