@@ -10,7 +10,11 @@
       <div id="fillingBox" ng-if="$ctrl.item.isQuestion && $ctrl.item.isAnswered">
 
         <div id="answer" ng-if="$ctrl.item.hasAnswer" layout="column" layout-align="start start" layout-padding>
-          <md-checkbox ng-repeat="option in $ctrl.item.answer" ng-model="option.value" disabled="true">{{option.label.ptBR.formattedText}}</md-checkbox>
+          <md-radio-group ng-model="1">
+            <md-radio-button ng-repeat="option in $ctrl.item.answer" ng-value="option.value" ng-disabled="true">
+              <span ng-bind-html="option.label.ptBR.formattedText"></span>
+            </md-radio-button>
+          </md-radio-group>
         </div>
 
         <div id="metadata" ng-if="$ctrl.item.hasMetadata" layout-padding>metadata: {{$ctrl.item.metadata.label.ptBR.formattedText}}</div>
