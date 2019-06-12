@@ -91,6 +91,7 @@
       self.templateName = 'imageItemView';
 
       self.value = item.url;
+      self.footer = item.footer
       console.log(self);
       return self;
     }
