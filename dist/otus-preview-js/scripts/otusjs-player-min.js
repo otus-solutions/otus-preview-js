@@ -478,7 +478,7 @@
   angular
     .module('otusjs.player.component')
     .component('singleSelectionQuestionView', {
-      template:'<div><md-divider></md-divider><div layout="row" layout-align="center center" layout-margin><div layout="column" flex="70"><span>{{$ctrl.item.customID}}</span> <span>{{$ctrl.item.navigationState}}</span> <span ng-bind-html="$ctrl.item.label.ptBR.formattedText"></span><div id="fillingBox" ng-if="$ctrl.item.isQuestion && $ctrl.item.isAnswered"><div id="answer" ng-if="$ctrl.item.hasAnswer" layout="column" layout-align="start start" layout-margin><md-radio-group ng-model="1"><md-radio-button ng-repeat="option in $ctrl.item.answer" ng-value="option.value" ng-disabled="true"><span ng-bind-html="option.label.ptBR.formattedText"></span></md-radio-button></md-radio-group></div><div id="metadata" ng-if="$ctrl.item.hasMetadata" layout-padding>metadata: {{$ctrl.item.metadata.label.ptBR.formattedText}}</div><div id="comment" ng-if="$ctrl.item.hasComment" layout-padding>comment: {{$ctrl.item.comment}}</div></div></div><div flex></div></div></div>',
+      template:'<div><md-divider></md-divider><div layout="row" layout-align="center center" layout-margin><div layout="column" flex="70"><span>{{$ctrl.item.customID}}</span> <span>{{$ctrl.item.navigationState}}</span> <span ng-bind-html="$ctrl.item.label.ptBR.formattedText"></span><div id="fillingBox" ng-if="$ctrl.item.isQuestion && $ctrl.item.isAnswered"><div id="answer" ng-if="$ctrl.item.hasAnswer" layout="column" layout-align="start start" layout-margin><md-radio-group ng-model="$ctrl.item.trueValue"><md-radio-button ng-repeat="option in $ctrl.item.answer" ng-value="option.value" ng-disabled="true"><span ng-bind-html="option.label.ptBR.formattedText"></span></md-radio-button></md-radio-group></div><div id="metadata" ng-if="$ctrl.item.hasMetadata" layout-padding>metadata: {{$ctrl.item.metadata.label.ptBR.formattedText}}</div><div id="comment" ng-if="$ctrl.item.hasComment" layout-padding>comment: {{$ctrl.item.comment}}</div></div></div><div flex></div></div></div>',
       controller: Controller,
       bindings: {
         item: '='
@@ -6477,6 +6477,7 @@
       var self = new QuestionView(item, navigationTrackingItem, filling);
 
       self.templateName = 'singleSelectionQuestionView';
+      self.trueValue = 1;
 
       if (filling && filling.answer.value) {
         self.answer = item.options.map(op => {

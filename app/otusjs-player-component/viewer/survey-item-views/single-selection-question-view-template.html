@@ -9,7 +9,7 @@
       <div id="fillingBox" ng-if="$ctrl.item.isQuestion && $ctrl.item.isAnswered">
 
         <div id="answer" ng-if="$ctrl.item.hasAnswer" layout="column" layout-align="start start" layout-margin>
-          <md-radio-group ng-model="1">
+          <md-radio-group ng-model="$ctrl.item.trueValue">
             <md-radio-button ng-repeat="option in $ctrl.item.answer" ng-value="option.value" ng-disabled="true">
               <span ng-bind-html="option.label.ptBR.formattedText"></span>
             </md-radio-button>

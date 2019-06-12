@@ -123,6 +123,7 @@
       var self = new QuestionView(item, navigationTrackingItem, filling);
 
       self.templateName = 'singleSelectionQuestionView';
+      self.trueValue = 1;
 
       if (filling && filling.answer.value) {
         self.answer = item.options.map(op => {
