@@ -22,10 +22,10 @@
       var self = this;
 
       let act = ActivityFacadeService.surveyActivity;
-      self.acronym = act.getIdentity().acronym;
-      self.name = act.getName();
+      self.acronym = act.surveyForm.acronym;
+      self.name = act.surveyForm.name;
       self.participantData = act.participantData;
-      self.lastStatus = act.statusHistory.getLastStatus();  //todo improve
+      self.lastStatus = act.statusHistory.getLastStatus();
       self.mode = act.mode;
 
 
@@ -34,9 +34,9 @@
 
       self.itemContainer = items.map(item => {
         let trackingItem = navigationTrackerItems[item.templateID];
-        let filling = ActivityFacadeService.getFillingByQuestionID(item.templateID);  //todo check for performance
+        let filling = ActivityFacadeService.getFillingByQuestionID(item.templateID);
 
-        return mapper(item, trackingItem, filling);
+        return SurveyItemMapper(item, trackingItem, filling);
       });
 
       self.itemsCount = self.itemContainer.length;
@@ -44,7 +44,7 @@
       return self;
     }
 
-    function mapper(item, trackingItem, filling) {
+    function SurveyItemMapper(item, trackingItem, filling) {
       let objectType = item.objectType;
 
       switch (objectType) {

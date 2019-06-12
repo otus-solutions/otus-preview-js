@@ -291,11 +291,13 @@
     });
 
   Controller.$inject = [
+    '$compile',
+    '$scope',
     'otusjs.player.data.viewer.SurveyViewFactory',
     'otusjs.player.core.player.PlayerService'
   ];
 
-  function Controller(SurveyViewerFactory, PlayerService) {
+  function Controller($compile, $scope, SurveyViewerFactory, PlayerService) {
     var self = this;
 
     self.$onInit = onInit;
@@ -310,6 +312,15 @@
     function onInit() {
       self.activityData = SurveyViewerFactory.create();
       self.ready = true;
+      compile();
+    }
+
+    function compile() {
+
+      $scope.filters = self.filters;
+      let template = '<otus-viewer-filters ></otus-viewer-filters>';
+      let elem = $compile(template)($scope);
+      console.log(elem);
     }
 
     function exit() {
@@ -318,12 +329,12 @@
 
     var prevScrollpos = window.pageYOffset;
 
-    window.onscroll = function() {
+    window.onscroll = function () {
       var currentScrollPos = window.pageYOffset;
       if (prevScrollpos > currentScrollPos) {
-        document.getElementById("viewer-header").style.top = "0";
+        document.getElementById('viewer-header').style.top = '0';
       } else {
-        document.getElementById("viewer-header").style.top = "-50px";
+        document.getElementById('viewer-header').style.top = '-50px';
       }
       prevScrollpos = currentScrollPos;
     };
@@ -6376,8 +6387,8 @@
       var self = this;
 
       let act = ActivityFacadeService.surveyActivity;
-      self.acronym = act.getIdentity().acronym;
-      self.name = act.getName();
+      self.acronym = act.surveyForm.acronym;
+      self.name = act.surveyForm.name;
       self.participantData = act.participantData;
       self.lastStatus = act.statusHistory.getLastStatus();  //todo improve
       self.mode = act.mode;
