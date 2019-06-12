@@ -41,7 +41,6 @@
 
       self.itemsCount = self.itemContainer.length;
 
-
       return self;
     }
 
@@ -49,6 +48,7 @@
       let objectType = item.objectType;
 
       switch (objectType) {
+
         case 'TextItem':
           return new TextItemView(item, trackingItem, filling);
 
@@ -60,6 +60,9 @@
 
         case 'SingleSelectionQuestion':
           return new SingleSelectionQuestionView(item, trackingItem, filling);
+
+        case 'CalendarQuestion':
+          return new CalendarQuestionView(item, trackingItem, filling);
 
         case 'GridIntegerQuestion':
           return new GridIntegerQuestionView(item, trackingItem, filling);
@@ -92,6 +95,14 @@
       return self;
     }
 
+    function CalendarQuestionView(item, navigationTrackingItem, filling) {
+      var self = new QuestionView(item, navigationTrackingItem, filling);
+
+      self.templateName = 'calendarQuestionView';
+
+      return self;
+    }
+
     function CheckboxQuestionView(item, navigationTrackingItem, filling) {
       var self = new QuestionView(item, navigationTrackingItem, filling);
 
@@ -103,7 +114,6 @@
         }
         return item;
       });
-
 
       return self;
     }
@@ -203,7 +213,7 @@
       return self;
     }
 
-    function SurveyItemView(item, navigationTrackingItem, filling) {
+    function SurveyItemView(item, navigationTrackingItem) {
       var self = this;
 
       self.objectType = item.objectType;
@@ -212,12 +222,10 @@
       self.label = item.label;
       self.isQuestion = item.isQuestion();
 
-
       self.navigationState = navigationTrackingItem.getState();
       self.index = navigationTrackingItem.getIndex();
       self.isIgnored = navigationTrackingItem.isIgnored(); //answer or metadata
       self.isSkipped = navigationTrackingItem.isSkipped();
-
 
       //ux
       self.navigationStatusIcon = undefined;
