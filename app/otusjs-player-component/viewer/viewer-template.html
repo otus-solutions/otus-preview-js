@@ -13,7 +13,9 @@
       <div layout="column" id="sheet" flex>
         <span>{{$ctrl.activityData.acronym}} - {{$ctrl.activityData.name}}</span>
         <md-list>
-          <md-list-item layout="row" layout-align="center center" ng-repeat="item in $ctrl.activityData.itemContainer">
+          <md-list-item layout="row" layout-align="center center"
+                        ng-repeat="item in $ctrl.activityData.itemContainer"
+                        ng-show="$ctrl.filters.state[item.navigationState]" >
             <survey-item-view item="item" filters="$ctrl.filters" flex></survey-item-view>
           </md-list-item>
         </md-list>
