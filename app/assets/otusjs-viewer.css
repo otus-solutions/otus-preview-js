@@ -24,6 +24,11 @@
   }
 }
 
+.caption-sheet {
+  color: rgba(126, 126, 126, 1);
+  font-size: small;
+}
+
 /*#viewer-header {*/
 /*  background-color: #333; !* Black background color *!*/
 /*  position: fixed; !* Make it stick/fixed *!*/

@@ -340,9 +340,7 @@
 
     self.showListBottomSheet = function() {
       $mdBottomSheet.show({
-        // template: self.filterComponent,
-        template:'<md-bottom-sheet class="md-list md-has-header"><md-subheader ng-cloak>Filtros</md-subheader><md-list ng-cloak layout-wrap><md-list-item><input type="checkbox" ng-model="filters.displayState"> Estado da questão {{filters.displayState}}</md-list-item><md-list-item><input type="checkbox" ng-model="filters.customID"> Id de questão</md-list-item><md-list-item><input type="checkbox" ng-model="filters.state.SKIPPED"> Mostrar questões puladas</md-list-item><md-list-item><input type="checkbox" ng-model="filters.state.NOT_VISITED"> Mostrar não visitadas</md-list-item></md-list>{{filters}}</md-bottom-sheet>',
-        // scope: $scope,
+        template:'<style>\n  .md-grid-item-content {\n    height: 90px;\n    padding-top: 10px; }\n\n</style><md-bottom-sheet class="md-list md-has-header"><div layout="row" layout-align="start center" ng-cloak><md-subheader ng-cloak>Filtros</md-subheader></div><div ng-cloak layout="row" layout-align="space-around start"><md-checkbox class="md-grid-item-content" ng-model="filters.displayState">Estado da questão</md-checkbox><md-checkbox class="md-grid-item-content" ng-model="filters.customID">Id de questão</md-checkbox><md-checkbox class="md-grid-item-content" ng-model="filters.state.SKIPPED">Mostrar questões puladas</md-checkbox><md-checkbox class="md-grid-item-content" ng-model="filters.state.NOT_VISITED">Mostrar não visitadas</md-checkbox></div><div ng-cloak layout-padding layout="row" layout-align="center center"><p class="caption-sheet">Modo de visualização de atividade.</p></div></md-bottom-sheet>',
         locals:{
           filters: self.filters
         },
@@ -356,7 +354,6 @@
       });
     };
 
-    $scope.showListBottomSheet = self.showListBottomSheet;
 
     function exit() {
       PlayerService.stop();
@@ -378,7 +375,7 @@
   angular
     .module('otusjs.player.component')
     .component('otusViewerFilters', {
-      template:'<md-bottom-sheet class="md-list md-has-header"><md-subheader ng-cloak>Filtros</md-subheader><md-list ng-cloak layout-wrap><md-list-item><input type="checkbox" ng-model="filters.displayState"> Estado da questão {{filters.displayState}}</md-list-item><md-list-item><input type="checkbox" ng-model="filters.customID"> Id de questão</md-list-item><md-list-item><input type="checkbox" ng-model="filters.state.SKIPPED"> Mostrar questões puladas</md-list-item><md-list-item><input type="checkbox" ng-model="filters.state.NOT_VISITED"> Mostrar não visitadas</md-list-item></md-list>{{filters}}</md-bottom-sheet>',
+      template:'<style>\n  .md-grid-item-content {\n    height: 90px;\n    padding-top: 10px; }\n\n</style><md-bottom-sheet class="md-list md-has-header"><div layout="row" layout-align="start center" ng-cloak><md-subheader ng-cloak>Filtros</md-subheader></div><div ng-cloak layout="row" layout-align="space-around start"><md-checkbox class="md-grid-item-content" ng-model="filters.displayState">Estado da questão</md-checkbox><md-checkbox class="md-grid-item-content" ng-model="filters.customID">Id de questão</md-checkbox><md-checkbox class="md-grid-item-content" ng-model="filters.state.SKIPPED">Mostrar questões puladas</md-checkbox><md-checkbox class="md-grid-item-content" ng-model="filters.state.NOT_VISITED">Mostrar não visitadas</md-checkbox></div><div ng-cloak layout-padding layout="row" layout-align="center center"><p class="caption-sheet">Modo de visualização de atividade.</p></div></md-bottom-sheet>',
       controller:'otusViewFiltersController as $ctrl',
       bindings: {
         filters: '='
