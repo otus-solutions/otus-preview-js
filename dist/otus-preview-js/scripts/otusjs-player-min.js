@@ -286,11 +286,7 @@
   angular
     .module('otusjs.player.component')
     .component('otusViewer', {
-<<<<<<< HEAD
-      template:'<md-content id="activity-viewer" layout="column" layout-fill><div id="viewer-header" layout="row"><md-button ng-click="$ctrl.exit()">sair</md-button><md-button ng-click="$ctrl.showListBottomSheet($event)">show</md-button></div><md-progress-circular ng-if="!$ctrl.ready" class="md-primary" md-diameter="70"></md-progress-circular><div ng-if="$ctrl.ready" layout="column" flex><div layout="row" flex><div layout="column" id="sheet" flex><span>{{$ctrl.activityData.acronym}} - {{$ctrl.activityData.name}}</span><md-list><md-list-item layout="row" layout-align="center center" ng-repeat="item in $ctrl.activityData.itemContainer"><survey-item-view item="item" filters="$ctrl.filters" flex></survey-item-view></md-list-item></md-list></div></div></div></md-content>N',
-=======
-      template:'<md-content id="activity-viewer" layout="column" layout-fill><div id="viewer-header" layout="row"><md-button ng-click="$ctrl.exit()">sair</md-button><md-button ng-click="$ctrl.showFilters = !$ctrl.showFilters">Filtros</md-button><otus-viewer-filters filters="$ctrl.filters" ng-show="$ctrl.showFilters"></otus-viewer-filters></div><md-progress-circular ng-if="!$ctrl.ready" class="md-primary" md-diameter="70"></md-progress-circular><div ng-if="$ctrl.ready" layout="column" flex><div layout="row" flex><div layout="column" id="sheet" flex><span>{{$ctrl.activityData.acronym}} - {{$ctrl.activityData.name}}</span><md-list><md-list-item layout="row" layout-align="center center" ng-repeat="item in $ctrl.activityData.itemContainer" ng-show="$ctrl.filters.state[item.navigationState]"><survey-item-view item="item" filters="$ctrl.filters" flex></survey-item-view></md-list-item></md-list></div></div></div></md-content>N',
->>>>>>> 6efcd86c6667a9a4dea591e52f52f3398f0b2bb4
+      template:'<md-content id="activity-viewer" layout="column" layout-fill><div id="viewer-header" layout="row"><md-button ng-click="$ctrl.exit()">sair</md-button><md-button ng-click="$ctrl.showListBottomSheet($event)">show</md-button></div><md-progress-circular ng-if="!$ctrl.ready" class="md-primary" md-diameter="70"></md-progress-circular><div ng-if="$ctrl.ready" layout="column" flex><div layout="row" flex><div layout="column" id="sheet" flex><span>{{$ctrl.activityData.acronym}} - {{$ctrl.activityData.name}}</span><md-list><md-list-item layout="row" layout-align="center center" ng-repeat="item in $ctrl.activityData.itemContainer" ng-show="$ctrl.filters.state[item.navigationState]"><survey-item-view item="item" filters="$ctrl.filters" flex></survey-item-view></md-list-item></md-list></div></div></div></md-content>N',
       controller: Controller
     });
 
@@ -309,7 +305,8 @@
 
     self.$onInit = onInit;
     self.ready = false;
-    self.filters = {};
+    $scope.filters = {};
+    self.filters = $scope.filters;
     self.showFilters = false;
 
     /* Public methods */
@@ -330,9 +327,10 @@
 
     self.showListBottomSheet = function() {
       $mdBottomSheet.show({
-        template: self.filterComponent[0].innerHTML,
-        controller: 'otusViewFiltersController',
-        controllerAs: '$ctrl'
+        template:'<md-bottom-sheet class="md-list md-has-header"><md-subheader ng-cloak>Filtros</md-subheader><md-list ng-cloak layout-wrap><md-list-item><input type="checkbox" ng-model="$ctrl.filters.displayState"> Estado da questão {{$ctrl.filters.displayState}}</md-list-item><md-list-item><input type="checkbox" ng-model="$ctrl.filters.customID"> Id de questão</md-list-item><md-list-item><input type="checkbox" ng-model="$ctrl.filters.state.SKIPPED"> Mostrar questões puladas</md-list-item><md-list-item><input type="checkbox" ng-model="$ctrl.filters.state.NOT_VISITED"> Mostrar não visitadas</md-list-item></md-list>{{$ctrl.filters}}</md-bottom-sheet>',
+        scope: $scope,
+        // template: self.filterComponent,
+        controllerAs: 'otusViewFiltersController as $ctrl'
       }).then(function(clickedItem) {
         console.log(clickedItem);
       }).catch(function(error) {

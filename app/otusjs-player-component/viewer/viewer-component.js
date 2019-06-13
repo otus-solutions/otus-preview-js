@@ -23,7 +23,8 @@
 
     self.$onInit = onInit;
     self.ready = false;
-    self.filters = {};
+    $scope.filters = {};
+    self.filters = $scope.filters;
     self.showFilters = false;
 
     /* Public methods */
@@ -44,8 +45,9 @@
 
     self.showListBottomSheet = function() {
       $mdBottomSheet.show({
-        template: self.filterComponent[0].innerHTML,
-        controller: 'otusViewFiltersController'
+        templateUrl: 'app/otusjs-player-component/viewer/filters/viewer-filters-template.html',
+        scope: $scope,
+        controllerAs: 'otusViewFiltersController as $ctrl'
       }).then(function(clickedItem) {
         console.log(clickedItem);
       }).catch(function(error) {
