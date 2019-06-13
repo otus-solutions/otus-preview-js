@@ -5,8 +5,8 @@
     .module('otusjs.player.component')
     .component('otusViewer', {
       templateUrl: 'app/otusjs-player-component/viewer/viewer-template.html',
-      controller: Controller
-    });
+      controller: 'otusViewerCtrl as $ctrl'
+    }).controller("otusViewerCtrl", Controller);
 
   Controller.$inject = [
     '$compile',
@@ -29,12 +29,25 @@
 
     /* Public methods */
     self.exit = exit;
+    $scope.exit = exit;
 
 
     function onInit() {
       self.activityData = SurveyViewerFactory.create();
       self.ready = true;
       compile();
+      self.filters = {
+        displayState: true,
+        customID: true,
+        state: {
+          SKIPPED: false,
+          NOT_VISITED: true,
+          ANSWERED: true,
+          IGNORED: false,
+          VISITED: true
+        },
+        fillingBox: true
+      };
     }
 
 
@@ -46,8 +59,11 @@
     self.showListBottomSheet = function() {
       $mdBottomSheet.show({
         templateUrl: 'app/otusjs-player-component/viewer/filters/viewer-filters-template.html',
-        scope: $scope,
-        controllerAs: 'otusViewFiltersController as $ctrl'
+        locals:{
+          filters: self.filters
+        },
+        parent: angular.element(document.body),
+        controller: BottomSheetController
       }).then(function(clickedItem) {
         console.log(clickedItem);
       }).catch(function(error) {
@@ -56,8 +72,15 @@
       });
     };
 
+
     function exit() {
       PlayerService.stop();
+    }
+    
+    
+    function BottomSheetController($scope, filters) {
+
+      $scope.filters = filters;
     }
 
 

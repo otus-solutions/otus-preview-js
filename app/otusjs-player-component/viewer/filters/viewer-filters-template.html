@@ -2,11 +2,11 @@
   <md-subheader ng-cloak>Filtros</md-subheader>
   <md-list ng-cloak layout-wrap>
     <md-list-item>
-      <input type="checkbox" ng-model="$ctrl.filters.displayState"> Estado da questão {{$ctrl.filters.displayState}}</input>
+      <input type="checkbox" ng-model="filters.displayState"> Estado da questão {{filters.displayState}}</input>
     </md-list-item>
-    <md-list-item><input type="checkbox" ng-model="$ctrl.filters.customID"> Id de questão</input></md-list-item>
-    <md-list-item><input type="checkbox" ng-model="$ctrl.filters.state.SKIPPED"> Mostrar questões puladas</input></md-list-item>
-    <md-list-item><input type="checkbox" ng-model="$ctrl.filters.state.NOT_VISITED"> Mostrar não visitadas</input></md-list-item>
+    <md-list-item><input type="checkbox" ng-model="filters.customID"> Id de questão</input></md-list-item>
+    <md-list-item><input type="checkbox" ng-model="filters.state.SKIPPED"> Mostrar questões puladas</input></md-list-item>
+    <md-list-item><input type="checkbox" ng-model="filters.state.NOT_VISITED"> Mostrar não visitadas</input></md-list-item>
   </md-list>
-  {{$ctrl.filters}}
+  {{filters}}
 </md-bottom-sheet>

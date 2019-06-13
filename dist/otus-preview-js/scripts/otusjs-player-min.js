@@ -286,9 +286,9 @@
   angular
     .module('otusjs.player.component')
     .component('otusViewer', {
-      template:'<md-content id="activity-viewer" layout="column" layout-fill><div id="viewer-header" layout="row"><md-button ng-click="$ctrl.exit()">sair</md-button><md-button ng-click="$ctrl.showListBottomSheet($event)">show</md-button></div><md-progress-circular ng-if="!$ctrl.ready" class="md-primary" md-diameter="70"></md-progress-circular><div ng-if="$ctrl.ready" layout="column" flex><div layout="row" flex><div layout="column" id="sheet" flex><span>{{$ctrl.activityData.acronym}} - {{$ctrl.activityData.name}}</span><md-list><md-list-item layout="row" layout-align="center center" ng-repeat="item in $ctrl.activityData.itemContainer" ng-show="$ctrl.filters.state[item.navigationState]"><survey-item-view item="item" filters="$ctrl.filters" flex></survey-item-view></md-list-item></md-list></div></div></div></md-content>N',
-      controller: Controller
-    });
+      template:'<md-content id="activity-viewer" layout="column" layout-fill><div id="viewer-header" layout="row"><md-button ng-click="$ctrl.exit()">sair</md-button><md-button ng-click="$ctrl.showListBottomSheet($event)">show</md-button></div><md-progress-circular ng-if="!$ctrl.ready" class="md-primary" md-diameter="70"></md-progress-circular><div ng-if="$ctrl.ready" layout="column" flex><div layout="row" flex><div layout="column" id="sheet" flex><span>{{$ctrl.activityData.acronym}} - {{$ctrl.activityData.name}}</span><md-list><md-list-item layout="row" layout-align="center center" ng-repeat="item in $ctrl.activityData.itemContainer" ng-show="$ctrl.filters.state[item.navigationState]"><survey-item-view item="item" filters="filters" flex></survey-item-view></md-list-item></md-list></div></div></div></md-content>N',
+      controller: 'otusViewerCtrl as $ctrl'
+    }).controller("otusViewerCtrl", Controller);
 
   Controller.$inject = [
     '$compile',
@@ -311,12 +311,25 @@
 
     /* Public methods */
     self.exit = exit;
+    $scope.exit = exit;
 
 
     function onInit() {
       self.activityData = SurveyViewerFactory.create();
       self.ready = true;
       compile();
+      self.filters = {
+        displayState: true,
+        customID: true,
+        state: {
+          SKIPPED: false,
+          NOT_VISITED: true,
+          ANSWERED: true,
+          IGNORED: false,
+          VISITED: true
+        },
+        fillingBox: true
+      };
     }
 
 
@@ -327,10 +340,14 @@
 
     self.showListBottomSheet = function() {
       $mdBottomSheet.show({
-        template:'<md-bottom-sheet class="md-list md-has-header"><md-subheader ng-cloak>Filtros</md-subheader><md-list ng-cloak layout-wrap><md-list-item><input type="checkbox" ng-model="$ctrl.filters.displayState"> Estado da questão {{$ctrl.filters.displayState}}</md-list-item><md-list-item><input type="checkbox" ng-model="$ctrl.filters.customID"> Id de questão</md-list-item><md-list-item><input type="checkbox" ng-model="$ctrl.filters.state.SKIPPED"> Mostrar questões puladas</md-list-item><md-list-item><input type="checkbox" ng-model="$ctrl.filters.state.NOT_VISITED"> Mostrar não visitadas</md-list-item></md-list>{{$ctrl.filters}}</md-bottom-sheet>',
-        scope: $scope,
         // template: self.filterComponent,
-        controllerAs: 'otusViewFiltersController as $ctrl'
+        template:'<md-bottom-sheet class="md-list md-has-header"><md-subheader ng-cloak>Filtros</md-subheader><md-list ng-cloak layout-wrap><md-list-item><input type="checkbox" ng-model="filters.displayState"> Estado da questão {{filters.displayState}}</md-list-item><md-list-item><input type="checkbox" ng-model="filters.customID"> Id de questão</md-list-item><md-list-item><input type="checkbox" ng-model="filters.state.SKIPPED"> Mostrar questões puladas</md-list-item><md-list-item><input type="checkbox" ng-model="filters.state.NOT_VISITED"> Mostrar não visitadas</md-list-item></md-list>{{filters}}</md-bottom-sheet>',
+        // scope: $scope,
+        locals:{
+          filters: self.filters
+        },
+        parent: angular.element(document.body),
+        controller: BottomSheetController
       }).then(function(clickedItem) {
         console.log(clickedItem);
       }).catch(function(error) {
@@ -339,8 +356,16 @@
       });
     };
 
+    $scope.showListBottomSheet = self.showListBottomSheet;
+
     function exit() {
       PlayerService.stop();
+    }
+    
+    
+    function BottomSheetController($scope, filters) {
+
+      $scope.filters = filters;
     }
 
 
@@ -353,7 +378,7 @@
   angular
     .module('otusjs.player.component')
     .component('otusViewerFilters', {
-      template:'<md-bottom-sheet class="md-list md-has-header"><md-subheader ng-cloak>Filtros</md-subheader><md-list ng-cloak layout-wrap><md-list-item><input type="checkbox" ng-model="$ctrl.filters.displayState"> Estado da questão {{$ctrl.filters.displayState}}</md-list-item><md-list-item><input type="checkbox" ng-model="$ctrl.filters.customID"> Id de questão</md-list-item><md-list-item><input type="checkbox" ng-model="$ctrl.filters.state.SKIPPED"> Mostrar questões puladas</md-list-item><md-list-item><input type="checkbox" ng-model="$ctrl.filters.state.NOT_VISITED"> Mostrar não visitadas</md-list-item></md-list>{{$ctrl.filters}}</md-bottom-sheet>',
+      template:'<md-bottom-sheet class="md-list md-has-header"><md-subheader ng-cloak>Filtros</md-subheader><md-list ng-cloak layout-wrap><md-list-item><input type="checkbox" ng-model="filters.displayState"> Estado da questão {{filters.displayState}}</md-list-item><md-list-item><input type="checkbox" ng-model="filters.customID"> Id de questão</md-list-item><md-list-item><input type="checkbox" ng-model="filters.state.SKIPPED"> Mostrar questões puladas</md-list-item><md-list-item><input type="checkbox" ng-model="filters.state.NOT_VISITED"> Mostrar não visitadas</md-list-item></md-list>{{filters}}</md-bottom-sheet>',
       controller:'otusViewFiltersController as $ctrl',
       bindings: {
         filters: '='

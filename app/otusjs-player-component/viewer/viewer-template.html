@@ -17,7 +17,7 @@
           <md-list-item layout="row" layout-align="center center"
                         ng-repeat="item in $ctrl.activityData.itemContainer"
                         ng-show="$ctrl.filters.state[item.navigationState]" >
-            <survey-item-view item="item" filters="$ctrl.filters" flex></survey-item-view>
+            <survey-item-view item="item" filters="filters" flex></survey-item-view>
           </md-list-item>
         </md-list>
       </div>
