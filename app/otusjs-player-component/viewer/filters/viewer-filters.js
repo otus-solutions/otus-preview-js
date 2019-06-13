@@ -5,12 +5,12 @@
     .module('otusjs.player.component')
     .component('otusViewerFilters', {
       templateUrl: 'app/otusjs-player-component/viewer/filters/viewer-filters-template.html',
-      controller: Controller,
+      controller:'otusViewFiltersController as $ctrl',
       bindings: {
         filters: '='
       }
-    });
-
+    })
+    .controller('otusViewFiltersController', Controller);
 
   function Controller() {
     var self = this;
@@ -22,7 +22,7 @@
 
     function _setInitialFilters() {
       self.filters = {
-        displayState: false,
+        displayState: true,
         customID: true,
         state: {
           SKIPPED: false,

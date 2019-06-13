@@ -24,16 +24,16 @@
   }
 }
 
-#viewer-header {
-  background-color: #333; /* Black background color */
-  position: fixed; /* Make it stick/fixed */
-  top: 0; /* Stay on top */
-  width: 100%; /* Full width */
-  height: 5%;
-  transition: top 0.3s; /* Transition effect when sliding down (and up) */
-}
+/*#viewer-header {*/
+/*  background-color: #333; !* Black background color *!*/
+/*  position: fixed; !* Make it stick/fixed *!*/
+/*  top: 0; !* Stay on top *!*/
+/*  width: 100%; !* Full width *!*/
+/*  height: 5%;*/
+/*  transition: top 0.3s; !* Transition effect when sliding down (and up) *!*/
+/*}*/
 
-#viewer-header button:hover {
-  background-color: #ddd;
-  color: black;
-}
+/*#viewer-header button:hover {*/
+/*  background-color: #ddd;*/
+/*  color: black;*/
+/*}*/

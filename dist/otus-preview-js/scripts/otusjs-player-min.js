@@ -286,18 +286,21 @@
   angular
     .module('otusjs.player.component')
     .component('otusViewer', {
-      template:'<md-content id="activity-viewer" layout="column" layout-fill><div id="viewer-header" layout="row"><md-button ng-click="$ctrl.exit()">sair</md-button><md-button ng-click="$ctrl.showFilters = !$ctrl.showFilters">Filtros</md-button><otus-viewer-filters filters="$ctrl.filters" ng-show="$ctrl.showFilters"></otus-viewer-filters></div><md-progress-circular ng-if="!$ctrl.ready" class="md-primary" md-diameter="70"></md-progress-circular><div ng-if="$ctrl.ready" layout="column" flex><div layout="row" flex><div layout="column" id="sheet" flex><span>{{$ctrl.activityData.acronym}} - {{$ctrl.activityData.name}}</span><md-list><md-list-item layout="row" layout-align="center center" ng-repeat="item in $ctrl.activityData.itemContainer"><survey-item-view item="item" filters="$ctrl.filters" flex></survey-item-view></md-list-item></md-list></div></div></div></md-content>N',
+      template:'<md-content id="activity-viewer" layout="column" layout-fill><div id="viewer-header" layout="row"><md-button ng-click="$ctrl.exit()">sair</md-button><md-button ng-click="$ctrl.showListBottomSheet($event)">show</md-button></div><md-progress-circular ng-if="!$ctrl.ready" class="md-primary" md-diameter="70"></md-progress-circular><div ng-if="$ctrl.ready" layout="column" flex><div layout="row" flex><div layout="column" id="sheet" flex><span>{{$ctrl.activityData.acronym}} - {{$ctrl.activityData.name}}</span><md-list><md-list-item layout="row" layout-align="center center" ng-repeat="item in $ctrl.activityData.itemContainer"><survey-item-view item="item" filters="$ctrl.filters" flex></survey-item-view></md-list-item></md-list></div></div></div></md-content>N',
       controller: Controller
     });
 
   Controller.$inject = [
     '$compile',
     '$scope',
+    '$mdBottomSheet',
     'otusjs.player.data.viewer.SurveyViewFactory',
     'otusjs.player.core.player.PlayerService'
   ];
 
-  function Controller($compile, $scope, SurveyViewerFactory, PlayerService) {
+  function Controller(
+    $compile, $scope, $mdBottomSheet,
+    SurveyViewerFactory, PlayerService) {
     var self = this;
 
     self.$onInit = onInit;
@@ -315,29 +318,29 @@
       compile();
     }
 
-    function compile() {
 
-      $scope.filters = self.filters;
-      let template = '<otus-viewer-filters ></otus-viewer-filters>';
-      let elem = $compile(template)($scope);
-      console.log(elem);
+    function compile() {
+      let template = '<otus-viewer-filters filters=$ctrl.filters></otus-viewer-filters>';
+      self.filterComponent = $compile(template)($scope.$new());
     }
+
+    self.showListBottomSheet = function() {
+      $mdBottomSheet.show({
+        template: self.filterComponent[0].innerHTML,
+        controller: 'otusViewFiltersController',
+        controllerAs: '$ctrl'
+      }).then(function(clickedItem) {
+        console.log(clickedItem);
+      }).catch(function(error) {
+        // User clicked outside or hit escape
+        console.log(error);
+      });
+    };
 
     function exit() {
       PlayerService.stop();
     }
 
-    var prevScrollpos = window.pageYOffset;
-
-    window.onscroll = function () {
-      var currentScrollPos = window.pageYOffset;
-      if (prevScrollpos > currentScrollPos) {
-        document.getElementById('viewer-header').style.top = '0';
-      } else {
-        document.getElementById('viewer-header').style.top = '-50px';
-      }
-      prevScrollpos = currentScrollPos;
-    };
 
   }
 }());
@@ -348,13 +351,13 @@
   angular
     .module('otusjs.player.component')
     .component('otusViewerFilters', {
-      template:'<div layout="column" layout-wrap><md-checkbox ng-model="$ctrl.filters.displayState">Estado da quetão</md-checkbox><md-checkbox ng-model="$ctrl.filters.customID">Id de questão</md-checkbox><md-checkbox ng-model="$ctrl.filters.state.SKIPPED">Mostrar questões puladas</md-checkbox><md-checkbox ng-model="$ctrl.filters.state.NOT_VISITED">Mostrar não visitadas</md-checkbox></div>',
-      controller: Controller,
+      template:'<md-bottom-sheet class="md-list md-has-header"><md-subheader ng-cloak>Filtros</md-subheader><md-list ng-cloak layout-wrap><md-list-item><input type="checkbox" ng-model="$ctrl.filters.displayState"> Estado da questão {{$ctrl.filters.displayState}}</md-list-item><md-list-item><input type="checkbox" ng-model="$ctrl.filters.customID"> Id de questão</md-list-item><md-list-item><input type="checkbox" ng-model="$ctrl.filters.state.SKIPPED"> Mostrar questões puladas</md-list-item><md-list-item><input type="checkbox" ng-model="$ctrl.filters.state.NOT_VISITED"> Mostrar não visitadas</md-list-item></md-list>{{$ctrl.filters}}</md-bottom-sheet>',
+      controller:'otusViewFiltersController as $ctrl',
       bindings: {
         filters: '='
       }
-    });
-
+    })
+    .controller('otusViewFiltersController', Controller);
 
   function Controller() {
     var self = this;
@@ -366,7 +369,7 @@
 
     function _setInitialFilters() {
       self.filters = {
-        displayState: false,
+        displayState: true,
         customID: true,
         state: {
           SKIPPED: false,
@@ -6390,7 +6393,7 @@
       self.acronym = act.surveyForm.acronym;
       self.name = act.surveyForm.name;
       self.participantData = act.participantData;
-      self.lastStatus = act.statusHistory.getLastStatus();  //todo improve
+      self.lastStatus = act.statusHistory.getLastStatus();
       self.mode = act.mode;
 
 
@@ -6399,9 +6402,9 @@
 
       self.itemContainer = items.map(item => {
         let trackingItem = navigationTrackerItems[item.templateID];
-        let filling = ActivityFacadeService.getFillingByQuestionID(item.templateID);  //todo check for performance
+        let filling = ActivityFacadeService.getFillingByQuestionID(item.templateID);
 
-        return mapper(item, trackingItem, filling);
+        return SurveyItemMapper(item, trackingItem, filling);
       });
 
       self.itemsCount = self.itemContainer.length;
@@ -6409,7 +6412,7 @@
       return self;
     }
 
-    function mapper(item, trackingItem, filling) {
+    function SurveyItemMapper(item, trackingItem, filling) {
       let objectType = item.objectType;
 
       switch (objectType) {
