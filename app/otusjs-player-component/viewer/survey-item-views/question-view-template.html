@@ -47,7 +47,7 @@
         </div>
         <div id="comment" ng-if="$ctrl.item.hasComment" layout-fill>
           <p class="md-caption" style="color: gray;">Comentário</p>
-          <p>{{$ctrl.item.comment}}</p>
+          <p ng-bind-html="$ctrl.item.comment"></p>
         </div>
     </div>
   </div>

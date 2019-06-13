@@ -1,18 +1,27 @@
 <div>
   <md-divider></md-divider>
-  <div layout="row" layout-align="center center" layout-margin>
-    <div layout="column" flex="70">
-      <span>{{$ctrl.item.customID}}</span>
-      <span>{{$ctrl.item.navigationState}}</span>
+  <div layout="column" layout-align="start start" layout-fill>
+    <div layout="row" layout-padding>
+      <span class="md-subhead" layout-padding>{{$ctrl.item.customID}}</span>
+      <span layout-padding>|</span>
+      <span layout-padding class="md-caption">{{$ctrl.item.navigationState}}</span>
+    </div>
+    <div layout="row" layout-padding>
       <span ng-bind-html="$ctrl.item.label.ptBR.formattedText"></span>
-      <div id="fillingBox" ng-if="$ctrl.item.isQuestion && $ctrl.item.isAnswered">
-        <div id="answer" ng-if="$ctrl.item.hasAnswer" layout-padding>
-          {{$ctrl.item.answer.date | date:'dd/MM/yyyy'}}
-        </div>
-        <div id="metadata" ng-if="$ctrl.item.hasMetadata" layout-padding>metadata: {{$ctrl.item.metadata.label.ptBR.formattedText}}</div>
-        <div id="comment" ng-if="$ctrl.item.hasComment" layout-padding>comment: {{$ctrl.item.comment}}</div>
+    </div>
+    <div id="fillingBox" ng-if="$ctrl.item.isQuestion && $ctrl.item.isAnswered" layout-padding>
+      <div id="answer" ng-if="$ctrl.item.hasAnswer" layout-fill>
+        <p class="md-caption" style="color: gray;">Resposta</p>
+        <p>{{$ctrl.item.answer.date | date:'dd/MM/yyyy'}}</p>
+      </div>
+      <div id="metadata" ng-if="$ctrl.item.hasMetadata" layout-fill>
+        <p class="md-caption" style="color: gray;">Metadata</p>
+        <p>{{$ctrl.item.metadata.label.ptBR.formattedText}}</p>
+      </div>
+      <div id="comment" ng-if="$ctrl.item.hasComment" layout-fill>
+        <p class="md-caption" style="color: gray;">Comentário</p>
+        <p ng-bind-html="$ctrl.item.comment"></p>
       </div>
     </div>
-    <div flex></div>
   </div>
 </div>
