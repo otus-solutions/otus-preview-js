@@ -1,24 +1,27 @@
 <div>
   <md-divider></md-divider>
-  <div layout="row" layout-align="start center">
-        <div layout="row" layout-margin>
-          <span class="md-title ng-binding" style="vertical-align: middle;">1</span>
-          <md-icon md-font-set="material-icons" style="cursor: pointer">
-            radio_button_checked
-          </md-icon>
-          <span>{{$ctrl.item.customID}}</span>
-        </div>
-      </div>
-  <div layout="row" layout-align="center center" layout-margin>
-    <div layout="column" flex="70">
-      <span>{{$ctrl.item.navigationState}}</span>
-      <span ng-bind-html="$ctrl.item.label.ptBR.formattedText"></span>
-      <div id="fillingBox" ng-if="$ctrl.item.isQuestion && $ctrl.item.isAnswered">
-        <div id="answer" ng-if="$ctrl.item.hasAnswer" layout-padding>{{$ctrl.item.answer}}</div>
-        <div id="metadata" ng-if="$ctrl.item.hasMetadata" layout-padding>metadata: {{$ctrl.item.metadata.label.ptBR.formattedText}}</div>
-        <div id="comment" ng-if="$ctrl.item.hasComment" layout-padding>comment: {{$ctrl.item.comment}}</div>
-      </div>
+  <div layout="column" layout-align="start start" layout-fill>
+    <div layout="row" layout-padding>
+      <span class="md-subhead" layout-padding>{{$ctrl.item.customID}}</span>
+      <span layout-padding>|</span>
+      <span layout-padding class="md-caption">{{$ctrl.item.navigationState}}</span>
     </div>
-    <div flex></div>
+    <div layout="row" layout-padding>
+      <span ng-bind-html="$ctrl.item.label.ptBR.formattedText"></span>
+    </div>
+    <div id="fillingBox" ng-if="$ctrl.item.isQuestion && $ctrl.item.isAnswered" layout-padding>
+        <div id="answer" ng-if="$ctrl.item.hasAnswer" layout-fill>
+          <p class="md-caption" style="color: gray;">Resposta</p>
+          <p>{{$ctrl.item.answer}}</p>
+        </div>
+        <div id="metadata" ng-if="$ctrl.item.hasMetadata" layout-fill>
+          <p class="md-caption" style="color: gray;">Metadata</p>
+          <p>{{$ctrl.item.metadata.label.ptBR.formattedText}}</p>
+        </div>
+        <div id="comment" ng-if="$ctrl.item.hasComment" layout-fill>
+          <p class="md-caption" style="color: gray;">Comentário</p>
+          <p>{{$ctrl.item.comment}}</p>
+        </div>
+    </div>
   </div>
 </div>

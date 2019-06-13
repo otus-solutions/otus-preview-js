@@ -13,12 +13,9 @@
           <div ng-repeat="position in $ctrl.item.answer" layout="row">
             <div ng-repeat="gridInteger in position.positions" layout="column" flex layout-margin>
               <md-input-container flex>
-                <div class="md-resize-wrapper">
                   <label>{{gridInteger.label.ptBR.formattedText}}</label>
-                  <textarea type="text" ng-model="gridInteger.value" ng-disabled="true"></textarea>
-                  <div class="md-resize-handle" style="touch-action: pan-y;"></div>
+                  <textarea type="text" ng-model="gridInteger.value" scrolling="no" style="overflow:hidden; resize:none;" ng-disabled="true"></textarea>
                   <div style="color: gray;" ng-bind-html="gridInteger.unit.ptBR.formattedText"></div>
-                </div>
               </md-input-container>
             </div>
           </div>

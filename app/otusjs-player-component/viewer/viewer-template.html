@@ -2,8 +2,8 @@
   <div id="viewer-header" layout="row">
     <md-button ng-click="$ctrl.exit()">sair</md-button>
     <md-button ng-click="$ctrl.showListBottomSheet($event)">show</md-button>
-<!--    <md-button ng-click="$ctrl.showFilters = !$ctrl.showFilters">Filtros</md-button>-->
-<!--    <otus-viewer-filters filters="$ctrl.filters" ng-show="$ctrl.showFilters"></otus-viewer-filters>-->
+    <!--    <md-button ng-click="$ctrl.showFilters = !$ctrl.showFilters">Filtros</md-button>-->
+    <!--    <otus-viewer-filters filters="$ctrl.filters" ng-show="$ctrl.showFilters"></otus-viewer-filters>-->
   </div>
 
   <md-progress-circular ng-if="!$ctrl.ready" class="md-primary" md-diameter="70"></md-progress-circular>
@@ -12,11 +12,14 @@
 
     <div layout="row" flex>
       <div layout="column" id="sheet" flex>
-        <span>{{$ctrl.activityData.acronym}} - {{$ctrl.activityData.name}}</span>
+          <span class="md-title">{{$ctrl.activityData.acronym}} - {{$ctrl.activityData.name}}</span>
         <md-list>
-          <md-list-item layout="row" layout-align="center center"
+          <md-list-item layout="row" layout-align="start start"
                         ng-repeat="item in $ctrl.activityData.itemContainer"
                         ng-show="$ctrl.filters.state[item.navigationState]" >
+            <div layout-padding layout="row" class="md-whiteframe-1dp" style="margin-top: 2%">
+              <span style="vertical-align: middle;">{{$index + 1}}</span>
+            </div>
             <survey-item-view item="item" filters="filters" flex></survey-item-view>
           </md-list-item>
         </md-list>
@@ -24,4 +27,4 @@
     </div>
 
   </div>
-</md-content>N
+</md-content>
