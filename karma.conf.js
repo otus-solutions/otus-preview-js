@@ -3,6 +3,7 @@
 module.exports = function(config) {
     var APP_ROOT_PATH = 'app/';
     var NODE_MODULES_ROOT_PATH = 'node_modules/';
+    var TEST_UTILS_ROOT_PATH = 'tests/utils/';
 
     config.set({
         // base path that will be used to resolve all patterns (eg. files, exclude)
@@ -36,7 +37,8 @@ module.exports = function(config) {
             APP_ROOT_PATH + '**/*.js', {
                 pattern: 'tests/unit/**/*-spec.js',
                 included: true
-            }
+            },
+            TEST_UTILS_ROOT_PATH + 'data/json-importer.js'
         ],
 
         // list of files to exclude
