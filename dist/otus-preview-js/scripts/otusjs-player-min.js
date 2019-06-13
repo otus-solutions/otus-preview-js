@@ -286,7 +286,11 @@
   angular
     .module('otusjs.player.component')
     .component('otusViewer', {
+<<<<<<< HEAD
       template:'<md-content id="activity-viewer" layout="column" layout-fill><div id="viewer-header" layout="row"><md-button ng-click="$ctrl.exit()">sair</md-button><md-button ng-click="$ctrl.showListBottomSheet($event)">show</md-button></div><md-progress-circular ng-if="!$ctrl.ready" class="md-primary" md-diameter="70"></md-progress-circular><div ng-if="$ctrl.ready" layout="column" flex><div layout="row" flex><div layout="column" id="sheet" flex><span>{{$ctrl.activityData.acronym}} - {{$ctrl.activityData.name}}</span><md-list><md-list-item layout="row" layout-align="center center" ng-repeat="item in $ctrl.activityData.itemContainer"><survey-item-view item="item" filters="$ctrl.filters" flex></survey-item-view></md-list-item></md-list></div></div></div></md-content>N',
+=======
+      template:'<md-content id="activity-viewer" layout="column" layout-fill><div id="viewer-header" layout="row"><md-button ng-click="$ctrl.exit()">sair</md-button><md-button ng-click="$ctrl.showFilters = !$ctrl.showFilters">Filtros</md-button><otus-viewer-filters filters="$ctrl.filters" ng-show="$ctrl.showFilters"></otus-viewer-filters></div><md-progress-circular ng-if="!$ctrl.ready" class="md-primary" md-diameter="70"></md-progress-circular><div ng-if="$ctrl.ready" layout="column" flex><div layout="row" flex><div layout="column" id="sheet" flex><span>{{$ctrl.activityData.acronym}} - {{$ctrl.activityData.name}}</span><md-list><md-list-item layout="row" layout-align="center center" ng-repeat="item in $ctrl.activityData.itemContainer" ng-show="$ctrl.filters.state[item.navigationState]"><survey-item-view item="item" filters="$ctrl.filters" flex></survey-item-view></md-list-item></md-list></div></div></div></md-content>N',
+>>>>>>> 6efcd86c6667a9a4dea591e52f52f3398f0b2bb4
       controller: Controller
     });
 
@@ -390,7 +394,7 @@
   angular
     .module('otusjs.player.component')
     .component('surveyItemView', {
-      template:'<div class="md-padding" ng-show="$ctrl.filters.state[$ctrl.item.navigationState]" bind-html-compile="$ctrl.template"></div>',
+      template:'<div class="md-padding" bind-html-compile="$ctrl.template"></div>',
       controller: Controller,
       bindings: {
         item: '=',
@@ -419,7 +423,7 @@
   angular
     .module('otusjs.player.component')
     .component('calendarQuestionView', {
-      template:'<div><md-divider></md-divider><div layout="row" layout-align="center center" layout-margin><div layout="column" flex="70"><span>{{$ctrl.item.customID}}</span> <span>{{$ctrl.item.navigationState}}</span> <span ng-bind-html="$ctrl.item.label.ptBR.formattedText"></span><div id="fillingBox" ng-if="$ctrl.item.isQuestion && $ctrl.item.isAnswered"><div id="answer" ng-if="$ctrl.item.hasAnswer" layout-padding><md-datepicker ng-model="$ctrl.item.answer.date" ng-disabled="true"></md-datepicker></div><div id="metadata" ng-if="$ctrl.item.hasMetadata" layout-padding>metadata: {{$ctrl.item.metadata.label.ptBR.formattedText}}</div><div id="comment" ng-if="$ctrl.item.hasComment" layout-padding>comment: {{$ctrl.item.comment}}</div></div></div><div flex></div></div></div>',
+      template:'<div><md-divider></md-divider><div layout="row" layout-align="center center" layout-margin><div layout="column" flex="70"><span>{{$ctrl.item.customID}}</span> <span>{{$ctrl.item.navigationState}}</span> <span ng-bind-html="$ctrl.item.label.ptBR.formattedText"></span><div id="fillingBox" ng-if="$ctrl.item.isQuestion && $ctrl.item.isAnswered"><div id="answer" ng-if="$ctrl.item.hasAnswer" layout-padding>{{$ctrl.item.answer.date | date:\'dd/MM/yyyy\'}}</div><div id="metadata" ng-if="$ctrl.item.hasMetadata" layout-padding>metadata: {{$ctrl.item.metadata.label.ptBR.formattedText}}</div><div id="comment" ng-if="$ctrl.item.hasComment" layout-padding>comment: {{$ctrl.item.comment}}</div></div></div><div flex></div></div></div>',
       controller: Controller,
       bindings: {
         item: '='
@@ -442,7 +446,7 @@
   angular
     .module('otusjs.player.component')
     .component('questionView', {
-      template:'<div><md-divider></md-divider><div layout="row" layout-align="center center" layout-margin><div layout="column" flex="70"><span>{{$ctrl.item.customID}}</span> <span>{{$ctrl.item.navigationState}}</span> <span ng-bind-html="$ctrl.item.label.ptBR.formattedText"></span><div id="fillingBox" ng-if="$ctrl.item.isQuestion && $ctrl.item.isAnswered"><div id="answer" ng-if="$ctrl.item.hasAnswer" layout-padding>{{$ctrl.item.answer}}</div><div id="metadata" ng-if="$ctrl.item.hasMetadata" layout-padding>metadata: {{$ctrl.item.metadata.label.ptBR.formattedText}}</div><div id="comment" ng-if="$ctrl.item.hasComment" layout-padding>comment: {{$ctrl.item.comment}}</div></div></div><div flex></div></div></div>',
+      template:'<div><md-divider></md-divider><div layout="row" layout-align="start center"><div layout="row" layout-margin><span class="md-title ng-binding" style="vertical-align: middle;">1</span><md-icon md-font-set="material-icons" style="cursor: pointer">radio_button_checked</md-icon><span>{{$ctrl.item.customID}}</span></div></div><div layout="row" layout-align="center center" layout-margin><div layout="column" flex="70"><span>{{$ctrl.item.navigationState}}</span> <span ng-bind-html="$ctrl.item.label.ptBR.formattedText"></span><div id="fillingBox" ng-if="$ctrl.item.isQuestion && $ctrl.item.isAnswered"><div id="answer" ng-if="$ctrl.item.hasAnswer" layout-padding>{{$ctrl.item.answer}}</div><div id="metadata" ng-if="$ctrl.item.hasMetadata" layout-padding>metadata: {{$ctrl.item.metadata.label.ptBR.formattedText}}</div><div id="comment" ng-if="$ctrl.item.hasComment" layout-padding>comment: {{$ctrl.item.comment}}</div></div></div><div flex></div></div></div>',
       controller: Controller,
       bindings: {
         item: '=',
@@ -492,7 +496,7 @@
   angular
     .module('otusjs.player.component')
     .component('singleSelectionQuestionView', {
-      template:'<div><md-divider></md-divider><div layout="row" layout-align="center center" layout-margin><div layout="column" flex="70"><span>{{$ctrl.item.customID}}</span> <span>{{$ctrl.item.navigationState}}</span> <span ng-bind-html="$ctrl.item.label.ptBR.formattedText"></span><div id="fillingBox" ng-if="$ctrl.item.isQuestion && $ctrl.item.isAnswered"><div id="answer" ng-if="$ctrl.item.hasAnswer" layout="column" layout-align="start start" layout-margin><md-radio-group ng-model="$ctrl.item.trueValue"><md-radio-button ng-repeat="option in $ctrl.item.answer" ng-value="option.value" ng-disabled="true"><span ng-bind-html="option.label.ptBR.formattedText"></span></md-radio-button></md-radio-group></div><div id="metadata" ng-if="$ctrl.item.hasMetadata" layout-padding>metadata: {{$ctrl.item.metadata.label.ptBR.formattedText}}</div><div id="comment" ng-if="$ctrl.item.hasComment" layout-padding>comment: {{$ctrl.item.comment}}</div></div></div><div flex></div></div></div>',
+      template:'<div><md-divider></md-divider><div layout="row" layout-align="center center" layout-margin><div layout="column" flex="70"><span>{{$ctrl.item.customID}}</span><span ng-bind-html="$ctrl.item.label.ptBR.formattedText"></span><div id="fillingBox" ng-if="$ctrl.item.isQuestion && $ctrl.item.isAnswered"><div id="answer" ng-if="$ctrl.item.hasAnswer" layout="column" layout-align="start start" layout-margin><md-radio-group ng-model="$ctrl.item.trueValue"><md-radio-button ng-repeat="option in $ctrl.item.answer" ng-value="option.value" aria-label="option.label.ptBR.formattedText" ng-disabled="true"><span ng-bind-html="option.label.ptBR.formattedText"></span></md-radio-button></md-radio-group></div><div id="metadata" ng-if="$ctrl.item.hasMetadata" layout-padding>metadata: {{$ctrl.item.metadata.label.ptBR.formattedText}}</div><div id="comment" ng-if="$ctrl.item.hasComment" layout-padding>comment: {{$ctrl.item.comment}}</div></div></div><div flex></div></div></div>',
       controller: Controller,
       bindings: {
         item: '='
@@ -541,7 +545,7 @@
   angular
     .module('otusjs.player.component')
     .component('gridTextQuestionView', {
-      template:'<div><md-divider></md-divider><div layout="row" layout-align="center center" layout-margin><div layout="column" flex="70"><span>{{$ctrl.item.customID}}</span> <span>{{$ctrl.item.navigationState}}</span> <span ng-bind-html="$ctrl.item.label.ptBR.formattedText"></span><div id="fillingBox" ng-if="$ctrl.item.isQuestion && $ctrl.item.isAnswered"><div id="answer" ng-if="$ctrl.item.hasAnswer" layout="column" layout-align="start start"><div ng-repeat="position in $ctrl.item.answer" layout="row" layout-margin><div ng-repeat="gridText in position.positions" layout="column" flex layout-margin><md-input-container flex><div class="md-resize-wrapper"><label>{{gridText.label.ptBR.formattedText}}</label> <textarea ng-model="gridText.value" class="ng-dirty ng-valid-parse ng-touched" ng-disabled="true"></textarea><div class="md-resize-handle" style="touch-action: pan-y;"></div><div style="color: gray;" ng-bind-html="gridText.unit.ptBR.formattedText"></div></div></md-input-container></div></div></div><div id="metadata" ng-if="$ctrl.item.hasMetadata" layout-padding>metadata: {{$ctrl.item.metadata.label.ptBR.formattedText}}</div><div id="comment" ng-if="$ctrl.item.hasComment" layout-padding>comment: {{$ctrl.item.comment}}</div></div></div><div flex></div></div></div>',
+      template:'<div><md-divider></md-divider><div layout="row" layout-align="center center" layout-margin><div layout="column" flex="70"><span>{{$ctrl.item.customID}}</span> <span>{{$ctrl.item.navigationState}}</span> <span ng-bind-html="$ctrl.item.label.ptBR.formattedText"></span><div id="fillingBox" ng-if="$ctrl.item.isQuestion && $ctrl.item.isAnswered"><div id="answer" ng-if="$ctrl.item.hasAnswer" layout="column" layout-align="start start"><div ng-repeat="position in $ctrl.item.answer" layout="row" layout-margin><div ng-repeat="gridText in position.positions" layout="column" flex layout-margin><md-input-container flex><label>{{gridText.label.ptBR.formattedText}}</label> <textarea ng-model="gridText.value" scrolling="no" style="overflow:hidden; resize:none;" ng-disabled="true"></textarea><div style="color: gray;" ng-bind-html="gridText.unit.ptBR.formattedText"></div></md-input-container></div></div></div><div id="metadata" ng-if="$ctrl.item.hasMetadata" layout-padding>metadata: {{$ctrl.item.metadata.label.ptBR.formattedText}}</div><div id="comment" ng-if="$ctrl.item.hasComment" layout-padding>comment: {{$ctrl.item.comment}}</div></div></div><div flex></div></div></div>',
       controller: Controller,
       bindings: {
         item: '='
@@ -566,7 +570,7 @@
   angular
     .module('otusjs.player.component')
     .component('imageItemView', {
-      template:'<div><md-divider></md-divider><div layout="column" layout-align="center center" layout-margin><div layout="column" flex="70"><span>{{$ctrl.item.customID}}</span> <span>{{$ctrl.item.navigationState}}</span> <span ng-bind-html="$ctrl.item.label.ptBR.formattedText"></span><div id="answer" ng-if="$ctrl.item.value" layout-padding><md-card><img ng-src="{{$ctrl.item.value}}"><md-card-content><div contenteditable="true" style="min-height:21px; padding: 3px; margin: 0" flex><span>{{$ctrl.item.footer.ptBR.formattedText}}</span></div></md-card-content></md-card></div></div><div flex></div></div></div>',
+      template:'<div><md-divider></md-divider><div layout="row" layout-align="center center" layout-margin><div layout="column" flex="70"><span>{{$ctrl.item.customID}}</span> <span>{{$ctrl.item.navigationState}}</span> <span ng-bind-html="$ctrl.item.label.ptBR.formattedText"></span><div id="answer" ng-if="$ctrl.item.value" layout-padding><md-card><img ng-src="{{$ctrl.item.value}}"><md-card-content><div contenteditable="true" style="min-height:21px; padding: 3px; margin: 0" flex><span>{{$ctrl.item.footer.ptBR.formattedText}}</span></div></md-card-content></md-card></div></div><div flex></div></div></div>',
       controller: Controller,
       bindings: {
         item: '='
@@ -609,6 +613,29 @@
 
 }());
 
+(function () {
+  'use strict';
+
+  angular
+    .module('otusjs.player.component')
+    .component('timeQuestionView', {
+      template:'<div><md-divider></md-divider><div layout="row" layout-align="center center" layout-margin><div layout="column" flex="70"><span>{{$ctrl.item.customID}}</span> <span>{{$ctrl.item.navigationState}}</span> <span ng-bind-html="$ctrl.item.label.ptBR.formattedText"></span><div id="fillingBox" ng-if="$ctrl.item.isQuestion && $ctrl.item.isAnswered"><div id="answer" ng-if="$ctrl.item.hasAnswer" layout="row" layout-padding>{{$ctrl.item.answer.date | date:\'H:mm\'}}</div><div id="metadata" ng-if="$ctrl.item.hasMetadata" layout-padding>metadata: {{$ctrl.item.metadata.label.ptBR.formattedText}}</div><div id="comment" ng-if="$ctrl.item.hasComment" layout-padding>comment: {{$ctrl.item.comment}}</div></div></div><div flex></div></div></div>',
+      controller: Controller,
+      bindings: {
+        item: '='
+      }
+    });
+
+  function Controller() {
+    var self = this;
+    self.$onInit = onInit;
+
+    function onInit() {
+
+    }
+  }
+
+}());
 (function () {
   'use strict';
 
@@ -6432,6 +6459,9 @@
         case 'CalendarQuestion':
           return new CalendarQuestionView(item, trackingItem, filling);
 
+        case 'TimeQuestion':
+          return new TimeQuestionView(item, trackingItem, filling);
+
         case 'GridIntegerQuestion':
           return new GridIntegerQuestionView(item, trackingItem, filling);
 
@@ -6468,6 +6498,14 @@
       var self = new QuestionView(item, navigationTrackingItem, filling);
 
       self.templateName = 'calendarQuestionView';
+
+      return self;
+    }
+
+    function TimeQuestionView(item, navigationTrackingItem, filling) {
+      var self = new QuestionView(item, navigationTrackingItem, filling);
+
+      self.templateName = 'TimeQuestionView';
 
       return self;
     }

@@ -64,6 +64,9 @@
         case 'CalendarQuestion':
           return new CalendarQuestionView(item, trackingItem, filling);
 
+        case 'TimeQuestion':
+          return new TimeQuestionView(item, trackingItem, filling);
+
         case 'GridIntegerQuestion':
           return new GridIntegerQuestionView(item, trackingItem, filling);
 
@@ -100,6 +103,14 @@
       var self = new QuestionView(item, navigationTrackingItem, filling);
 
       self.templateName = 'calendarQuestionView';
+
+      return self;
+    }
+
+    function TimeQuestionView(item, navigationTrackingItem, filling) {
+      var self = new QuestionView(item, navigationTrackingItem, filling);
+
+      self.templateName = 'TimeQuestionView';
 
       return self;
     }

@@ -1,8 +1,16 @@
 <div>
   <md-divider></md-divider>
+  <div layout="row" layout-align="start center">
+        <div layout="row" layout-margin>
+          <span class="md-title ng-binding" style="vertical-align: middle;">1</span>
+          <md-icon md-font-set="material-icons" style="cursor: pointer">
+            radio_button_checked
+          </md-icon>
+          <span>{{$ctrl.item.customID}}</span>
+        </div>
+      </div>
   <div layout="row" layout-align="center center" layout-margin>
     <div layout="column" flex="70">
-      <span>{{$ctrl.item.customID}}</span>
       <span>{{$ctrl.item.navigationState}}</span>
       <span ng-bind-html="$ctrl.item.label.ptBR.formattedText"></span>
       <div id="fillingBox" ng-if="$ctrl.item.isQuestion && $ctrl.item.isAnswered">

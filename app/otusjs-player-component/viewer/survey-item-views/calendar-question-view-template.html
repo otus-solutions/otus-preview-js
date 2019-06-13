@@ -7,7 +7,7 @@
       <span ng-bind-html="$ctrl.item.label.ptBR.formattedText"></span>
       <div id="fillingBox" ng-if="$ctrl.item.isQuestion && $ctrl.item.isAnswered">
         <div id="answer" ng-if="$ctrl.item.hasAnswer" layout-padding>
-          <md-datepicker ng-model="$ctrl.item.answer.date" ng-disabled="true"></md-datepicker>
+          {{$ctrl.item.answer.date | date:'dd/MM/yyyy'}}
         </div>
         <div id="metadata" ng-if="$ctrl.item.hasMetadata" layout-padding>metadata: {{$ctrl.item.metadata.label.ptBR.formattedText}}</div>
         <div id="comment" ng-if="$ctrl.item.hasComment" layout-padding>comment: {{$ctrl.item.comment}}</div>
