@@ -1,4 +1,31 @@
-<div>
+
+<style>
+
+  @page {
+    size: A4;
+    margin: 0;
+  }
+
+  @media print {
+    .page-break {
+      height: 0;
+      page-break-before: always;
+      margin: 0;
+      border-top: none;
+    }
+    .page {
+      margin: 0;
+      border: initial;
+      border-radius: initial;
+      width: initial;
+      min-height: initial;
+      box-shadow: initial;
+      background: initial;
+      page-break-after: always;
+    }
+  }
+</style>
+<div class="page">
   <md-divider></md-divider>
   <div layout="row" layout-align="start center">
         <div layout="row" layout-margin>

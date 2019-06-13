@@ -1,5 +1,8 @@
+<style type="text/css" media="print">
+  .no-print { display: none; }
+</style>
 <md-content id="activity-viewer" layout="column" layout-fill>
-  <div id="viewer-header" layout="row">
+  <div id="viewer-header" layout="row" class="no-print">
     <md-button ng-click="$ctrl.exit()">sair</md-button>
     <md-button ng-click="$ctrl.showListBottomSheet($event)">show</md-button>
 <!--    <md-button ng-click="$ctrl.showFilters = !$ctrl.showFilters">Filtros</md-button>-->
