@@ -1,7 +1,6 @@
 var Test = {};
 Test.utils = {};
 Test.utils.data = {};
-
 Test.utils.data.activity = {
   "_id": "58ee02de28110d317f1ad09b",
   "objectType": "Activity",

@@ -26,10 +26,18 @@ describe('surveyViewerModelFactory_TestSuite', function () {
     expect(factory.create).toBeDefined();
   });
 
-  it('method_should', function () {
-    Mock.activityView = factory.create();
+  it('create_method_should_mount_the_attributes_with_activity_values', function () {
+    var activityView = factory.create();
+    expect(activityView.name).toBe("PRESSÃO ARTERIAL");
+    expect(activityView.acronym).toBe("PASC");
+    expect(activityView.participantData.recruitmentNumber).toBe(1234567);
+    expect(activityView.lastStatus.name).toBe("FINALIZED");
+    expect(activityView.mode).toBe("ONLINE");
+  });
 
-    console.log(Mock.activityView)
+  it('create_method_should_evoke_internal_services', function () {
+    var activityView = factory.create();
+    console.log(activityView);
 
 
   });
