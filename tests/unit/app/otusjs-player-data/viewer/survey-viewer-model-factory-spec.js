@@ -17,7 +17,6 @@ describe('surveyViewerModelFactory_TestSuite', function () {
     });
   });
 
-
   it('factoryExistence check ', function () {
     expect(factory).toBeDefined();
   });
@@ -36,9 +35,13 @@ describe('surveyViewerModelFactory_TestSuite', function () {
   });
 
   it('create_method_should_evoke_internal_services', function () {
-    var activityView = factory.create();
-    console.log(activityView);
+    spyOn(Injections.ActivityFacadeService.surveyActivity,"getItems").and.callThrough();
+    spyOn(Injections.ActivityFacadeService,"getNavigationTracker").and.callThrough();
+    spyOn(Injections.ActivityFacadeService,"getFillingByQuestionID").and.callThrough();
+    factory.create();
 
-
+    expect(Injections.ActivityFacadeService.surveyActivity.getItems).toHaveBeenCalledTimes(1);
+    expect(Injections.ActivityFacadeService.getNavigationTracker).toHaveBeenCalledTimes(1);
+    expect(Injections.ActivityFacadeService.getFillingByQuestionID).toHaveBeenCalledTimes(17);
   });
 });
