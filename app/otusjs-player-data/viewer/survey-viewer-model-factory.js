@@ -84,7 +84,7 @@
       self.templateName = 'textItemView';
 
       self.value = item.value;
-      console.log(self);
+      //console.log(self);
       return self;
     }
 
@@ -95,7 +95,7 @@
 
       self.value = item.url;
       self.footer = item.footer
-      console.log(self);
+      //console.log(self);
       return self;
     }
 
@@ -222,7 +222,7 @@
         self.hasComment = !!self.comment;
       }
 
-      console.log(self);
+     // console.log(self);
       return self;
     }
 
