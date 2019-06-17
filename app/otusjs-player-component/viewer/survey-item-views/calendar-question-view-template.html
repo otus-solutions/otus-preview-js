@@ -3,7 +3,7 @@
   <p ng-show="$ctrl.filters.fillingBox">{{$ctrl.item.answer.date | date:'dd/MM/yyyy'}}</p>
 </div>
 <div id="metadata" ng-if="$ctrl.item.hasMetadata" layout-fill>
-  <p class="md-caption" style="color: gray;">Metadata</p>
+  <p class="md-caption" style="color: gray;">Metadado</p>
   <p ng-bind-html="$ctrl.item.metadata.label.ptBR.formattedText"></p>
 </div>
 <div id="comment" ng-if="$ctrl.item.hasComment" layout-fill>
