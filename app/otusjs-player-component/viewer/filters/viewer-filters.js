@@ -22,7 +22,7 @@
 
     function _setInitialFilters() {
       self.filters = {
-        displayState: true,
+        displayState: false,
         customID: true,
         state: {
           SKIPPED: false,

@@ -379,7 +379,7 @@
 
     function _setInitialFilters() {
       self.filters = {
-        displayState: true,
+        displayState: false,
         customID: true,
         state: {
           SKIPPED: false,
@@ -433,6 +433,7 @@
       template:'<div id="answer" ng-if="$ctrl.item.hasAnswer" layout-fill><p class="md-caption" style="color: gray;">Resposta</p><p ng-show="$ctrl.filters.fillingBox">{{$ctrl.item.answer.date | date:\'dd/MM/yyyy\'}}</p></div><div id="metadata" ng-if="$ctrl.item.hasMetadata" layout-fill><p class="md-caption" style="color: gray;">Metadata</p><p ng-bind-html="$ctrl.item.metadata.label.ptBR.formattedText"></p></div><div id="comment" ng-if="$ctrl.item.hasComment" layout-fill><p class="md-caption" style="color: gray;">Comentário</p><p ng-bind-html="$ctrl.item.comment"></p></div>',
       controller: Controller,
       bindings: {
+        filters: '=',
         item: '='
       }
     });
@@ -482,6 +483,7 @@
       template:'<div id="answer" ng-if="$ctrl.item.hasAnswer" layout-fill><p class="md-caption" style="color: gray;">Resposta</p><md-checkbox tabindex="-1" layout="column" ng-repeat="option in $ctrl.item.answer" ng-model="option.value" disabled="true">{{option.label.ptBR.formattedText}}</md-checkbox></div><div id="metadata" ng-if="$ctrl.item.hasMetadata" layout-fill><p class="md-caption" style="color: gray;">Metadata</p><p ng-bind-html="$ctrl.item.metadata.label.ptBR.formattedText"></p></div><div id="comment" ng-if="$ctrl.item.hasComment" layout-fill><p class="md-caption" style="color: gray;">Comentário</p><p ng-bind-html="$ctrl.item.comment"></p></div>',
       controller: Controller,
       bindings: {
+        filters: '=',
         item: '='
       }
     });
@@ -506,6 +508,7 @@
       template:'<div id="answer" ng-if="$ctrl.item.hasAnswer" layout-fill><p class="md-caption" style="color: gray;">Resposta</p><md-radio-group tabindex="-1" ng-model="$ctrl.item.trueValue"><md-radio-button ng-repeat="option in $ctrl.item.answer" ng-value="option.value" aria-label="option.label.ptBR.formattedText" ng-disabled="true"><span ng-bind-html="option.label.ptBR.formattedText"></span></md-radio-button></md-radio-group></div><div id="metadata" ng-if="$ctrl.item.hasMetadata" layout-fill><p class="md-caption" style="color: gray;">Metadata</p><p ng-bind-html="$ctrl.item.metadata.label.ptBR.formattedText"></p></div><div id="comment" ng-if="$ctrl.item.hasComment" layout-fill><p class="md-caption" style="color: gray;">Comentário</p><p ng-bind-html="$ctrl.item.comment"></p></div>',
       controller: Controller,
       bindings: {
+        filters: '=',
         item: '='
       }
     });
@@ -531,6 +534,7 @@
       template:'<div id="answer" ng-if="$ctrl.item.hasAnswer" layout-fill><p class="md-caption" style="color: gray;">Resposta</p><div ng-repeat="position in $ctrl.item.answer" layout="row"><div ng-repeat="gridInteger in position.positions" layout="column" flex layout-margin><md-input-container flex><label>{{gridInteger.label.ptBR.formattedText}}</label> <textarea type="text" ng-model="gridInteger.value" scrolling="no" style="overflow:hidden; resize:none;" ng-disabled="true"></textarea><div style="color: gray;" ng-bind-html="gridInteger.unit.ptBR.formattedText"></div></md-input-container></div></div></div><div id="metadata" ng-if="$ctrl.item.hasMetadata" layout-fill><p class="md-caption" style="color: gray;">Metadata</p><p ng-bind-html="$ctrl.item.metadata.label.ptBR.formattedText"></p></div><div id="comment" ng-if="$ctrl.item.hasComment" layout-fill><p class="md-caption" style="color: gray;">Comentário</p><p ng-bind-html="$ctrl.item.comment"></p></div>',
       controller: Controller,
       bindings: {
+        filters: '=',
         item: '='
       }
     });
@@ -555,6 +559,7 @@
       template:'<div id="answer" ng-if="$ctrl.item.hasAnswer" layout-fill><p class="md-caption" style="color: gray;">Resposta</p><div ng-repeat="position in $ctrl.item.answer" layout="row"><div ng-repeat="gridInteger in position.positions" layout="column" flex layout-margin><md-input-container flex><label>{{gridInteger.label.ptBR.formattedText}}</label> <textarea type="text" ng-model="gridInteger.value" scrolling="no" style="overflow:hidden; resize:none;" ng-disabled="true"></textarea><div style="color: gray;" ng-bind-html="gridInteger.unit.ptBR.formattedText"></div></md-input-container></div></div></div><div id="metadata" ng-if="$ctrl.item.hasMetadata" layout-fill><p class="md-caption" style="color: gray;">Metadata</p><p ng-bind-html="$ctrl.item.metadata.label.ptBR.formattedText"></p></div><div id="comment" ng-if="$ctrl.item.hasComment" layout-fill><p class="md-caption" style="color: gray;">Comentário</p><p ng-bind-html="$ctrl.item.comment"></p></div>',
       controller: Controller,
       bindings: {
+        filters: '=',
         item: '='
       }
     });
@@ -580,6 +585,7 @@
       template:'<div layout="row"><md-card><img ng-src="{{$ctrl.item.value}}"><md-card-content><div style="min-height:21px; padding: 3px; margin: 0" flex><span ng-bind-html="$ctrl.item.footer.ptBR.formattedText"></span></div></md-card-content></md-card></div>',
       controller: Controller,
       bindings: {
+        filters: '=',
         item: '='
       }
     });
@@ -604,6 +610,7 @@
       template:'<div layout="row"><span ng-bind-html="$ctrl.item.value.ptBR.formattedText"></span></div>',
       controller: Controller,
       bindings: {
+        filters: '=',
         item: '='
       }
     });
@@ -629,6 +636,7 @@
       template:'<div id="answer" ng-if="$ctrl.item.hasAnswer" layout-fill><p class="md-caption" style="color: gray;">Resposta</p><p>{{$ctrl.item.answer.date | date:\'H:mm\'}}</p></div><div id="metadata" ng-if="$ctrl.item.hasMetadata" layout-fill><p class="md-caption" style="color: gray;">Metadata</p><p ng-bind-html="$ctrl.item.metadata.label.ptBR.formattedText"></p></div><div id="comment" ng-if="$ctrl.item.hasComment" layout-fill><p class="md-caption" style="color: gray;">Comentário</p><p ng-bind-html="$ctrl.item.comment"></p></div>',
       controller: Controller,
       bindings: {
+        filters: '=',
         item: '='
       }
     });

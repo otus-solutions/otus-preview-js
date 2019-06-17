@@ -23,6 +23,10 @@ html {
   padding-bottom: 180px;
 }
 
+#fillingBox {
+  margin-left: 15px;
+}
+
 @media (max-width: 210mm) {
   #activity-viewer #sheet {
     width:100%;
@@ -40,6 +44,6 @@ html {
   font-size: small;
 }
 
-.filtered {
+.hidden {
   visibility: hidden;
 }
