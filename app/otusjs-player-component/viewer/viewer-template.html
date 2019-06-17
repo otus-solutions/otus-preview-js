@@ -1,23 +1,23 @@
-<md-content id="activity-viewer" layout="column" layout-fill>
+<md-content id="activity-viewer">
   <md-progress-circular ng-if="!$ctrl.ready" class="md-primary" md-diameter="70"></md-progress-circular>
 
-  <div layout="row" ng-if="$ctrl.ready" layout-fill flex>
+  <div layout="row" ng-if="$ctrl.ready" layout-padding flex>
 
-    <div layout="column" id="sheet" flex="95" layout-margin>
-      <span class="md-title">{{$ctrl.activityData.acronym}} - {{$ctrl.activityData.name}}</span>
-      <md-list flex>
-        <md-list-item layout="row" layout-align="start start"
-                      ng-repeat="item in $ctrl.activityData.itemContainer"
-                      ng-show="$ctrl.filters.state[item.navigationState]">
-          <div layout-padding layout="row" class="md-whiteframe-1dp" style="margin-top: 2%">
-            <span style="vertical-align: middle;">{{$index + 1}}</span>
-          </div>
+      <div id="sheet" layout="column" layout-margin layout-padding flex>
+        <span class="md-title">{{$ctrl.activityData.acronym}} - {{$ctrl.activityData.name}}</span>
+        <md-list>
+          <md-list-item layout="row" layout-align="start start"
+                        ng-repeat="item in $ctrl.activityData.itemContainer"
+                        ng-show="$ctrl.filters.state[item.navigationState]">
+            <div layout-padding layout="row" class="md-whiteframe-1dp" style="margin-top: 2%">
+              <span style="vertical-align: middle;">{{$index + 1}}</span>
+            </div>
           <survey-item-view item="item" filters="$ctrl.filters" flex></survey-item-view>
-        </md-list-item>
-      </md-list>
-    </div>
+          </md-list-item>
+        </md-list>
+      </div>
 
-    <div id="header-viewer" layout-padding layout="column" layout-align="end center" class="no-print" flex="5">
+    <div id="header-viewer" layout-padding layout="column" layout-align="start center" class="no-print" flex="5">
       <div layout="column" style="position:fixed;">
         <md-button class="md-fab md-mini" ng-click="$ctrl.showListBottomSheet()">
           <md-icon>filter_list</md-icon>
