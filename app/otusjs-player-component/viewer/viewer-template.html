@@ -1,31 +1,32 @@
-<style type="text/css" media="print">
-  .no-print { display: none; }
-</style>
 <md-content id="activity-viewer" layout="column" layout-fill>
-  <div id="viewer-header" layout="row" class="no-print">
-    <md-button ng-click="$ctrl.exit()">sair</md-button>
-    <md-button ng-click="$ctrl.showListBottomSheet($event)">show</md-button>
-    <!--    <md-button ng-click="$ctrl.showFilters = !$ctrl.showFilters">Filtros</md-button>-->
-    <!--    <otus-viewer-filters filters="$ctrl.filters" ng-show="$ctrl.showFilters"></otus-viewer-filters>-->
-  </div>
-
   <md-progress-circular ng-if="!$ctrl.ready" class="md-primary" md-diameter="70"></md-progress-circular>
 
-  <div ng-if="$ctrl.ready" layout="column" flex>
+  <div layout="row" ng-if="$ctrl.ready" layout-fill flex>
 
-    <div layout="row" flex>
-      <div layout="column" id="sheet" flex>
-          <span class="md-title">{{$ctrl.activityData.acronym}} - {{$ctrl.activityData.name}}</span>
-        <md-list>
-          <md-list-item layout="row" layout-align="start start"
-                        ng-repeat="item in $ctrl.activityData.itemContainer"
-                        ng-show="$ctrl.filters.state[item.navigationState]" >
-            <div layout-padding layout="row" class="md-whiteframe-1dp" style="margin-top: 2%">
-              <span style="vertical-align: middle;">{{$index + 1}}</span>
-            </div>
-            <survey-item-view item="item" filters="filters" flex></survey-item-view>
-          </md-list-item>
-        </md-list>
+    <div layout="column" id="sheet" flex="95">
+      <span class="md-title">{{$ctrl.activityData.acronym}} - {{$ctrl.activityData.name}}</span>
+      <md-list flex>
+        <md-list-item layout="row" layout-align="start start"
+                      ng-repeat="item in $ctrl.activityData.itemContainer"
+                      ng-show="$ctrl.filters.state[item.navigationState]">
+          <div layout-padding layout="row" class="md-whiteframe-1dp" style="margin-top: 2%">
+            <span style="vertical-align: middle;">{{$index + 1}}</span>
+          </div>
+          <survey-item-view item="item" filters="filters" flex></survey-item-view>
+        </md-list-item>
+      </md-list>
+    </div>
+
+    <div id="header-viewer" layout-padding layout="column" layout-align="end center" class="no-print" flex="5">
+      <div layout="column" style="position:fixed;">
+        <md-button class="md-fab md-mini" ng-click="$ctrl.showListBottomSheet()">
+          <md-icon>filter_list</md-icon>
+          <md-tooltip>Filtros</md-tooltip>
+        </md-button>
+        <md-button class="md-fab md-mini" ng-click="$ctrl.exit()">
+          <md-icon>arrow_back</md-icon>
+          <md-tooltip>Sair</md-tooltip>
+        </md-button>
       </div>
     </div>
 

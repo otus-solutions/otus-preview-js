@@ -286,7 +286,7 @@
   angular
     .module('otusjs.player.component')
     .component('otusViewer', {
-      template:'<style type="text/css" media="print">\n  .no-print { display: none; }\n</style><md-content id="activity-viewer" layout="column" layout-fill><div id="viewer-header" layout="row" class="no-print"><md-button ng-click="$ctrl.exit()">sair</md-button><md-button ng-click="$ctrl.showListBottomSheet($event)">show</md-button></div><md-progress-circular ng-if="!$ctrl.ready" class="md-primary" md-diameter="70"></md-progress-circular><div ng-if="$ctrl.ready" layout="column" flex><div layout="row" flex><div layout="column" id="sheet" flex><span class="md-title">{{$ctrl.activityData.acronym}} - {{$ctrl.activityData.name}}</span><md-list><md-list-item layout="row" layout-align="start start" ng-repeat="item in $ctrl.activityData.itemContainer" ng-show="$ctrl.filters.state[item.navigationState]"><div layout-padding layout="row" class="md-whiteframe-1dp" style="margin-top: 2%"><span style="vertical-align: middle;">{{$index + 1}}</span></div><survey-item-view item="item" filters="filters" flex></survey-item-view></md-list-item></md-list></div></div></div></md-content>',
+      template:'<md-content id="activity-viewer" layout="column" layout-fill><md-progress-circular ng-if="!$ctrl.ready" class="md-primary" md-diameter="70"></md-progress-circular><div layout="row" ng-if="$ctrl.ready" layout-fill flex><div layout="column" id="sheet" flex="95"><span class="md-title">{{$ctrl.activityData.acronym}} - {{$ctrl.activityData.name}}</span><md-list flex><md-list-item layout="row" layout-align="start start" ng-repeat="item in $ctrl.activityData.itemContainer" ng-show="$ctrl.filters.state[item.navigationState]"><div layout-padding layout="row" class="md-whiteframe-1dp" style="margin-top: 2%"><span style="vertical-align: middle;">{{$index + 1}}</span></div><survey-item-view item="item" filters="filters" flex></survey-item-view></md-list-item></md-list></div><div id="header-viewer" layout-padding layout="column" layout-align="end center" class="no-print" flex="5"><div layout="column" style="position:fixed;"><md-button class="md-fab md-mini" ng-click="$ctrl.showListBottomSheet()"><md-icon>filter_list</md-icon><md-tooltip>Filtros</md-tooltip></md-button><md-button class="md-fab md-mini" ng-click="$ctrl.exit()"><md-icon>arrow_back</md-icon><md-tooltip>Sair</md-tooltip></md-button></div></div></div></md-content>',
       controller: 'otusViewerCtrl as $ctrl'
     }).controller("otusViewerCtrl", Controller);
 
@@ -492,7 +492,7 @@
   angular
     .module('otusjs.player.component')
     .component('checkboxQuestionView', {
-      template:'<div><md-divider></md-divider><div layout="column" layout-align="start start" layout-fill><div layout="row" layout-padding><span class="md-subhead" layout-padding>{{$ctrl.item.customID}}</span> <span layout-padding>|</span> <span layout-padding class="md-caption">{{$ctrl.item.navigationState}}</span></div><div layout="row" layout-padding><span ng-bind-html="$ctrl.item.label.ptBR.formattedText"></span></div><div id="fillingBox" ng-if="$ctrl.item.isQuestion && $ctrl.item.isAnswered" layout-padding><div id="answer" ng-if="$ctrl.item.hasAnswer" layout-fill><p class="md-caption" style="color: gray;">Resposta</p><md-checkbox layout="column" ng-repeat="option in $ctrl.item.answer" ng-model="option.value" disabled="true">{{option.label.ptBR.formattedText}}</md-checkbox></div><div id="metadata" ng-if="$ctrl.item.hasMetadata" layout-fill><p class="md-caption" style="color: gray;">Metadata</p><p ng-bind-html="$ctrl.item.metadata.label.ptBR.formattedText"></p></div><div id="comment" ng-if="$ctrl.item.hasComment" layout-fill><p class="md-caption" style="color: gray;">Comentário</p><p ng-bind-html="$ctrl.item.comment"></p></div></div></div></div>',
+      template:'<div><md-divider></md-divider><div layout="column" layout-align="start start" layout-fill><div layout="row" layout-padding><span class="md-subhead" layout-padding>{{$ctrl.item.customID}}</span> <span layout-padding>|</span> <span layout-padding class="md-caption">{{$ctrl.item.navigationState}}</span></div><div layout="row" layout-padding><span ng-bind-html="$ctrl.item.label.ptBR.formattedText"></span></div><div id="fillingBox" ng-if="$ctrl.item.isQuestion && $ctrl.item.isAnswered" layout-padding><div id="answer" ng-if="$ctrl.item.hasAnswer" layout-fill><p class="md-caption" style="color: gray;">Resposta</p><md-checkbox tabindex="-1" layout="column" ng-repeat="option in $ctrl.item.answer" ng-model="option.value" disabled="true">{{option.label.ptBR.formattedText}}</md-checkbox></div><div id="metadata" ng-if="$ctrl.item.hasMetadata" layout-fill><p class="md-caption" style="color: gray;">Metadata</p><p ng-bind-html="$ctrl.item.metadata.label.ptBR.formattedText"></p></div><div id="comment" ng-if="$ctrl.item.hasComment" layout-fill><p class="md-caption" style="color: gray;">Comentário</p><p ng-bind-html="$ctrl.item.comment"></p></div></div></div></div>',
       controller: Controller,
       bindings: {
         item: '='
@@ -516,7 +516,7 @@
   angular
     .module('otusjs.player.component')
     .component('singleSelectionQuestionView', {
-      template:'<div><md-divider></md-divider><div layout="column" layout-align="start start" layout-fill><div layout="row" layout-padding><span class="md-subhead" layout-padding>{{$ctrl.item.customID}}</span> <span layout-padding>|</span> <span layout-padding class="md-caption">{{$ctrl.item.navigationState}}</span></div><div layout="row" layout-padding><span ng-bind-html="$ctrl.item.label.ptBR.formattedText"></span></div><div id="fillingBox" ng-if="$ctrl.item.isQuestion && $ctrl.item.isAnswered" layout-padding><div id="answer" ng-if="$ctrl.item.hasAnswer" layout-fill><p class="md-caption" style="color: gray;">Resposta</p><md-radio-group ng-model="$ctrl.item.trueValue"><md-radio-button ng-repeat="option in $ctrl.item.answer" ng-value="option.value" aria-label="option.label.ptBR.formattedText" ng-disabled="true"><span ng-bind-html="option.label.ptBR.formattedText"></span></md-radio-button></md-radio-group></div><div id="metadata" ng-if="$ctrl.item.hasMetadata" layout-fill><p class="md-caption" style="color: gray;">Metadata</p><p ng-bind-html="$ctrl.item.metadata.label.ptBR.formattedText"></p></div><div id="comment" ng-if="$ctrl.item.hasComment" layout-fill><p class="md-caption" style="color: gray;">Comentário</p><p ng-bind-html="$ctrl.item.comment"></p></div></div></div></div>',
+      template:'<div><md-divider></md-divider><div layout="column" layout-align="start start" layout-fill><div layout="row" layout-padding><span class="md-subhead" layout-padding>{{$ctrl.item.customID}}</span> <span layout-padding>|</span> <span layout-padding class="md-caption">{{$ctrl.item.navigationState}}</span></div><div layout="row" layout-padding><span ng-bind-html="$ctrl.item.label.ptBR.formattedText"></span></div><div id="fillingBox" ng-if="$ctrl.item.isQuestion && $ctrl.item.isAnswered" layout-padding><div id="answer" ng-if="$ctrl.item.hasAnswer" layout-fill><p class="md-caption" style="color: gray;">Resposta</p><md-radio-group tabindex="-1" ng-model="$ctrl.item.trueValue"><md-radio-button ng-repeat="option in $ctrl.item.answer" ng-value="option.value" aria-label="option.label.ptBR.formattedText" ng-disabled="true"><span ng-bind-html="option.label.ptBR.formattedText"></span></md-radio-button></md-radio-group></div><div id="metadata" ng-if="$ctrl.item.hasMetadata" layout-fill><p class="md-caption" style="color: gray;">Metadata</p><p ng-bind-html="$ctrl.item.metadata.label.ptBR.formattedText"></p></div><div id="comment" ng-if="$ctrl.item.hasComment" layout-fill><p class="md-caption" style="color: gray;">Comentário</p><p ng-bind-html="$ctrl.item.comment"></p></div></div></div></div>',
       controller: Controller,
       bindings: {
         item: '='
@@ -6499,7 +6499,7 @@
       self.templateName = 'textItemView';
 
       self.value = item.value;
-      console.log(self);
+      //console.log(self);
       return self;
     }
 
@@ -6510,7 +6510,7 @@
 
       self.value = item.url;
       self.footer = item.footer
-      console.log(self);
+      //console.log(self);
       return self;
     }
 
@@ -6637,7 +6637,7 @@
         self.hasComment = !!self.comment;
       }
 
-      console.log(self);
+     // console.log(self);
       return self;
     }
 
