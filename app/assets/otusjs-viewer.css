@@ -39,3 +39,7 @@ html {
   color: rgba(126, 126, 126, 1);
   font-size: small;
 }
+
+.filtered {
+  visibility: hidden;
+}

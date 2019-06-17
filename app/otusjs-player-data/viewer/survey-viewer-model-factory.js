@@ -234,7 +234,7 @@
       self.navigationState = navigationTrackingItem.getState();
       self.navigationStateLabel = _translateStateLabel(self.navigationState);
       self.index = navigationTrackingItem.getIndex();
-      self.isIgnored = navigationTrackingItem.isIgnored(); //answer or metadata
+      self.isIgnored = navigationTrackingItem.isIgnored();
       self.isSkipped = navigationTrackingItem.isSkipped();
 
       function _translateStateLabel(state) {
@@ -248,7 +248,7 @@
           case 'VISITED':
             return "Visitada";
           case 'IGNORED':
-            return "Respondida sem validação";
+            return "Ignorada";
         }
       }
 

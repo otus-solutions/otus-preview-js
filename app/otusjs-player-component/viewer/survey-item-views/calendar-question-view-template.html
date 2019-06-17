@@ -1,6 +1,6 @@
 <div id="answer" ng-if="$ctrl.item.hasAnswer" layout-fill>
   <p class="md-caption" style="color: gray;">Resposta</p>
-  <p>{{$ctrl.item.answer.date | date:'dd/MM/yyyy'}}</p>
+  <p ng-show="$ctrl.filters.fillingBox">{{$ctrl.item.answer.date | date:'dd/MM/yyyy'}}</p>
 </div>
 <div id="metadata" ng-if="$ctrl.item.hasMetadata" layout-fill>
   <p class="md-caption" style="color: gray;">Metadata</p>

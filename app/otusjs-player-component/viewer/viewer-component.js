@@ -34,12 +34,13 @@
 
     function onInit() {
       self.activityData = SurveyViewerFactory.create();
+      console.log(self.activityData)
       self.ready = true;
-      compile();
+      compileFilters();
     }
 
 
-    function compile() {
+    function compileFilters() {
       let template = '<otus-viewer-filters filters=$ctrl.filters></otus-viewer-filters>';
       self.filterComponent = $compile(template)($scope.$new());
     }
@@ -53,21 +54,18 @@
         parent: angular.element(document.body),
         controller: BottomSheetController
       }).then(function(clickedItem) {
-        console.log(clickedItem);
       }).catch(function(error) {
-        // User clicked outside or hit escape
-        console.log(error);
       });
     };
 
 
     function exit() {
-      PlayerService.stop();
+      window.history.back();
     }
+
     
     
     function BottomSheetController($scope, filters) {
-
       $scope.filters = filters;
     }
 

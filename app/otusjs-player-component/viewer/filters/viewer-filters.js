@@ -26,9 +26,9 @@
         customID: true,
         state: {
           SKIPPED: false,
-          NOT_VISITED: true,
+          NOT_VISITED: false,
           ANSWERED: true,
-          IGNORED: false,
+          IGNORED: true,
           VISITED: true
         },
         fillingBox: true,
