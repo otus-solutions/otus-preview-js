@@ -12,7 +12,7 @@
     <div id="fillingBox" ng-if="$ctrl.item.isQuestion && $ctrl.item.isAnswered" layout-padding>
       <div id="answer" ng-if="$ctrl.item.hasAnswer" layout-fill>
         <p class="md-caption" style="color: gray;">Resposta</p>
-        <md-checkbox layout="column" ng-repeat="option in $ctrl.item.answer" ng-model="option.value" disabled="true">{{option.label.ptBR.formattedText}}</md-checkbox>
+        <md-checkbox tabindex="-1" layout="column" ng-repeat="option in $ctrl.item.answer" ng-model="option.value" disabled="true">{{option.label.ptBR.formattedText}}</md-checkbox>
       </div>
       <div id="metadata" ng-if="$ctrl.item.hasMetadata" layout-fill>
         <p class="md-caption" style="color: gray;">Metadata</p>

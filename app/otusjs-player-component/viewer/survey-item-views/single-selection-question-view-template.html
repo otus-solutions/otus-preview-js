@@ -12,8 +12,8 @@
     <div id="fillingBox" ng-if="$ctrl.item.isQuestion && $ctrl.item.isAnswered" layout-padding>
       <div id="answer" ng-if="$ctrl.item.hasAnswer" layout-fill>
         <p class="md-caption" style="color: gray;">Resposta</p>
-        <md-radio-group ng-model="$ctrl.item.trueValue">
-          <md-radio-button ng-repeat="option in $ctrl.item.answer" ng-value="option.value" aria-label="option.label.ptBR.formattedText" ng-disabled="true">
+        <md-radio-group tabindex="-1" ng-model="$ctrl.item.trueValue">
+          <md-radio-button  ng-repeat="option in $ctrl.item.answer" ng-value="option.value" aria-label="option.label.ptBR.formattedText" ng-disabled="true">
             <span ng-bind-html="option.label.ptBR.formattedText"></span>
           </md-radio-button>
         </md-radio-group>
