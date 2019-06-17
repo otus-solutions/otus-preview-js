@@ -8,13 +8,15 @@
   <div layout="row" layout-align="start center" ng-cloak>
     <md-subheader ng-cloak>Filtros</md-subheader>
   </div>
-  <div ng-cloak layout="row" layout-align="space-around start">
-
-    <md-checkbox class="md-grid-item-content" ng-model="filters.displayState"> Estado da questão</md-checkbox>
-
-    <md-checkbox class="md-grid-item-content" ng-model="filters.customID"> Id de questão</md-checkbox>
+  <div ng-cloak layout="row" layout-fill>
+    <md-content  layout-align="start space-around ">
     <md-checkbox class="md-grid-item-content" ng-model="filters.state.SKIPPED"> Mostrar questões puladas</md-checkbox>
     <md-checkbox class="md-grid-item-content" ng-model="filters.state.NOT_VISITED"> Mostrar não visitadas</md-checkbox>
+    <md-checkbox class="md-grid-item-content" ng-model="filters.displayState"> Estado da questão</md-checkbox>
+    <md-checkbox class="md-grid-item-content" ng-model="filters.customID"> Id de questão</md-checkbox>
+    <md-checkbox class="md-grid-item-content" ng-model="filters.fillingBox"> Mostrar respostas</md-checkbox>
+    <md-checkbox class="md-grid-item-content" ng-model="filters.comments"> Mostrar comentários</md-checkbox>
+    </md-content>
   </div>
   <div ng-cloak layout-padding layout="row" layout-align="center center">
     <p class="caption-sheet">Modo de visualização de atividade.</p>

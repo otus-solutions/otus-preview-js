@@ -36,18 +36,18 @@
       self.activityData = SurveyViewerFactory.create();
       self.ready = true;
       compile();
-      self.filters = {
-        displayState: true,
-        customID: true,
-        state: {
-          SKIPPED: false,
-          NOT_VISITED: true,
-          ANSWERED: true,
-          IGNORED: false,
-          VISITED: true
-        },
-        fillingBox: true
-      };
+      // self.filters = {
+      //   displayState: true,
+      //   customID: true,
+      //   state: {
+      //     SKIPPED: false,
+      //     NOT_VISITED: true,
+      //     ANSWERED: true,
+      //     IGNORED: false,
+      //     VISITED: true
+      //   },
+      //   fillingBox: true
+      // };
     }
 
 

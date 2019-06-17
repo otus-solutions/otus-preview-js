@@ -84,7 +84,6 @@
       self.templateName = 'textItemView';
 
       self.value = item.value;
-      //console.log(self);
       return self;
     }
 
@@ -94,8 +93,7 @@
       self.templateName = 'imageItemView';
 
       self.value = item.url;
-      self.footer = item.footer
-      //console.log(self);
+      self.footer = item.footer;
       return self;
     }
 
@@ -221,8 +219,6 @@
         self.comment = filling.comment;
         self.hasComment = !!self.comment;
       }
-
-     // console.log(self);
       return self;
     }
 
@@ -236,13 +232,25 @@
       self.isQuestion = item.isQuestion();
 
       self.navigationState = navigationTrackingItem.getState();
+      self.navigationStateLabel = _translateStateLabel(self.navigationState);
       self.index = navigationTrackingItem.getIndex();
       self.isIgnored = navigationTrackingItem.isIgnored(); //answer or metadata
       self.isSkipped = navigationTrackingItem.isSkipped();
 
-      //ux
-      self.navigationStatusIcon = undefined;
-
+      function _translateStateLabel(state) {
+        switch (state) {
+          case 'ANSWERED':
+            return "Respondida";
+          case 'SKIPPED':
+            return "Pulada";
+          case 'NOT_VISITED':
+            return "Não respondida";
+          case 'VISITED':
+            return "Visitada";
+          case 'IGNORED':
+            return "Respondida sem validação";
+        }
+      }
 
       return self;
     }

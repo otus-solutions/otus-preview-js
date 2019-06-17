@@ -31,7 +31,8 @@
           IGNORED: false,
           VISITED: true
         },
-        fillingBox: true
+        fillingBox: true,
+        comments: true
       };
     }
   }

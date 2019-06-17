@@ -1,4 +1,3 @@
-
 <style>
 
   @page {
@@ -13,6 +12,7 @@
       margin: 0;
       border-top: none;
     }
+
     .page {
       margin: 0;
       border: initial;
@@ -25,30 +25,34 @@
     }
   }
 </style>
+
 <div class="page">
   <md-divider></md-divider>
   <div layout="column" layout-align="start start" layout-fill>
     <div layout="row" layout-padding>
-      <span class="md-subhead" layout-padding>{{$ctrl.item.customID}}</span>
-      <span layout-padding>|</span>
-      <span layout-padding class="md-caption">{{$ctrl.item.navigationState}}</span>
+      <span class="md-subhead" ng-show="$ctrl.filters.customID" layout-padding>{{$ctrl.item.customID}}</span>
+        <span ng-show="$ctrl.filters.displayState && $ctrl.filters.customID" layout-padding>|</span>
+        <span layout-padding ng-show="$ctrl.filters.displayState" class="md-caption">{{$ctrl.item.navigationStateLabel}}</span>
     </div>
     <div layout="row" layout-padding>
       <span ng-bind-html="$ctrl.item.label.ptBR.formattedText"></span>
     </div>
+
     <div id="fillingBox" ng-if="$ctrl.item.isQuestion && $ctrl.item.isAnswered" layout-padding>
-        <div id="answer" ng-if="$ctrl.item.hasAnswer" layout-fill>
-          <p class="md-caption" style="color: gray;">Resposta</p>
-          <p>{{$ctrl.item.answer}}</p>
-        </div>
-        <div id="metadata" ng-if="$ctrl.item.hasMetadata" layout-fill>
-          <p class="md-caption" style="color: gray;">Metadata</p>
-          <p ng-bind-html="$ctrl.item.metadata.label.ptBR.formattedText"></p>
-        </div>
-        <div id="comment" ng-if="$ctrl.item.hasComment" layout-fill>
-          <p class="md-caption" style="color: gray;">Comentário</p>
-          <p ng-bind-html="$ctrl.item.comment"></p>
-        </div>
+      <div id="answer" ng-if="$ctrl.item.hasAnswer" layout-fill>
+        <p class="md-caption" style="color: gray;">Resposta</p>
+        <p ng-show="$ctrl.filters.fillingBox" >{{$ctrl.item.answer}}</p>
+        <p ng-show="!$ctrl.filters.fillingBox" >{{$ctrl.item.answer}}</p>
+      </div>
+      <div id="metadata" ng-if="$ctrl.item.hasMetadata" layout-fill>
+        <p class="md-caption" style="color: gray;">Metadata</p>
+        <p ng-show="$ctrl.filters.fillingBox"  ng-bind-html="$ctrl.item.metadata.label.ptBR.formattedText"></p>
+      </div>
+      <div id="comment" ng-if="$ctrl.item.hasComment" ng-show="$ctrl.filters.comments" layout-fill>
+        <p class="md-caption" style="color: gray;">Comentário</p>
+        <p ng-show="$ctrl.filters.fillingBox"  ng-bind-html="$ctrl.item.comment"></p>
+      </div>
     </div>
+
   </div>
 </div>
