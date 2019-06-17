@@ -1,20 +1,10 @@
-<div>
-  <md-divider></md-divider>
-  <div layout="column" layout-align="start start" layout-fill>
-    <div layout="row" layout-padding>
-      <span class="md-subhead" layout-padding>{{$ctrl.item.customID}}</span>
-      <span layout-padding>|</span>
-      <span layout-padding class="md-caption">{{$ctrl.item.navigationStateLabel}}</span>
-    </div>
-    <div layout="row" layout-padding>
-      <md-card>
-        <img ng-src="{{$ctrl.item.value}}">
-        <md-card-content>
-          <div style="min-height:21px; padding: 3px; margin: 0" flex>
-            <span ng-bind-html="$ctrl.item.footer.ptBR.formattedText"></span>
-          </div>
-        </md-card-content>
-      </md-card>
-    </div>
-  </div>
+<div layout="row" layout-padding>
+  <md-card>
+    <img ng-src="{{$ctrl.item.value}}">
+    <md-card-content>
+      <div style="min-height:21px; padding: 3px; margin: 0" flex>
+        <span ng-bind-html="$ctrl.item.footer.ptBR.formattedText"></span>
+      </div>
+    </md-card-content>
+  </md-card>
 </div>
