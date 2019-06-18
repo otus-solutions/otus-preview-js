@@ -31,14 +31,11 @@
     self.exit = exit;
     $scope.exit = exit;
 
-
     function onInit() {
       self.activityData = SurveyViewerFactory.create();
-      console.log(self.activityData)
       self.ready = true;
       compileFilters();
     }
-
 
     function compileFilters() {
       let template = '<otus-viewer-filters filters=$ctrl.filters></otus-viewer-filters>';
@@ -58,17 +55,12 @@
       });
     };
 
-
     function exit() {
       window.history.back();
     }
-
-    
     
     function BottomSheetController($scope, filters) {
       $scope.filters = filters;
     }
-
-
   }
 }());

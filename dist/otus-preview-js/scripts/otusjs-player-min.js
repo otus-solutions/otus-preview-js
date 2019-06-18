@@ -286,7 +286,7 @@
   angular
     .module('otusjs.player.component')
     .component('otusViewer', {
-      template:'<md-content id="activity-viewer"><md-progress-circular ng-if="!$ctrl.ready" class="md-primary" md-diameter="70"></md-progress-circular><div layout="row" ng-if="$ctrl.ready" layout-padding flex><div id="sheet" layout="column" layout-margin layout-padding flex><span class="md-title">{{$ctrl.activityData.acronym}} - {{$ctrl.activityData.name}}</span><md-list><md-list-item layout="row" layout-align="start start" ng-repeat="item in $ctrl.activityData.itemContainer" ng-show="$ctrl.filters.state[item.navigationState]"><div layout-padding layout="row" class="md-whiteframe-1dp" style="margin-top: 2%"><span style="vertical-align: middle;">{{$index + 1}}</span></div><survey-item-view item="item" filters="$ctrl.filters" flex></survey-item-view></md-list-item></md-list></div><div id="header-viewer" layout-padding layout="column" layout-align="start center" class="no-print" flex="5"><div layout="column" style="position:fixed;"><md-button class="md-fab md-mini" ng-click="$ctrl.showListBottomSheet()"><md-icon>filter_list</md-icon><md-tooltip>Filtros</md-tooltip></md-button><md-button class="md-fab md-mini" ng-click="$ctrl.exit()"><md-icon>arrow_back</md-icon><md-tooltip>Sair</md-tooltip></md-button></div></div></div></md-content>',
+      template:'<md-content id="activity-viewer"><md-progress-circular ng-if="!$ctrl.ready" class="md-primary" md-diameter="70"></md-progress-circular><div layout="row" ng-if="$ctrl.ready" layout-padding flex><div layout="column" id="sheet" class="md-whiteframe-1dp page-preview" layout-margin flex><div layout="row" layout-align="center center"><span class="md-title">{{$ctrl.activityData.acronym}} - {{$ctrl.activityData.name}}</span></div><div layout="column"><div layout="row"><span>{{$ctrl.activityData.participantData.recruitmentNumber}}</span></div><div layout="row"><span>{{$ctrl.activityData.participantData.name}}</span></div></div><md-list><md-list-item layout="row" layout-align="start start" ng-repeat="item in $ctrl.activityData.itemContainer" ng-show="$ctrl.filters.state[item.navigationState]"><div layout-padding layout="row" class="md-whiteframe-1dp"><span style="vertical-align: middle;">{{$index + 1}}</span></div><survey-item-view item="item" filters="$ctrl.filters" flex></survey-item-view></md-list-item></md-list></div><div id="header-viewer" layout-padding layout="column" layout-align="start center" class="no-print" flex="5"><div layout="column" style="position:fixed;"><md-button class="md-fab md-mini" ng-click="$ctrl.showListBottomSheet()"><md-icon>filter_list</md-icon><md-tooltip>Filtros</md-tooltip></md-button><md-button class="md-fab md-mini" ng-click="$ctrl.exit()"><md-icon>arrow_back</md-icon><md-tooltip>Sair</md-tooltip></md-button></div></div></div></md-content>',
       controller: 'otusViewerCtrl as $ctrl'
     }).controller("otusViewerCtrl", Controller);
 
@@ -313,14 +313,11 @@
     self.exit = exit;
     $scope.exit = exit;
 
-
     function onInit() {
       self.activityData = SurveyViewerFactory.create();
-      console.log(self.activityData)
       self.ready = true;
       compileFilters();
     }
-
 
     function compileFilters() {
       let template = '<otus-viewer-filters filters=$ctrl.filters></otus-viewer-filters>';
@@ -340,18 +337,13 @@
       });
     };
 
-
     function exit() {
       window.history.back();
     }
-
-    
     
     function BottomSheetController($scope, filters) {
       $scope.filters = filters;
     }
-
-
   }
 }());
 
@@ -401,7 +393,7 @@
   angular
     .module('otusjs.player.component')
     .component('surveyItemView', {
-      template:'<style>\n\n  @page {\n    size: A4;\n    margin: 0;\n  }\n\n  @media print {\n    .page-break {\n      height: 0;\n      page-break-before: always;\n      margin: 0;\n      border-top: none;\n    }\n\n    .page {\n      margin: 0;\n      border: initial;\n      border-radius: initial;\n      width: initial;\n      min-height: initial;\n      box-shadow: initial;\n      background: initial;\n      page-break-after: always;\n    }\n  }\n</style><div class="page"><md-divider></md-divider><div layout="column" layout-align="start start" layout-fill><div layout="row" layout-padding><span class="md-subhead" ng-show="$ctrl.filters.customID" layout-padding>{{$ctrl.item.customID}}</span> <span ng-show="$ctrl.filters.displayState && $ctrl.filters.customID" layout-padding>|</span> <span layout-padding ng-show="$ctrl.filters.displayState" class="md-caption">{{$ctrl.item.navigationStateLabel}}</span></div><div layout="row" layout-padding><span ng-bind-html="$ctrl.item.label.ptBR.formattedText"></span></div><div id="fillingBox" bind-html-compile="$ctrl.template"></div></div></div>',
+      template:'<div><md-divider></md-divider><div layout="column" layout-align="start start" layout-padding layout-fill><div layout="row" layout-padding><span class="md-subhead" ng-show="$ctrl.filters.customID" layout-padding>{{$ctrl.item.customID}}</span> <span ng-show="$ctrl.filters.displayState && $ctrl.filters.customID" layout-padding>|</span> <span layout-padding ng-show="$ctrl.filters.displayState" class="md-caption">{{$ctrl.item.navigationStateLabel}}</span></div><div layout="row" layout-padding><span ng-bind-html="$ctrl.item.label.ptBR.formattedText"></span></div><div id="fillingBox" bind-html-compile="$ctrl.template"></div></div></div>',
       controller: Controller,
       bindings: {
         item: '=',
