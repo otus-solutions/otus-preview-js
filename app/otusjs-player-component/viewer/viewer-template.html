@@ -9,7 +9,7 @@
           <md-list-item layout="row" layout-align="start start"
                         ng-repeat="item in $ctrl.activityData.itemContainer"
                         ng-show="$ctrl.filters.state[item.navigationState]">
-            <div layout-padding layout="row" class="md-whiteframe-1dp" style="margin-top: 2%">
+            <div layout-padding layout="row" class="md-whiteframe-1dp">
               <span style="vertical-align: middle;">{{$index + 1}}</span>
             </div>
           <survey-item-view item="item" filters="$ctrl.filters" flex></survey-item-view>
@@ -19,7 +19,7 @@
 
     <div id="header-viewer" layout-padding layout="column" layout-align="start center" class="no-print" flex="5">
       <div layout="column" style="position:fixed;">
-        <md-button class="md-fab md-mini" ng-click="$ctrl.showListBottomSheet()">
+        <md-button class="md-fab md-mini" ng-click="$ctrl.showFilters()">
           <md-icon>filter_list</md-icon>
           <md-tooltip>Filtros</md-tooltip>
         </md-button>
