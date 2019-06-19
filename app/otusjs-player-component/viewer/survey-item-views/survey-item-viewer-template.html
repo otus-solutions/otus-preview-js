@@ -1,10 +1,11 @@
-<div class="page">
-  <md-divider></md-divider>
-  <div layout="column" layout-align="start start" layout-padding layout-fill>
+<div>
+  <md-divider md-inset></md-divider>
+  <div layout="column" layout-align="start stat" layout-padding layout-fill>
     <div layout="row" layout-padding>
       <span class="md-subhead" ng-show="$ctrl.filters.customID" layout-padding>{{$ctrl.item.customID}}</span>
       <span ng-show="$ctrl.filters.displayState && $ctrl.filters.customID" layout-padding>|</span>
-      <span layout-padding ng-show="$ctrl.filters.displayState" class="md-caption">{{$ctrl.item.navigationStateLabel}}</span>
+      <span layout-padding ng-show="$ctrl.filters.displayState"
+            class="md-caption">{{$ctrl.item.navigationStateLabel}}</span>
     </div>
     <div layout="row" layout-padding>
       <span ng-bind-html="$ctrl.item.label.ptBR.formattedText"></span>

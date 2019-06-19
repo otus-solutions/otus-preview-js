@@ -2,8 +2,9 @@
   <md-progress-circular ng-if="!$ctrl.ready" class="md-primary" md-diameter="70"></md-progress-circular>
 
   <div layout="row" ng-if="$ctrl.ready" layout-padding flex>
+    <div layout="column" class="no-print" flex="5"></div>
 
-    <div layout="column" id="sheet" class="md-whiteframe-1dp page-preview" layout-margin flex>
+    <div layout="column" id="sheet" class="md-whiteframe-1dp" layout-margin flex>
       <div layout="row" layout-align="center center">
         <span class="md-title">{{$ctrl.activityData.acronym}} - {{$ctrl.activityData.name}}</span>
       </div>
@@ -16,7 +17,7 @@
       </div>
 
       <md-list>
-        <md-list-item layout="row" layout-align="start start"
+        <md-list-item class="page-break" layout="row" layout-align="start start"
                       ng-repeat="item in $ctrl.activityData.itemContainer"
                       ng-show="$ctrl.filters.state[item.navigationState]">
           <div layout-padding layout="row" class="md-whiteframe-1dp">
