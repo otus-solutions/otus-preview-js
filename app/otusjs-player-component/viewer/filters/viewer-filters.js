@@ -22,6 +22,7 @@
 
     function _setInitialFilters() {
       self.filters = {
+        participantData: true,
         displayState: false,
         customID: true,
         state: {

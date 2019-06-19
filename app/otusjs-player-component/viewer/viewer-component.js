@@ -23,10 +23,9 @@
 
     self.$onInit = onInit;
     self.ready = false;
-    self.showFilters = showFilters;
-
     $scope.filters = {};
     self.filters = $scope.filters;
+    self.showFilters = showFilters;
 
     /* Public methods */
     self.exit = exit;

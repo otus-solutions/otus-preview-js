@@ -286,7 +286,7 @@
   angular
     .module('otusjs.player.component')
     .component('otusViewer', {
-      template:'<md-content id="activity-viewer"><md-progress-circular ng-if="!$ctrl.ready" class="md-primary" md-diameter="70"></md-progress-circular><div layout="row" ng-if="$ctrl.ready" layout-padding flex><div id="sheet" layout="column" layout-margin layout-padding flex><span class="md-title">{{$ctrl.activityData.acronym}} - {{$ctrl.activityData.name}}</span><md-list><md-list-item layout="row" layout-align="start start" ng-repeat="item in $ctrl.activityData.itemContainer" ng-show="$ctrl.filters.state[item.navigationState]"><div layout-padding layout="row" class="md-whiteframe-1dp"><span style="vertical-align: middle;">{{$index + 1}}</span></div><survey-item-view item="item" filters="$ctrl.filters" flex></survey-item-view></md-list-item></md-list></div><div id="header-viewer" layout-padding layout="column" layout-align="start center" class="no-print" flex="5"><div layout="column" style="position:fixed;"><md-button class="md-fab md-mini" ng-click="$ctrl.showFilters()"><md-icon>filter_list</md-icon><md-tooltip>Filtros</md-tooltip></md-button><md-button class="md-fab md-mini" ng-click="$ctrl.exit()"><md-icon>arrow_back</md-icon><md-tooltip>Sair</md-tooltip></md-button></div></div></div></md-content>',
+      template:'<md-content id="activity-viewer"><md-progress-circular ng-if="!$ctrl.ready" class="md-primary" md-diameter="70"></md-progress-circular><div layout="row" ng-if="$ctrl.ready" layout-padding flex><div layout="column" id="sheet" class="md-whiteframe-1dp page-preview" layout-margin flex><div layout="row" layout-align="center center"><span class="md-title">{{$ctrl.activityData.acronym}} - {{$ctrl.activityData.name}}</span></div><div layout="column" ng-show="$ctrl.filters.participantData"><div layout="row"><span style="margin-right: 5px;">{{$ctrl.activityData.participantData.recruitmentNumber}} -</span> <span>{{$ctrl.activityData.participantData.name}}</span></div></div><md-list><md-list-item layout="row" layout-align="start start" ng-repeat="item in $ctrl.activityData.itemContainer" ng-show="$ctrl.filters.state[item.navigationState]"><div layout-padding layout="row" class="md-whiteframe-1dp"><span style="vertical-align: middle;">{{$index + 1}}</span></div><survey-item-view item="item" filters="$ctrl.filters" flex></survey-item-view></md-list-item></md-list></div><div id="header-viewer" layout-padding layout="column" layout-align="start center" class="no-print" flex="5"><div layout="column" style="position:fixed;"><md-button class="md-fab md-mini" ng-click="$ctrl.showFilters()"><md-icon>filter_list</md-icon><md-tooltip>Filtros</md-tooltip></md-button><md-button class="md-fab md-mini" ng-click="$ctrl.exit()"><md-icon>arrow_back</md-icon><md-tooltip>Sair</md-tooltip></md-button></div></div></div></md-content>',
       controller: 'otusViewerCtrl as $ctrl'
     }).controller('otusViewerCtrl', Controller);
 
@@ -305,10 +305,9 @@
 
     self.$onInit = onInit;
     self.ready = false;
-    self.showFilters = showFilters;
-
     $scope.filters = {};
     self.filters = $scope.filters;
+    self.showFilters = showFilters;
 
     /* Public methods */
     self.exit = exit;
@@ -329,7 +328,7 @@
 
     function showFilters() {
       $mdBottomSheet.show({
-        template:'<style>\n  .md-grid-item-content {\n    height: 90px;\n    padding-top: 10px; }\n\n</style><md-bottom-sheet class="md-list md-has-header"><div layout="row" layout-align="start center" ng-cloak><md-subheader ng-cloak>Filtros</md-subheader></div><div ng-cloak layout="row" layout-fill><md-content layout-align="start space-around"><md-checkbox class="md-grid-item-content" ng-model="filters.state.SKIPPED">Mostrar questões puladas</md-checkbox><md-checkbox class="md-grid-item-content" ng-model="filters.state.NOT_VISITED">Mostrar não visitadas</md-checkbox><md-checkbox class="md-grid-item-content" ng-model="filters.displayState">Estado da questão</md-checkbox><md-checkbox class="md-grid-item-content" ng-model="filters.customID">Id de questão</md-checkbox></md-content></div><div ng-cloak layout-padding layout="row" layout-align="center center"><p class="caption-sheet">Modo de visualização de atividade.</p></div></md-bottom-sheet>',
+        template:'<style>\n  .md-grid-item-content {\n    height: 90px;\n    padding-top: 10px;\n  }\n\n</style><md-bottom-sheet class="md-list md-has-header"><div layout="row" layout-align="start center" ng-cloak><md-subheader ng-cloak>Filtros</md-subheader></div><div ng-cloak layout="row" layout-fill><md-content layout-align="start space-around"><md-checkbox class="md-grid-item-content" ng-model="filters.participantData">Dados do participante</md-checkbox><md-checkbox class="md-grid-item-content" ng-model="filters.customID">Id de questão</md-checkbox><md-checkbox class="md-grid-item-content" ng-model="filters.state.SKIPPED">Questões puladas</md-checkbox><md-checkbox class="md-grid-item-content" ng-model="filters.state.NOT_VISITED">Questões não visitadas</md-checkbox><md-checkbox class="md-grid-item-content" ng-model="filters.displayState">Estado da questão</md-checkbox></md-content></div><div ng-cloak layout-padding layout="row" layout-align="center center"><p class="caption-sheet">Modo de visualização de atividade.</p></div></md-bottom-sheet>',
         locals: {
           filters: self.filters
         },
@@ -360,7 +359,7 @@
   angular
     .module('otusjs.player.component')
     .component('otusViewerFilters', {
-      template:'<style>\n  .md-grid-item-content {\n    height: 90px;\n    padding-top: 10px; }\n\n</style><md-bottom-sheet class="md-list md-has-header"><div layout="row" layout-align="start center" ng-cloak><md-subheader ng-cloak>Filtros</md-subheader></div><div ng-cloak layout="row" layout-fill><md-content layout-align="start space-around"><md-checkbox class="md-grid-item-content" ng-model="filters.state.SKIPPED">Mostrar questões puladas</md-checkbox><md-checkbox class="md-grid-item-content" ng-model="filters.state.NOT_VISITED">Mostrar não visitadas</md-checkbox><md-checkbox class="md-grid-item-content" ng-model="filters.displayState">Estado da questão</md-checkbox><md-checkbox class="md-grid-item-content" ng-model="filters.customID">Id de questão</md-checkbox></md-content></div><div ng-cloak layout-padding layout="row" layout-align="center center"><p class="caption-sheet">Modo de visualização de atividade.</p></div></md-bottom-sheet>',
+      template:'<style>\n  .md-grid-item-content {\n    height: 90px;\n    padding-top: 10px;\n  }\n\n</style><md-bottom-sheet class="md-list md-has-header"><div layout="row" layout-align="start center" ng-cloak><md-subheader ng-cloak>Filtros</md-subheader></div><div ng-cloak layout="row" layout-fill><md-content layout-align="start space-around"><md-checkbox class="md-grid-item-content" ng-model="filters.participantData">Dados do participante</md-checkbox><md-checkbox class="md-grid-item-content" ng-model="filters.customID">Id de questão</md-checkbox><md-checkbox class="md-grid-item-content" ng-model="filters.state.SKIPPED">Questões puladas</md-checkbox><md-checkbox class="md-grid-item-content" ng-model="filters.state.NOT_VISITED">Questões não visitadas</md-checkbox><md-checkbox class="md-grid-item-content" ng-model="filters.displayState">Estado da questão</md-checkbox></md-content></div><div ng-cloak layout-padding layout="row" layout-align="center center"><p class="caption-sheet">Modo de visualização de atividade.</p></div></md-bottom-sheet>',
       controller:'otusViewFiltersController as $ctrl',
       bindings: {
         filters: '='
@@ -378,6 +377,7 @@
 
     function _setInitialFilters() {
       self.filters = {
+        participantData: true,
         displayState: false,
         customID: true,
         state: {
@@ -400,7 +400,7 @@
   angular
     .module('otusjs.player.component')
     .component('surveyItemView', {
-      template:'<div class="page"><md-divider></md-divider><div layout="column" layout-align="start start" layout-fill><div layout="row" layout-padding><span class="md-subhead" ng-show="$ctrl.filters.customID" layout-padding>{{$ctrl.item.customID}}</span> <span ng-show="$ctrl.filters.displayState && $ctrl.filters.customID" layout-padding>|</span> <span layout-padding ng-show="$ctrl.filters.displayState" class="md-caption">{{$ctrl.item.navigationStateLabel}}</span></div><div layout="row" layout-padding><span ng-bind-html="$ctrl.item.label.ptBR.formattedText"></span></div><div id="fillingBox" bind-html-compile="$ctrl.template"></div></div></div>',
+      template:'<div class="page"><md-divider></md-divider><div layout="column" layout-align="start start" layout-padding layout-fill><div layout="row" layout-padding><span class="md-subhead" ng-show="$ctrl.filters.customID" layout-padding>{{$ctrl.item.customID}}</span> <span ng-show="$ctrl.filters.displayState && $ctrl.filters.customID" layout-padding>|</span> <span layout-padding ng-show="$ctrl.filters.displayState" class="md-caption">{{$ctrl.item.navigationStateLabel}}</span></div><div layout="row" layout-padding><span ng-bind-html="$ctrl.item.label.ptBR.formattedText"></span></div><div id="fillingBox" bind-html-compile="$ctrl.template"></div></div></div>',
       controller: Controller,
       bindings: {
         item: '=',

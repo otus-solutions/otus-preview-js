@@ -1,7 +1,8 @@
 <style>
   .md-grid-item-content {
     height: 90px;
-    padding-top: 10px; }
+    padding-top: 10px;
+  }
 
 </style>
 <md-bottom-sheet class="md-list md-has-header">
@@ -9,11 +10,13 @@
     <md-subheader ng-cloak>Filtros</md-subheader>
   </div>
   <div ng-cloak layout="row" layout-fill>
-    <md-content  layout-align="start space-around ">
-    <md-checkbox class="md-grid-item-content" ng-model="filters.state.SKIPPED"> Mostrar questões puladas</md-checkbox>
-    <md-checkbox class="md-grid-item-content" ng-model="filters.state.NOT_VISITED"> Mostrar não visitadas</md-checkbox>
-    <md-checkbox class="md-grid-item-content" ng-model="filters.displayState"> Estado da questão</md-checkbox>
-    <md-checkbox class="md-grid-item-content" ng-model="filters.customID"> Id de questão</md-checkbox>
+    <md-content layout-align="start space-around ">
+      <md-checkbox class="md-grid-item-content" ng-model="filters.participantData"> Dados do participante</md-checkbox>
+      <md-checkbox class="md-grid-item-content" ng-model="filters.customID"> Id de questão</md-checkbox>
+      <md-checkbox class="md-grid-item-content" ng-model="filters.state.SKIPPED"> Questões puladas</md-checkbox>
+      <md-checkbox class="md-grid-item-content" ng-model="filters.state.NOT_VISITED"> Questões não visitadas
+      </md-checkbox>
+      <md-checkbox class="md-grid-item-content" ng-model="filters.displayState"> Estado da questão</md-checkbox>
     </md-content>
   </div>
   <div ng-cloak layout-padding layout="row" layout-align="center center">

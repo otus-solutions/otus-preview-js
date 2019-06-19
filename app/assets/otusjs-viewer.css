@@ -1,6 +1,6 @@
-html {
-  overflow-y: hidden !important;
-}
+/*html {*/
+/*  overflow-y: hidden !important;*/
+/*}*/
 
 @page #activity-viewer {
   size: A4 !important;
@@ -32,38 +32,89 @@ html {
 }
 
 #activity-viewer {
-  background-color: #fafafa;
-
+  width: 100% !important;
+  height: 100% !important;
+  margin: 0 !important;
+  padding: 0 !important;
+}
+* {
+  box-sizing: border-box !important;
+  -moz-box-sizing: border-box !important;
 }
 
 #activity-viewer #sheet {
-  margin:auto;
-  background-color: white;
-  border: 1px solid #D8D6D6;
+  margin: auto;
   margin-bottom: 10px;
   margin-top:10px;
   padding: 10mm;
   max-width: 210mm;
   min-height: 297mm !important;
-  -webkit-box-shadow: 0px 0px 2px 2px rgba(181, 181, 181, 0.35);
-  -moz-box-shadow: 0px 0px 2px 2px rgba(181, 181, 181, 0.35);
-  box-shadow: 0px 0px 2px 2px rgba(181, 181, 181, 0.35);
-  padding-bottom: 180px;
 }
 
 #fillingBox {
   margin-left: 15px;
 }
 
-@media (max-width: 210mm) {
-  #activity-viewer #sheet {
-    width:100%;
-  }
-}
+/*.page {*/
+/*  width: 210mm !important;*/
+/*  min-height: 297mm !important;*/
+/*  padding: 20mm !important;*/
+/*  margin: 10mm auto !important;*/
+/*  border: 1px #D3D3D3 solid !important;*/
+/*  border-radius: 5px;*/
+/*  background: white;*/
+/*  box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);*/
+/*}*/
+
+/*.subpage {*/
+/*  padding: 1cm !important;*/
+/*  !*border: 5px red solid !important;*!*/
+/*  height: 257mm !important;*/
+/*  outline: 2cm #FFEAEA solid !important;*/
+/*  padding-bottom: 180px;*/
+/*}*/
+
+/*@media (max-width: 210mm) {*/
+/*  #activity-viewer #sheet {*/
+/*    width:100%;*/
+/*    height: 297mm;*/
+/*  }*/
+/*}*/
 
 @media print {
+  /*@page {*/
+  /*  size: A4 !important;*/
+  /*  margin: 0 !important;*/
+  /*}*/
+
+  #activity-viewer {
+    width: 210mm !important;
+    height: 297mm !important;
+  }
+
   .no-print {
     display: none;
+  }
+
+  /*.page-break {*/
+  /*  height: 0;*/
+  /*  page-break-before: always;*/
+  /*  margin: 0;*/
+  /*  border-top: none;*/
+  /*}*/
+
+  .page-preview {
+    margin: auto !important;
+    border: initial !important;
+    border-radius: initial !important;
+    width: initial !important;
+    /*min-height: initial !important;*/
+    box-shadow: initial !important;
+    background: initial !important;
+    page-break-inside: auto !important;
+    /*page-break-inside: avoid !important;*/
+    max-width: 210mm;
+    min-height: 297mm !important;
   }
 }
 
