@@ -26,6 +26,7 @@
     $scope.filters = {};
     self.filters = $scope.filters;
     self.showFilters = showFilters;
+    self.print = print;
 
     /* Public methods */
     self.exit = exit;
@@ -42,6 +43,10 @@
     function compileFilters() {
       let template = '<otus-viewer-filters filters=$ctrl.filters></otus-viewer-filters>';
       self.filterComponent = $compile(template)($scope.$new());
+    }
+
+    function print(){
+      window.print();
     }
 
     function showFilters() {

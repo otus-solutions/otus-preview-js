@@ -21,19 +21,25 @@
 
 @page {
   size: A4;
+  background-color: white !important;
 }
 
 @media (max-width: 210mm) {
   #activity-viewer #sheet {
     width: 100%;
     height: 297mm;
+    background-color: white !important;
   }
 }
 
 @media print {
+  body {
+    background-color: white;
+  }
   #activity-viewer {
     width: 210mm !important;
     height: 297mm !important;
+    background-color: white !important;
   }
 
   #activity-viewer #sheet {
@@ -43,12 +49,14 @@
     width: initial;
     min-height: initial;
     box-shadow: initial;
-    background: initial;
+    /*background: initial;*/
     padding: initial;
+    background-color: white !important;
   }
 
   .page-break {
     page-break-inside: avoid;
+    background-color: white !important;
   }
 
   .no-print {

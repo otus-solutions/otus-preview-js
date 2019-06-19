@@ -1,8 +1,7 @@
 <md-content id="activity-viewer">
   <md-progress-circular ng-if="!$ctrl.ready" class="md-primary" md-diameter="70"></md-progress-circular>
-
   <div layout="row" ng-if="$ctrl.ready" layout-padding flex>
-    <div layout="column" class="no-print" flex="5"></div>
+  <span flex class="no-print"></span>
 
     <div layout="column" id="sheet" class="md-whiteframe-1dp" layout-margin flex>
       <div layout="row" layout-align="center center">
@@ -28,8 +27,12 @@
       </md-list>
     </div>
 
-    <div id="header-viewer" layout-padding layout="column" layout-align="start center" class="no-print" flex="5">
+    <div id="header-viewer" layout-padding layout="column" layout-align="start end" class="no-print" flex>
       <div layout="column" style="position:fixed;">
+        <md-button class="md-fab md-mini" ng-click="$ctrl.print()">
+          <md-icon>print</md-icon>
+          <md-tooltip>Imprimir</md-tooltip>
+        </md-button>
         <md-button class="md-fab md-mini" ng-click="$ctrl.showFilters()">
           <md-icon>filter_list</md-icon>
           <md-tooltip>Filtros</md-tooltip>
