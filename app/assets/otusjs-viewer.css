@@ -1,6 +1,9 @@
 #activity-viewer .page-item {
   border-top: 0.5px solid lightgray;
 }
+#activity-viewer .viewer-commands {
+  position:fixed; bottom:0;
+}
 
 #activity-viewer #sheet {
   margin: auto;

@@ -10,9 +10,13 @@
       </div>
 
       <div layout="column" ng-show="$ctrl.filters.participantData">
-        <div layout="row">
-          <span style="margin-right: 5px;">{{$ctrl.activityData.participantData.recruitmentNumber}} - </span>
-          <span>{{$ctrl.activityData.participantData.name}}</span>
+        <div layout="column">
+          <div layout="row">
+            <span> {{$ctrl.activityData.participantData.recruitmentNumber}}</span>
+          </div>
+          <div layout="row">
+            <span>{{$ctrl.activityData.participantData.name}}</span>
+          </div>
         </div>
       </div>
 
@@ -29,7 +33,7 @@
     </div>
 
     <div id="header-viewer" layout-padding layout="column" layout-align="start center" class="no-print" flex="5">
-      <div layout="column" style="position:fixed;">
+      <div layout="column" class="viewer-commands">
         <md-button class="md-fab md-mini" ng-click="$ctrl.showFilters()">
           <md-icon>filter_list</md-icon>
           <md-tooltip>Filtros</md-tooltip>
