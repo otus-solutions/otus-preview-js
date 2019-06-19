@@ -49,6 +49,7 @@
 
   .page-break {
     page-break-inside: avoid;
+    margin-top: 10px;
   }
 
   .no-print {
