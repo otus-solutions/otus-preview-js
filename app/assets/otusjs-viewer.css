@@ -1,5 +1,5 @@
-#activity-viewer #subheader {
-  width: 10px;
+#activity-viewer .page-item {
+  border-top: 0.5px solid lightgray;
 }
 
 #activity-viewer #sheet {
@@ -30,6 +30,7 @@
   }
 }
 
+
 @media print {
   #activity-viewer {
     width: 210mm !important;
@@ -49,7 +50,7 @@
 
   .page-break {
     page-break-inside: avoid;
-    margin-top: 10px;
+    padding-top: 10em;
   }
 
   .no-print {
