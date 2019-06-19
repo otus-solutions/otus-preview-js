@@ -1,5 +1,6 @@
 <md-content id="activity-viewer">
   <md-progress-circular ng-if="!$ctrl.ready" class="md-primary" md-diameter="70"></md-progress-circular>
+
   <div layout="row" ng-if="$ctrl.ready" layout-padding flex>
   <span flex class="no-print"></span>
 
@@ -28,7 +29,7 @@
     </div>
 
     <div id="header-viewer" layout-padding layout="column" layout-align="start end" class="no-print" flex>
-      <div layout="column" style="position:fixed;">
+      <div layout="column" class="viewer-commands">
         <md-button class="md-fab md-mini" ng-click="$ctrl.print()">
           <md-icon>print</md-icon>
           <md-tooltip>Imprimir</md-tooltip>

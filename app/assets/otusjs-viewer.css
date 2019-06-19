@@ -1,5 +1,8 @@
-#activity-viewer #subheader {
-  width: 10px;
+#activity-viewer .page-item {
+  border-top: 0.5px solid lightgray;
+}
+#activity-viewer .viewer-commands {
+  position:fixed; bottom:0;
 }
 
 #activity-viewer #sheet {
@@ -49,7 +52,6 @@
     width: initial;
     min-height: initial;
     box-shadow: initial;
-    /*background: initial;*/
     padding: initial;
     background-color: white !important;
   }
