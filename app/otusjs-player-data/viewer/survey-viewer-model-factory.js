@@ -58,6 +58,9 @@
         case 'CheckboxQuestion':
           return new CheckboxQuestionView(item, trackingItem, filling);
 
+        case 'FileUploadQuestion':
+          return new FileUploadQuestionView(item, trackingItem, filling);
+
         case 'SingleSelectionQuestion':
           return new SingleSelectionQuestionView(item, trackingItem, filling);
 
@@ -101,6 +104,14 @@
       var self = new QuestionView(item, navigationTrackingItem, filling);
 
       self.templateName = 'calendarQuestionView';
+
+      return self;
+    }
+
+    function FileUploadQuestionView(item, navigationTrackingItem, filling) {
+      var self = new QuestionView(item, navigationTrackingItem, filling);
+
+      self.templateName = 'fileUploadQuestionView';
 
       return self;
     }
