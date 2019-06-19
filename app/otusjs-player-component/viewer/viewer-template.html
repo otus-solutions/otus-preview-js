@@ -6,8 +6,8 @@
 
     <div layout="column" id="sheet" class="md-whiteframe-1dp" layout-margin flex>
       <div layout="row" layout-align="center center">
-        <span class="md-title">{{$ctrl.activityData.acronym}} - {{$ctrl.activityData.name}}</span>
-      </div>
+      <span class="md-title">{{$ctrl.activityData.acronym}} - {{$ctrl.activityData.name}}</span>
+    </div>
 
       <div layout="column" ng-show="$ctrl.filters.participantData">
         <div layout="row">
@@ -17,7 +17,7 @@
       </div>
 
       <md-list>
-        <md-list-item class="page-break" layout="row" layout-align="start start"
+        <md-list-item class="page-break page-item" layout="row" layout-align="start start"
                       ng-repeat="item in $ctrl.activityData.itemContainer"
                       ng-show="$ctrl.filters.state[item.navigationState]">
           <div layout-padding layout="row" class="md-whiteframe-1dp">
