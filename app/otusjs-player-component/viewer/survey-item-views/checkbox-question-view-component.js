@@ -13,13 +13,6 @@
     });
 
 
-  function Controller() {
-    var self = this;
-    self.$onInit = onInit;
-
-    function onInit() {
-
-    }
-  }
+  function Controller() {}
 
 }());
