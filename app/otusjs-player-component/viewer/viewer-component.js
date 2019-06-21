@@ -12,13 +12,12 @@
     '$compile',
     '$scope',
     '$mdBottomSheet',
-    'otusjs.player.data.viewer.SurveyViewFactory',
-    'otusjs.player.core.player.PlayerService'
+    'otusjs.player.data.viewer.SurveyViewFactory'
   ];
 
   function Controller(
     $compile, $scope, $mdBottomSheet,
-    SurveyViewerFactory, PlayerService) {
+    SurveyViewerFactory) {
     var self = this;
 
     self.$onInit = onInit;
@@ -45,7 +44,7 @@
       self.filterComponent = $compile(template)($scope.$new());
     }
 
-    function print(){
+    function print() {
       window.print();
     }
 

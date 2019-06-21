@@ -20,6 +20,12 @@
   visibility: hidden;
 }
 
+#activity-viewer .md-grid-item-content {
+  height: 90px;
+  padding-top: 10px;
+}
+
+
 @page {
   size: A4;
 }

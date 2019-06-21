@@ -21,12 +21,12 @@
     function ActivityView(ActivityFacadeService) {
       var self = this;
 
-      let act = ActivityFacadeService.surveyActivity;
-      self.acronym = act.surveyForm.acronym;
-      self.name = act.surveyForm.name;
-      self.participantData = act.participantData;
-      self.lastStatus = act.statusHistory.getLastStatus();
-      self.mode = act.mode;
+      let activity = ActivityFacadeService.surveyActivity;
+      self.acronym = activity.surveyForm.acronym;
+      self.name = activity.surveyForm.name;
+      self.participantData = activity.participantData;
+      self.lastStatus = activity.statusHistory.getLastStatus();
+      self.mode = activity.mode;
 
 
       let items = ActivityFacadeService.surveyActivity.getItems();
@@ -146,18 +146,18 @@
       self.trueValue = 1;
 
       if (filling && filling.answer.value) {
-        self.answer = item.options.map(op => {
-          if (op.value.toString() === filling.answer.value.toString()) {
-            op.value = 1;
+        self.answer = item.options.map(options => {
+          if (options.value.toString() === filling.answer.value.toString()) {
+            options.value = 1;
           } else {
-            op.value = 0;
+            options.value = 0;
           }
-          return op;
+          return options;
         });
       } else {
-        self.answer = item.options.map(op => {
-          op.value = 0;
-          return op;
+        self.answer = item.options.map(options => {
+          options.value = 0;
+          return options;
         });
       }
 

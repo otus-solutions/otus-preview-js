@@ -8,14 +8,12 @@
   stateConfiguration.$inject = ['$stateProvider', '$urlRouterProvider', '$locationProvider'];
 
   function stateConfiguration($stateProvider, $urlRouterProvider, $locationProvider) {
-    console.log('state conf')
     $stateProvider
       .state('index', {
         url: '/index',
         templateUrl: 'app/otusjs-player-viewer/sheet-view-template.html',
         resolve: {
           resolvedSurveyTemplate: function prepareWorkEnvironment(FakeDataService, $q) {
-            console.log('teste');
             var deferred = $q.defer();
             FakeDataService.getSurveyTemplate().then(function (data) {
               deferred.resolve(data);
