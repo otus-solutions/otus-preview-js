@@ -173,7 +173,7 @@
       self.answer = item.getLinesList().map((line, lineIx) => {
         if (filling && filling.answer.value) {
           filling.answer.value[lineIx].forEach((pos, posIx) => {
-            line.getGridIntegerList()[posIx].value = pos.value;
+            line.getGridIntegerList()[posIx].value = pos.value || ' ';
           });
         }
 
@@ -191,7 +191,7 @@
       self.answer = item.getLinesList().map((line, lineIx) => {
         if (filling && filling.answer.value) {
           filling.answer.value[lineIx].forEach((pos, posIx) => {
-            line.getGridTextList()[posIx].value = pos.value;
+            line.getGridTextList()[posIx].value = pos.value || ' ';
           });
         }
 

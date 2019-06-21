@@ -18,7 +18,7 @@
     self.$onInit = onInit;
 
     function onInit() {
-
+      console.log(self.item)
     }
   }
 

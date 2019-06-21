@@ -1,8 +1,10 @@
 #activity-viewer .page-item {
   border-top: 0.5px solid lightgray;
 }
+
 #activity-viewer .viewer-commands {
-  position:fixed; bottom:0;
+  position: fixed;
+  bottom: 0;
 }
 
 #activity-viewer #sheet {
@@ -12,10 +14,6 @@
   padding: 10mm;
   max-width: 210mm;
   min-height: 297mm !important;
-}
-
-#activity-viewer #fillingBox {
-  margin-left: 15px;
 }
 
 #activity-viewer .hidden {
@@ -37,6 +35,7 @@
   body {
     background-color: white;
   }
+
   #activity-viewer {
     width: 210mm !important;
     height: 297mm !important;
@@ -52,13 +51,22 @@
     padding: initial;
   }
 
-  .page-break {
+  #activity-viewer .page-break {
     page-break-inside: avoid;
   }
 
-  .no-print {
+  #activity-viewer .no-print {
     display: none;
   }
+
+  #activity-viewer md-tooltip {
+    display: none !important;
+  }
+
+  .tooltipster-base.Balloon {
+    display: none !important;
+  }
+
 }
 
 
