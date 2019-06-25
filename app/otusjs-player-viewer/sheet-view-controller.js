@@ -9,7 +9,6 @@
 
     function SheetViewController(resolvedSurveyTemplate) {
         var self = this;
-
         self.surveyTemplate = resolvedSurveyTemplate;
         
     }

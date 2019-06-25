@@ -31,7 +31,7 @@
     "angular-mousewheel": "^1.0.5",
     "angular-ui-router": "0.2.14",
     "jquery": "^3.1.1",
-    "otus-model-js": "git@github.com:ccem-dev/otus-model-js.git#v1.16",
+    "otus-model-js": "git@github.com:ccem-dev/otus-model-js.git#v1.23",
     "otus-validation-js": "git@github.com:ccem-dev/otus-validation-js.git#v1.0",
     "trail-js": "git@github.com:ccem-dev/trail-js.git#dev"
   },
@@ -41,6 +41,7 @@
     "babel-plugin-es6-promise": "^1.1.1",
     "babel-preset-es2015": "^6.24.1",
     "browser-sync": "2.11.2",
+    "babelify": "^7.3.0",
     "browser-sync-middleware-spa": "^1.0.0",
     "concurrently": "^1.0.0",
     "eslint": "^3.0.1",
@@ -59,12 +60,13 @@
     "gulp-useref": "^3.1.0",
     "jasmine-core": "^2.4.1",
     "karma": "^0.13.19",
+    "karma-babel-preprocessor": "7.0.0",
     "karma-chrome-launcher": "^0.2.2",
     "karma-coverage": "^1.0.0",
     "karma-htmlfile-reporter": "^0.2.2",
     "karma-jasmine": "^0.3.6",
     "karma-phantomjs-launcher": "^0.2.3",
-    "phantomjs": ">=1.9",
-    "phantomjs-prebuilt": "^2.1.2"
+    "phantomjs": "2.1.7",
+    "phantomjs-prebuilt": "2.1.16"
   }
 }
