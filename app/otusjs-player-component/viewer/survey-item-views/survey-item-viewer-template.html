@@ -1,17 +1,24 @@
-<div>
-  <div layout="column" layout-align="start stat" layout-padding layout-fill>
-    <div layout="row" layout-padding>
-      <span class="md-subhead" ng-show="$ctrl.filters.customID" layout-padding>{{$ctrl.item.customID}}</span>
-      <span ng-show="$ctrl.filters.displayState && $ctrl.filters.customID" layout-padding>|</span>
-      <span layout-padding ng-show="$ctrl.filters.displayState"
+<div layout="row" flex>
+  <div layout="column" flex="5">
+
+  </div>
+  <div layout="column" layout-align="start start" layout-margin="5" layout-fill="">
+    <span flex="5"></span>
+    <div layout="row" layout-fill="">
+      <span class="md-subhead" ng-show="$ctrl.filters.customID"><u>{{$ctrl.item.customID}}</u></span>
+      <span flex="5"></span>
+      <span ng-show="$ctrl.filters.displayState && $ctrl.filters.customID">|</span>
+      <span flex="5"></span>
+      <span ng-show="$ctrl.filters.displayState"
             class="md-caption">{{$ctrl.item.navigationStateLabel}}</span>
     </div>
-    <div layout="row" layout-padding>
+    <span flex="5"></span>
+    <div layout="row" layout-fill="">
       <span ng-bind-html="$ctrl.item.label.ptBR.formattedText"></span>
     </div>
 
-    <div id="fillingBox"
-         bind-html-compile="$ctrl.template">
+    <div id="fillingBox" bind-html-compile="$ctrl.template" layout-fill="">
     </div>
+    <span flex="5"></span>
   </div>
 </div>
