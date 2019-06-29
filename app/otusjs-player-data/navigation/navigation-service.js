@@ -1,4 +1,4 @@
-(function() {
+(function () {
   'use strict';
 
   angular
@@ -26,7 +26,7 @@
     self.updateItemTracking = updateItemTracking;
 
     function getNextItems() {
-      return ActivityFacadeService.getCurrentItem().getNavigation().listRoutes().map(function(route) {
+      return ActivityFacadeService.getCurrentItem().getNavigation().listRoutes().map(function (route) {
         return ActivityFacadeService.getCurrentSurvey().getItemByTemplateID(route.destination);
       });
     }
@@ -109,6 +109,14 @@
 
     function _loadItem(id) {
       if (id === 'END NODE') {
+        _navigationTracker.visitItem(id);
+        navigation = ActivityFacadeService.fetchNavigationByOrigin(id);
+
+
+        if (navigation) {
+          RouteService.setup(navigation);
+        }
+
         return id;
       }
       var itemToLoad = null;
