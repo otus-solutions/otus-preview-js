@@ -108,6 +108,9 @@
     }
 
     function _loadItem(id) {
+      var itemToLoad = null;
+      var navigation = null;
+
       if (id === 'END NODE') {
         _navigationTracker.visitItem(id);
         navigation = ActivityFacadeService.fetchNavigationByOrigin(id);
@@ -119,8 +122,7 @@
 
         return id;
       }
-      var itemToLoad = null;
-      var navigation = null;
+
 
       if (!id) {
         itemToLoad = ActivityFacadeService.getCurrentSurvey().getItems()[0];
