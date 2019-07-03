@@ -111,19 +111,6 @@
       var itemToLoad = null;
       var navigation = null;
 
-      if (id === 'END NODE') {
-        _navigationTracker.visitItem(id);
-        navigation = ActivityFacadeService.fetchNavigationByOrigin(id);
-
-
-        if (navigation) {
-          RouteService.setup(navigation);
-        }
-
-        return id;
-      }
-
-
       if (!id) {
         itemToLoad = ActivityFacadeService.getCurrentSurvey().getItems()[0];
         navigation = ActivityFacadeService.getCurrentSurvey().getNavigations()[2];
@@ -134,6 +121,11 @@
 
       if (navigation) {
         RouteService.setup(navigation);
+      }
+
+      if (id === 'END NODE') {
+        _navigationTracker.visitItem(id);
+        return id;
       }
 
       _navigationTracker.visitItem(itemToLoad.templateID);
