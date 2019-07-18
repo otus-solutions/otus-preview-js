@@ -1,10 +1,10 @@
 <md-content id="activity-viewer">
   <md-progress-circular ng-if="!$ctrl.ready" class="md-primary" md-diameter="70"></md-progress-circular>
 
-  <div layout="row" ng-if="$ctrl.ready" layout-padding flex>
+  <div layout="row" ng-if="$ctrl.ready"  flex>
   <span flex class="no-print"></span>
 
-    <div layout="column" id="sheet" class="md-whiteframe-1dp" layout-margin flex>
+    <div layout="column" id="sheet" class="md-whiteframe-1dp" flex>
       <div layout="row" layout-align="center center">
       <span class="md-title">{{$ctrl.activityData.acronym}} - {{$ctrl.activityData.name}}</span>
     </div>
@@ -32,14 +32,15 @@
       <div layout="column" class="viewer-commands">
         <md-button class="md-fab md-mini" ng-click="$ctrl.print()">
           <md-icon class="no-print">print</md-icon>
+          <md-tooltip md-direction="left">Imprimir</md-tooltip>
         </md-button>
         <md-button class="md-fab md-mini" ng-click="$ctrl.showFilters()">
           <md-icon>filter_list</md-icon>
-          <md-tooltip>Filtros</md-tooltip>
+          <md-tooltip md-direction="left">Filtros</md-tooltip>
         </md-button>
         <md-button class="md-fab md-mini" ng-click="$ctrl.exit()">
           <md-icon>arrow_back</md-icon>
-          <md-tooltip>Sair</md-tooltip>
+          <md-tooltip md-direction="left">Sair</md-tooltip>
         </md-button>
       </div>
     </div>

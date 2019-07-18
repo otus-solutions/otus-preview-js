@@ -286,7 +286,7 @@
   angular
     .module('otusjs.player.component')
     .component('otusViewer', {
-      template:'<md-content id="activity-viewer"><md-progress-circular ng-if="!$ctrl.ready" class="md-primary" md-diameter="70"></md-progress-circular><div layout="row" ng-if="$ctrl.ready" layout-padding flex><span flex class="no-print"></span><div layout="column" id="sheet" class="md-whiteframe-1dp" layout-margin flex><div layout="row" layout-align="center center"><span class="md-title">{{$ctrl.activityData.acronym}} - {{$ctrl.activityData.name}}</span></div><div layout="column" ng-show="$ctrl.filters.participantData"><div layout="row"><span style="margin-right: 5px;">{{$ctrl.activityData.participantData.recruitmentNumber}} -</span> <span>{{$ctrl.activityData.participantData.name}}</span></div></div><md-list><md-list-item class="page-break page-item" layout="row" layout-align="start start" ng-repeat="item in $ctrl.activityData.itemContainer" ng-show="$ctrl.filters.state[item.navigationState]"><div layout-padding layout="row" class="md-whiteframe-1dp" layout-align="center center"><span>{{$index + 1}}</span></div><survey-item-view item="item" filters="$ctrl.filters" flex></survey-item-view></md-list-item></md-list></div><div id="header-viewer" layout-padding layout="column" layout-align="start end" class="no-print" flex><div layout="column" class="viewer-commands"><md-button class="md-fab md-mini" ng-click="$ctrl.print()"><md-icon class="no-print">print</md-icon></md-button><md-button class="md-fab md-mini" ng-click="$ctrl.showFilters()"><md-icon>filter_list</md-icon><md-tooltip>Filtros</md-tooltip></md-button><md-button class="md-fab md-mini" ng-click="$ctrl.exit()"><md-icon>arrow_back</md-icon><md-tooltip>Sair</md-tooltip></md-button></div></div></div></md-content>',
+      template:'<md-content id="activity-viewer"><md-progress-circular ng-if="!$ctrl.ready" class="md-primary" md-diameter="70"></md-progress-circular><div layout="row" ng-if="$ctrl.ready" flex><span flex class="no-print"></span><div layout="column" id="sheet" class="md-whiteframe-1dp" flex><div layout="row" layout-align="center center"><span class="md-title">{{$ctrl.activityData.acronym}} - {{$ctrl.activityData.name}}</span></div><div layout="column" ng-show="$ctrl.filters.participantData"><div layout="row"><span style="margin-right: 5px;">{{$ctrl.activityData.participantData.recruitmentNumber}} -</span> <span>{{$ctrl.activityData.participantData.name}}</span></div></div><md-list><md-list-item class="page-break page-item" layout="row" layout-align="start start" ng-repeat="item in $ctrl.activityData.itemContainer" ng-show="$ctrl.filters.state[item.navigationState]"><div layout-padding layout="row" class="md-whiteframe-1dp" layout-align="center center"><span>{{$index + 1}}</span></div><survey-item-view item="item" filters="$ctrl.filters" flex></survey-item-view></md-list-item></md-list></div><div id="header-viewer" layout-padding layout="column" layout-align="start end" class="no-print" flex><div layout="column" class="viewer-commands"><md-button class="md-fab md-mini" ng-click="$ctrl.print()"><md-icon class="no-print">print</md-icon><md-tooltip md-direction="left">Imprimir</md-tooltip></md-button><md-button class="md-fab md-mini" ng-click="$ctrl.showFilters()"><md-icon>filter_list</md-icon><md-tooltip md-direction="left">Filtros</md-tooltip></md-button><md-button class="md-fab md-mini" ng-click="$ctrl.exit()"><md-icon>arrow_back</md-icon><md-tooltip md-direction="left">Sair</md-tooltip></md-button></div></div></div></md-content>',
       controller: 'otusViewerCtrl as $ctrl'
     }).controller('otusViewerCtrl', Controller);
 
@@ -404,7 +404,7 @@
   angular
     .module('otusjs.player.component')
     .component('surveyItemView', {
-      template:'<div><div layout="column" layout-align="start stat" layout-padding layout-fill><div layout="row" layout-padding><span class="md-subhead" ng-show="$ctrl.filters.customID" layout-padding>{{$ctrl.item.customID}}</span> <span ng-show="$ctrl.filters.displayState && $ctrl.filters.customID" layout-padding>|</span> <span layout-padding ng-show="$ctrl.filters.displayState" class="md-caption">{{$ctrl.item.navigationStateLabel}}</span></div><div layout="row" layout-padding><span ng-bind-html="$ctrl.item.label.ptBR.formattedText"></span></div><div id="fillingBox" bind-html-compile="$ctrl.template"></div></div></div>',
+      template:'<div layout="row" flex><div layout="column" flex="5"></div><div layout="column" layout-align="start start" layout-margin="5" layout-fill><span flex="5"></span><div layout="row" layout-fill><span class="md-subhead" ng-show="$ctrl.filters.customID"><u>{{$ctrl.item.customID}}</u></span> <span flex="5"></span> <span ng-show="$ctrl.filters.displayState && $ctrl.filters.customID">|</span> <span flex="5"></span> <span ng-show="$ctrl.filters.displayState" class="md-caption">{{$ctrl.item.navigationStateLabel}}</span></div><span flex="5"></span><div layout="row" layout-fill><span ng-bind-html="$ctrl.item.label.ptBR.formattedText"></span></div><div id="fillingBox" bind-html-compile="$ctrl.template" layout-fill></div><span flex="5"></span></div></div>',
       controller: Controller,
       bindings: {
         item: '=',
@@ -6143,7 +6143,7 @@
 
 }());
 
-(function() {
+(function () {
   'use strict';
 
   angular
@@ -6171,7 +6171,7 @@
     self.updateItemTracking = updateItemTracking;
 
     function getNextItems() {
-      return ActivityFacadeService.getCurrentItem().getNavigation().listRoutes().map(function(route) {
+      return ActivityFacadeService.getCurrentItem().getNavigation().listRoutes().map(function (route) {
         return ActivityFacadeService.getCurrentSurvey().getItemByTemplateID(route.destination);
       });
     }
@@ -6253,9 +6253,6 @@
     }
 
     function _loadItem(id) {
-      if (id === 'END NODE') {
-        return id;
-      }
       var itemToLoad = null;
       var navigation = null;
 
@@ -6269,6 +6266,11 @@
 
       if (navigation) {
         RouteService.setup(navigation);
+      }
+
+      if (id === 'END NODE') {
+        _navigationTracker.visitItem(id);
+        return id;
       }
 
       _navigationTracker.visitItem(itemToLoad.templateID);
