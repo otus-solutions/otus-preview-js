@@ -177,7 +177,7 @@
   angular
     .module('otusjs.player.component')
     .component('otusPlayer', {
-      template:'<otus-survey-cover on-play="$ctrl.play()" phase-blocker="$ctrl.phaseBlocker" ng-show="$ctrl.showCover" layout-align="center center" layout="column" flex class="player-cover"></otus-survey-cover><md-content layout="column" flex ng-show="$ctrl.showActivity"><otus-survey-header layout="row"></otus-survey-header><span flex="5"></span><md-content layout="row" flex><otus-player-display go-back="$ctrl.goBack()" layout="column" flex style="position: relative !important"></otus-player-display><otus-player-commander class="md-fab-bottom-right md-fling" layout="column" flex="10" layout-align="center center" style="max-height:none!important;" on-go-back="$ctrl.goBack()" on-pause="$ctrl.pause()" on-stop="$ctrl.stop()" on-go-ahead="$ctrl.goAhead()" on-eject="$ctrl.eject()"></otus-player-commander></md-content></md-content><otus-survey-back-cover on-finalize="$ctrl.eject()" ng-show="$ctrl.showBackCover" layout-align="center center" layout="column" flex class="player-back-cover"></otus-survey-back-cover>',
+      template:'<otus-survey-cover on-play="$ctrl.play()" phase-blocker="$ctrl.phaseBlocker" ng-show="$ctrl.showCover" layout-align="center center" layout="column" flex class="player-cover"></otus-survey-cover><md-content layout="row" flex ng-show="$ctrl.showActivity"><div layout="column" flex><otus-survey-header layout="row"></otus-survey-header><md-content layout="row" flex><otus-static-variable layout="row"></otus-static-variable><otus-player-display go-back="$ctrl.goBack()" layout="column" flex style="position: relative !important"></otus-player-display><otus-player-commander class="md-fab-bottom-right md-fling" layout="column" flex="10" layout-align="center center" style="max-height:none!important;" on-go-back="$ctrl.goBack()" on-pause="$ctrl.pause()" on-stop="$ctrl.stop()" on-go-ahead="$ctrl.goAhead()" on-eject="$ctrl.eject()"></otus-player-commander></md-content></div></md-content><otus-survey-back-cover on-finalize="$ctrl.eject()" ng-show="$ctrl.showBackCover" layout-align="center center" layout="column" flex class="player-back-cover"></otus-survey-back-cover>',
       controller: Controller
     });
 
@@ -655,6 +655,48 @@
 
   angular
     .module('otusjs.player.component')
+    .component('otusStaticVariable', {
+      template:'<md-sidenav class="md-sidenav-left" md-is-locked-open="$ctrl.shouldLockOpen && $mdMedia(\'gt-xs\')"><md-content><div layout-padding><p>This sidenav is locked open on your device. To go back to the default behavior, narrow your display.</p><div class=".md-caption">{{$ctrl.variable.label}}</div><div class=".md-caption">{{$ctrl.variable.value}}</div></div></md-content></md-sidenav><md-button ng-click="$ctrl.isLockOpen()" class="md-icon-button md-fab md-mini md-primary" style="top:5%" aria-label="Settings"><md-icon md-font-set="material-icons">menu</md-icon><md-tooltip md-direction="bottom">Voltar</md-tooltip></md-button>',
+      controller: Controller
+    });
+
+  Controller.$inject = [
+    'otusjs.player.data.static.variable.StaticVariableService',
+    '$scope',
+    '$timeout',
+    '$mdSidenav'
+  ];
+
+  function Controller(StaticVariableService, $scope, $timeout, $mdSidenav) {
+    var self = this;
+
+    self.$onInit = onInit;
+    // self.shouldLockOpen = "$mdMedia('gt-xs')";
+    self.isLockOpen = isLockOpen;
+    self.close = close;
+    self.shouldLockOpen = true;
+
+    function onInit() {
+      self.variable = StaticVariableService.getVariable();
+    }
+
+    function close () {
+      // $mdSidenav('left').close();
+      // self.shouldLockOpen  = null;
+    }
+
+    function isLockOpen(){
+      // return $mdSidenav('left').toggle();
+      self.shouldLockOpen= !self.shouldLockOpen;
+      // self.shouldLockOpen = "$mdMedia('gt-xs')";
+    }
+  }
+}());
+(function () {
+  'use strict';
+
+  angular
+    .module('otusjs.player.component')
     .component('otusPlayerCommander', {
       template:'<div layout-padding layout="column" flex layout-align="space-around center" style="position: fixed;"><md-button id="previousQuestion" class="md-fab md-warn md-mini" aria-label="Voltar" ng-click="$ctrl.goBack()" ng-disabled="$ctrl.isGoBackDisabled"><md-icon md-font-set="material-icons">arrow_drop_up</md-icon><md-tooltip md-direction="bottom">Voltar</md-tooltip></md-button><span flex="5"></span><md-button id="cancelActivity" class="md-fab md-raised md-mini" aria-label="Cancelar" ng-click="$ctrl.stop()"><md-icon md-font-set="material-icons">close</md-icon><md-tooltip md-direction="bottom">Cancelar</md-tooltip></md-button><span flex="5"></span><md-button id="saveActivity" class="md-fab md-accent md-mini" aria-label="Salvar" ng-click="$ctrl.pause()"><md-icon md-font-set="material-icons">save</md-icon><md-tooltip md-direction="bottom">Salvar</md-tooltip></md-button><span flex="5"></span><md-button id="nextQuestion" class="md-fab md-warn md-mini" aria-label="Avançar" ng-click="$ctrl.goAhead()" ng-disabled="$ctrl.isGoAheadDisabled"><md-icon md-font-set="material-icons">arrow_drop_down</md-icon><md-tooltip md-direction="bottom">Avançar</md-tooltip></md-button><span flex="5"></span></div>',
       controller: Controller,
@@ -808,7 +850,7 @@
   angular
     .module('otusjs.player.component')
     .component('otusPlayerDisplay', {
-      template:'<div layout="row" flex><span flex="10"></span><div flex layout="column"><answer-view ng-repeat="item in questions" ng-show="questions.length" go-back="$ctrl.goBack()" icon="item.objectType" item-data="item" question="{{item.label.ptBR.formattedText}}"></answer-view><div flex layout="column" id="pagePlayer"></div></div></div>',
+      template:'<span flex="5"></span><div layout="row" flex><span flex="10"></span><div flex layout="column"><answer-view ng-repeat="item in questions" ng-show="questions.length" go-back="$ctrl.goBack()" icon="item.objectType" item-data="item" question="{{item.label.ptBR.formattedText}}"></answer-view><div flex layout="column" id="pagePlayer"></div></div></div>',
       controller: Controller,
       bindings:{
         goBack: "&"
@@ -5795,7 +5837,8 @@
       'otusjs.player.data.activity',
       'otusjs.player.data.navigation',
       'otusjs.player.data.viewer',
-      'otusjs.player.data.validation'
+      'otusjs.player.data.validation',
+      'otusjs.player.data.static.variable'
     ]);
 
 }());
@@ -6757,4 +6800,51 @@
   }
 }());
 
+(function() {
+  'use strict';
+
+  angular
+    .module('otusjs.player.data.static.variable', []);
+
+}());
+(function () {
+  'use strict';
+
+  angular
+    .module('otusjs.player.data.static.variable')
+    .service('otusjs.player.data.static.variable.StaticVariableService',Service);
+
+  function Service() {
+    var _variable = null;
+    var self = this;
+
+    self.setup = setup;
+    self.getVariable = getVariable;
+    self.clear = clear;
+
+    var data = {
+      label : "O Sistema Solar compreende o conjunto constituído pelo Sol e todos os corpos celestes que estão sob seu domínio gravitacional. A estrela central, maior componente do sistema, respondendo por mais de 99,85% da massa total,[5] gera sua energia através da fusão de hidrogênio em hélio, dois de seus principais constituintes. Os quatro planetas mais próximos do Sol (Mercúrio, Vênus, Terra e Marte) possuem em comum uma crosta sólida e rochosa, razão pela qual se classificam no grupo dos planetas telúricos, ou rochosos. Mais afastados, os quatro gigantes gasosos, Júpiter, Saturno, Urano e Netuno, são os componentes de maior massa do sistema logo após o próprio Sol. Dos cinco planetas anões, Ceres é o que se localiza mais próximo do centro do Sistema Solar, enquanto todos os outros, Plutão, Haumea, Makemake e Éris, se encontram além da órbita de Netuno." +
+
+"Permeando praticamente toda a extensão do Sistema Solar, existem incontáveis objetos que constituem a classe dos corpos menores. Os asteroides, essencialmente rochosos, concentram-se numa faixa entre as órbitas de Marte e Júpiter que se assemelha a um cinturão. Além da órbita do último planeta, a temperatura é suficientemente baixa para permitir a existência de fragmentos de gelo, que se aglomeram sobretudo nas regiões do Cinturão de Kuiper, Disco disperso e na Nuvem de Oort; esporadicamente são desviados para o interior do sistema onde, pela ação do calor do Sol, se transformam em cometas. Muitos corpos, por sua vez, possuem força gravitacional suficiente para manter orbitando em torno de si objetos menores, os satélites naturais, com as mais variadas formas e dimensões. Os planetas gigantes apresentam, ainda, sistemas de anéis planetários, uma faixa composta por minúsculas partículas de gelo e poeira." +
+
+"O Sistema Solar, de acordo com a teoria mais aceita hoje em dia, teve origem a partir de uma nuvem molecular que, por alguma perturbação gravitacional, entrou em colapso e formou a estrela central, enquanto seus remanescentes geraram os demais corpos. Em sua configuração atual, todos os componentes descrevem órbitas praticamente elípticas ao redor do Sol, constituindo um sistema dinâmico onde os corpos estão em mútua interação mediada sobretudo pela força gravitacional. A sua estrutura tem sido objeto de estudos desde a antiguidade, mas somente há cinco séculos a humanidade reconheceu o fato de que o Sol, e não a Terra, constitui o centro do movimento planetário. Desde então, a evolução dos equipamentos de pesquisa, como telescópios, possibilitou uma maior compreensão do sistema. Entretanto, detalhes sem precedentes foram obtidos somente após o envio de sondas espaciais a todos os planetas, que retornam imagens e dados com uma precisão nunca antes alcançada.",
+      value : "Numero"
+    };
+
+    setup(data);
+
+    function getVariable() {
+      return _variable;
+    }
+
+    function clear() {
+      _variable = null;
+    }
+
+    function setup(data) {
+      clear();
+      _variable = data;
+    }
+  }
+}());
 angular.module("trail",["ngMaterial","nsPopover"]),function(e,t,n){"use strict";var o=t.module("nsPopover",[]),i=t.element,r=t.isDefined,c=[],a=0;o.provider("nsPopover",function(){var e={template:"",theme:"ns-popover-list-theme",plain:"false",trigger:"click",triggerPrevent:!0,angularEvent:"",scopeEvent:"",container:"body",placement:"bottom|left",timeout:1.5,hideOnInsideClick:!1,hideOnOutsideClick:!0,hideOnButtonClick:!0,mouseRelative:"",popupDelay:0};this.setDefaults=function(n){t.extend(e,n)},this.$get=function(){return{getDefaults:function(){return e}}}}),o.controller("clientCtrl",function(){var e=this;e.tracks=[{id:"TST1",icon:"date_range",text:"TST1",time:"",styleClass:"md-warn",click:function(){}},{id:"",icon:"looks_one",text:"Segundo nodo da lista",time:"",styleClass:"md-warn",click:function(){e.add()}},{id:"",icon:"exposure_zero",text:"Terceira opção",time:"",styleClass:"md-warn"},{id:"",icon:"radio_button_checked",text:"Ultima.",time:"",styleClass:"md-warn"}],e.add=function(){var t={id:"",icon:"looks_one",text:"Segundo nodo da lista",time:"",styleClass:"md-warn",click:function(){console.log("oi")}};e.tracks.push(t)}}),o.directive("nsPopover",["nsPopover","$rootScope","$timeout","$templateCache","$q","$http","$compile","$document","$parse",function(n,o,l,s,p,d,u,m,v){return{restrict:"A",scope:!0,link:function(g,h,f){function y(e,t,n,o,i){var r,c,a=P(e[0]),l=function(){return"center"===n?Math.round(o.left+o.width/2-a.width/2):"right"===n?o.right-a.width:o.left},s=function(){return"center"===n?Math.round(o.top+o.height/2-a.height/2):"bottom"===n?o.bottom-a.height:o.top};"top"===t?(r=o.top-a.height,c=l()):"right"===t?(r=s(),c=o.right):"bottom"===t?(r=o.bottom,c=l()):"left"===t&&(r=s(),c=o.left-a.width),e.css("top",r.toString()+"px").css("left",c.toString()+"px"),i&&("top"===t||"bottom"===t?(c=o.left+o.width/2-c,i.css("left",c.toString()+"px")):(r=o.top+o.height/2-r,i.css("top",r.toString()+"px")))}function k(e,t,n,o){var i={bottom:e.bottom,height:e.height,left:e.left,right:e.right,top:e.top,width:e.width};return t&&(i.left=o.pageX,i.right=o.pageX,i.width=0),n&&(i.top=o.pageY,i.bottom=o.pageY,i.height=0),i}function P(t){var n=e,o=document.documentElement||document.body.parentNode||document.body,i=r(n.pageXOffset)?n.pageXOffset:o.scrollLeft,c=r(n.pageYOffset)?n.pageYOffset:o.scrollTop,a=t.getBoundingClientRect();return i||c?{bottom:a.bottom+c,left:a.left+i,right:a.right+i,top:a.top+c,height:a.height,width:a.width}:a}function O(e){return e=!(!e||0===e.length)&&"true"==(""+e).toLowerCase()}function b(){B.isOpen&&_.hide(0)}function C(e){function n(e){if(e.id===o)return!0;var i=t.element(e).parent()[0];return!!i&&(i.id===o||n(i))}if(B.isOpen&&e.target!==h[0]){var o=B[0].id;n(e.target)||_.hide(0)}}function w(){B.isOpen&&_.hide(0)}var x=n.getDefaults(),$={template:f.nsPopoverTemplate||x.template,theme:f.nsPopoverTheme||x.theme,plain:O(f.nsPopoverPlain||x.plain),trigger:f.nsPopoverTrigger||x.trigger,triggerPrevent:f.nsPopoverTriggerPrevent||x.triggerPrevent,angularEvent:f.nsPopoverAngularEvent||x.angularEvent,scopeEvent:f.nsPopoverScopeEvent||x.scopeEvent,container:f.nsPopoverContainer||x.container,placement:f.nsPopoverPlacement||x.placement,timeout:f.nsPopoverTimeout||x.timeout,hideOnInsideClick:O(f.nsPopoverHideOnInsideClick||x.hideOnInsideClick),hideOnOutsideClick:O(f.nsPopoverHideOnOutsideClick||x.hideOnOutsideClick),hideOnButtonClick:O(f.nsPopoverHideOnButtonClick||x.hideOnButtonClick),mouseRelative:f.nsPopoverMouseRelative,popupDelay:f.nsPopoverPopupDelay||x.popupDelay,group:f.nsPopoverGroup};$.mouseRelative&&($.mouseRelativeX=-1!==$.mouseRelative.indexOf("x"),$.mouseRelativeY=-1!==$.mouseRelative.indexOf("y"));var E={id_:void 0,display:function(e,t){!1!==v(f.nsPopover)(g)&&(l.cancel(E.id_),r(e)||(e=0),$.group&&o.$broadcast("ns:popover:hide",$.group),E.id_=l(function(){B.isOpen=!0,B.css("display","block");var e=P(h[0]);$.mouseRelative&&(e=k(e,$.mouseRelativeX,$.mouseRelativeY,t)),y(B,R,T,e,D),$.hideOnInsideClick&&B.on("click",b),$.hideOnOutsideClick&&m.on("click",C),$.hideOnButtonClick&&h.on("click",w)},1e3*e))},cancel:function(){l.cancel(E.id_)}},_={id_:void 0,hide:function(e){l.cancel(_.id_),"-1"!==e&&(r(e)||(e=1.5),_.id_=l(function(){B.off("click",b),m.off("click",C),h.off("click",w),B.isOpen=!1,E.cancel(),B.css("display","none")},1e3*e))},cancel:function(){l.cancel(_.id_)}},S=m.find($.container);S.length||(S=m.find("body"));var D,R,T;a+=1;var B=i('<div id="nspopover-'+a+'"></div>');c.push(B);var X=$.placement.match(/^(top|bottom|left|right)$|((top|bottom)\|(center|left|right)+)|((left|right)\|(center|top|bottom)+)/);if(!X)throw new Error('"'+$.placement+'" is not a valid placement or has a invalid combination of placements.');R=X[6]||X[3]||X[1],T=X[7]||X[4]||X[2]||"center",p.when(function(e,n){return e?t.isString(e)&&n?e:s.get(e)||d.get(e,{cache:!0}):""}($.template,$.plain)).then(function(e){e=t.isString(e)?e:e.data&&t.isString(e.data)?e.data:"",B.html(e),$.theme&&B.addClass($.theme),B.addClass("ns-popover-"+R+"-placement").addClass("ns-popover-"+T+"-align"),u(B)(g),g.$on("$destroy",function(){B.remove()}),g.hidePopover=function(){_.hide(0)},g.$on("ns:popover:hide",function(e,t){$.group===t&&g.hidePopover()}),B.css("position","absolute").css("display","none"),D=B[0].querySelectorAll(".triangle"),D.length&&(D=i(D)),S.append(B)}),$.angularEvent?o.$on($.angularEvent,function(){_.cancel(),E.display($.popupDelay)}):$.scopeEvent?g.$on($.scopeEvent,function(){_.cancel(),E.display(B,$.popupDelay)}):h.on($.trigger,function(e){!1!==$.triggerPrevent&&e.preventDefault(),_.cancel(),E.display($.popupDelay,e)}),h.on("mouseout",function(){_.hide($.timeout)}).on("mouseover",function(){_.cancel()}),B.on("mouseout",function(e){_.hide($.timeout)}).on("mouseover",function(){_.cancel()})}}}])}(window,window.angular),angular.module("trail").directive("otusTrail",function(){return{template:'<div layout-align="center center" layout="column"><md-button class="md-fab md-primary"><md-icon >question_answer</md-icon></md-button><div layout-align="center" ng-repeat="content in nodes"><section flex class="timeLine"></section><div layout="row" layout-align="center center"><div id="stepButtons"><md-button ng-click="content.click(content)" ns-popover ns-popover-template="tooltip" ns-popover-trigger="mouseover"ns-popover-theme="ns-popover-tooltip-theme" ns-popover-timeout="0.1"ns-popover-placement="right" ng-class="content.styleClass" class="md-fab md-mini"><md-icon>{{content.icon}}</md-icon></md-button></div><div><span>{{content.time}}</span></div></div><script type="text/ng-template" id="tooltip"><div class="triangle"></div><div class="md-body-2 ns-popover-tooltip">{{content.text+i}}</div></script></div></div',restrict:"E",scope:{nodes:"="}}});
