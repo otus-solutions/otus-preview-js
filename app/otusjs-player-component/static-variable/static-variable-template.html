@@ -1,18 +1,14 @@
+<md-toolbar layout="row" layout-align="end center" layout-padding style = "height: 110px;">
+  <md-button ng-click="$ctrl.isLockOpen()" class="md-icon-button md-fab md-mini md-primary" aria-label="button isLockOpen">
+    <md-icon md-font-set="material-icons">{{ $ctrl.iconLockOpen }}</md-icon>
+    <md-tooltip md-direction="bottom">
+      {{ $ctrl.tooltipLockOpen }}
+    </md-tooltip>
+  </md-button>
+</md-toolbar>
 <md-sidenav class="md-sidenav-left" md-is-locked-open="$ctrl.shouldLockOpen && $mdMedia('gt-xs')">
-  <md-content>
-    <div layout-padding>
-      <p>
-        This sidenav is locked open on your device. To go back to the default behavior,
-        narrow your display.
-      </p>
-      <div class=".md-caption">{{$ctrl.variable.label}} </div>
-      <div class=".md-caption">{{$ctrl.variable.value}} </div>
-    </div>
-  </md-content>
+  <div layout-padding>
+    <div class=".md-caption">{{ $ctrl.variable.label }} </div>
+    <div class=".md-caption">{{ $ctrl.variable.value }} </div>
+  </div>
 </md-sidenav>
-<md-button ng-click="$ctrl.isLockOpen()" class="md-icon-button md-fab md-mini md-primary" style = "top:5%"aria-label="Settings">
-  <md-icon md-font-set="material-icons">menu</md-icon>
-  <md-tooltip md-direction="bottom">
-    Voltar
-  </md-tooltip>
-</md-button>

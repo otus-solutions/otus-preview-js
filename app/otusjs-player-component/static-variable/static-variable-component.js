@@ -9,34 +9,26 @@
     });
 
   Controller.$inject = [
-    'otusjs.player.data.static.variable.StaticVariableService',
-    '$scope',
-    '$timeout',
-    '$mdSidenav'
+    'otusjs.player.data.static.variable.StaticVariableService'
   ];
 
-  function Controller(StaticVariableService, $scope, $timeout, $mdSidenav) {
+  function Controller(StaticVariableService) {
     var self = this;
 
     self.$onInit = onInit;
-    // self.shouldLockOpen = "$mdMedia('gt-xs')";
     self.isLockOpen = isLockOpen;
-    self.close = close;
     self.shouldLockOpen = true;
+    self.iconLockOpen = 'arrow_left';
+    self.tooltipLockOpen = 'Fechar';
 
     function onInit() {
       self.variable = StaticVariableService.getVariable();
     }
 
-    function close () {
-      // $mdSidenav('left').close();
-      // self.shouldLockOpen  = null;
-    }
-
     function isLockOpen(){
-      // return $mdSidenav('left').toggle();
-      self.shouldLockOpen= !self.shouldLockOpen;
-      // self.shouldLockOpen = "$mdMedia('gt-xs')";
+      self.shouldLockOpen = !self.shouldLockOpen;
+      self.iconLockOpen = self.shouldLockOpen ? 'arrow_left' : 'arrow_right';
+      self.tooltipLockOpen = self.shouldLockOpen ? 'Fechar' : 'Abri';
     }
   }
 }());
