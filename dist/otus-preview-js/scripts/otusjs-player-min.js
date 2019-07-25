@@ -177,7 +177,7 @@
   angular
     .module('otusjs.player.component')
     .component('otusPlayer', {
-      template:'<otus-survey-cover on-play="$ctrl.play()" phase-blocker="$ctrl.phaseBlocker" ng-show="$ctrl.showCover" layout-align="center center" layout="column" flex class="player-cover"></otus-survey-cover><md-content layout="row" flex ng-show="$ctrl.showActivity"><otus-static-variable></otus-static-variable><div layout="column" flex><otus-survey-header layout="row"></otus-survey-header><md-content layout="row" flex><otus-player-display go-back="$ctrl.goBack()" layout="column" flex style="position: relative !important"></otus-player-display><otus-player-commander class="md-fab-bottom-right md-fling" layout="column" flex="10" layout-align="center center" style="max-height:none!important;" on-go-back="$ctrl.goBack()" on-pause="$ctrl.pause()" on-stop="$ctrl.stop()" on-go-ahead="$ctrl.goAhead()" on-eject="$ctrl.eject()"></otus-player-commander></md-content></div></md-content><otus-survey-back-cover on-finalize="$ctrl.eject()" ng-show="$ctrl.showBackCover" layout-align="center center" layout="column" flex class="player-back-cover"></otus-survey-back-cover>',
+      template:'<otus-survey-cover on-play="$ctrl.play()" phase-blocker="$ctrl.phaseBlocker" ng-show="$ctrl.showCover" layout-align="center center" layout="column" flex class="player-cover"></otus-survey-cover><div layout="column" flex ng-show="$ctrl.showActivity"><otus-survey-header layout="row"></otus-survey-header><div layout="row" flex><otus-static-variable layout="row"></otus-static-variable><md-content layout="row" flex><otus-player-display go-back="$ctrl.goBack()" layout="column" flex style="position: relative !important"></otus-player-display><otus-player-commander class="md-fab-bottom-right md-fling" layout="column" flex="10" layout-align="center center" style="max-height:none!important;" on-go-back="$ctrl.goBack()" on-pause="$ctrl.pause()" on-stop="$ctrl.stop()" on-go-ahead="$ctrl.goAhead()" on-eject="$ctrl.eject()"></otus-player-commander></md-content></div></div><otus-survey-back-cover on-finalize="$ctrl.eject()" ng-show="$ctrl.showBackCover" layout-align="center center" layout="column" flex class="player-back-cover"></otus-survey-back-cover>',
       controller: Controller
     });
 
@@ -656,7 +656,7 @@
   angular
     .module('otusjs.player.component')
     .component('otusStaticVariable', {
-      template:'<md-toolbar layout="row" layout-align="end center" layout-padding style="height: 110px;"><md-button ng-click="$ctrl.isLockOpen()" class="md-icon-button md-fab md-mini md-primary" aria-label="button isLockOpen"><md-icon md-font-set="material-icons">{{ $ctrl.iconLockOpen }}</md-icon><md-tooltip md-direction="bottom">{{ $ctrl.tooltipLockOpen }}</md-tooltip></md-button></md-toolbar><md-sidenav class="md-sidenav-left" md-is-locked-open="$ctrl.shouldLockOpen && $mdMedia(\'gt-xs\')"><div layout-padding><div class=".md-caption">{{ $ctrl.variable.label }}</div><div class=".md-caption">{{ $ctrl.variable.value }}</div></div></md-sidenav>',
+      template:'<div class="fab-speed-dial"><md-button ng-click="$ctrl.isLockOpen()" class="md-icon-button md-fab md-mini md-accent" aria-label="button isLockOpen"><md-icon md-font-set="material-icons">{{ $ctrl.iconLockOpen }}</md-icon><md-tooltip md-direction="bottom">{{ $ctrl.tooltipLockOpen }}</md-tooltip></md-button></div><md-sidenav class="md-sidenav-left md-whiteframe-5dp" md-is-locked-open="$ctrl.shouldLockOpen && $mdMedia(\'gt-xs\')"><div layout-padding><h3>Informações Auxiliares</h3></div><md-content layout="column"><div layout="column" layout-padding layout-align="start none" ng-repeat="option in $ctrl.variable"><div layout="column" layout-align="center start"><span class="md-caption" style="color: gray;">{{ option.label }}</span> <span class="md-subhead">{{ option.translatedValue }}</span></div><md-divider></md-divider></div></md-content></md-sidenav>',
       controller: Controller
     });
 
@@ -667,11 +667,12 @@
   function Controller(StaticVariableService) {
     var self = this;
 
-    self.$onInit = onInit;
-    self.isLockOpen = isLockOpen;
     self.shouldLockOpen = true;
     self.iconLockOpen = 'arrow_left';
     self.tooltipLockOpen = 'Fechar';
+
+    self.$onInit = onInit;
+    self.isLockOpen = isLockOpen;
 
     function onInit() {
       self.variable = StaticVariableService.getVariable();
@@ -1082,7 +1083,7 @@
   angular
     .module('otusjs.player.component')
     .component('otusSurveyHeader', {
-      template:'<md-content layout="column" flex><md-toolbar layout="column" flex style="height: 110px"><div layout-align="end start" layout="column" flex><div layout="row" flex><md-chips layout="column" layout-padding layout-align="center center" style="padding: 0 !important; padding-left: 10px !important"><md-chip style="margin: 0 !important">{{ $ctrl.surveyIdentity.acronym }}</md-chip></md-chips><div layout="column" flex layout-padding style="padding: 0 !important" layout-align="center start"><div><span class="md-display-1">{{ $ctrl.surveyIdentity.name }}</span></div></div></div><div layout="row" style="padding-left: 10px !important; padding-right: 10px !important"><div layout="column" layout-padding layout-align="center start"><label class="md-caption" style="padding: 0 !important">Participante</label> <span class="md-title" style="padding: 0 !important">{{ $ctrl.participantData.name }}</span></div><div class="md-list-item-text" layout="column" layout-padding layout-align="center start"><label class="md-caption" style="padding: 0 !important">Número de Recrutamento</label> <span class="md-title" style="padding: 0 !important">{{ $ctrl.participantData.recruitmentNumber }}</span></div></div></div></md-toolbar></md-content>',
+      template:'<md-toolbar layout="row" class="md-whiteframe-5dp" flex><div layout="row" layout-align="start center" flex="40"><span flex="10"></span><div class="md-padding"><img src="app/static-resource/image/coruja_pesquisadora.png" class="toolbar-icon"></div><span flex="5"></span><md-chips><md-chip>{{ $ctrl.surveyIdentity.acronym }}</md-chip></md-chips><div class="md-body-2"><span>{{ $ctrl.surveyIdentity.name }}</span></div></div><div layout="row" layout-margin layout-align="center center"><md-icon md-svg-icon="file-document-box"></md-icon><div><span>{{ $ctrl.participantData.name }}</span> <span>|</span> <span>{{ $ctrl.participantData.recruitmentNumber }}</span></div></div></md-toolbar>',
       controller: Controller,
       bindings: {
         surveyIdentity: '<'
@@ -6812,15 +6813,154 @@
 
     self.setup = setup;
     self.getVariable = getVariable;
-    self.clear = clear;
 
     var data = {
-      label : "O Sistema Solar compreende o conjunto constituído pelo Sol e todos os corpos celestes que estão sob seu domínio gravitacional. A estrela central, maior componente do sistema, respondendo por mais de 99,85% da massa total,[5] gera sua energia através da fusão de hidrogênio em hélio, dois de seus principais constituintes. Os quatro planetas mais próximos do Sol (Mercúrio, Vênus, Terra e Marte) possuem em comum uma crosta sólida e rochosa, razão pela qual se classificam no grupo dos planetas telúricos, ou rochosos. Mais afastados, os quatro gigantes gasosos, Júpiter, Saturno, Urano e Netuno, são os componentes de maior massa do sistema logo após o próprio Sol. Dos cinco planetas anões, Ceres é o que se localiza mais próximo do centro do Sistema Solar, enquanto todos os outros, Plutão, Haumea, Makemake e Éris, se encontram além da órbita de Netuno." +
-
-"Permeando praticamente toda a extensão do Sistema Solar, existem incontáveis objetos que constituem a classe dos corpos menores. Os asteroides, essencialmente rochosos, concentram-se numa faixa entre as órbitas de Marte e Júpiter que se assemelha a um cinturão. Além da órbita do último planeta, a temperatura é suficientemente baixa para permitir a existência de fragmentos de gelo, que se aglomeram sobretudo nas regiões do Cinturão de Kuiper, Disco disperso e na Nuvem de Oort; esporadicamente são desviados para o interior do sistema onde, pela ação do calor do Sol, se transformam em cometas. Muitos corpos, por sua vez, possuem força gravitacional suficiente para manter orbitando em torno de si objetos menores, os satélites naturais, com as mais variadas formas e dimensões. Os planetas gigantes apresentam, ainda, sistemas de anéis planetários, uma faixa composta por minúsculas partículas de gelo e poeira." +
-
-"O Sistema Solar, de acordo com a teoria mais aceita hoje em dia, teve origem a partir de uma nuvem molecular que, por alguma perturbação gravitacional, entrou em colapso e formou a estrela central, enquanto seus remanescentes geraram os demais corpos. Em sua configuração atual, todos os componentes descrevem órbitas praticamente elípticas ao redor do Sol, constituindo um sistema dinâmico onde os corpos estão em mútua interação mediada sobretudo pela força gravitacional. A sua estrutura tem sido objeto de estudos desde a antiguidade, mas somente há cinco séculos a humanidade reconheceu o fato de que o Sol, e não a Terra, constitui o centro do movimento planetário. Desde então, a evolução dos equipamentos de pesquisa, como telescópios, possibilitou uma maior compreensão do sistema. Entretanto, detalhes sem precedentes foram obtidos somente após o envio de sondas espaciais a todos os planetas, que retornam imagens e dados com uma precisão nunca antes alcançada.",
-      value : "Numero"
+      variable:[
+        {
+          label : "CÓDIGO DO ACTÍGRAFO:",
+          translatedValue : "Sim"
+        },
+        {
+          label : "01. Quantos dias de uma semana normal o(a) Sr(a) faz caminhadas no seu tempo livre? ENTREVISTADOR: SE NENHUM, DIGITE 0.",
+          translatedValue : "6"
+        },
+        {
+          label : "ENTREVISTADOR: OUTRO MEDICAMENTO?",
+          translatedValue : "Não"
+        },
+        {
+          label : "ENTREVISTADOR: UTILIZE A EMBALAGEM, RECEITA OU INFORMAÇÃO DO(A) PARTICIPANTE. NO CASO DE DISCORDÂNCIA ENTRE A INFORMAÇÃO RELATADA, INFORMAÇÃO DA EMBALAGEM E INFORMAÇÃO DA RECEITA, A INFORMAÇÃO CONSIDERADA DEVERÁ SER AQUELA REFERIDA PELO(A) PARTICIPANTE.",
+          translatedValue : "Não sabe"
+        },
+        {
+          label : "text",
+          translatedValue : "7875957"
+        },
+        {
+          label : "text",
+          translatedValue : "7875957"
+        },
+        {
+          label : "text",
+          translatedValue : "7875957"
+        },
+        {
+          label : "text",
+          translatedValue : "7875957"
+        },
+        {
+          label : "text",
+          translatedValue : "7875957"
+        },
+        {
+          label : "text",
+          translatedValue : "7875957"
+        },
+        {
+          label : "text",
+          translatedValue : "7875957"
+        },
+        {
+          label : "text",
+          translatedValue : "7875957"
+        },
+        {
+          label : "text",
+          translatedValue : "7875957"
+        },
+        {
+          label : "text",
+          translatedValue : "7875957"
+        },
+        {
+          label : "text",
+          translatedValue : "7875957"
+        },
+        {
+          label : "text",
+          translatedValue : "7875957"
+        },
+        {
+          label : "text",
+          translatedValue : "7875957"
+        },
+        {
+          label : "text",
+          translatedValue : "7875957"
+        },
+        {
+          label : "text",
+          translatedValue : "7875957"
+        },
+        {
+          label : "text",
+          translatedValue : "7875957"
+        },
+        {
+          label : "text",
+          translatedValue : "7875957"
+        },
+        {
+          label : "text",
+          translatedValue : "7875957"
+        },
+        {
+          label : "text",
+          translatedValue : "7875957"
+        },
+        {
+          label : "text",
+          translatedValue : "7875957"
+        },
+        {
+          label : "text",
+          translatedValue : "7875957"
+        },
+        {
+          label : "text",
+          translatedValue : "7875957"
+        },
+        {
+          label : "text",
+          translatedValue : "7875957"
+        },
+        {
+          label : "text",
+          translatedValue : "7875957"
+        },
+        {
+          label : "text",
+          translatedValue : "7875957"
+        },
+        {
+          label : "text",
+          translatedValue : "7875957"
+        },
+        {
+          label : "text",
+          translatedValue : "7875957"
+        },
+        {
+          label : "text",
+          translatedValue : "7875957"
+        },
+        {
+          label : "text",
+          translatedValue : "7875957"
+        },
+        {
+          label : "text",
+          translatedValue : "7875957"
+        },
+        {
+          label : "text",
+          translatedValue : "7875957"
+        },
+        {
+          label : "text",
+          translatedValue : "7875957"
+        }
+      ]
     };
 
     setup(data);
@@ -6829,13 +6969,13 @@
       return _variable;
     }
 
-    function clear() {
+    function _clear() {
       _variable = null;
     }
 
     function setup(data) {
-      clear();
-      _variable = data;
+      _clear();
+      _variable = data.variable;
     }
   }
 }());

@@ -15,11 +15,12 @@
   function Controller(StaticVariableService) {
     var self = this;
 
-    self.$onInit = onInit;
-    self.isLockOpen = isLockOpen;
     self.shouldLockOpen = true;
     self.iconLockOpen = 'arrow_left';
     self.tooltipLockOpen = 'Fechar';
+
+    self.$onInit = onInit;
+    self.isLockOpen = isLockOpen;
 
     function onInit() {
       self.variable = StaticVariableService.getVariable();

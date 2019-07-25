@@ -1,8 +1,8 @@
 <otus-survey-cover on-play="$ctrl.play()" phase-blocker="$ctrl.phaseBlocker" ng-show="$ctrl.showCover" layout-align="center center" layout="column" flex class="player-cover"></otus-survey-cover>
-<md-content layout="row" flex ng-show="$ctrl.showActivity">
-    <otus-static-variable></otus-static-variable>
-  <div layout="column" flex>
-    <otus-survey-header layout="row"></otus-survey-header>
+<div layout="column" flex ng-show="$ctrl.showActivity">
+  <otus-survey-header layout="row"></otus-survey-header>
+  <div layout="row" flex>
+    <otus-static-variable layout="row"></otus-static-variable>
     <md-content layout="row" flex>
       <otus-player-display  go-back="$ctrl.goBack()" layout="column" flex style="position: relative !important" ></otus-player-display>
       <otus-player-commander class="md-fab-bottom-right md-fling" layout="column" flex="10" layout-align="center center" style="max-height:none!important;"
@@ -14,5 +14,5 @@
       </otus-player-commander>
     </md-content>
   </div>
-</md-content>
+</div>
 <otus-survey-back-cover on-finalize="$ctrl.eject()" ng-show="$ctrl.showBackCover" layout-align="center center" layout="column" flex class="player-back-cover"></otus-survey-back-cover>

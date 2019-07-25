@@ -1,14 +1,22 @@
-<md-toolbar layout="row" layout-align="end center" layout-padding style = "height: 110px;">
-  <md-button ng-click="$ctrl.isLockOpen()" class="md-icon-button md-fab md-mini md-primary" aria-label="button isLockOpen">
+<div class="fab-speed-dial">
+  <md-button ng-click="$ctrl.isLockOpen()" class="md-icon-button md-fab md-mini md-accent" aria-label="button isLockOpen">
     <md-icon md-font-set="material-icons">{{ $ctrl.iconLockOpen }}</md-icon>
     <md-tooltip md-direction="bottom">
       {{ $ctrl.tooltipLockOpen }}
     </md-tooltip>
   </md-button>
-</md-toolbar>
-<md-sidenav class="md-sidenav-left" md-is-locked-open="$ctrl.shouldLockOpen && $mdMedia('gt-xs')">
+</div>
+<md-sidenav class="md-sidenav-left md-whiteframe-5dp" md-is-locked-open="$ctrl.shouldLockOpen && $mdMedia('gt-xs')">
   <div layout-padding>
-    <div class=".md-caption">{{ $ctrl.variable.label }} </div>
-    <div class=".md-caption">{{ $ctrl.variable.value }} </div>
+    <h3>Informações Auxiliares</h3>
   </div>
+  <md-content layout="column">
+    <div layout="column" layout-padding layout-align="start none" ng-repeat="option in $ctrl.variable">
+      <div layout="column" layout-align="center start">
+        <span class="md-caption" style="color: gray;">{{ option.label }}</span>
+        <span class="md-subhead">{{ option.translatedValue }}</span>
+      </div>
+      <md-divider ></md-divider>
+    </div>
+  </md-content>
 </md-sidenav>
