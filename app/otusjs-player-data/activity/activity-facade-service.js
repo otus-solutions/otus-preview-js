@@ -22,6 +22,7 @@
     self.fetchNavigationByOrigin = fetchNavigationByOrigin;
     self.getCurrentItem = getCurrentItem;
     self.getCurrentSurvey = getCurrentSurvey;
+    self.getWholeTemplateStaticVariableList = getWholeTemplateStaticVariableList;
     self.initialize = initialize;
     self.finalize = finalize;
     self.save = save;
@@ -59,6 +60,10 @@
 
     function getCurrentSurvey() {
       return CurrentSurveyService;
+    }
+
+    function getWholeTemplateStaticVariableList() {
+      return CurrentSurveyService.getWholeTemplateStaticVariableList();
     }
 
     function initialize() {

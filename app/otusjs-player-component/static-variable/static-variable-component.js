@@ -5,14 +5,14 @@
     .module('otusjs.player.component')
     .component('otusStaticVariable', {
       templateUrl: 'app/otusjs-player-component/static-variable/static-variable-template.html',
-      controller: Controller
-    });
+      controller: 'otusStaticVariableCtrl as $ctrl'
+    }).controller('otusStaticVariableCtrl', Controller);
 
   Controller.$inject = [
-    'otusjs.player.data.static.variable.StaticVariableService'
+    'otusjs.player.data.activity.ActivityFacadeService'
   ];
 
-  function Controller(StaticVariableService) {
+  function Controller(ActivityFacadeService) {
     var self = this;
 
     self.shouldLockOpen = true;
@@ -23,13 +23,13 @@
     self.isLockOpen = isLockOpen;
 
     function onInit() {
-      self.variable = StaticVariableService.getVariable();
+      self.variable = ActivityFacadeService.getWholeTemplateStaticVariableList();
     }
 
     function isLockOpen(){
       self.shouldLockOpen = !self.shouldLockOpen;
       self.iconLockOpen = self.shouldLockOpen ? 'arrow_left' : 'arrow_right';
-      self.tooltipLockOpen = self.shouldLockOpen ? 'Fechar' : 'Abri';
+      self.tooltipLockOpen = self.shouldLockOpen ? 'Fechar' : 'Abrir';
     }
   }
 }());

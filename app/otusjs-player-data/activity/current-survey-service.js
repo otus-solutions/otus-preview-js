@@ -28,6 +28,7 @@
     self.setup = setup;
     self.clearSkippedAnswers = clearSkippedAnswers;
     self.getNavigationTracker = getNavigationTracker;
+    self.getWholeTemplateStaticVariableList = getWholeTemplateStaticVariableList;
 
     function getSurvey() {
       return ActivityFacadeService.surveyActivity;
@@ -112,6 +113,10 @@
 
     function getNavigationTracker() {
       return ActivityFacadeService.getNavigationTracker();
+    }
+
+    function getWholeTemplateStaticVariableList() {
+      return ActivityFacadeService.getWholeTemplateVariableList();
     }
 
   }
