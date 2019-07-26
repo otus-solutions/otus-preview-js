@@ -7,8 +7,7 @@
       'otusjs.player.data.activity',
       'otusjs.player.data.navigation',
       'otusjs.player.data.viewer',
-      'otusjs.player.data.validation',
-      'otusjs.player.data.static.variable'
+      'otusjs.player.data.validation'
     ]);
 
 }());
