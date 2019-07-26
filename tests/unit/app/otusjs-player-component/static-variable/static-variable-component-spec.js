@@ -10,8 +10,9 @@ describe('Static Variable Component Test unit', function () {
 
       controller = _$controller_('otusStaticVariableCtrl', Injections);
     });
-    spyOn(Injections.ActivityFacadeService,'getWholeTemplateStaticVariableList').and.callThrough();
-    // controller.$onInit();
+
+    spyOn(Injections.ActivityFacadeService,'getWholeTemplateStaticVariableList');
+
   });
 
   it('controller method should have a defined controller', function () {
@@ -23,10 +24,10 @@ describe('Static Variable Component Test unit', function () {
     expect(controller.isLockOpen).toBeDefined();
   });
 
-  // it('Methods should $onInit execute', function () {
-  //   controller.$onInit();
-  //   expect(Injections.ActivityFacadeService.getWholeTemplateStaticVariableList).toHaveBeenCalledTimes(1);
-  // });
+  it('Methods should $onInit execute', function () {
+    controller.$onInit();
+    expect(Injections.ActivityFacadeService.getWholeTemplateStaticVariableList).toHaveBeenCalledTimes(1);
+  });
 
   it('Methods should isLockedOpen execute', function () {
     controller.isLockOpen();
