@@ -656,7 +656,7 @@
   angular
     .module('otusjs.player.component')
     .component('otusStaticVariable', {
-      template:'<div class="fab-speed-dial"><md-button ng-click="$ctrl.isLockOpen()" class="md-icon-button md-fab md-mini md-accent" aria-label="button isLockOpen"><md-icon md-font-set="material-icons">{{ $ctrl.iconLockOpen }}</md-icon><md-tooltip md-direction="bottom">{{ $ctrl.tooltipLockOpen }}</md-tooltip></md-button></div><md-sidenav class="md-sidenav-left md-whiteframe-5dp" md-is-locked-open="$ctrl.shouldLockOpen && $mdMedia(\'gt-xs\')"><div layout-padding><h3>Informações Auxiliares</h3></div><md-content layout="column"><div layout="column" layout-padding layout-align="start none" ng-repeat="option in $ctrl.variable"><div layout="column" layout-align="center start"><span class="md-caption" style="color: gray;">{{ option.label }}</span> <span class="md-subhead">{{ option.translatedValue }}</span></div><md-divider></md-divider></div></md-content></md-sidenav>',
+      template:'<div class="fab-speed-dial"><md-button id="button-is-lock-open-close" ng-click="$ctrl.isLockOpenClose()" class="md-icon-button md-fab md-mini md-accent" aria-label="button isLockOpenClose"><md-icon md-font-set="material-icons">{{ $ctrl.iconLockOpenClose }}</md-icon><md-tooltip md-direction="bottom">{{ $ctrl.tooltipLockOpenClose }}</md-tooltip></md-button></div><md-sidenav class="md-sidenav-left md-whiteframe-5dp" md-is-locked-open="$ctrl.shouldLockOpenClose && $mdMedia(\'gt-xs\')"><div layout-padding><h3>Informações Auxiliares</h3></div><md-content layout="column"><div layout="column" layout-padding layout-align="start none" ng-repeat="option in $ctrl.variable"><div layout="column" layout-align="center start"><span class="md-caption" style="color: gray;">{{ option.label }}</span> <span class="md-subhead">{{ option.translatedValue }}</span></div><md-divider></md-divider></div></md-content></md-sidenav>',
       controller: 'otusStaticVariableCtrl as $ctrl'
     }).controller('otusStaticVariableCtrl', Controller);
 
@@ -667,21 +667,21 @@
   function Controller(ActivityFacadeService) {
     var self = this;
 
-    self.shouldLockOpen = true;
-    self.iconLockOpen = 'arrow_left';
-    self.tooltipLockOpen = 'Fechar';
+    self.shouldLockOpenClose = true;
+    self.iconLockOpenClose = 'arrow_left';
+    self.tooltipLockOpenClose = 'Fechar';
 
     self.$onInit = onInit;
-    self.isLockOpen = isLockOpen;
+    self.isLockOpenClose = isLockOpenClose;
 
     function onInit() {
       self.variable = ActivityFacadeService.getWholeTemplateStaticVariableList();
     }
 
-    function isLockOpen(){
-      self.shouldLockOpen = !self.shouldLockOpen;
-      self.iconLockOpen = self.shouldLockOpen ? 'arrow_left' : 'arrow_right';
-      self.tooltipLockOpen = self.shouldLockOpen ? 'Fechar' : 'Abrir';
+    function isLockOpenClose(){
+      self.shouldLockOpenClose = !self.shouldLockOpenClose;
+      self.iconLockOpenClose = self.shouldLockOpenClose ? 'arrow_left' : 'arrow_right';
+      self.tooltipLockOpenClose = self.shouldLockOpenClose ? 'Fechar' : 'Abrir';
     }
   }
 }());
@@ -6059,7 +6059,7 @@
   }
 }());
 
-(function() {
+(function () {
   'use strict';
 
   angular
@@ -6082,6 +6082,7 @@
     self.getItemByCustomID = getItemByCustomID;
     self.getItemByTemplateID = getItemByTemplateID;
     self.getSurveyDatasources = getSurveyDatasources;
+    self.getStaticVariableList = getStaticVariableList;
     self.initialize = initialize;
     self.finalize = finalize;
     self.save = save;
@@ -6094,9 +6095,13 @@
       return ActivityFacadeService.surveyActivity;
     }
 
-    function getSurveyDatasources(){ //question datasources
+    function getSurveyDatasources() { //question datasources
       return getSurvey().getDataSources();
-   }
+    }
+
+    function getStaticVariableList() {
+      return getSurvey().getStaticVariableList();
+    }
 
     function getAnswerByItemID(id) {
       return ActivityFacadeService.getFillingByQuestionID(id);
@@ -6109,7 +6114,7 @@
     function getItemByCustomID(customID) {
       var fetchedItem = null;
 
-      getItems().some(function(item) {
+      getItems().some(function (item) {
         if (item.customID === customID) {
           fetchedItem = item;
           return true;
@@ -6122,7 +6127,7 @@
     function getItemByTemplateID(templateID) {
       var fetchedItem = null;
 
-      getItems().some(function(item) {
+      getItems().some(function (item) {
         if (item.templateID === templateID) {
           fetchedItem = item;
           return true;
@@ -6139,7 +6144,7 @@
     function getNavigationByOrigin(origin) {
       var fetchedNavigation = null;
 
-      getNavigations().some(function(navigation) {
+      getNavigations().some(function (navigation) {
         if (navigation.origin === origin) {
           fetchedNavigation = navigation;
           return true;

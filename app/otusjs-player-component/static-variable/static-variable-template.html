@@ -1,12 +1,12 @@
 <div class="fab-speed-dial">
-  <md-button ng-click="$ctrl.isLockOpen()" class="md-icon-button md-fab md-mini md-accent" aria-label="button isLockOpen">
-    <md-icon md-font-set="material-icons">{{ $ctrl.iconLockOpen }}</md-icon>
+  <md-button id="button-is-lock-open-close" ng-click="$ctrl.isLockOpenClose()" class="md-icon-button md-fab md-mini md-accent" aria-label="button isLockOpenClose">
+    <md-icon md-font-set="material-icons">{{ $ctrl.iconLockOpenClose }}</md-icon>
     <md-tooltip md-direction="bottom">
-      {{ $ctrl.tooltipLockOpen }}
+      {{ $ctrl.tooltipLockOpenClose }}
     </md-tooltip>
   </md-button>
 </div>
-<md-sidenav class="md-sidenav-left md-whiteframe-5dp" md-is-locked-open="$ctrl.shouldLockOpen && $mdMedia('gt-xs')">
+<md-sidenav class="md-sidenav-left md-whiteframe-5dp" md-is-locked-open="$ctrl.shouldLockOpenClose && $mdMedia('gt-xs')">
   <div layout-padding>
     <h3>Informações Auxiliares</h3>
   </div>

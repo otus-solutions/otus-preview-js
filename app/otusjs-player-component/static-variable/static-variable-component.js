@@ -15,21 +15,21 @@
   function Controller(ActivityFacadeService) {
     var self = this;
 
-    self.shouldLockOpen = true;
-    self.iconLockOpen = 'arrow_left';
-    self.tooltipLockOpen = 'Fechar';
+    self.shouldLockOpenClose = true;
+    self.iconLockOpenClose = 'arrow_left';
+    self.tooltipLockOpenClose = 'Fechar';
 
     self.$onInit = onInit;
-    self.isLockOpen = isLockOpen;
+    self.isLockOpenClose = isLockOpenClose;
 
     function onInit() {
       self.variable = ActivityFacadeService.getWholeTemplateStaticVariableList();
     }
 
-    function isLockOpen(){
-      self.shouldLockOpen = !self.shouldLockOpen;
-      self.iconLockOpen = self.shouldLockOpen ? 'arrow_left' : 'arrow_right';
-      self.tooltipLockOpen = self.shouldLockOpen ? 'Fechar' : 'Abrir';
+    function isLockOpenClose(){
+      self.shouldLockOpenClose = !self.shouldLockOpenClose;
+      self.iconLockOpenClose = self.shouldLockOpenClose ? 'arrow_left' : 'arrow_right';
+      self.tooltipLockOpenClose = self.shouldLockOpenClose ? 'Fechar' : 'Abrir';
     }
   }
 }());
