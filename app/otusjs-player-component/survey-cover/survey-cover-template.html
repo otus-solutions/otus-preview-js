@@ -3,10 +3,16 @@
     <section>
       <h2 class="md-display-1">{{ $ctrl.title }}</h2>
     </section>
-    <md-button class="md-raised md-primary" aria-label="Iniciar" ng-click="$ctrl.play()" ng-disabled="$ctrl.block">
-      <md-icon md-font-set="material-icons">assignment</md-icon>
-      Iniciar
-    </md-button>
+    <div layout="row">
+      <md-button class="md-raised md-primary" aria-label="Iniciar" ng-click="$ctrl.play()" ng-disabled="$ctrl.block">
+        <md-icon md-font-set="material-icons">assignment</md-icon>
+        Iniciar
+      </md-button>
+      <md-button class="md-raised md-no-focus" aria-label="Sair" ng-click="$ctrl.ejectError()" ng-if="$ctrl.errorBlock">
+        <md-icon md-font-set="material-icons">assignment</md-icon>
+         Sair
+      </md-button>
+    </div>
     <md-progress-circular md-primary md-mode="indeterminate" ng-show="$ctrl.block"></md-progress-circular>
   </div>
 </md-content>

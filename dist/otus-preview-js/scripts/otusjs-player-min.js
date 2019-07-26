@@ -177,7 +177,7 @@
   angular
     .module('otusjs.player.component')
     .component('otusPlayer', {
-      template:'<otus-survey-cover on-play="$ctrl.play()" phase-blocker="$ctrl.phaseBlocker" ng-show="$ctrl.showCover" layout-align="center center" layout="column" flex class="player-cover"></otus-survey-cover><div layout="column" flex ng-show="$ctrl.showActivity"><otus-survey-header layout="row"></otus-survey-header><div layout="row" flex><otus-static-variable layout="row"></otus-static-variable><md-content layout="row" flex><otus-player-display go-back="$ctrl.goBack()" layout="column" flex style="position: relative !important"></otus-player-display><otus-player-commander class="md-fab-bottom-right md-fling" layout="column" flex="10" layout-align="center center" style="max-height:none!important;" on-go-back="$ctrl.goBack()" on-pause="$ctrl.pause()" on-stop="$ctrl.stop()" on-go-ahead="$ctrl.goAhead()" on-eject="$ctrl.eject()"></otus-player-commander></md-content></div></div><otus-survey-back-cover on-finalize="$ctrl.eject()" ng-show="$ctrl.showBackCover" layout-align="center center" layout="column" flex class="player-back-cover"></otus-survey-back-cover>',
+      template:'<otus-survey-cover on-play="$ctrl.play()" on-eject="$ctrl.eject()" phase-blocker="$ctrl.phaseBlocker" ng-show="$ctrl.showCover" layout-align="center center" layout="column" flex class="player-cover"></otus-survey-cover><div layout="column" flex ng-show="$ctrl.showActivity"><otus-survey-header layout="row"></otus-survey-header><div layout="row" flex><otus-static-variable layout="row"></otus-static-variable><md-content layout="row" flex><otus-player-display go-back="$ctrl.goBack()" layout="column" flex style="position: relative !important"></otus-player-display><otus-player-commander class="md-fab-bottom-right md-fling" layout="column" flex="10" layout-align="center center" style="max-height:none!important;" on-go-back="$ctrl.goBack()" on-pause="$ctrl.pause()" on-stop="$ctrl.stop()" on-go-ahead="$ctrl.goAhead()" on-eject="$ctrl.eject()"></otus-player-commander></md-content></div></div><otus-survey-back-cover on-finalize="$ctrl.eject()" ng-show="$ctrl.showBackCover" layout-align="center center" layout="column" flex class="player-back-cover"></otus-survey-back-cover>',
       controller: Controller
     });
 
@@ -1016,17 +1016,18 @@
   }
 }());
 
-(function() {
+(function () {
   'use strict';
 
   angular
     .module('otusjs.player.component')
     .component('otusSurveyCover', {
-      template:'<md-content class="cover-content" layout-align="center center" layout="row" flex><div layout-align="center center" layout="column" flex><section><h2 class="md-display-1">{{ $ctrl.title }}</h2></section><md-button class="md-raised md-primary" aria-label="Iniciar" ng-click="$ctrl.play()" ng-disabled="$ctrl.block"><md-icon md-font-set="material-icons">assignment</md-icon>Iniciar</md-button><md-progress-circular md-primary md-mode="indeterminate" ng-show="$ctrl.block"></md-progress-circular></div></md-content>',
+      template:'<md-content class="cover-content" layout-align="center center" layout="row" flex><div layout-align="center center" layout="column" flex><section><h2 class="md-display-1">{{ $ctrl.title }}</h2></section><div layout="row"><md-button class="md-raised md-primary" aria-label="Iniciar" ng-click="$ctrl.play()" ng-disabled="$ctrl.block"><md-icon md-font-set="material-icons">assignment</md-icon>Iniciar</md-button><md-button class="md-raised md-no-focus" aria-label="Sair" ng-click="$ctrl.ejectError()" ng-if="$ctrl.errorBlock"><md-icon md-font-set="material-icons">assignment</md-icon>Sair</md-button></div><md-progress-circular md-primary md-mode="indeterminate" ng-show="$ctrl.block"></md-progress-circular></div></md-content>',
       controller: Controller,
       bindings: {
         onPlay: '&',
-        phaseBlocker: '&'
+        phaseBlocker: '&',
+        onEject: '&'
       }
     });
 
@@ -1044,6 +1045,7 @@
     self.play = play;
     self.show = show;
     self.remove = remove;
+    self.ejectError = ejectError;
 
     function onInit() {
       $scope.$parent.$ctrl.playerCover = self;
@@ -1052,18 +1054,29 @@
       _unblock();
     }
 
-    function _unblock(){
+    function _unblock() {
+      var umbloqueio = false;
+      var outroBloqueio = false;
       if (self.phaseBlocker()) {
-         self.block = true;
-         self.phaseBlocker()
-            .then(function(thing) {
-               self.block=false;
-            });
+        umbloqueio = true;
+
+        self.block = true;
+        self.phaseBlocker()
+          .then(function (thing) {
+            self.block = false;
+          })
+          .catch(function () {
+            self.errorBlock = true;
+          });
       }
     }
 
     function play() {
       self.onPlay();
+    }
+
+    function ejectError() {
+      self.onEject();
     }
 
     function show() {

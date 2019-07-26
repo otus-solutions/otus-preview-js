@@ -1,4 +1,4 @@
-(function() {
+(function () {
   'use strict';
 
   angular
@@ -8,7 +8,8 @@
       controller: Controller,
       bindings: {
         onPlay: '&',
-        phaseBlocker: '&'
+        phaseBlocker: '&',
+        onEject: '&'
       }
     });
 
@@ -26,6 +27,7 @@
     self.play = play;
     self.show = show;
     self.remove = remove;
+    self.ejectError = ejectError;
 
     function onInit() {
       $scope.$parent.$ctrl.playerCover = self;
@@ -34,18 +36,29 @@
       _unblock();
     }
 
-    function _unblock(){
+    function _unblock() {
+      var umbloqueio = false;
+      var outroBloqueio = false;
       if (self.phaseBlocker()) {
-         self.block = true;
-         self.phaseBlocker()
-            .then(function(thing) {
-               self.block=false;
-            });
+        umbloqueio = true;
+
+        self.block = true;
+        self.phaseBlocker()
+          .then(function (thing) {
+            self.block = false;
+          })
+          .catch(function () {
+            self.errorBlock = true;
+          });
       }
     }
 
     function play() {
       self.onPlay();
+    }
+
+    function ejectError() {
+      self.onEject();
     }
 
     function show() {
