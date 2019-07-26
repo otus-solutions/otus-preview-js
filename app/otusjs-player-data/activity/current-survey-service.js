@@ -1,4 +1,4 @@
-(function() {
+(function () {
   'use strict';
 
   angular
@@ -21,6 +21,7 @@
     self.getItemByCustomID = getItemByCustomID;
     self.getItemByTemplateID = getItemByTemplateID;
     self.getSurveyDatasources = getSurveyDatasources;
+    self.getStaticVariableList = getStaticVariableList;
     self.initialize = initialize;
     self.finalize = finalize;
     self.save = save;
@@ -32,9 +33,13 @@
       return ActivityFacadeService.surveyActivity;
     }
 
-    function getSurveyDatasources(){ //question datasources
+    function getSurveyDatasources() { //question datasources
       return getSurvey().getDataSources();
-   }
+    }
+
+    function getStaticVariableList() {
+      return getSurvey().getStaticVariableList();
+    }
 
     function getAnswerByItemID(id) {
       return ActivityFacadeService.getFillingByQuestionID(id);
@@ -47,7 +52,7 @@
     function getItemByCustomID(customID) {
       var fetchedItem = null;
 
-      getItems().some(function(item) {
+      getItems().some(function (item) {
         if (item.customID === customID) {
           fetchedItem = item;
           return true;
@@ -60,7 +65,7 @@
     function getItemByTemplateID(templateID) {
       var fetchedItem = null;
 
-      getItems().some(function(item) {
+      getItems().some(function (item) {
         if (item.templateID === templateID) {
           fetchedItem = item;
           return true;
@@ -77,7 +82,7 @@
     function getNavigationByOrigin(origin) {
       var fetchedNavigation = null;
 
-      getNavigations().some(function(navigation) {
+      getNavigations().some(function (navigation) {
         if (navigation.origin === origin) {
           fetchedNavigation = navigation;
           return true;
