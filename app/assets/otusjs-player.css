@@ -37,7 +37,7 @@ otus-survey-item {
 .fade-in { opacity: 1; transition: 1s!important; }
 .txtqst {width: 100%!important; margin-top:2%!important;}
 .fab-speed-dial {
-  z-index: 100;
+  z-index: 70;
   position: fixed;
   top: 65px;
   left: 15px;

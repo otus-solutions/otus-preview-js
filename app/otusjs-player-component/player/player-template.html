@@ -1,4 +1,4 @@
-<otus-survey-cover on-play="$ctrl.play()" on-eject="$ctrl.eject()" phase-blocker="$ctrl.phaseBlocker" ng-show="$ctrl.showCover" layout-align="center center" layout="column" flex class="player-cover"></otus-survey-cover>
+<otus-survey-cover on-play="$ctrl.play()" on-stop="$ctrl.stop()" phase-blocker="$ctrl.phaseBlocker" ng-show="$ctrl.showCover" layout-align="center center" layout="column" flex class="player-cover"></otus-survey-cover>
 <div layout="column" flex ng-show="$ctrl.showActivity">
   <otus-survey-header layout="row"></otus-survey-header>
   <div layout="row" flex>
@@ -15,4 +15,4 @@
     </md-content>
   </div>
 </div>
-<otus-survey-back-cover on-finalize="$ctrl.eject()" ng-show="$ctrl.showBackCover" layout-align="center center" layout="column" flex class="player-back-cover"></otus-survey-back-cover>
+<otus-survey-back-cover on-finalize="$ctrl.eject()" on-stop="$ctrl.stop()" ng-show="$ctrl.showBackCover" layout-align="center center" layout="column" flex class="player-back-cover"></otus-survey-back-cover>

@@ -3,9 +3,15 @@
     <section>
       <h2 class="md-display-1">{{ $ctrl.title }}</h2>
     </section>
-    <md-button class="md-raised md-primary" aria-label="Finalizar" ng-click="$ctrl.finalize()">
+    <div layout="row">
+       <md-button class="md-raised md-primary" aria-label="Finalizar" ng-click="$ctrl.finalize()">
       <md-icon md-font-set="material-icons">assignment_turned_in</md-icon>
       Finalizar
     </md-button>
+    <md-button class="md-raised md-no-focus" aria-label="Sair" ng-click="$ctrl.stop()">
+        <md-icon md-font-set="material-icons">exit_to_app</md-icon>
+        Sair
+      </md-button>
+    </div>
   </div>
 </md-content>

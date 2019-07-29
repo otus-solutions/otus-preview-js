@@ -9,17 +9,18 @@
       bindings: {
         onPlay: '&',
         phaseBlocker: '&',
-        onEject: '&'
+        onStop: '&'
       }
     });
 
   Controller.$inject = [
     '$scope',
     '$element',
+    '$mdToast',
     'otusjs.player.data.activity.ActivityFacadeService'
   ];
 
-  function Controller($scope, $element, ActivityFacadeService) {
+  function Controller($scope, $element,$mdToast, ActivityFacadeService) {
     var self = this;
 
     /* Public methods */
@@ -27,7 +28,7 @@
     self.play = play;
     self.show = show;
     self.remove = remove;
-    self.ejectError = ejectError;
+    self.stopError = stopError;
 
     function onInit() {
       $scope.$parent.$ctrl.playerCover = self;
@@ -37,18 +38,20 @@
     }
 
     function _unblock() {
-      var umbloqueio = false;
-      var outroBloqueio = false;
       if (self.phaseBlocker()) {
-        umbloqueio = true;
 
+        self.progress = true;
         self.block = true;
         self.phaseBlocker()
           .then(function (thing) {
             self.block = false;
+            self.progress = false;
           })
           .catch(function () {
             self.errorBlock = true;
+            self.block = true;
+            self.progress = false;
+            self.message = "Ocorreu um error na conexão de banco de dados, clique para sair.";
           });
       }
     }
@@ -57,8 +60,8 @@
       self.onPlay();
     }
 
-    function ejectError() {
-      self.onEject();
+    function stopError() {
+      self.onStop();
     }
 
     function show() {
