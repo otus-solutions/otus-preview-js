@@ -48,13 +48,13 @@
     self.save = save;
 
     /**/
-    self.registerPhaseBlocker = registerPhaseBlocker;
+    self.registerHardBlocker = registerHardBlocker;
     self.registerSoftBlocker = registerSoftBlocker;
     self.getHardBlocker = getHardBlocker;
     self.getSoftBlocker = getSoftBlocker;
     self.clearHardBlocker = clearHardBlocker;
 
-    function registerPhaseBlocker(blocker) {
+    function registerHardBlocker(blocker) {
       _hardBlocker = blocker;
       _hardBlocker.then(function(){
          getHardBlocker();
