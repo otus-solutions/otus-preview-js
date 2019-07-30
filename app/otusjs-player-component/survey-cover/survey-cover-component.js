@@ -17,11 +17,10 @@
   Controller.$inject = [
     '$scope',
     '$element',
-    '$mdToast',
     'otusjs.player.data.activity.ActivityFacadeService'
   ];
 
-  function Controller($scope, $element,$mdToast, ActivityFacadeService) {
+  function Controller($scope, $element, ActivityFacadeService) {
     var self = this;
 
     /* Public methods */

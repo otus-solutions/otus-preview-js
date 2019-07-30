@@ -14,6 +14,7 @@
 
   function Controller(ActivityFacadeService) {
     var self = this;
+    var _variable = null;
 
     self.shouldLockOpenClose = true;
     self.iconLockOpenClose = 'arrow_left';
@@ -23,7 +24,21 @@
     self.isLockOpenClose = isLockOpenClose;
 
     function onInit() {
-      self.variable = ActivityFacadeService.getWholeTemplateStaticVariableList();
+      _getWholeStaticVariableList();
+    }
+
+    function _getWholeStaticVariableList() {
+      _variable = ActivityFacadeService.getWholeTemplateStaticVariableList();
+
+      _variable.forEach(function(variable){
+        if(!variable.translatedValue){
+          variable.translatedValue = "Não há dados.";
+        }
+      });
+
+     self.variable = _variable;
+
+      return self.variable;
     }
 
     function isLockOpenClose(){

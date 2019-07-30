@@ -662,7 +662,7 @@
   angular
     .module('otusjs.player.component')
     .component('otusStaticVariable', {
-      template:'<div class="fab-speed-dial"><md-button id="button-is-lock-open-close" ng-click="$ctrl.isLockOpenClose()" class="md-icon-button md-fab md-mini md-accent" aria-label="button isLockOpenClose"><md-icon md-font-set="material-icons">{{ $ctrl.iconLockOpenClose }}</md-icon><md-tooltip md-direction="bottom">{{ $ctrl.tooltipLockOpenClose }}</md-tooltip></md-button></div><md-sidenav class="md-sidenav-left md-whiteframe-5dp" md-is-locked-open="$ctrl.shouldLockOpenClose && $mdMedia(\'gt-xs\')"><div layout-padding><h3>Informações Auxiliares</h3></div><md-content layout="column"><div layout="column" layout-padding layout-align="start none" ng-repeat="option in $ctrl.variable"><div layout="column" layout-align="center start"><span class="md-caption" style="color: gray;">{{ option.label }}</span> <span class="md-subhead">{{ option.translatedValue }}</span></div><md-divider></md-divider></div></md-content></md-sidenav>',
+      template:'<div class="fab-speed-dial"><md-button id="ButtonIsLockOpenClose" ng-click="$ctrl.isLockOpenClose()" class="md-icon-button md-fab md-mini md-accent" aria-label="button isLockOpenClose"><md-icon md-font-set="material-icons">{{ $ctrl.iconLockOpenClose }}</md-icon><md-tooltip md-direction="bottom">{{ $ctrl.tooltipLockOpenClose }}</md-tooltip></md-button></div><md-sidenav class="md-sidenav-left md-whiteframe-5dp" md-is-locked-open="$ctrl.shouldLockOpenClose && $mdMedia(\'gt-xs\')"><div layout-padding><h3>Informações Auxiliares</h3></div><md-content layout="column"><div layout="column" layout-padding layout-align="start none" ng-repeat="option in $ctrl.variable"><div layout="column" layout-align="center start"><span class="md-caption" style="color: gray;">{{ option.label }}</span> <span class="md-subhead">{{ option.translatedValue }}</span></div><md-divider></md-divider></div></md-content></md-sidenav>',
       controller: 'otusStaticVariableCtrl as $ctrl'
     }).controller('otusStaticVariableCtrl', Controller);
 
@@ -672,6 +672,7 @@
 
   function Controller(ActivityFacadeService) {
     var self = this;
+    var _variable = null;
 
     self.shouldLockOpenClose = true;
     self.iconLockOpenClose = 'arrow_left';
@@ -681,7 +682,22 @@
     self.isLockOpenClose = isLockOpenClose;
 
     function onInit() {
-      self.variable = ActivityFacadeService.getWholeTemplateStaticVariableList();
+      _getWholeStaticVariableList();
+    }
+
+    function _getWholeStaticVariableList() {
+      _variable = ActivityFacadeService.getWholeTemplateStaticVariableList();
+      _variable.forEach(function(variable){
+        if(!variable.translatedValue){
+          variable.translatedValue = "Não há dados.";
+        }
+      });
+
+     self.variable = _variable;
+
+      console.log(_variable)
+
+      return self.variable;
     }
 
     function isLockOpenClose(){
@@ -1047,11 +1063,10 @@
   Controller.$inject = [
     '$scope',
     '$element',
-    '$mdToast',
     'otusjs.player.data.activity.ActivityFacadeService'
   ];
 
-  function Controller($scope, $element,$mdToast, ActivityFacadeService) {
+  function Controller($scope, $element, ActivityFacadeService) {
     var self = this;
 
     /* Public methods */
@@ -4941,13 +4956,13 @@
     self.save = save;
 
     /**/
-    self.registerPhaseBlocker = registerPhaseBlocker;
+    self.registerHardBlocker = registerHardBlocker;
     self.registerSoftBlocker = registerSoftBlocker;
     self.getHardBlocker = getHardBlocker;
     self.getSoftBlocker = getSoftBlocker;
     self.clearHardBlocker = clearHardBlocker;
 
-    function registerPhaseBlocker(blocker) {
+    function registerHardBlocker(blocker) {
       _hardBlocker = blocker;
       _hardBlocker.then(function(){
          getHardBlocker();
