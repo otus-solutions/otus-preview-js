@@ -8,7 +8,8 @@
       controller: Controller,
       bindings: {
         onPlay: '&',
-        phaseBlocker: '&',
+        hardBlocker: '&',
+        softBlocker: '&',
         onStop: '&'
       }
     });
@@ -28,7 +29,7 @@
     self.play = play;
     self.show = show;
     self.remove = remove;
-    self.stopError = stopError;
+    self.stop = stop;
 
     function onInit() {
       $scope.$parent.$ctrl.playerCover = self;
@@ -38,20 +39,34 @@
     }
 
     function _unblock() {
-      if (self.phaseBlocker()) {
-
+      if (self.hardBlocker()) {
         self.progress = true;
         self.block = true;
-        self.phaseBlocker()
-          .then(function (thing) {
+        self.hardBlocker()
+          .then(function () {
             self.block = false;
             self.progress = false;
           })
           .catch(function () {
-            self.errorBlock = true;
+            self.erroBlock = true;
             self.block = true;
             self.progress = false;
-            self.message = "Ocorreu um error na conexão de banco de dados, clique para sair.";
+            self.message = "Ocorreu um erro ao baixar informações necessárias ao preenchimento da atividade, clique para sair.";
+          });
+      }
+
+      if(self.softBlocker){
+        self.progress = true;
+        self.block = true;
+        self.erroBlock = false;
+        self.softBlocker()
+          .then(function () {
+            self.progress = false;
+            self.block = false;
+            self.erroBlock = false;
+          })
+          .catch(function () {
+            self.progress = false;
           });
       }
     }
@@ -60,7 +75,7 @@
       self.onPlay();
     }
 
-    function stopError() {
+    function stop() {
       self.onStop();
     }
 

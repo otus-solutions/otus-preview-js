@@ -30,6 +30,8 @@
     var _component = null;
     var _goBackTo = null;
     var _goingBack = null;
+    var _hardBlocker = null;
+    var _softBlocker = null;
 
     self.bindComponent = bindComponent;
     self.getItemData = getItemData;
@@ -47,24 +49,35 @@
 
     /**/
     self.registerPhaseBlocker = registerPhaseBlocker;
-    self.getPhaseBlocker = getPhaseBlocker;
-    self.clearPhaseBlocker = clearPhaseBlocker;
+    self.registerSoftBlocker = registerSoftBlocker;
+    self.getHardBlocker = getHardBlocker;
+    self.getSoftBlocker = getSoftBlocker;
+    self.clearHardBlocker = clearHardBlocker;
 
-
-    var _phaseBlocker = null;
     function registerPhaseBlocker(blocker) {
-      _phaseBlocker = blocker;
-      _phaseBlocker.then(function(){
-         getPhaseBlocker();
+      _hardBlocker = blocker;
+      _hardBlocker.then(function(){
+         getHardBlocker();
       });
     }
 
-    function getPhaseBlocker(){
-      return _phaseBlocker;
+    function registerSoftBlocker(blocker) {
+      _softBlocker = blocker;
+      _softBlocker.then(function(){
+         getSoftBlocker();
+      });
     }
 
-    function clearPhaseBlocker(){
-      _phaseBlocker = null;
+    function getHardBlocker(){
+      return _hardBlocker;
+    }
+
+    function getSoftBlocker(){
+      return _softBlocker;
+    }
+
+    function clearHardBlocker(){
+      _hardBlocker = null;
    }
 
     /**/

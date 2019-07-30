@@ -177,7 +177,7 @@
   angular
     .module('otusjs.player.component')
     .component('otusPlayer', {
-      template:'<otus-survey-cover on-play="$ctrl.play()" on-stop="$ctrl.stop()" phase-blocker="$ctrl.phaseBlocker" ng-show="$ctrl.showCover" layout-align="center center" layout="column" flex class="player-cover"></otus-survey-cover><div layout="column" flex ng-show="$ctrl.showActivity"><otus-survey-header layout="row"></otus-survey-header><div layout="row" flex><otus-static-variable layout="row"></otus-static-variable><md-content layout="row" flex><otus-player-display go-back="$ctrl.goBack()" layout="column" flex style="position: relative !important"></otus-player-display><otus-player-commander class="md-fab-bottom-right md-fling" layout="column" flex="10" layout-align="center center" style="max-height:none!important;" on-go-back="$ctrl.goBack()" on-pause="$ctrl.pause()" on-stop="$ctrl.stop()" on-go-ahead="$ctrl.goAhead()" on-eject="$ctrl.eject()"></otus-player-commander></md-content></div></div><otus-survey-back-cover on-finalize="$ctrl.eject()" on-stop="$ctrl.stop()" ng-show="$ctrl.showBackCover" layout-align="center center" layout="column" flex class="player-back-cover"></otus-survey-back-cover>',
+      template:'<otus-survey-cover on-play="$ctrl.play()" on-stop="$ctrl.stop()" soft-blocker="$ctrl.softBlocker" hard-blocker="$ctrl.hardBlocker" ng-show="$ctrl.showCover" layout-align="center center" layout="column" flex class="player-cover"></otus-survey-cover><div layout="column" flex ng-show="$ctrl.showActivity"><otus-survey-header layout="row"></otus-survey-header><div layout="row" flex><otus-static-variable layout="row"></otus-static-variable><md-content layout="row" flex><otus-player-display go-back="$ctrl.goBack()" layout="column" flex style="position: relative !important"></otus-player-display><otus-player-commander class="md-fab-bottom-right md-fling" layout="column" flex="10" layout-align="center center" style="max-height:none!important;" on-go-back="$ctrl.goBack()" on-pause="$ctrl.pause()" on-stop="$ctrl.stop()" on-go-ahead="$ctrl.goAhead()" on-eject="$ctrl.eject()"></otus-player-commander></md-content></div></div><otus-survey-back-cover on-finalize="$ctrl.eject()" on-stop="$ctrl.stop()" ng-show="$ctrl.showBackCover" layout-align="center center" layout="column" flex class="player-back-cover"></otus-survey-back-cover>',
       controller: Controller
     });
 
@@ -251,10 +251,12 @@
     }
 
     function onInit() {
-      _setupPhaseBlocker();  //TODO this should be called elsewhere if we want to block other phases than pre-start (which method is executed at every phase change?)
       self.showBackCover = false;
       self.showCover = true;
       self.showActivity = false;
+
+      _setupHardBlocker();
+      _setupSoftBlocker();
 
       /*
        * These objects are initialized by child components of Player
@@ -268,8 +270,12 @@
       PlayerService.bindComponent(self);
     }
 
-    function _setupPhaseBlocker() {
-      self.phaseBlocker = PlayerService.getPhaseBlocker();
+    function _setupHardBlocker() {
+      self.hardBlocker = PlayerService.getHardBlocker();
+    }
+
+    function _setupSoftBlocker() {
+      self.softBlocker = PlayerService.getSoftBlocker();
     }
 
     function _loadItem() {
@@ -1028,11 +1034,12 @@
   angular
     .module('otusjs.player.component')
     .component('otusSurveyCover', {
-      template:'<md-content class="cover-content" layout-align="center center" layout="row" flex><div layout-align="center center" layout="column" flex><section><h2 class="md-display-1">{{ $ctrl.title }}</h2></section><div ng-if="$ctrl.errorBlock" layout="row"><md-icon md-font-set="material-icons">warning</md-icon><span class="md-body-2" layout-padding>{{ $ctrl.message }}</span></div><div layout="row"><md-button class="md-raised md-primary" aria-label="Iniciar" ng-click="$ctrl.play()" ng-disabled="$ctrl.block"><md-icon md-font-set="material-icons">assignment</md-icon>Iniciar</md-button><md-button class="md-raised md-no-focus" aria-label="Sair" ng-click="$ctrl.stopError()" ng-if="$ctrl.errorBlock"><md-icon md-font-set="material-icons">exit_to_app</md-icon>Sair</md-button></div><md-progress-circular md-primary md-mode="indeterminate" ng-show="$ctrl.progress"></md-progress-circular></div></md-content>',
+      template:'<md-content class="cover-content" layout-align="center center" layout="row" flex><div layout-align="center center" layout="column" flex><section><h2 class="md-display-1">{{ $ctrl.title }}</h2></section><div ng-if="$ctrl.erroBlock" layout="row"><md-icon md-font-set="material-icons">warning</md-icon><span class="md-body-2" layout-padding>{{ $ctrl.message }}</span></div><div layout="row"><md-button class="md-raised md-primary" aria-label="Iniciar" ng-click="$ctrl.play()" ng-disabled="$ctrl.block"><md-icon md-font-set="material-icons">assignment</md-icon>Iniciar</md-button><md-button class="md-raised md-no-focus" aria-label="Sair" ng-click="$ctrl.stop()"><md-icon md-font-set="material-icons">exit_to_app</md-icon>Sair</md-button></div><md-progress-circular md-primary md-mode="indeterminate" ng-show="$ctrl.progress"></md-progress-circular></div></md-content>',
       controller: Controller,
       bindings: {
         onPlay: '&',
-        phaseBlocker: '&',
+        hardBlocker: '&',
+        softBlocker: '&',
         onStop: '&'
       }
     });
@@ -1052,7 +1059,7 @@
     self.play = play;
     self.show = show;
     self.remove = remove;
-    self.stopError = stopError;
+    self.stop = stop;
 
     function onInit() {
       $scope.$parent.$ctrl.playerCover = self;
@@ -1062,20 +1069,34 @@
     }
 
     function _unblock() {
-      if (self.phaseBlocker()) {
-
+      if (self.hardBlocker()) {
         self.progress = true;
         self.block = true;
-        self.phaseBlocker()
-          .then(function (thing) {
+        self.hardBlocker()
+          .then(function () {
             self.block = false;
             self.progress = false;
           })
           .catch(function () {
-            self.errorBlock = true;
+            self.erroBlock = true;
             self.block = true;
             self.progress = false;
-            self.message = "Ocorreu um error na conexão de banco de dados, clique para sair.";
+            self.message = "Ocorreu um erro ao baixar informações necessárias ao preenchimento da atividade, clique para sair.";
+          });
+      }
+
+      if(self.softBlocker){
+        self.progress = true;
+        self.block = true;
+        self.erroBlock = false;
+        self.softBlocker()
+          .then(function () {
+            self.progress = false;
+            self.block = false;
+            self.erroBlock = false;
+          })
+          .catch(function () {
+            self.progress = false;
           });
       }
     }
@@ -1084,7 +1105,7 @@
       self.onPlay();
     }
 
-    function stopError() {
+    function stop() {
       self.onStop();
     }
 
@@ -4902,6 +4923,8 @@
     var _component = null;
     var _goBackTo = null;
     var _goingBack = null;
+    var _hardBlocker = null;
+    var _softBlocker = null;
 
     self.bindComponent = bindComponent;
     self.getItemData = getItemData;
@@ -4919,24 +4942,35 @@
 
     /**/
     self.registerPhaseBlocker = registerPhaseBlocker;
-    self.getPhaseBlocker = getPhaseBlocker;
-    self.clearPhaseBlocker = clearPhaseBlocker;
+    self.registerSoftBlocker = registerSoftBlocker;
+    self.getHardBlocker = getHardBlocker;
+    self.getSoftBlocker = getSoftBlocker;
+    self.clearHardBlocker = clearHardBlocker;
 
-
-    var _phaseBlocker = null;
     function registerPhaseBlocker(blocker) {
-      _phaseBlocker = blocker;
-      _phaseBlocker.then(function(){
-         getPhaseBlocker();
+      _hardBlocker = blocker;
+      _hardBlocker.then(function(){
+         getHardBlocker();
       });
     }
 
-    function getPhaseBlocker(){
-      return _phaseBlocker;
+    function registerSoftBlocker(blocker) {
+      _softBlocker = blocker;
+      _softBlocker.then(function(){
+         getSoftBlocker();
+      });
     }
 
-    function clearPhaseBlocker(){
-      _phaseBlocker = null;
+    function getHardBlocker(){
+      return _hardBlocker;
+    }
+
+    function getSoftBlocker(){
+      return _softBlocker;
+    }
+
+    function clearHardBlocker(){
+      _hardBlocker = null;
    }
 
     /**/

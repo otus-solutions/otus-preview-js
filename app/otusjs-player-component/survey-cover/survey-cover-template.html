@@ -3,7 +3,7 @@
     <section>
       <h2 class="md-display-1">{{ $ctrl.title }}</h2>
     </section>
-    <div ng-if="$ctrl.errorBlock" layout="row">
+    <div ng-if="$ctrl.erroBlock" layout="row">
       <md-icon md-font-set="material-icons">warning</md-icon>
       <span class="md-body-2" layout-padding>
       {{ $ctrl.message }}
@@ -14,7 +14,7 @@
         <md-icon md-font-set="material-icons">assignment</md-icon>
         Iniciar
       </md-button>
-      <md-button class="md-raised md-no-focus" aria-label="Sair" ng-click="$ctrl.stopError()" ng-if="$ctrl.errorBlock">
+      <md-button class="md-raised md-no-focus" aria-label="Sair" ng-click="$ctrl.stop()">
         <md-icon md-font-set="material-icons">exit_to_app</md-icon>
         Sair
       </md-button>
