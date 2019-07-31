@@ -38,10 +38,6 @@
     }
 
     function _unblock() {
-      console.log(self.hardBlocker);
-      console.log(self.softBlocker);
-
-
       self.hardError = false;
       self.softError = false;
       self.softProgress = false;
