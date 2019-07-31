@@ -56,16 +56,10 @@
 
     function registerHardBlocker(blocker) {
       _hardBlocker = blocker;
-      _hardBlocker.then(function(){
-         getHardBlocker();
-      });
     }
 
     function registerSoftBlocker(blocker) {
       _softBlocker = blocker;
-      _softBlocker.then(function(){
-         getSoftBlocker();
-      });
     }
 
     function getHardBlocker(){
@@ -99,11 +93,7 @@
     }
 
     function setGoBackTo(templateID) {
-      if(templateID === null){
-        _goingBack = false;
-      } else {
-        _goingBack = true;
-      }
+      _goingBack = templateID !== null;
       _goBackTo = templateID;
     }
 

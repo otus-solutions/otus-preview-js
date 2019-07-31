@@ -50,7 +50,7 @@
             self.erroBlock = true;
             self.block = true;
             self.progress = false;
-            self.message = "Ocorreu um erro ao baixar informações necessárias ao preenchimento da atividade, clique para sair.";
+            self.message = 'Ocorreu um erro ao baixar informações necessárias ao preenchimento da atividade. Clique para sair.';
           });
       }
 
