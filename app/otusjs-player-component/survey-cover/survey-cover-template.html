@@ -3,14 +3,14 @@
     <section>
       <h2 class="md-display-1">{{ $ctrl.title }}</h2>
     </section>
-    <div ng-if="$ctrl.erroBlock" layout="row">
+    <div ng-if="$ctrl.hardError" layout="row">
       <md-icon md-font-set="material-icons">warning</md-icon>
       <span class="md-body-2" layout-padding>
       {{ $ctrl.message }}
     </span>
     </div>
     <div layout="row">
-      <md-button class="md-raised md-primary" aria-label="Iniciar" ng-click="$ctrl.play()" ng-disabled="$ctrl.block">
+      <md-button class="md-raised md-primary" aria-label="Iniciar" ng-click="$ctrl.play()" ng-disabled="$ctrl.hardError">
         <md-icon md-font-set="material-icons">assignment</md-icon>
         Iniciar
       </md-button>
@@ -19,6 +19,6 @@
         Sair
       </md-button>
     </div>
-    <md-progress-circular md-primary md-mode="indeterminate" ng-show="$ctrl.progress"></md-progress-circular>
+    <md-progress-circular md-primary md-mode="indeterminate" ng-show="$ctrl.softProgress || $ctrl.hardProgress"></md-progress-circular>
   </div>
 </md-content>

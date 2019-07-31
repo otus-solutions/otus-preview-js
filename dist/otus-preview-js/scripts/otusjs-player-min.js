@@ -687,6 +687,7 @@
 
     function _getWholeStaticVariableList() {
       _variable = ActivityFacadeService.getWholeTemplateStaticVariableList();
+
       _variable.forEach(function(variable){
         if(!variable.translatedValue){
           variable.translatedValue = "Não há dados.";
@@ -694,8 +695,6 @@
       });
 
      self.variable = _variable;
-
-      console.log(_variable)
 
       return self.variable;
     }
@@ -1050,7 +1049,7 @@
   angular
     .module('otusjs.player.component')
     .component('otusSurveyCover', {
-      template:'<md-content class="cover-content" layout-align="center center" layout="row" flex><div layout-align="center center" layout="column" flex><section><h2 class="md-display-1">{{ $ctrl.title }}</h2></section><div ng-if="$ctrl.erroBlock" layout="row"><md-icon md-font-set="material-icons">warning</md-icon><span class="md-body-2" layout-padding>{{ $ctrl.message }}</span></div><div layout="row"><md-button class="md-raised md-primary" aria-label="Iniciar" ng-click="$ctrl.play()" ng-disabled="$ctrl.block"><md-icon md-font-set="material-icons">assignment</md-icon>Iniciar</md-button><md-button class="md-raised md-no-focus" aria-label="Sair" ng-click="$ctrl.stop()"><md-icon md-font-set="material-icons">exit_to_app</md-icon>Sair</md-button></div><md-progress-circular md-primary md-mode="indeterminate" ng-show="$ctrl.progress"></md-progress-circular></div></md-content>',
+      template:'<md-content class="cover-content" layout-align="center center" layout="row" flex><div layout-align="center center" layout="column" flex><section><h2 class="md-display-1">{{ $ctrl.title }}</h2></section><div ng-if="$ctrl.hardError" layout="row"><md-icon md-font-set="material-icons">warning</md-icon><span class="md-body-2" layout-padding>{{ $ctrl.message }}</span></div><div layout="row"><md-button class="md-raised md-primary" aria-label="Iniciar" ng-click="$ctrl.play()" ng-disabled="$ctrl.hardError"><md-icon md-font-set="material-icons">assignment</md-icon>Iniciar</md-button><md-button class="md-raised md-no-focus" aria-label="Sair" ng-click="$ctrl.stop()"><md-icon md-font-set="material-icons">exit_to_app</md-icon>Sair</md-button></div><md-progress-circular md-primary md-mode="indeterminate" ng-show="$ctrl.softProgress || $ctrl.hardProgress"></md-progress-circular></div></md-content>',
       controller: Controller,
       bindings: {
         onPlay: '&',
@@ -1084,34 +1083,37 @@
     }
 
     function _unblock() {
+      console.log(self.hardBlocker);
+      console.log(self.softBlocker);
+
+
+      self.hardError = false;
+      self.softError = false;
+      self.softProgress = false;
+      self.hardProgress = false;
+
       if (self.hardBlocker()) {
-        self.progress = true;
-        self.block = true;
+        self.hardProgress = true;
         self.hardBlocker()
           .then(function () {
-            self.block = false;
-            self.progress = false;
+            self.hardProgress = false;
           })
           .catch(function () {
-            self.erroBlock = true;
-            self.block = true;
-            self.progress = false;
-            self.message = "Ocorreu um erro ao baixar informações necessárias ao preenchimento da atividade, clique para sair.";
+            self.hardProgress = false;
+            self.hardError = true;
+            self.message = 'Ocorreu um erro ao baixar informações necessárias ao preenchimento da atividade. Clique para sair.';
           });
       }
 
-      if(self.softBlocker){
-        self.progress = true;
-        self.block = true;
-        self.erroBlock = false;
+      if(self.softBlocker()){
+        self.softProgress = true;
         self.softBlocker()
           .then(function () {
-            self.progress = false;
-            self.block = false;
-            self.erroBlock = false;
+            self.softProgress = false;
           })
           .catch(function () {
-            self.progress = false;
+            self.softProgress = false;
+            self.softError = true;
           });
       }
     }
@@ -4964,16 +4966,10 @@
 
     function registerHardBlocker(blocker) {
       _hardBlocker = blocker;
-      _hardBlocker.then(function(){
-         getHardBlocker();
-      });
     }
 
     function registerSoftBlocker(blocker) {
       _softBlocker = blocker;
-      _softBlocker.then(function(){
-         getSoftBlocker();
-      });
     }
 
     function getHardBlocker(){
@@ -5007,11 +5003,7 @@
     }
 
     function setGoBackTo(templateID) {
-      if(templateID === null){
-        _goingBack = false;
-      } else {
-        _goingBack = true;
-      }
+      _goingBack = templateID !== null;
       _goBackTo = templateID;
     }
 

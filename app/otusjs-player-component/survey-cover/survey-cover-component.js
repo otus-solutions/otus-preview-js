@@ -38,34 +38,37 @@
     }
 
     function _unblock() {
+      console.log(self.hardBlocker);
+      console.log(self.softBlocker);
+
+
+      self.hardError = false;
+      self.softError = false;
+      self.softProgress = false;
+      self.hardProgress = false;
+
       if (self.hardBlocker()) {
-        self.progress = true;
-        self.block = true;
+        self.hardProgress = true;
         self.hardBlocker()
           .then(function () {
-            self.block = false;
-            self.progress = false;
+            self.hardProgress = false;
           })
           .catch(function () {
-            self.erroBlock = true;
-            self.block = true;
-            self.progress = false;
+            self.hardProgress = false;
+            self.hardError = true;
             self.message = 'Ocorreu um erro ao baixar informações necessárias ao preenchimento da atividade. Clique para sair.';
           });
       }
 
-      if(self.softBlocker){
-        self.progress = true;
-        self.block = true;
-        self.erroBlock = false;
+      if(self.softBlocker()){
+        self.softProgress = true;
         self.softBlocker()
           .then(function () {
-            self.progress = false;
-            self.block = false;
-            self.erroBlock = false;
+            self.softProgress = false;
           })
           .catch(function () {
-            self.progress = false;
+            self.softProgress = false;
+            self.softError = true;
           });
       }
     }
