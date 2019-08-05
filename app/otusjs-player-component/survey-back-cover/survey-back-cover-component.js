@@ -7,7 +7,8 @@
       templateUrl: 'app/otusjs-player-component/survey-back-cover/survey-back-cover-template.html',
       controller: Controller,
       bindings: {
-        onFinalize: '&'
+        onFinalize: '&',
+        onStop: '&'
       }
     });
 
@@ -22,12 +23,17 @@
 
     /* Public methods */
     self.finalize = finalize;
+    self.stop = stop;
 
     /* Public methods */
     self.$onInit = onInit;
 
     function finalize() {
       self.onFinalize();
+    }
+
+    function stop() {
+      self.onStop();
     }
 
     function onInit() {

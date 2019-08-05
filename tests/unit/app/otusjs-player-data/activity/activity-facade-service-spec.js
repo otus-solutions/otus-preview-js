@@ -19,6 +19,7 @@ describe('ActivityFacadeService', function() {
       mockSurvey();
       mockAnswerData();
       mockValidationErrorData();
+      mockVariableData();
 
       /* Injectable mocks */
       mockCurrentSurveyService(_$injector_);
@@ -134,6 +135,18 @@ describe('ActivityFacadeService', function() {
 
   });
 
+  describe('getWholeTemplateStaticVariableList method', function() {
+
+    it('should keep a reference to variable into activity module', function() {
+      spyOn(Mock.CurrentSurveyService, 'getWholeTemplateStaticVariableList');
+
+      service.getWholeTemplateStaticVariableList();
+
+      expect(Mock.CurrentSurveyService.getWholeTemplateStaticVariableList).toHaveBeenCalledWith();
+    });
+
+  });
+
   function mockCurrentSurveyService($injector) {
     Mock.CurrentSurveyService = $injector.get('otusjs.player.data.activity.CurrentSurveyService');
     Injections.CurrentSurveyService = Mock.CurrentSurveyService;
@@ -170,6 +183,14 @@ describe('ActivityFacadeService', function() {
     Mock.surveyTemplate.NavigationManager.selectNavigationByOrigin = jasmine.createSpy('selectNavigationByOrigin').and.returnValue(Mock.CAD1Navigation);
   }
 
+  function mockVariableData(){
+    Mock.Variable = [
+      {
+        "label" : "CÓDIGO DO ACTÍGRAFO:",
+        "translatedValue" : "Sim"
+      }
+    ];
+  }
   function mockSurveyData() {
     Mock.surveyTemplate = {
       "extents": "StudioObject",

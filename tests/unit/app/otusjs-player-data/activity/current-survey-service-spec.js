@@ -1,4 +1,4 @@
-xdescribe('Current Question Service', function() {
+describe('Current Question Service', function() {
 
   var UNIT_NAME = 'otusjs.player.data.activity.CurrentSurveyService';
   var Mock = {};
@@ -9,16 +9,16 @@ xdescribe('Current Question Service', function() {
   var CAD90 = 'CAD90';
 
   beforeEach(function() {
-    angular.mock.module('otusjs.player');
+
+    angular.mock.module('otusjs.player.data', function ($provide) {
+      $provide.value('otusjs.model.activity.ActivityFacadeService', Mock.ActivityFacadeService);
+    });
 
     inject(function(_$injector_) {
       /* Test data */
       mockSurvey();
 
-      /* Injectable mocks */
-      mockModelActivityFacadeService(_$injector_);
-
-      service = _$injector_.get(UNIT_NAME, Injections);
+      service = _$injector_.get(UNIT_NAME);
     });
   });
 
@@ -38,7 +38,7 @@ xdescribe('Current Question Service', function() {
 
   });
 
-  describe('getItems method', function() {
+  xdescribe('getItems method', function() {
 
     beforeEach(function() {
       service.setup(Mock.ActivityFacadeService.surveyActivity);
@@ -50,7 +50,7 @@ xdescribe('Current Question Service', function() {
 
   });
 
-  describe('getItemByCustomID method', function() {
+  xdescribe('getItemByCustomID method', function() {
 
     beforeEach(function() {
       service.setup(Mock.ActivityFacadeService.surveyActivity);
@@ -78,7 +78,7 @@ xdescribe('Current Question Service', function() {
 
   });
 
-  describe('getItemByTemplateID method', function() {
+  xdescribe('getItemByTemplateID method', function() {
 
     beforeEach(function() {
       service.setup(Mock.ActivityFacadeService.surveyActivity);
@@ -112,7 +112,7 @@ xdescribe('Current Question Service', function() {
 
   });
 
-  describe('getNavigations method', function() {
+  xdescribe('getNavigations method', function() {
 
     beforeEach(function() {
       service.setup(Mock.ActivityFacadeService.surveyActivity);
@@ -126,7 +126,7 @@ xdescribe('Current Question Service', function() {
 
   });
 
-  describe('getNavigationByOrigin method', function() {
+  xdescribe('getNavigationByOrigin method', function() {
 
     beforeEach(function() {
       service.setup(Mock.ActivityFacadeService.surveyActivity);
@@ -142,7 +142,7 @@ xdescribe('Current Question Service', function() {
 
     });
 
-    describe('when not exists a navigation', function() {
+    xdescribe('when not exists a navigation', function() {
 
       it('should return null', function() {
         var navigation = service.getNavigationByOrigin(CAD90);
@@ -154,7 +154,7 @@ xdescribe('Current Question Service', function() {
 
   });
 
-  describe('initialize method', function() {
+  xdescribe('initialize method', function() {
 
     it('should open the survey activity', function() {
       spyOn(Mock.ActivityFacadeService, 'openActivitySurvey');
@@ -166,7 +166,7 @@ xdescribe('Current Question Service', function() {
 
   });
 
-  describe('setup method', function() {
+  xdescribe('setup method', function() {
 
     it('should initialize the survey activity', function() {
       spyOn(Mock.ActivityFacadeService, 'initializeActivitySurvey');
@@ -174,6 +174,18 @@ xdescribe('Current Question Service', function() {
       service.setup();
 
       expect(Mock.ActivityFacadeService.initializeActivitySurvey).toHaveBeenCalledWith();
+    });
+
+  });
+
+  describe('getWholeTemplateStaticVariableList method', function() {
+
+    it('should getWholeTemplateStaticVariableList the survey activity', function() {
+      spyOn(Mock.ActivityFacadeService, 'getWholeTemplateVariableList');
+
+      service.getWholeTemplateStaticVariableList();
+
+      expect(Mock.ActivityFacadeService.getWholeTemplateVariableList).toHaveBeenCalledTimes(1);
     });
 
   });
@@ -2216,12 +2228,12 @@ xdescribe('Current Question Service', function() {
     };
   }
 
-  function mockModelActivityFacadeService($injector) {
-    Mock.surveyActivity = $injector.get('otusjs.model.activity.ActivitySurveyFactory').create(Mock.surveyTemplate);
-
-    Mock.ActivityFacadeService = $injector.get('otusjs.model.activity.ActivityFacadeService');
-    Mock.ActivityFacadeService.surveyActivity = Mock.surveyActivity;
-
-    Injections.ActivityFacadeService = Mock.ActivityFacadeService;
-  }
+  Mock.ActivityFacadeService = {
+    getFillingByQuestionID: function (){
+      return {};
+    },
+    getWholeTemplateVariableList: function () {
+      return Promise.resolve();
+    }
+  };
 });

@@ -1,4 +1,4 @@
-(function() {
+(function () {
   'use strict';
 
   angular
@@ -8,7 +8,9 @@
       controller: Controller,
       bindings: {
         onPlay: '&',
-        phaseBlocker: '&'
+        hardBlocker: '&',
+        softBlocker: '&',
+        onStop: '&'
       }
     });
 
@@ -26,6 +28,7 @@
     self.play = play;
     self.show = show;
     self.remove = remove;
+    self.stop = stop;
 
     function onInit() {
       $scope.$parent.$ctrl.playerCover = self;
@@ -34,18 +37,44 @@
       _unblock();
     }
 
-    function _unblock(){
-      if (self.phaseBlocker()) {
-         self.block = true;
-         self.phaseBlocker()
-            .then(function(thing) {
-               self.block=false;
-            });
+    function _unblock() {
+      self.hardError = false;
+      self.softError = false;
+      self.softProgress = false;
+      self.hardProgress = false;
+
+      if (self.hardBlocker()) {
+        self.hardProgress = true;
+        self.hardBlocker()
+          .then(function () {
+            self.hardProgress = false;
+          })
+          .catch(function () {
+            self.hardProgress = false;
+            self.hardError = true;
+            self.message = 'Ocorreu um erro ao baixar informações necessárias ao preenchimento da atividade. Clique para sair.';
+          });
+      }
+
+      if(self.softBlocker()){
+        self.softProgress = true;
+        self.softBlocker()
+          .then(function () {
+            self.softProgress = false;
+          })
+          .catch(function () {
+            self.softProgress = false;
+            self.softError = true;
+          });
       }
     }
 
     function play() {
       self.onPlay();
+    }
+
+    function stop() {
+      self.onStop();
     }
 
     function show() {

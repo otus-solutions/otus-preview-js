@@ -30,6 +30,8 @@
     var _component = null;
     var _goBackTo = null;
     var _goingBack = null;
+    var _hardBlocker = null;
+    var _softBlocker = null;
 
     self.bindComponent = bindComponent;
     self.getItemData = getItemData;
@@ -46,25 +48,30 @@
     self.save = save;
 
     /**/
-    self.registerPhaseBlocker = registerPhaseBlocker;
-    self.getPhaseBlocker = getPhaseBlocker;
-    self.clearPhaseBlocker = clearPhaseBlocker;
+    self.registerHardBlocker = registerHardBlocker;
+    self.registerSoftBlocker = registerSoftBlocker;
+    self.getHardBlocker = getHardBlocker;
+    self.getSoftBlocker = getSoftBlocker;
+    self.clearHardBlocker = clearHardBlocker;
 
-
-    var _phaseBlocker = null;
-    function registerPhaseBlocker(blocker) {
-      _phaseBlocker = blocker;
-      _phaseBlocker.then(function(){
-         getPhaseBlocker();
-      });
+    function registerHardBlocker(blocker) {
+      _hardBlocker = blocker;
     }
 
-    function getPhaseBlocker(){
-      return _phaseBlocker;
+    function registerSoftBlocker(blocker) {
+      _softBlocker = blocker;
     }
 
-    function clearPhaseBlocker(){
-      _phaseBlocker = null;
+    function getHardBlocker(){
+      return _hardBlocker;
+    }
+
+    function getSoftBlocker(){
+      return _softBlocker;
+    }
+
+    function clearHardBlocker(){
+      _hardBlocker = null;
    }
 
     /**/
@@ -86,11 +93,7 @@
     }
 
     function setGoBackTo(templateID) {
-      if(templateID === null){
-        _goingBack = false;
-      } else {
-        _goingBack = true;
-      }
+      _goingBack = templateID !== null;
       _goBackTo = templateID;
     }
 
