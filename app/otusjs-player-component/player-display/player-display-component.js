@@ -1,4 +1,4 @@
-(function() {
+(function () {
   'use strict';
 
   angular
@@ -6,7 +6,7 @@
     .component('otusPlayerDisplay', {
       templateUrl: 'app/otusjs-player-component/player-display/player-display-template.html',
       controller: Controller,
-      bindings:{
+      bindings: {
         goBack: "&"
       }
     });
@@ -26,6 +26,7 @@
     var self = this;
 
     var SURVEY_ITEM = '<otus-survey-item item-data="itemData" id="{{itemData.templateID}}" style="margin: 0;display:block;" class="animate-switch"/>';
+    // var SURVEY_ITEM_GROUP = '<otus-survey-item-group item-data="itemData" style="margin: 0;display:block;" class="animate-switch"/>';
     var SURVEY_COVER = '<otus-cover />';
 
     /* Public methods */
@@ -41,35 +42,56 @@
       }
     }
 
-    function loadItem(itemData) {
-      if (_shouldLoadItem(itemData)) {
+    function loadItem(itemsData) {
+      // if (_shouldLoadItem(itemsData)) {
+      //   _destroyCurrentItem();
+      //   _saveQuestion();
+      //   removeQuestion(itemsData.templateID);
+      //   $scope.itemData = itemsData;
+      //   _setQuestionId(itemsData.templateID);
+      //   $element.find('#pagePlayer').empty();
+      //   $element.find('#pagePlayer').append($compile(SURVEY_ITEM)($scope));
+      //   _onGoBottom(itemsData.templateID);
+      // }
+      if (_shouldLoadItem(itemsData[0])) {
         _destroyCurrentItem();
         _saveQuestion();
-        removeQuestion(itemData.templateID);
-        $scope.itemData = itemData;
-        _setQuestionId(itemData.templateID);
+        removeQuestion(itemsData.templateID);
+
         $element.find('#pagePlayer').empty();
-        $element.find('#pagePlayer').append($compile(SURVEY_ITEM)($scope));
-        _onGoBottom(itemData.templateID);
+        for (let i = 0; i < itemsData.length; i++) {
+          (function () {
+            let scope = $scope.$new();
+            scope.itemData = itemsData[i];
+            _setQuestionId(itemsData[0].templateID);
+            let element = $compile(SURVEY_ITEM)(scope);
+            console.log(element);
+            $element.find('#pagePlayer').append(element);
+          }())
+        }
+        _onGoBottom(itemsData.templateID);
       }
 
+      //
+      // _destroyCurrentItem();
+      // $element.find('#pagePlayer').empty();
+      // $element.find('#pagePlayer').append($compile(SURVEY_ITEM_GROUP)($scope));
 
 
-      if(PlayerService.isGoingBack()){
-        if(PlayerService.getGoBackTo() !== itemData.templateID){
-          self.goBack()
+      if (PlayerService.isGoingBack()) {
+        if (PlayerService.getGoBackTo() !== itemsData.templateID) {
+          self.goBack();
         } else {
-          PlayerService.setGoBackTo(null)
+          PlayerService.setGoBackTo(null);
         }
       }
     }
-
 
     $scope.removeQuestion = removeQuestion;
 
     function removeQuestion(id) {
       var index = _getIndexQuestionId(id);
-      if(index > -1){
+      if (index > -1) {
         var length = $scope.questions.length;
         $scope.questions.splice(index, length);
         self.ids.splice(index, length);
@@ -95,7 +117,7 @@
     }
 
     function _saveQuestion() {
-      if($scope.itemData.templateID){
+      if ($scope.itemData.templateID) {
         var question = angular.copy($scope.itemData);
         question.data = ActivityFacadeService.fetchItemAnswerByTemplateID(question.templateID);
         question.data = question.data ? question.data : _setAnswerBlank();
@@ -108,7 +130,7 @@
         metadata: {
           value: null
         },
-        answer : {
+        answer: {
           value: null
         }
       };

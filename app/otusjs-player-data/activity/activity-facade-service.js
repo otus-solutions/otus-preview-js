@@ -19,6 +19,7 @@
     self.fetchItemAnswerByCustomID = fetchItemAnswerByCustomID;
     self.fetchItemAnswerByTemplateID = fetchItemAnswerByTemplateID;
     self.fetchItemByID = fetchItemByID;
+    self.fetchItemGroupByID = fetchItemGroupByID;
     self.fetchNavigationByOrigin = fetchNavigationByOrigin;
     self.getCurrentItem = getCurrentItem;
     self.getCurrentSurvey = getCurrentSurvey;
@@ -49,6 +50,14 @@
     function fetchItemByID(id) {
       return CurrentSurveyService.getItemByTemplateID(id);
     }
+
+    function fetchItemGroupByID(id) {
+      return CurrentSurveyService.getGroupItemsByMemberID(id);
+    }
+
+    // function getItemGroup(id) {
+    //   return CurrentSurveyService.getGroupItemsByMemberID(id);
+    // }
 
     function fetchNavigationByOrigin(id) {
       return CurrentSurveyService.getNavigationByOrigin(id);

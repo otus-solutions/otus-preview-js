@@ -35,6 +35,7 @@
 
     self.bindComponent = bindComponent;
     self.getItemData = getItemData;
+    self.getSurveyItemGroupData = getFake;
     self.goAhead = goAhead;
     self.goBack = goBack;
     self.setGoBackTo = setGoBackTo;
@@ -82,6 +83,14 @@
 
     function getItemData() {
       return ActivityFacadeService.getCurrentItem().getItem();
+    }
+
+    // function getSurveyItemGroupData() {
+    //   return ActivityFacadeService.getCurrentItem().getSurveyItemGroup();
+    // }
+
+    function getFake() {
+      return ActivityFacadeService.getCurrentSurvey().getItems().splice(0,3);
     }
 
     function goAhead() {

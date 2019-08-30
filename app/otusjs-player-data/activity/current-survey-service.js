@@ -20,6 +20,8 @@
     self.getNavigationByOrigin = getNavigationByOrigin;
     self.getItemByCustomID = getItemByCustomID;
     self.getItemByTemplateID = getItemByTemplateID;
+    self.getGroupItemsByMemberID = getGroupItemsByMemberID;
+    // self.getSurveyItemGroup = getSurveyItemGroup;
     self.getSurveyDatasources = getSurveyDatasources;
     self.getStaticVariableList = getStaticVariableList;
     self.initialize = initialize;
@@ -63,18 +65,43 @@
       return fetchedItem;
     }
 
+    // function getItemByTemplateID(templateID) {
+    //   return getItems().find(function (item) {
+    //     return item.templateID === templateID;
+    //   });
+    // }
+
     function getItemByTemplateID(templateID) {
       var fetchedItem = null;
-
       getItems().some(function (item) {
-        if (item.templateID === templateID) {
+        if(item.templateID === templateID){
           fetchedItem = item;
           return true;
         }
       });
-
       return fetchedItem;
     }
+
+    function getGroupItemsByMemberID(id) {
+      return getFake(id);
+      // return getSurvey().getGroupItemsByMemberID(id);
+    }
+
+    function getFake(id) {
+      console.log(getSurvey());
+      return getSurvey().getSurveyItemGroupList(id).members.map(member => {
+        return getItemByTemplateID(member.id);
+        // return member.id;
+      });
+
+      // return getSurvey().getSurveyItemGroupList().getGroupByMember(id).members.map(member => {
+      //   return getItemByTemplateID(member.id);
+      // });
+    }
+
+    // function getSurveyItemGroup() {
+    //   // return getSurvey().SurveyItemGroupManager.getGroupMember();
+    // }
 
     function getNavigations() {
       return ActivityFacadeService.surveyActivity.getNavigations();
@@ -105,6 +132,7 @@
       ActivityFacadeService.saveActivitySurvey();
     }
 
+    //todo: ver se alguém chama esse método
     function setup() { }
 
     function clearSkippedAnswers() {

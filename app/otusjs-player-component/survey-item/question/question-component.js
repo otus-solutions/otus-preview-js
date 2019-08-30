@@ -27,10 +27,10 @@
     self.$onInit = function() {
       self.template = TagComponentBuilderService.createTagElement(self.itemData.objectType);
       self.otusSurveyItem.questionComponent = self;
-      self.filling = CurrentItemService.getFilling() || {};
-      self.answer = CurrentItemService.getFilling().answer || {};
-      self.metadata = CurrentItemService.getFilling().metadata || {};
-      self.comment = CurrentItemService.getFilling().comment || {};
+      self.filling = CurrentItemService.getFilling(self.itemData.templateID) || {};
+      self.answer = CurrentItemService.getFilling(self.itemData.templateID).answer || {};
+      self.metadata = CurrentItemService.getFilling(self.itemData.templateID).metadata || {};
+      self.comment = CurrentItemService.getFilling(self.itemData.templateID).comment || {};
       self.menuComponent = {};
       self.menuComponent.error = false;
 

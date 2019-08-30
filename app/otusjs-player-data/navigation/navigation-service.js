@@ -76,10 +76,11 @@
         var navigation = ActivityFacadeService.getCurrentSurvey().getNavigationByOrigin(item.templateID);
 
         RouteService.setup(navigation);
+        //todo model precisa visitar todos os items do grupo
         _navigationTracker.visitItem(item.templateID);
 
         return {
-          item: item,
+          items: item,
           navigation: navigation
         };
       }
@@ -108,15 +109,19 @@
     }
 
     function _loadItem(id) {
-      var itemToLoad = null;
+      var itemsToLoad = null;
       var navigation = null;
 
       if (!id) {
-        itemToLoad = ActivityFacadeService.getCurrentSurvey().getItems()[0];
+        //todo
+        let firstItem = ActivityFacadeService.getCurrentSurvey().getItems()[0];
+        itemsToLoad = ActivityFacadeService.fetchItemGroupByID(firstItem.templateID);
+        console.log(itemsToLoad);
+        // itemsToLoad = ActivityFacadeService.getCurrentSurvey().getSurveyItemGroup()[0];
         navigation = ActivityFacadeService.getCurrentSurvey().getNavigations()[2];
       } else {
-        itemToLoad = ActivityFacadeService.fetchItemByID(id);
-        navigation = ActivityFacadeService.fetchNavigationByOrigin(id);
+        itemsToLoad = ActivityFacadeService.fetchItemGroupByID(id);
+        navigation = ActivityFacadeService.fetchNavigationByOrigin(itemsToLoad[itemsToLoad.length-1].templateID);
       }
 
       if (navigation) {
@@ -128,10 +133,11 @@
         return id;
       }
 
-      _navigationTracker.visitItem(itemToLoad.templateID);
+      //todo: model precisa visitar todos os items do grupo
+      // _navigationTracker.visitItem(itemsToLoad.templateID);
 
       return {
-        item: itemToLoad,
+        items: itemsToLoad,
         navigation: navigation
       };
     }

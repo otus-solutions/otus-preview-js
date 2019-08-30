@@ -3,28 +3,26 @@
 
   angular
     .module('otusjs.player.component')
-    .component('otusSurveyItem', {
-      templateUrl: 'app/otusjs-player-component/survey-item/survey-item-template.html',
-      controller: OtusSurveyItemController,
+    .component('otusSurveyItemGroup', {
+      templateUrl: 'app/otusjs-player-component/survey-item/survey-item-group/survey-item-group-template.html',
+      controller: OtusSurveyItemGroupController,
       bindings: {
         itemData: '<'
       }
     });
 
-  OtusSurveyItemController.$inject = [
+  OtusSurveyItemGroupController.$inject = [
     '$scope',
     '$element',
     'otusjs.player.data.activity.CurrentItemService'
   ];
 
-  function OtusSurveyItemController($scope, $element, CurrentItemService) {
+  function OtusSurveyItemGroupController($scope, $element, CurrentItemService) {
     var self = this;
 
     /* Public methods */
     self.isQuestion = isQuestion;
     self.isItem = isItem;
-    // self.isSurveyItemGroup = isSurveyItemGroup;
-    self.restoreAll = restoreAll;
     self.update = update;
     self.clear = clear;
     self.pushData = pushData;
@@ -33,7 +31,7 @@
 
     self.$onInit = function() {
       self.filling = {};
-      self.filling.questionID = self.itemData.templateID;
+      self.filling.questionID = self.itemData.members.templateID;
 
       $scope.$parent.$ctrl.currentItem = self;
       CurrentItemService.observerRegistry(self);
@@ -52,14 +50,12 @@
     }
 
     function isQuestion() {
-      return (self.itemData.objectType === 'ImageItem') || (self.itemData.objectType === 'TextItem') ? false : true;
+      return (self.itemData.members.objectType === 'ImageItem') || (self.itemData.members.objectType === 'TextItem') ? false : true;
     }
 
     function isItem() {
-      return (self.itemData.objectType === 'ImageItem') || (self.itemData.objectType === 'TextItem') ? true : false;
+      return (self.itemData.members.objectType === 'ImageItem') || (self.itemData.members.objectType === 'TextItem') ? true : false;
     }
-
-    function restoreAll() {}
 
     function update(prop, value) {
       if (prop) {
@@ -70,7 +66,7 @@
           self.filling[prop].value = value;
         }
       } else {
-        throw new Error('Cannot determine property type to update', 72, 'survey-item-component.js');
+        throw new Error('Cannot determine property type to update', 72, 'survey-item-group-component.js');
       }
       CurrentItemService.fill(self.filling);
     }
@@ -83,7 +79,7 @@
           self.questionComponent.clearMetadataAnswer();
         }
       } else {
-        throw new Error('Cannot determine property type to clear', 85, 'survey-item-component.js');
+        throw new Error('Cannot determine property type to clear', 85, 'survey-item-group-component.js');
       }
     }
 

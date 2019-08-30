@@ -106,8 +106,13 @@
     }
 
     function _loadItem() {
-      if (PlayerService.getItemData()) {
-        self.playerDisplay.loadItem(PlayerService.getItemData());
+      // if (PlayerService.getItemData()) {
+      //   self.playerDisplay.loadItem(PlayerService.getItemData());
+      // } else if(PlayerService.getSurveyItemGroupData()){
+      //   self.playerDisplay.loadItem(PlayerService.getSurveyItemGroupData());
+      // }
+      if(PlayerService.getSurveyItemGroupData()){
+        self.playerDisplay.loadItem(PlayerService.getSurveyItemGroupData());
       }
     }
   }
