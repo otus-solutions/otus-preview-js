@@ -1,17 +1,18 @@
-<otus-survey-cover on-play="$ctrl.play()" phase-blocker="$ctrl.phaseBlocker" ng-show="$ctrl.showCover" layout-align="center center" layout="column" flex class="player-cover"></otus-survey-cover>
-<md-content layout="column" flex ng-show="$ctrl.showActivity">
+<otus-survey-cover on-play="$ctrl.play()" on-stop="$ctrl.stop()" soft-blocker="$ctrl.softBlocker" hard-blocker="$ctrl.hardBlocker" ng-show="$ctrl.showCover" layout-align="center center" layout="column" flex class="player-cover"></otus-survey-cover>
+<div layout="column" flex ng-show="$ctrl.showActivity">
   <otus-survey-header layout="row"></otus-survey-header>
-  <span flex="5"></span>
-  <md-content layout="row" flex>
-
-    <otus-player-display  go-back="$ctrl.goBack()" layout="column" flex style="position: relative !important" ></otus-player-display>
-  <otus-player-commander class="md-fab-bottom-right md-fling" layout="column" flex="10" layout-align="center center" style="max-height:none!important;" 
-  on-go-back="$ctrl.goBack()"
-  on-pause="$ctrl.pause()"
-  on-stop="$ctrl.stop()"
-  on-go-ahead="$ctrl.goAhead()"
-  on-eject="$ctrl.eject()">
-  </otus-player-commander>
-  </md-content>
-</md-content>
-<otus-survey-back-cover on-finalize="$ctrl.eject()" ng-show="$ctrl.showBackCover" layout-align="center center" layout="column" flex class="player-back-cover"></otus-survey-back-cover>
+  <div layout="row" flex>
+    <otus-static-variable layout="row"></otus-static-variable>
+    <md-content layout="row" flex>
+      <otus-player-display  go-back="$ctrl.goBack()" layout="column" flex style="position: relative !important" ></otus-player-display>
+      <otus-player-commander class="md-fab-bottom-right md-fling" layout="column" flex="10" layout-align="center center" style="max-height:none!important;"
+                             on-go-back="$ctrl.goBack()"
+                             on-pause="$ctrl.pause()"
+                             on-stop="$ctrl.stop()"
+                             on-go-ahead="$ctrl.goAhead()"
+                             on-eject="$ctrl.eject()">
+      </otus-player-commander>
+    </md-content>
+  </div>
+</div>
+<otus-survey-back-cover on-finalize="$ctrl.eject()" on-stop="$ctrl.stop()" ng-show="$ctrl.showBackCover" layout-align="center center" layout="column" flex class="player-back-cover"></otus-survey-back-cover>

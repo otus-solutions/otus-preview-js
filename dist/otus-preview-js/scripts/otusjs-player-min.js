@@ -177,7 +177,7 @@
   angular
     .module('otusjs.player.component')
     .component('otusPlayer', {
-      template:'<otus-survey-cover on-play="$ctrl.play()" phase-blocker="$ctrl.phaseBlocker" ng-show="$ctrl.showCover" layout-align="center center" layout="column" flex class="player-cover"></otus-survey-cover><md-content layout="column" flex ng-show="$ctrl.showActivity"><otus-survey-header layout="row"></otus-survey-header><span flex="5"></span><md-content layout="row" flex><otus-player-display go-back="$ctrl.goBack()" layout="column" flex style="position: relative !important"></otus-player-display><otus-player-commander class="md-fab-bottom-right md-fling" layout="column" flex="10" layout-align="center center" style="max-height:none!important;" on-go-back="$ctrl.goBack()" on-pause="$ctrl.pause()" on-stop="$ctrl.stop()" on-go-ahead="$ctrl.goAhead()" on-eject="$ctrl.eject()"></otus-player-commander></md-content></md-content><otus-survey-back-cover on-finalize="$ctrl.eject()" ng-show="$ctrl.showBackCover" layout-align="center center" layout="column" flex class="player-back-cover"></otus-survey-back-cover>',
+      template:'<otus-survey-cover on-play="$ctrl.play()" on-stop="$ctrl.stop()" soft-blocker="$ctrl.softBlocker" hard-blocker="$ctrl.hardBlocker" ng-show="$ctrl.showCover" layout-align="center center" layout="column" flex class="player-cover"></otus-survey-cover><div layout="column" flex ng-show="$ctrl.showActivity"><otus-survey-header layout="row"></otus-survey-header><div layout="row" flex><otus-static-variable layout="row"></otus-static-variable><md-content layout="row" flex><otus-player-display go-back="$ctrl.goBack()" layout="column" flex style="position: relative !important"></otus-player-display><otus-player-commander class="md-fab-bottom-right md-fling" layout="column" flex="10" layout-align="center center" style="max-height:none!important;" on-go-back="$ctrl.goBack()" on-pause="$ctrl.pause()" on-stop="$ctrl.stop()" on-go-ahead="$ctrl.goAhead()" on-eject="$ctrl.eject()"></otus-player-commander></md-content></div></div><otus-survey-back-cover on-finalize="$ctrl.eject()" on-stop="$ctrl.stop()" ng-show="$ctrl.showBackCover" layout-align="center center" layout="column" flex class="player-back-cover"></otus-survey-back-cover>',
       controller: Controller
     });
 
@@ -251,10 +251,12 @@
     }
 
     function onInit() {
-      _setupPhaseBlocker();  //TODO this should be called elsewhere if we want to block other phases than pre-start (which method is executed at every phase change?)
       self.showBackCover = false;
       self.showCover = true;
       self.showActivity = false;
+
+      _setupHardBlocker();
+      _setupSoftBlocker();
 
       /*
        * These objects are initialized by child components of Player
@@ -268,8 +270,12 @@
       PlayerService.bindComponent(self);
     }
 
-    function _setupPhaseBlocker() {
-      self.phaseBlocker = PlayerService.getPhaseBlocker();
+    function _setupHardBlocker() {
+      self.hardBlocker = PlayerService.getHardBlocker();
+    }
+
+    function _setupSoftBlocker() {
+      self.softBlocker = PlayerService.getSoftBlocker();
     }
 
     function _loadItem() {
@@ -655,6 +661,56 @@
 
   angular
     .module('otusjs.player.component')
+    .component('otusStaticVariable', {
+      template:'<div class="fab-speed-dial"><md-button id="ButtonIsLockOpenClose" ng-click="$ctrl.isLockOpenClose()" class="md-icon-button md-fab md-mini md-accent" aria-label="button isLockOpenClose"><md-icon md-font-set="material-icons">{{ $ctrl.iconLockOpenClose }}</md-icon><md-tooltip md-direction="bottom">{{ $ctrl.tooltipLockOpenClose }}</md-tooltip></md-button></div><md-sidenav class="md-sidenav-left md-whiteframe-5dp" md-is-locked-open="$ctrl.shouldLockOpenClose && $mdMedia(\'gt-xs\')"><div layout-padding><h3>Informações Auxiliares</h3></div><md-content layout="column"><div layout="column" layout-padding layout-align="start none" ng-repeat="option in $ctrl.variable"><div layout="column" layout-align="center start"><span class="md-caption" style="color: gray;">{{ option.label }}</span> <span class="md-subhead">{{ option.translatedValue }}</span></div><md-divider></md-divider></div></md-content></md-sidenav>',
+      controller: 'otusStaticVariableCtrl as $ctrl'
+    }).controller('otusStaticVariableCtrl', Controller);
+
+  Controller.$inject = [
+    'otusjs.player.data.activity.ActivityFacadeService'
+  ];
+
+  function Controller(ActivityFacadeService) {
+    var self = this;
+    var _variable = null;
+
+    self.shouldLockOpenClose = true;
+    self.iconLockOpenClose = 'arrow_left';
+    self.tooltipLockOpenClose = 'Fechar';
+
+    self.$onInit = onInit;
+    self.isLockOpenClose = isLockOpenClose;
+
+    function onInit() {
+      _getWholeStaticVariableList();
+    }
+
+    function _getWholeStaticVariableList() {
+      _variable = ActivityFacadeService.getWholeTemplateStaticVariableList();
+
+      _variable.forEach(function(variable){
+        if(!variable.translatedValue){
+          variable.translatedValue = "Não há dados.";
+        }
+      });
+
+     self.variable = _variable;
+
+      return self.variable;
+    }
+
+    function isLockOpenClose(){
+      self.shouldLockOpenClose = !self.shouldLockOpenClose;
+      self.iconLockOpenClose = self.shouldLockOpenClose ? 'arrow_left' : 'arrow_right';
+      self.tooltipLockOpenClose = self.shouldLockOpenClose ? 'Fechar' : 'Abrir';
+    }
+  }
+}());
+(function () {
+  'use strict';
+
+  angular
+    .module('otusjs.player.component')
     .component('otusPlayerCommander', {
       template:'<div layout-padding layout="column" flex layout-align="space-around center" style="position: fixed;"><md-button id="previousQuestion" class="md-fab md-warn md-mini" aria-label="Voltar" ng-click="$ctrl.goBack()" ng-disabled="$ctrl.isGoBackDisabled"><md-icon md-font-set="material-icons">arrow_drop_up</md-icon><md-tooltip md-direction="bottom">Voltar</md-tooltip></md-button><span flex="5"></span><md-button id="cancelActivity" class="md-fab md-raised md-mini" aria-label="Cancelar" ng-click="$ctrl.stop()"><md-icon md-font-set="material-icons">close</md-icon><md-tooltip md-direction="bottom">Cancelar</md-tooltip></md-button><span flex="5"></span><md-button id="saveActivity" class="md-fab md-accent md-mini" aria-label="Salvar" ng-click="$ctrl.pause()"><md-icon md-font-set="material-icons">save</md-icon><md-tooltip md-direction="bottom">Salvar</md-tooltip></md-button><span flex="5"></span><md-button id="nextQuestion" class="md-fab md-warn md-mini" aria-label="Avançar" ng-click="$ctrl.goAhead()" ng-disabled="$ctrl.isGoAheadDisabled"><md-icon md-font-set="material-icons">arrow_drop_down</md-icon><md-tooltip md-direction="bottom">Avançar</md-tooltip></md-button><span flex="5"></span></div>',
       controller: Controller,
@@ -808,7 +864,7 @@
   angular
     .module('otusjs.player.component')
     .component('otusPlayerDisplay', {
-      template:'<div layout="row" flex><span flex="10"></span><div flex layout="column"><answer-view ng-repeat="item in questions" ng-show="questions.length" go-back="$ctrl.goBack()" icon="item.objectType" item-data="item" question="{{item.label.ptBR.formattedText}}"></answer-view><div flex layout="column" id="pagePlayer"></div></div></div>',
+      template:'<span flex="5"></span><div layout="row" flex><span flex="10"></span><div flex layout="column"><answer-view ng-repeat="item in questions" ng-show="questions.length" go-back="$ctrl.goBack()" icon="item.objectType" item-data="item" question="{{item.label.ptBR.formattedText}}"></answer-view><div flex layout="column" id="pagePlayer"></div></div></div>',
       controller: Controller,
       bindings:{
         goBack: "&"
@@ -947,10 +1003,11 @@
   angular
     .module('otusjs.player.component')
     .component('otusSurveyBackCover', {
-      template:'<md-content class="cover-content" layout-align="center center" layout="row" flex><div layout-align="center center" layout="column" flex><section><h2 class="md-display-1">{{ $ctrl.title }}</h2></section><md-button class="md-raised md-primary" aria-label="Finalizar" ng-click="$ctrl.finalize()"><md-icon md-font-set="material-icons">assignment_turned_in</md-icon>Finalizar</md-button></div></md-content>',
+      template:'<md-content class="cover-content" layout-align="center center" layout="row" flex><div layout-align="center center" layout="column" flex><section><h2 class="md-display-1">{{ $ctrl.title }}</h2></section><div layout="row"><md-button class="md-raised md-primary" aria-label="Finalizar" ng-click="$ctrl.finalize()"><md-icon md-font-set="material-icons">assignment_turned_in</md-icon>Finalizar</md-button><md-button class="md-raised md-no-focus" aria-label="Sair" ng-click="$ctrl.stop()"><md-icon md-font-set="material-icons">exit_to_app</md-icon>Sair</md-button></div></div></md-content>',
       controller: Controller,
       bindings: {
-        onFinalize: '&'
+        onFinalize: '&',
+        onStop: '&'
       }
     });
 
@@ -965,12 +1022,17 @@
 
     /* Public methods */
     self.finalize = finalize;
+    self.stop = stop;
 
     /* Public methods */
     self.$onInit = onInit;
 
     function finalize() {
       self.onFinalize();
+    }
+
+    function stop() {
+      self.onStop();
     }
 
     function onInit() {
@@ -981,17 +1043,19 @@
   }
 }());
 
-(function() {
+(function () {
   'use strict';
 
   angular
     .module('otusjs.player.component')
     .component('otusSurveyCover', {
-      template:'<md-content class="cover-content" layout-align="center center" layout="row" flex><div layout-align="center center" layout="column" flex><section><h2 class="md-display-1">{{ $ctrl.title }}</h2></section><md-button class="md-raised md-primary" aria-label="Iniciar" ng-click="$ctrl.play()" ng-disabled="$ctrl.block"><md-icon md-font-set="material-icons">assignment</md-icon>Iniciar</md-button><md-progress-circular md-primary md-mode="indeterminate" ng-show="$ctrl.block"></md-progress-circular></div></md-content>',
+      template:'<md-content class="cover-content" layout-align="center center" layout="row" flex><div layout-align="center center" layout="column" flex><section><h2 class="md-display-1">{{ $ctrl.title }}</h2></section><div ng-if="$ctrl.hardError" layout="row"><md-icon md-font-set="material-icons">warning</md-icon><span class="md-body-2" layout-padding>{{ $ctrl.message }}</span></div><div layout="row"><md-button class="md-raised md-primary" aria-label="Iniciar" ng-click="$ctrl.play()" ng-disabled="$ctrl.hardError"><md-icon md-font-set="material-icons">assignment</md-icon>Iniciar</md-button><md-button class="md-raised md-no-focus" aria-label="Sair" ng-click="$ctrl.stop()"><md-icon md-font-set="material-icons">exit_to_app</md-icon>Sair</md-button></div><md-progress-circular md-primary md-mode="indeterminate" ng-show="$ctrl.softProgress || $ctrl.hardProgress"></md-progress-circular></div></md-content>',
       controller: Controller,
       bindings: {
         onPlay: '&',
-        phaseBlocker: '&'
+        hardBlocker: '&',
+        softBlocker: '&',
+        onStop: '&'
       }
     });
 
@@ -1009,6 +1073,7 @@
     self.play = play;
     self.show = show;
     self.remove = remove;
+    self.stop = stop;
 
     function onInit() {
       $scope.$parent.$ctrl.playerCover = self;
@@ -1017,18 +1082,44 @@
       _unblock();
     }
 
-    function _unblock(){
-      if (self.phaseBlocker()) {
-         self.block = true;
-         self.phaseBlocker()
-            .then(function(thing) {
-               self.block=false;
-            });
+    function _unblock() {
+      self.hardError = false;
+      self.softError = false;
+      self.softProgress = false;
+      self.hardProgress = false;
+
+      if (self.hardBlocker()) {
+        self.hardProgress = true;
+        self.hardBlocker()
+          .then(function () {
+            self.hardProgress = false;
+          })
+          .catch(function () {
+            self.hardProgress = false;
+            self.hardError = true;
+            self.message = 'Ocorreu um erro ao baixar informações necessárias ao preenchimento da atividade. Clique para sair.';
+          });
+      }
+
+      if(self.softBlocker()){
+        self.softProgress = true;
+        self.softBlocker()
+          .then(function () {
+            self.softProgress = false;
+          })
+          .catch(function () {
+            self.softProgress = false;
+            self.softError = true;
+          });
       }
     }
 
     function play() {
       self.onPlay();
+    }
+
+    function stop() {
+      self.onStop();
     }
 
     function show() {
@@ -1048,7 +1139,7 @@
   angular
     .module('otusjs.player.component')
     .component('otusSurveyHeader', {
-      template:'<md-content layout="column" flex><md-toolbar layout="column" flex style="height: 110px"><div layout-align="end start" layout="column" flex><div layout="row" flex><md-chips layout="column" layout-padding layout-align="center center" style="padding: 0 !important; padding-left: 10px !important"><md-chip style="margin: 0 !important">{{ $ctrl.surveyIdentity.acronym }}</md-chip></md-chips><div layout="column" flex layout-padding style="padding: 0 !important" layout-align="center start"><div><span class="md-display-1">{{ $ctrl.surveyIdentity.name }}</span></div></div></div><div layout="row" style="padding-left: 10px !important; padding-right: 10px !important"><div layout="column" layout-padding layout-align="center start"><label class="md-caption" style="padding: 0 !important">Participante</label> <span class="md-title" style="padding: 0 !important">{{ $ctrl.participantData.name }}</span></div><div class="md-list-item-text" layout="column" layout-padding layout-align="center start"><label class="md-caption" style="padding: 0 !important">Número de Recrutamento</label> <span class="md-title" style="padding: 0 !important">{{ $ctrl.participantData.recruitmentNumber }}</span></div></div></div></md-toolbar></md-content>',
+      template:'<md-toolbar layout="row" class="md-whiteframe-5dp" flex><div layout="row" layout-align="start center" flex="40"><span flex="10"></span><div class="md-padding"><img src="app/static-resource/image/coruja_pesquisadora.png" class="toolbar-icon"></div><span flex="5"></span><md-chips><md-chip>{{ $ctrl.surveyIdentity.acronym }}</md-chip></md-chips><div class="md-body-2"><span>{{ $ctrl.surveyIdentity.name }}</span></div></div><div layout="row" layout-margin layout-align="center center"><md-icon md-svg-icon="file-document-box"></md-icon><div><span>{{ $ctrl.participantData.name }}</span> <span>|</span> <span>{{ $ctrl.participantData.recruitmentNumber }}</span></div></div></md-toolbar>',
       controller: Controller,
       bindings: {
         surveyIdentity: '<'
@@ -3126,7 +3217,7 @@
 (function () {
   angular.module('otusjs.player.component')
     .component('answerView', {
-      template:'<md-card flex layout="column"><md-toolbar layout="row" layout-align="start center" ng-class="$ctrl.hueClass"><md-button class="md-icon-button md-whiteframe-3dp" ng-click="$ctrl.goingBack()" ng-if="!$ctrl.isItem() && $ctrl.view"><md-icon md-font-set="material-icons" class="material-icons ng-binding md-layoutTheme-theme">edit</md-icon><md-tooltip md-direction="down">Editar questão</md-tooltip></md-button><md-button class="md-icon-button md-whiteframe-3dp" ng-if="!$ctrl.isItem() && !$ctrl.view"><md-icon md-font-set="material-icons" class="material-icons ng-binding md-layoutTheme-theme">question_answer</md-icon><md-tooltip md-direction="down">Questão respondida</md-tooltip></md-button><md-card-header-text ng-if="!$ctrl.view" layout-align="start center" layout="column" style="display: flex" layout-fill class="truncate" flex="80"><otus-label class="md-title truncate" item-label="$ctrl.label" style="width: 95%"></otus-label><span class="md-caption truncate" ng-if="$ctrl.answer" style="margin-top:-5px; width: 95%">{{$ctrl.answer}}</span> <span class="md-caption truncate" ng-if="$ctrl.comment" style="margin-top:-5px; width: 95%">{{$ctrl.comment}}</span></md-card-header-text><div class="md-toolbar-tools" layout="row" flex layout-align="center center"><h4 flex ng-if="$ctrl.view" style="margin: 0 !important;text-align: center">Modo de visualização</h4><span flex ng-if="!$ctrl.view"></span><md-button class="md-icon-button" ng-click="$ctrl.viewQuestion()"><md-icon md-font-set="material-icons" class="material-icons ng-binding md-layoutTheme-theme">{{$ctrl.iconEye}}</md-icon><md-tooltip md-direction="down">{{$ctrl.iconTooltip}}</md-tooltip></md-button></div></md-toolbar><div ng-if="$ctrl.view"><md-card-header layout="row" flex><md-card-header-text layout-align="center start" ng-if="$ctrl.view" layout-padding layout-margin><otus-label class="md-title md-headline" layout-padding item-label="$ctrl.labelFormatted"></otus-label></md-card-header-text></md-card-header><md-card-content layout="row" layout-align="space-between" flex><otus-misc-item ng-if="$ctrl.isItem() && ($ctrl.itemData.objectType === \'ImageItem\')" item-data="$ctrl.itemData" layout="column" flex></otus-misc-item><md-content ng-if="!$ctrl.isItem()" layout="column" layout-fill flex><div layout="row" flex><md-tabs md-dynamic-height layout="column" flex="95"><md-tab label="Resposta"><md-content class="md-padding" bind-html-compile="$ctrl.template"></md-content></md-tab><md-tab label="Metadado"><md-content class="md-padding"><md-content layout-padding style="margin-left: 10px"><md-radio-group id="metadataGroupRadioGroup" ng-model="$ctrl.itemData.data.metadata.value" layout-padding flex><md-content value="{{option.value}}" ng-repeat="option in $ctrl.itemData.metadata.options" layout="row" style="margin: 10px"><md-radio-button aria-label="{{option.label}}" value="{{option.value}}" style="outline: none;border: 0;" flex ng-disabled="true"><otus-label item-label="option.label.ptBR.formattedText"></otus-label></md-radio-button></md-content></md-radio-group></md-content></md-content></md-tab><md-tab label="Comentário"><md-content class="md-padding"><md-content layout-padding><div layout="row"><md-input-container md-no-float class="md-block" flex><textarea ng-model="$ctrl.itemData.data.comment" ng-disabled="true" aria-label="Comentário"></textarea></md-input-container></div></md-content></md-content></md-tab></md-tabs></div></md-content></md-card-content></div></md-card>',
+      template:'<md-card flex layout="column"><md-toolbar layout="row" layout-align="start center" ng-class="$ctrl.hueClass"><md-button class="md-icon-button md-whiteframe-3dp" ng-click="$ctrl.goingBack()" ng-if="!$ctrl.isItem() && $ctrl.view"><md-icon md-font-set="material-icons" class="material-icons ng-binding md-layoutTheme-theme">edit</md-icon><md-tooltip md-direction="down">Editar questão</md-tooltip></md-button><md-button class="md-icon-button md-whiteframe-3dp" ng-if="!$ctrl.isItem() && !$ctrl.view"><md-icon md-font-set="material-icons" class="material-icons ng-binding md-layoutTheme-theme">question_answer</md-icon><md-tooltip md-direction="down">Questão respondida</md-tooltip></md-button><md-card-header-text ng-if="!$ctrl.view" layout-align="start center" layout="column" style="display: flex" layout-fill class="truncate" flex="50"><otus-label class="md-title truncate" item-label="$ctrl.label" style="width: 95%"></otus-label><span class="md-caption truncate" ng-if="$ctrl.answer" style="margin-top:-5px; width: 95%">{{$ctrl.answer}}</span> <span class="md-caption truncate" ng-if="$ctrl.comment" style="margin-top:-5px; width: 95%">{{$ctrl.comment}}</span></md-card-header-text><div class="md-toolbar-tools" layout="row" flex layout-align="center center"><h4 flex ng-if="$ctrl.view" style="margin: 0 !important;text-align: center">Modo de visualização</h4><span flex ng-if="!$ctrl.view"></span><md-button class="md-icon-button" ng-click="$ctrl.viewQuestion()"><md-icon md-font-set="material-icons" class="material-icons ng-binding md-layoutTheme-theme">{{$ctrl.iconEye}}</md-icon><md-tooltip md-direction="down">{{$ctrl.iconTooltip}}</md-tooltip></md-button></div></md-toolbar><div ng-if="$ctrl.view"><md-card-header layout="row" flex><md-card-header-text layout-align="center start" ng-if="$ctrl.view" layout-padding layout-margin><otus-label class="md-title md-headline" layout-padding item-label="$ctrl.labelFormatted"></otus-label></md-card-header-text></md-card-header><md-card-content layout="row" layout-align="space-between" flex><otus-misc-item ng-if="$ctrl.isItem() && ($ctrl.itemData.objectType === \'ImageItem\')" item-data="$ctrl.itemData" layout="column" flex></otus-misc-item><md-content ng-if="!$ctrl.isItem()" layout="column" layout-fill flex><div layout="row" flex><md-tabs md-dynamic-height layout="column" flex="95"><md-tab label="Resposta"><md-content class="md-padding" bind-html-compile="$ctrl.template"></md-content></md-tab><md-tab label="Metadado"><md-content class="md-padding"><md-content layout-padding style="margin-left: 10px"><md-radio-group id="metadataGroupRadioGroup" ng-model="$ctrl.itemData.data.metadata.value" layout-padding flex><md-content value="{{option.value}}" ng-repeat="option in $ctrl.itemData.metadata.options" layout="row" style="margin: 10px"><md-radio-button aria-label="{{option.label}}" value="{{option.value}}" style="outline: none;border: 0;" flex ng-disabled="true"><otus-label item-label="option.label.ptBR.formattedText"></otus-label></md-radio-button></md-content></md-radio-group></md-content></md-content></md-tab><md-tab label="Comentário"><md-content class="md-padding"><md-content layout-padding><div layout="row"><md-input-container md-no-float class="md-block" flex><textarea ng-model="$ctrl.itemData.data.comment" ng-disabled="true" aria-label="Comentário"></textarea></md-input-container></div></md-content></md-content></md-tab></md-tabs></div></md-content></md-card-content></div></md-card>',
       controller: "answerViewCtrl as $ctrl",
       bindings: {
         icon: '<',
@@ -4845,6 +4936,8 @@
     var _component = null;
     var _goBackTo = null;
     var _goingBack = null;
+    var _hardBlocker = null;
+    var _softBlocker = null;
 
     self.bindComponent = bindComponent;
     self.getItemData = getItemData;
@@ -4861,25 +4954,30 @@
     self.save = save;
 
     /**/
-    self.registerPhaseBlocker = registerPhaseBlocker;
-    self.getPhaseBlocker = getPhaseBlocker;
-    self.clearPhaseBlocker = clearPhaseBlocker;
+    self.registerHardBlocker = registerHardBlocker;
+    self.registerSoftBlocker = registerSoftBlocker;
+    self.getHardBlocker = getHardBlocker;
+    self.getSoftBlocker = getSoftBlocker;
+    self.clearHardBlocker = clearHardBlocker;
 
-
-    var _phaseBlocker = null;
-    function registerPhaseBlocker(blocker) {
-      _phaseBlocker = blocker;
-      _phaseBlocker.then(function(){
-         getPhaseBlocker();
-      });
+    function registerHardBlocker(blocker) {
+      _hardBlocker = blocker;
     }
 
-    function getPhaseBlocker(){
-      return _phaseBlocker;
+    function registerSoftBlocker(blocker) {
+      _softBlocker = blocker;
     }
 
-    function clearPhaseBlocker(){
-      _phaseBlocker = null;
+    function getHardBlocker(){
+      return _hardBlocker;
+    }
+
+    function getSoftBlocker(){
+      return _softBlocker;
+    }
+
+    function clearHardBlocker(){
+      _hardBlocker = null;
    }
 
     /**/
@@ -4901,11 +4999,7 @@
     }
 
     function setGoBackTo(templateID) {
-      if(templateID === null){
-        _goingBack = false;
-      } else {
-        _goingBack = true;
-      }
+      _goingBack = templateID !== null;
       _goBackTo = templateID;
     }
 
@@ -5832,6 +5926,7 @@
     self.fetchNavigationByOrigin = fetchNavigationByOrigin;
     self.getCurrentItem = getCurrentItem;
     self.getCurrentSurvey = getCurrentSurvey;
+    self.getWholeTemplateStaticVariableList = getWholeTemplateStaticVariableList;
     self.initialize = initialize;
     self.finalize = finalize;
     self.save = save;
@@ -5869,6 +5964,10 @@
 
     function getCurrentSurvey() {
       return CurrentSurveyService;
+    }
+
+    function getWholeTemplateStaticVariableList() {
+      return CurrentSurveyService.getWholeTemplateStaticVariableList();
     }
 
     function initialize() {
@@ -6019,7 +6118,7 @@
   }
 }());
 
-(function() {
+(function () {
   'use strict';
 
   angular
@@ -6042,20 +6141,26 @@
     self.getItemByCustomID = getItemByCustomID;
     self.getItemByTemplateID = getItemByTemplateID;
     self.getSurveyDatasources = getSurveyDatasources;
+    self.getStaticVariableList = getStaticVariableList;
     self.initialize = initialize;
     self.finalize = finalize;
     self.save = save;
     self.setup = setup;
     self.clearSkippedAnswers = clearSkippedAnswers;
     self.getNavigationTracker = getNavigationTracker;
+    self.getWholeTemplateStaticVariableList = getWholeTemplateStaticVariableList;
 
     function getSurvey() {
       return ActivityFacadeService.surveyActivity;
     }
 
-    function getSurveyDatasources(){ //question datasources
+    function getSurveyDatasources() { //question datasources
       return getSurvey().getDataSources();
-   }
+    }
+
+    function getStaticVariableList() {
+      return getSurvey().getStaticVariableList();
+    }
 
     function getAnswerByItemID(id) {
       return ActivityFacadeService.getFillingByQuestionID(id);
@@ -6068,7 +6173,7 @@
     function getItemByCustomID(customID) {
       var fetchedItem = null;
 
-      getItems().some(function(item) {
+      getItems().some(function (item) {
         if (item.customID === customID) {
           fetchedItem = item;
           return true;
@@ -6081,7 +6186,7 @@
     function getItemByTemplateID(templateID) {
       var fetchedItem = null;
 
-      getItems().some(function(item) {
+      getItems().some(function (item) {
         if (item.templateID === templateID) {
           fetchedItem = item;
           return true;
@@ -6098,7 +6203,7 @@
     function getNavigationByOrigin(origin) {
       var fetchedNavigation = null;
 
-      getNavigations().some(function(navigation) {
+      getNavigations().some(function (navigation) {
         if (navigation.origin === origin) {
           fetchedNavigation = navigation;
           return true;
@@ -6128,6 +6233,10 @@
 
     function getNavigationTracker() {
       return ActivityFacadeService.getNavigationTracker();
+    }
+
+    function getWholeTemplateStaticVariableList() {
+      return ActivityFacadeService.getWholeTemplateVariableList();
     }
 
   }

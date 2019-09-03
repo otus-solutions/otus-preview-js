@@ -18,6 +18,55 @@ describe('PlayerService', function() {
 
       service = _$injector_.get(UNIT_NAME, Injections);
     });
+
+    Mock.test = Promise.resolve('passou');
+  });
+
+  it('service method defined',function () {
+    expect(service).toBeDefined();
+  });
+
+  it('service methods checking',function () {
+    expect(service.bindComponent).toBeDefined();
+    expect(service.getItemData).toBeDefined();
+    expect(service.goAhead).toBeDefined();
+    expect(service.goBack).toBeDefined();
+    expect(service.setGoBackTo).toBeDefined();
+    expect(service.getGoBackTo).toBeDefined();
+    expect(service.isGoingBack).toBeDefined();
+    expect(service.play).toBeDefined();
+    expect(service.setup).toBeDefined();
+    expect(service.end).toBeDefined();
+    expect(service.eject).toBeDefined();
+    expect(service.stop).toBeDefined();
+    expect(service.save).toBeDefined();
+    expect(service.registerHardBlocker).toBeDefined();
+    expect(service.registerSoftBlocker).toBeDefined();
+    expect(service.getHardBlocker).toBeDefined();
+    expect(service.getSoftBlocker).toBeDefined();
+    expect(service.clearHardBlocker).toBeDefined();
+  });
+
+  it('registerHardBlocker method should call getHardBlocker', function () {
+    spyOn(service,'registerHardBlocker').and.callThrough();
+    service.registerHardBlocker(Mock.test);
+    expect(service.registerHardBlocker).toHaveBeenCalledTimes(1);
+  });
+
+  it('getHardBlocker method should return promise', function () {
+    service.registerHardBlocker(Mock.test);
+    expect(service.getHardBlocker()).toEqual(Mock.test);
+  });
+
+  it('registerSoftBlocker method should call getSoftBlocker', function () {
+    spyOn(service,'registerSoftBlocker').and.callThrough();
+    service.registerSoftBlocker(Mock.test);
+    expect(service.registerSoftBlocker).toHaveBeenCalledTimes(1);
+  });
+
+  it('getSoftBlocker method should return promise', function () {
+    service.registerSoftBlocker(Mock.test);
+    expect(service.getSoftBlocker()).toEqual(Mock.test);
   });
 
   describe('getItemData method', function() {

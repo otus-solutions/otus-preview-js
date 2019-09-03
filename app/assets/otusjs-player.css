@@ -35,4 +35,16 @@ otus-survey-item {
 
 .fade-out { opacity: 0; transition: 0s!important; }
 .fade-in { opacity: 1; transition: 1s!important; }
-.txtqst{width: 100%!important; margin-top:2%!important;}
+.txtqst {width: 100%!important; margin-top:2%!important;}
+.fab-speed-dial {
+  z-index: 70;
+  position: fixed;
+  top: 65px;
+  left: 15px;
+}
+
+@media screen and (max-width: 600px) {
+  .fab-speed-dial {
+    top: 17%;
+  }
+}
