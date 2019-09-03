@@ -26,10 +26,11 @@
     self.$onInit = onInit;
     self.update = update;
     self.clear = clear;
+
     self.view = false;
 
     function onInit() {
-      self.answerArray = CurrentItemService.getFilling().answer.value;
+      self.answerArray = CurrentItemService.getFilling(self.itemData.templateID).answer.value;
       self.otusQuestion.answer = self;
       _fixArray();
     }
@@ -38,12 +39,14 @@
       if (!_checkIfAnswered()) {
         clear();
         self.onUpdate({
+          questionID: self.itemData.templateID,
           valueType: 'answer',
           value: null
         });
       } else {
         assignNullsToEmptyValues();
         self.onUpdate({
+          questionID: self.itemData.templateID,
           valueType: 'answer',
           value: self.answerArray
         });
@@ -94,7 +97,7 @@
     }
 
     function clear() {
-      CurrentItemService.getFilling().answer.clear();
+      CurrentItemService.getFilling(self.itemData.templateID).answer.clear();
       delete self.answerArray;
       _fixArray();
     }

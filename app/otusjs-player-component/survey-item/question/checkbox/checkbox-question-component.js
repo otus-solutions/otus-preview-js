@@ -28,7 +28,7 @@
     self.view = false;
 
     self.$onInit = function () {
-      self.answerArray = CurrentItemService.getFilling().answer.value;
+      self.answerArray = CurrentItemService.getFilling(self.itemData.templateID).answer.value;
       self.otusQuestion.answer = self;
       _buildAnswerArray();
     };
@@ -36,11 +36,13 @@
     self.update = function () {
       if (!_checkIfAnyTrue()) {
         self.onUpdate({
+          questionID: self.itemData.templateID,
           valueType: 'answer',
           value: null
         });
       } else {
         self.onUpdate({
+          questionID: self.itemData.templateID,
           valueType: 'answer',
           value: self.answerArray
         });
@@ -48,7 +50,7 @@
     };
 
     self.clear = function () {
-      CurrentItemService.getFilling().answer.clear();
+      CurrentItemService.getFilling(self.itemData.templateID).answer.clear();
       delete self.answerArray;
       _buildAnswerArray();
     };

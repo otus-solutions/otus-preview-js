@@ -9,7 +9,7 @@
       </md-card-title-text>
     </md-card-title>
     <md-card-content layout="row" layout-align="space-between" flex>
-      <otus-question ng-if="$ctrl.isQuestion()" on-update="$ctrl.update(valueType, value)" item-data="item" layout="column" flex></otus-question>
+      <otus-question ng-if="$ctrl.isQuestion()" on-update="$ctrl.update(questionID, valueType, value)" item-data="item" layout="column" flex></otus-question>
       <otus-misc-item ng-if="$ctrl.isItem()" item-data="item" layout="column" flex></otus-misc-item>
     </md-card-content>
     <otus-validation-error error="$ctrl.$error" layout="row"></otus-validation-error>

@@ -23,19 +23,20 @@
     var self = this;
 
     self.$onInit = function() {
-      self.comment = CurrentItemService.getFilling().comment;
-      self.otusQuestion.comment = self;
+        self.comment = CurrentItemService.getFilling(self.itemData.templateID).comment;
+        self.otusQuestion.comment = self;
     };
 
     self.update = function() {
       self.onUpdate({
+        questionID: self.itemData.templateID,
         valueType: 'comment',
         value: self.comment
       });
     };
 
     self.clear = function() {
-      CurrentItemService.getFilling().comment = "";
+      CurrentItemService.getFilling(self.itemData.templateID).comment = "";
       delete self.comment;
     };
   }

@@ -52,19 +52,20 @@
     self.view = false;
 
     self.$onInit = function() {
-      self.answer = CurrentItemService.getFilling().answer.value || new ImmutableDate(null);
+      self.answer = CurrentItemService.getFilling(self.itemData.templateID).answer.value || new ImmutableDate(null);
       self.otusQuestion.answer = self;
     };
 
     self.update = function() {
       self.onUpdate({
+        questionID: self.itemData.templateID,
         valueType: 'answer',
         value: (self.answer.date instanceof Date) ? self.answer : null
       });
     };
 
     self.clear = function() {
-      CurrentItemService.getFilling().answer.clear();
+      CurrentItemService.getFilling(self.itemData.templateID).answer.clear();
       delete self.answer;
       self.$onInit();
     };

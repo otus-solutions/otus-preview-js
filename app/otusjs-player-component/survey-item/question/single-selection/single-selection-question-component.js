@@ -23,28 +23,34 @@
   function Controller(CurrentItemService,$element) {
     var self = this;
 
+    self.$onInit = onInit;
+    self.update = update;
+    self.clear = clear;
+    self.blurOnClick = blurOnClick;
+
     self.view = false;
 
-    self.$onInit = function() {
-      self.answer = CurrentItemService.getFilling().answer.value;
+    function onInit() {
+      self.answer = CurrentItemService.getFilling(self.itemData.templateID).answer.value;
       self.otusQuestion.answer = self;
-    };
+    }
 
-    self.update = function() {
+    function update() {
       self.onUpdate({
+        questionID: self.itemData.templateID,
         valueType: 'answer',
         value: self.answer
       });
-    };
+    }
 
-    self.clear = function() {
-      CurrentItemService.getFilling().answer.clear();
+    function clear() {
+      CurrentItemService.getFilling(self.itemData.templateID).answer.clear();
       delete self.answer;
     }
 
     //OPJ-21 Remove classe md-focused que é adicionada pelo componete radiogroup do angular-material para que
     //não ative os atalhos do teclado nativos do componente
-    self.blurOnClick = function() {
+    function blurOnClick() {
       $element.find('#singleSelectionQuestionRadioGroup').removeClass('md-focused');
     }
   }

@@ -31,7 +31,7 @@
     /* Question Methods */
     self.$onInit = function() {
       self.dataReady = false;
-      self.answer = CurrentItemService.getFilling().answer.value;
+      self.answer = CurrentItemService.getFilling(self.itemData.templateID).answer.value;
       self.otusQuestion.answer = self;
       _setupDatasourceQuery();
     };
@@ -44,13 +44,14 @@
         _answerUpdate = self.answer.value;
      }
       self.onUpdate({
+        questionID: self.itemData.templateID,
         valueType: 'answer',
         value: _answerUpdate
     });
     };
 
     self.clear = function() {
-      CurrentItemService.getFilling().answer.clear();
+      CurrentItemService.getFilling(self.itemData.templateID).answer.clear();
       delete self.answer;
     };
 

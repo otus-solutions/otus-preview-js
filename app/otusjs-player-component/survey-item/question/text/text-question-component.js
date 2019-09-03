@@ -23,30 +23,35 @@
   function Controller($element, CurrentItemService) {
     var self = this;
 
+    self.$onInit = onInit;
+    self.update = update;
+    self.clear = clear;
+
     self.view = false;
 
-    self.$onInit = function () {
-      self.answer = CurrentItemService.getFilling().answer.value;
-      self.hasAlphanumeric = CurrentItemService.getFillingRules().alphanumeric;
-      self.hasSpecials = CurrentItemService.getFillingRules().specials;
-      self.hasUpperCase = CurrentItemService.getFillingRules().upperCase;
-      self.hasLowerCase = CurrentItemService.getFillingRules().lowerCase;
+    function onInit() {
+      self.answer = CurrentItemService.getFilling(self.itemData.templateID).answer.value;
+      self.hasAlphanumeric = CurrentItemService.getFillingRules(self.itemData.templateID).alphanumeric;
+      self.hasSpecials = CurrentItemService.getFillingRules(self.itemData.templateID).specials;
+      self.hasUpperCase = CurrentItemService.getFillingRules(self.itemData.templateID).upperCase;
+      self.hasLowerCase = CurrentItemService.getFillingRules(self.itemData.templateID).lowerCase;
       self.otusQuestion.answer = self;
-    };
+    }
 
-    self.update = function () {
+    function update() {
       _runValidationSteps();
 
       self.onUpdate({
+        questionID: self.itemData.templateID,
         valueType: 'answer',
         value: self.answer
       });
-    };
+    }
 
-    self.clear = function () {
-      CurrentItemService.getFilling().answer.clear();
+    function clear() {
+      CurrentItemService.getFilling(self.itemData.templateID).answer.clear();
       delete self.answer;
-    };
+    }
 
     function _filter() {
       var element = angular.element($element[0].querySelector('textarea#textQuestion'));
@@ -75,8 +80,6 @@
       if (_isEmpty()) {
         delete self.answer;
       }
-
     }
-
   }
 }());

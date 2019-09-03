@@ -22,22 +22,27 @@
   function Controller(CurrentItemService) {
     var self = this;
 
+    self.$onInit = onInit;
+    self.update = update;
+    self.clear = clear;
+
     self.view = false;
 
-    self.$onInit = function() {
-      self.answer = CurrentItemService.getFilling().answer.value;
+    function onInit() {
+      self.answer = CurrentItemService.getFilling(self.itemData.templateID).answer.value;
       self.otusQuestion.answer = self;
-    };
+    }
 
-    self.update = function() {
+    function update() {
       self.onUpdate({
+        questionID: self.itemData.templateID,
         valueType: 'answer',
         value: self.answer
       });
-    };
+    }
 
-    self.clear = function() {
-      CurrentItemService.getFilling().answer.clear();
+    function clear() {
+      CurrentItemService.getFilling(self.itemData.templateID).answer.clear();
       delete self.answer;
     }
   }

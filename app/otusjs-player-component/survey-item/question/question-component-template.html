@@ -6,12 +6,12 @@
       </md-tab>
       <md-tab label="Metadado">
         <md-content class="md-padding">
-          <metadata-group on-update="$ctrl.update(valueType, value)" item-data="$ctrl.itemData"></metadata-group>
+          <metadata-group on-update="$ctrl.update(questionID, valueType, value)" item-data="$ctrl.itemData"></metadata-group>
         </md-content>
       </md-tab>
       <md-tab label="Comentário">
         <md-content class="md-padding">
-          <otus-comment on-update="$ctrl.update(valueType, value)" item-data="$ctrl.itemData"></otus-comment>
+          <otus-comment on-update="$ctrl.update(questionID, valueType, value)" item-data="$ctrl.itemData"></otus-comment>
         </md-content>
       </md-tab>
     </md-tabs>

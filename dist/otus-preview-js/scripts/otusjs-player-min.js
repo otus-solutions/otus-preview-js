@@ -63,19 +63,20 @@
     var self = this;
 
     self.$onInit = function() {
-      self.comment = CurrentItemService.getFilling().comment;
-      self.otusQuestion.comment = self;
+        self.comment = CurrentItemService.getFilling(self.itemData.templateID).comment;
+        self.otusQuestion.comment = self;
     };
 
     self.update = function() {
       self.onUpdate({
+        questionID: self.itemData.templateID,
         valueType: 'comment',
         value: self.comment
       });
     };
 
     self.clear = function() {
-      CurrentItemService.getFilling().comment = "";
+      CurrentItemService.getFilling(self.itemData.templateID).comment = "";
       delete self.comment;
     };
   }
@@ -147,28 +148,33 @@
   function MetadataGroupController(CurrentItemService, $element) {
     var self = this;
 
-    self.$onInit = function() {
-      self.metadata = CurrentItemService.getFilling().metadata.value;
-      self.otusQuestion.metadata = self;
-    };
+    self.$onInit = onInit;
+    self.update = update;
+    self.clear = clear;
+    self.blurOnClick = blurOnClick;
 
-    self.update = function() {
+    function onInit() {
+        self.metadata = CurrentItemService.getFilling(self.itemData.templateID).metadata.value;
+        self.otusQuestion.metadata = self;
+    }
+
+    function update() {
       self.onUpdate({
+        questionID: self.itemData.templateID,
         valueType: 'metadata',
         value: self.metadata
       });
-    };
+    }
 
-    self.clear = function() {
-      CurrentItemService.getFilling().metadata.clear();
-      delete self.metadata;
-    };
+    function clear() {
+        CurrentItemService.getFilling(self.itemData.templateID).metadata.clear();
+        delete self.metadata;
+    }
 
-    self.blurOnClick = function() {
+    function blurOnClick() {
       $element.find('#metadataGroupRadioGroup').removeClass('md-focused');
     }
   }
-
 })();
 
 (function() {
@@ -279,13 +285,8 @@
     }
 
     function _loadItem() {
-      // if (PlayerService.getItemData()) {
-      //   self.playerDisplay.loadItem(PlayerService.getItemData());
-      // } else if(PlayerService.getSurveyItemGroupData()){
-      //   self.playerDisplay.loadItem(PlayerService.getSurveyItemGroupData());
-      // }
-      if(PlayerService.getSurveyItemGroupData()){
-        self.playerDisplay.loadItem(PlayerService.getSurveyItemGroupData());
+      if(PlayerService.getItemData()){
+        self.playerDisplay.loadItem(PlayerService.getItemData());
       }
     }
   }
@@ -891,7 +892,6 @@
     var self = this;
 
     var SURVEY_ITEM = '<otus-survey-item item-data="itemData" id="{{itemData.templateID}}" style="margin: 0;display:block;" class="animate-switch"/>';
-    // var SURVEY_ITEM_GROUP = '<otus-survey-item-group item-data="itemData" style="margin: 0;display:block;" class="animate-switch"/>';
     var SURVEY_COVER = '<otus-cover />';
 
     /* Public methods */
@@ -901,6 +901,8 @@
     self.$onInit = onInit;
     self.ids = [];
 
+    $scope.removeQuestion = removeQuestion;
+
     function _destroyCurrentItem() {
       if (self.currentItem) {
         self.currentItem.destroy();
@@ -908,16 +910,8 @@
     }
 
     function loadItem(itemsData) {
-      // if (_shouldLoadItem(itemsData)) {
-      //   _destroyCurrentItem();
-      //   _saveQuestion();
-      //   removeQuestion(itemsData.templateID);
-      //   $scope.itemData = itemsData;
-      //   _setQuestionId(itemsData.templateID);
-      //   $element.find('#pagePlayer').empty();
-      //   $element.find('#pagePlayer').append($compile(SURVEY_ITEM)($scope));
-      //   _onGoBottom(itemsData.templateID);
-      // }
+      console.log(itemsData);
+
       if (_shouldLoadItem(itemsData[0])) {
         _destroyCurrentItem();
         _saveQuestion();
@@ -930,18 +924,11 @@
             scope.itemData = itemsData[i];
             _setQuestionId(itemsData[0].templateID);
             let element = $compile(SURVEY_ITEM)(scope);
-            console.log(element);
             $element.find('#pagePlayer').append(element);
           }())
         }
         _onGoBottom(itemsData.templateID);
       }
-
-      //
-      // _destroyCurrentItem();
-      // $element.find('#pagePlayer').empty();
-      // $element.find('#pagePlayer').append($compile(SURVEY_ITEM_GROUP)($scope));
-
 
       if (PlayerService.isGoingBack()) {
         if (PlayerService.getGoBackTo() !== itemsData.templateID) {
@@ -951,8 +938,6 @@
         }
       }
     }
-
-    $scope.removeQuestion = removeQuestion;
 
     function removeQuestion(id) {
       var index = _getIndexQuestionId(id);
@@ -1019,6 +1004,7 @@
     }
 
     function _shouldLoadItem(itemData) {
+      console.log(itemData);
       return $scope.itemData && $scope.itemData.customID !== itemData.customID;
     }
   }
@@ -1202,7 +1188,7 @@
   angular
     .module('otusjs.player.component')
     .component('otusSurveyItem', {
-      template:'<md-card flex><md-card-title layout="row" ng-if="!$ctrl.isItem() && !$ctrl.isSurveyItemGroup()"><md-card-title-text layout="column" flex><div layout="row"><otus-label class="md-headline" item-label="$ctrl.itemData.label.ptBR.formattedText" flex layout-padding></otus-label></div></md-card-title-text></md-card-title><md-card-content layout="row" layout-align="space-between" flex><otus-question ng-if="$ctrl.isQuestion()" on-update="$ctrl.update(valueType, value)" item-data="$ctrl.itemData" layout="column" flex></otus-question><otus-misc-item ng-if="$ctrl.isItem()" item-data="$ctrl.itemData" layout="column" flex></otus-misc-item></md-card-content><otus-validation-error error="$ctrl.$error" layout="row"></otus-validation-error></md-card>',
+      template:'<md-card flex><md-card-title layout="row" ng-if="!$ctrl.isItem()"><md-card-title-text layout="column" flex><div layout="row"><otus-label class="md-headline" item-label="$ctrl.itemData.label.ptBR.formattedText" flex layout-padding></otus-label></div></md-card-title-text></md-card-title><md-card-content layout="row" layout-align="space-between" flex><otus-question ng-if="$ctrl.isQuestion()" on-update="$ctrl.update(questionID, valueType, value)" item-data="$ctrl.itemData" layout="column" flex></otus-question><otus-misc-item ng-if="$ctrl.isItem()" item-data="$ctrl.itemData" layout="column" flex></otus-misc-item></md-card-content><otus-validation-error error="$ctrl.$error" layout="row"></otus-validation-error></md-card>',
       controller: OtusSurveyItemController,
       bindings: {
         itemData: '<'
@@ -1221,7 +1207,6 @@
     /* Public methods */
     self.isQuestion = isQuestion;
     self.isItem = isItem;
-    // self.isSurveyItemGroup = isSurveyItemGroup;
     self.restoreAll = restoreAll;
     self.update = update;
     self.clear = clear;
@@ -1235,6 +1220,8 @@
 
       $scope.$parent.$ctrl.currentItem = self;
       CurrentItemService.observerRegistry(self);
+
+      console.log(self.itemData.templateID);
 
       self.$error = {};
       self.questionComponent = {};
@@ -1257,24 +1244,20 @@
       return (self.itemData.objectType === 'ImageItem') || (self.itemData.objectType === 'TextItem') ? true : false;
     }
 
-    // function isSurveyItemGroup() {
-    //   return (self.itemData.objectType === 'SurveyItemGroup');
-    // }
-
     function restoreAll() {}
 
-    function update(prop, value) {
+    function update(id, prop, value) {
       if (prop) {
         if (prop === 'comment' || prop === 'forceAnswer') {
-          self.filling[prop] = value;
+          self.filling[id][prop] = value;
         } else {
           clear(prop, value);
-          self.filling[prop].value = value;
+          self.filling[id][prop].value = value;
         }
       } else {
         throw new Error('Cannot determine property type to update', 72, 'survey-item-component.js');
       }
-      CurrentItemService.fill(self.filling);
+      CurrentItemService.fill(self.filling[id]);
     }
 
     function clear(prop) {
@@ -1306,7 +1289,7 @@
   angular
     .module('otusjs.player.component')
     .component('otusQuestion', {
-      template:'<md-content layout="column"><div layout="row"><md-tabs md-dynamic-height layout="column" flex="95"><md-tab label="Resposta"><md-content class="md-padding" bind-html-compile="$ctrl.template"></md-content></md-tab><md-tab label="Metadado"><md-content class="md-padding"><metadata-group on-update="$ctrl.update(valueType, value)" item-data="$ctrl.itemData"></metadata-group></md-content></md-tab><md-tab label="Comentário"><md-content class="md-padding"><otus-comment on-update="$ctrl.update(valueType, value)" item-data="$ctrl.itemData"></otus-comment></md-content></md-tab></md-tabs><div layout="column"><otus-question-menu on-clear="$ctrl.clear(value)" on-accept="$ctrl.forceAnswer(value)"></otus-question-menu></div></div></md-content>',
+      template:'<md-content layout="column"><div layout="row"><md-tabs md-dynamic-height layout="column" flex="95"><md-tab label="Resposta"><md-content class="md-padding" bind-html-compile="$ctrl.template"></md-content></md-tab><md-tab label="Metadado"><md-content class="md-padding"><metadata-group on-update="$ctrl.update(questionID, valueType, value)" item-data="$ctrl.itemData"></metadata-group></md-content></md-tab><md-tab label="Comentário"><md-content class="md-padding"><otus-comment on-update="$ctrl.update(questionID, valueType, value)" item-data="$ctrl.itemData"></otus-comment></md-content></md-tab></md-tabs><div layout="column"><otus-question-menu on-clear="$ctrl.clear(value)" on-accept="$ctrl.forceAnswer(value)"></otus-question-menu></div></div></md-content>',
       controller: OtusQuestionController,
       bindings: {
         itemData: '<',
@@ -1339,15 +1322,17 @@
       self.setError();
     };
 
-    self.update = function(prop, value) {
+    self.update = function(questionID, prop, value) {
       self.onUpdate({
+        questionID: questionID,
         valueType: prop,
         value: value
       });
     };
 
-    self.forceAnswer = function(value) {
+    self.forceAnswer = function(questionID, value) {
       self.onUpdate({
+        questionID: questionID,
         valueType: 'forceAnswer',
         value: value
       });
@@ -1458,19 +1443,20 @@
     self.view = false;
 
     self.$onInit = function() {
-      self.answer = CurrentItemService.getFilling().answer.value || new ImmutableDate(null);
+      self.answer = CurrentItemService.getFilling(self.itemData.templateID).answer.value || new ImmutableDate(null);
       self.otusQuestion.answer = self;
     };
 
     self.update = function() {
       self.onUpdate({
+        questionID: self.itemData.templateID,
         valueType: 'answer',
         value: (self.answer.date instanceof Date) ? self.answer : null
       });
     };
 
     self.clear = function() {
-      CurrentItemService.getFilling().answer.clear();
+      CurrentItemService.getFilling(self.itemData.templateID).answer.clear();
       delete self.answer;
       self.$onInit();
     };
@@ -1527,22 +1513,27 @@
   function Controller(CurrentItemService) {
     var self = this;
 
+    self.$onInit = onInit;
+    self.update = update;
+    self.clear = clear;
+
     self.view = false;
 
-    self.$onInit = function() {
-      self.answer = CurrentItemService.getFilling().answer.value;
+    function onInit() {
+      self.answer = CurrentItemService.getFilling(self.itemData.templateID).answer.value;
       self.otusQuestion.answer = self;
-    };
+    }
 
-    self.update = function() {
+    function update() {
       self.onUpdate({
+        questionID: self.itemData.templateID,
         valueType: 'answer',
         value: self.answer
       });
-    };
+    }
 
-    self.clear = function() {
-      CurrentItemService.getFilling().answer.clear();
+    function clear() {
+      CurrentItemService.getFilling(self.itemData.templateID).answer.clear();
       delete self.answer;
     }
   }
@@ -1661,21 +1652,22 @@
     self.view = false;
 
     self.$onInit = function() {
-      self.answer = CurrentItemService.getFilling().answer.value;
+      self.answer = CurrentItemService.getFilling(self.itemData.templateID).answer.value;
       self.otusQuestion.answer = self;
     };
 
     self.update = function() {
       self.onUpdate({
+        questionID: self.itemData.templateID,
         valueType: 'answer',
         value: self.answer
       });
     };
 
     self.clear = function() {
-      CurrentItemService.getFilling().answer.clear();
+      CurrentItemService.getFilling(self.itemData.templateID).answer.clear();
       delete self.answer;
-    }
+    };
   }
 }());
 
@@ -1731,28 +1723,34 @@
   function Controller(CurrentItemService,$element) {
     var self = this;
 
+    self.$onInit = onInit;
+    self.update = update;
+    self.clear = clear;
+    self.blurOnClick = blurOnClick;
+
     self.view = false;
 
-    self.$onInit = function() {
-      self.answer = CurrentItemService.getFilling().answer.value;
+    function onInit() {
+      self.answer = CurrentItemService.getFilling(self.itemData.templateID).answer.value;
       self.otusQuestion.answer = self;
-    };
+    }
 
-    self.update = function() {
+    function update() {
       self.onUpdate({
+        questionID: self.itemData.templateID,
         valueType: 'answer',
         value: self.answer
       });
-    };
+    }
 
-    self.clear = function() {
-      CurrentItemService.getFilling().answer.clear();
+    function clear() {
+      CurrentItemService.getFilling(self.itemData.templateID).answer.clear();
       delete self.answer;
     }
 
     //OPJ-21 Remove classe md-focused que é adicionada pelo componete radiogroup do angular-material para que
     //não ative os atalhos do teclado nativos do componente
-    self.blurOnClick = function() {
+    function blurOnClick() {
       $element.find('#singleSelectionQuestionRadioGroup').removeClass('md-focused');
     }
   }
@@ -1813,7 +1811,7 @@
     self.view = false;
 
     self.$onInit = function () {
-      self.answerArray = CurrentItemService.getFilling().answer.value;
+      self.answerArray = CurrentItemService.getFilling(self.itemData.templateID).answer.value;
       self.otusQuestion.answer = self;
       _buildAnswerArray();
     };
@@ -1821,11 +1819,13 @@
     self.update = function () {
       if (!_checkIfAnyTrue()) {
         self.onUpdate({
+          questionID: self.itemData.templateID,
           valueType: 'answer',
           value: null
         });
       } else {
         self.onUpdate({
+          questionID: self.itemData.templateID,
           valueType: 'answer',
           value: self.answerArray
         });
@@ -1833,7 +1833,7 @@
     };
 
     self.clear = function () {
-      CurrentItemService.getFilling().answer.clear();
+      CurrentItemService.getFilling(self.itemData.templateID).answer.clear();
       delete self.answerArray;
       _buildAnswerArray();
     };
@@ -1916,30 +1916,35 @@
   function Controller($element, CurrentItemService) {
     var self = this;
 
+    self.$onInit = onInit;
+    self.update = update;
+    self.clear = clear;
+
     self.view = false;
 
-    self.$onInit = function () {
-      self.answer = CurrentItemService.getFilling().answer.value;
-      self.hasAlphanumeric = CurrentItemService.getFillingRules().alphanumeric;
-      self.hasSpecials = CurrentItemService.getFillingRules().specials;
-      self.hasUpperCase = CurrentItemService.getFillingRules().upperCase;
-      self.hasLowerCase = CurrentItemService.getFillingRules().lowerCase;
+    function onInit() {
+      self.answer = CurrentItemService.getFilling(self.itemData.templateID).answer.value;
+      self.hasAlphanumeric = CurrentItemService.getFillingRules(self.itemData.templateID).alphanumeric;
+      self.hasSpecials = CurrentItemService.getFillingRules(self.itemData.templateID).specials;
+      self.hasUpperCase = CurrentItemService.getFillingRules(self.itemData.templateID).upperCase;
+      self.hasLowerCase = CurrentItemService.getFillingRules(self.itemData.templateID).lowerCase;
       self.otusQuestion.answer = self;
-    };
+    }
 
-    self.update = function () {
+    function update() {
       _runValidationSteps();
 
       self.onUpdate({
+        questionID: self.itemData.templateID,
         valueType: 'answer',
         value: self.answer
       });
-    };
+    }
 
-    self.clear = function () {
-      CurrentItemService.getFilling().answer.clear();
+    function clear() {
+      CurrentItemService.getFilling(self.itemData.templateID).answer.clear();
       delete self.answer;
-    };
+    }
 
     function _filter() {
       var element = angular.element($element[0].querySelector('textarea#textQuestion'));
@@ -1968,9 +1973,7 @@
       if (_isEmpty()) {
         delete self.answer;
       }
-
     }
-
   }
 }());
 
@@ -2028,12 +2031,13 @@
     self.view = false;
 
     self.$onInit = function() {
-      self.answer = CurrentItemService.getFilling().answer.value;
+      self.answer = CurrentItemService.getFilling(self.itemData.templateID).answer.value;
       self.otusQuestion.answer = self;
     };
 
     self.update = function() {
       self.onUpdate({
+        questionID: self.itemData.templateID,
         valueType: 'answer',
         value: self.answer
       });
@@ -2044,9 +2048,9 @@
     };
 
     self.clear = function() {
-      CurrentItemService.getFilling().answer.clear();
+      CurrentItemService.getFilling(self.itemData.templateID).answer.clear();
       delete self.answer;
-    }
+    };
   }
 }());
 
@@ -2108,14 +2112,19 @@
   function Controller(CurrentItemService, ImmutableDate, $element) {
     var self = this;
 
+    self.$onInit = onInit;
+    self.update = update;
+    self.clear = clear;
+    self.currentTime = currentTime;
+
     self.view = false;
 
-    self.$onInit = function() {
-      self.answer = CurrentItemService.getFilling().answer.value || new ImmutableDate(null);
+    function onInit() {
+      self.answer = CurrentItemService.getFilling(self.itemData.templateID).answer.value || new ImmutableDate(null);
       self.otusQuestion.answer = self;
-    };
+    }
 
-    self.update = function(e) {
+    function update(e) {
       var _answer = {};
 
       if (e.target.validity.valid) {
@@ -2133,21 +2142,19 @@
         _answer = "invalid format";
       }
 
-
-
       self.onUpdate({
+        questionID: self.itemData.templateID,
         valueType: 'answer',
         value: _answer
       });
-    };
+    }
 
-
-    self.clear = function() {
-      CurrentItemService.getFilling().answer.clear();
+    function clear() {
+      CurrentItemService.getFilling(self.itemData.templateID).answer.clear();
       delete self.answer;
-    };
+    }
 
-    self.currentTime = function(e) {
+    function currentTime(e) {
       var imuDate = new ImmutableDate()
 
       imuDate.setSeconds(0);
@@ -2156,9 +2163,8 @@
       self.answer = imuDate;
 
       $element.find('#inputtime').blur();
-    };
+    }
   }
-
 }());
 
 (function() {
@@ -2213,22 +2219,27 @@
   function Controller(CurrentItemService) {
     var self = this;
 
+    self.$onInit = onInit;
+    self.update = update;
+    self.clear = clear;
+
     self.view = false;
 
-    self.$onInit = function() {
-      self.answer = CurrentItemService.getFilling().answer.value;
+    function onInit() {
+      self.answer = CurrentItemService.getFilling(self.itemData.templateID).answer.value;
       self.otusQuestion.answer = self;
-    };
+    }
 
-    self.update = function() {
+    function update() {
       self.onUpdate({
+        questionID: self.itemData.templateID,
         valueType: 'answer',
         value: self.answer
       });
-    };
+    }
 
-    self.clear = function() {
-      CurrentItemService.getFilling().answer.clear();
+    function clear() {
+      CurrentItemService.getFilling(self.itemData.templateID).answer.clear();
       delete self.answer;
     }
   }
@@ -2309,7 +2320,7 @@
     self.view = false;
 
     function onInit() {
-      var answerFiles = CurrentItemService.getFilling().answer.value || [];
+      var answerFiles = CurrentItemService.getFilling(self.itemData.templateID).answer.value || [];
       self.sentFiles = FileUploadAnswerFactory.buildFromJson(answerFiles);
       self.pendingList = [];
       self.promise = 0;
@@ -2321,7 +2332,7 @@
       self.otusQuestion.answer = self;
 
       _uploadInterface = FileUploadService.getUploadInterface();
-      _questionID = CurrentItemService.getItem().templateID;
+      _questionID = CurrentItemService.getItems().templateID;
       _deleteDialog = _createDeleteDialog();
       _pendingArrayControl = 0;
       self.pendingCounter = 0;
@@ -2450,11 +2461,13 @@
     function _updateAnswer() {
       if (self.sentFiles.length) {
         self.onUpdate({
+          questionID: self.itemData.templateID,
           valueType: 'answer',
           value: self.sentFiles
         });
       } else {
         self.onUpdate({
+          questionID: self.itemData.templateID,
           valueType: 'answer',
           value: {}
         });
@@ -2585,7 +2598,7 @@
     /* Question Methods */
     self.$onInit = function() {
       self.dataReady = false;
-      self.answer = CurrentItemService.getFilling().answer.value;
+      self.answer = CurrentItemService.getFilling(self.itemData.templateID).answer.value;
       self.otusQuestion.answer = self;
       _setupDatasourceQuery();
     };
@@ -2598,13 +2611,14 @@
         _answerUpdate = self.answer.value;
      }
       self.onUpdate({
+        questionID: self.itemData.templateID,
         valueType: 'answer',
         value: _answerUpdate
     });
     };
 
     self.clear = function() {
-      CurrentItemService.getFilling().answer.clear();
+      CurrentItemService.getFilling(self.itemData.templateID).answer.clear();
       delete self.answer;
     };
 
@@ -2690,10 +2704,11 @@
     self.$onInit = onInit;
     self.update = update;
     self.clear = clear;
+
     self.view = false;
 
     function onInit() {
-      self.answerArray = CurrentItemService.getFilling().answer.value;
+      self.answerArray = CurrentItemService.getFilling(self.itemData.templateID).answer.value;
       self.otusQuestion.answer = self;
       _fixArray();
     }
@@ -2702,12 +2717,14 @@
       if (!_checkIfAnswered()) {
         clear();
         self.onUpdate({
+          questionID: self.itemData.templateID,
           valueType: 'answer',
           value: null
         });
       } else {
         assignNullsToEmptyValues();
         self.onUpdate({
+          questionID: self.itemData.templateID,
           valueType: 'answer',
           value: self.answerArray
         });
@@ -2758,7 +2775,7 @@
     }
 
     function clear() {
-      CurrentItemService.getFilling().answer.clear();
+      CurrentItemService.getFilling(self.itemData.templateID).answer.clear();
       delete self.answerArray;
       _fixArray();
     }
@@ -2824,7 +2841,7 @@
     self.view = false;
 
     function onInit() {
-      self.answerArray = CurrentItemService.getFilling().answer.value;
+      self.answerArray = CurrentItemService.getFilling(self.itemData.templateID).answer.value;
       self.otusQuestion.answer = self;
       _fixArray();
 
@@ -2835,11 +2852,13 @@
       if (!_checkIfAnswered()) {
         clear();
         self.onUpdate({
+          questionID: self.itemData.templateID,
           valueType: 'answer',
           value: null
         });
       } else {
         self.onUpdate({
+          questionID: self.itemData.templateID,
           valueType: 'answer',
           value: self.answerArray
         });
@@ -2897,7 +2916,7 @@
     }
 
     function clear() {
-      CurrentItemService.getFilling().answer.clear();
+      CurrentItemService.getFilling(self.itemData.templateID).answer.clear();
       delete self.answerArray;
       _fixArray();
     }
@@ -2965,7 +2984,7 @@
   angular
     .module('otusjs.player.component')
     .component('otusSurveyItemGroup', {
-      template:'<div layout="column" layout-align="start start" ng-repeat="item in $ctrl.itemData.members"><md-card flex><md-card-title layout="row" ng-if="!$ctrl.isItem()"><md-card-title-text layout="column" flex><div layout="row"><otus-label class="md-headline" item-label="item.label.ptBR.formattedText" flex layout-padding></otus-label></div></md-card-title-text></md-card-title><md-card-content layout="row" layout-align="space-between" flex><otus-question ng-if="$ctrl.isQuestion()" on-update="$ctrl.update(valueType, value)" item-data="item" layout="column" flex></otus-question><otus-misc-item ng-if="$ctrl.isItem()" item-data="item" layout="column" flex></otus-misc-item></md-card-content><otus-validation-error error="$ctrl.$error" layout="row"></otus-validation-error></md-card></div>',
+      template:'<div layout="column" layout-align="start start" ng-repeat="item in $ctrl.itemData.members"><md-card flex><md-card-title layout="row" ng-if="!$ctrl.isItem()"><md-card-title-text layout="column" flex><div layout="row"><otus-label class="md-headline" item-label="item.label.ptBR.formattedText" flex layout-padding></otus-label></div></md-card-title-text></md-card-title><md-card-content layout="row" layout-align="space-between" flex><otus-question ng-if="$ctrl.isQuestion()" on-update="$ctrl.update(questionID, valueType, value)" item-data="item" layout="column" flex></otus-question><otus-misc-item ng-if="$ctrl.isItem()" item-data="item" layout="column" flex></otus-misc-item></md-card-content><otus-validation-error error="$ctrl.$error" layout="row"></otus-validation-error></md-card></div>',
       controller: OtusSurveyItemGroupController,
       bindings: {
         itemData: '<'
@@ -5068,7 +5087,7 @@
 
     self.bindComponent = bindComponent;
     self.getItemData = getItemData;
-    self.getSurveyItemGroupData = getFake;
+    self.getSurveyItemGroupData = getSurveyItemGroupData;
     self.goAhead = goAhead;
     self.goBack = goBack;
     self.setGoBackTo = setGoBackTo;
@@ -5115,12 +5134,12 @@
     }
 
     function getItemData() {
-      return ActivityFacadeService.getCurrentItem().getItem();
+      return ActivityFacadeService.getCurrentItem().getItems();
     }
 
-    // function getSurveyItemGroupData() {
-    //   return ActivityFacadeService.getCurrentItem().getSurveyItemGroup();
-    // }
+    function getSurveyItemGroupData() {
+      return ActivityFacadeService.getCurrentItem().getItems();
+    }
 
     function getFake() {
       return ActivityFacadeService.getCurrentSurvey().getItems().splice(0,3);
@@ -5243,7 +5262,7 @@
         return '<otus-' + tagName + '-view item-data="$ctrl.itemData" />';
       }else {
 
-        return '<otus-' + tagName + ' item-data="$ctrl.itemData" on-update="$ctrl.update(valueType, value)" />';
+        return '<otus-' + tagName + ' item-data="$ctrl.itemData" on-update="$ctrl.update(questionID, valueType, value)" />';
       }
     }
   }
@@ -5895,17 +5914,18 @@
       var mandatoryResults = [];
       var otherResults = [];
       flowData.validationResult = {};
-      if (_currentItem.getItem().isQuestion()) {
-        flowData.validationResponse.validatorsResponse.map(function(validator) {
-          if (validator.name === 'mandatory' || validator.data.reference) {
-            flowData.validationResult[validator.name] = !validator.result && (angular.equals(flowData.metadataToEvaluate.data, {}));
-          } else {
-            flowData.validationResult[validator.name] = !validator.result;
-          }
-        });
-      }
-
-      flowData.validationResult.hasError = _hasError(flowData);
+      _currentItem.getItems().forEach(function (surveyItem) {
+        if (surveyItem.isQuestion()) {
+          flowData.validationResponse.validatorsResponse.map(function(validator) {
+            if (validator.name === 'mandatory' || validator.data.reference) {
+              flowData.validationResult[validator.name] = !validator.result && (angular.equals(flowData.metadataToEvaluate.data, {}));
+            } else {
+              flowData.validationResult[validator.name] = !validator.result;
+            }
+          });
+        }
+        flowData.validationResult.hasError = _hasError(flowData);
+      });
     }
 
     function afterEffect(pipe, flowData) {}
@@ -6095,9 +6115,9 @@
       return CurrentSurveyService.getGroupItemsByMemberID(id);
     }
 
-    function getItemGroup(id) {
-      return CurrentSurveyService.getGroupItemsByMemberID(id);
-    }
+    // function getItemGroup(id) {
+    //   return CurrentSurveyService.getGroupItemsByMemberID(id);
+    // }
 
     function fetchNavigationByOrigin(id) {
       return CurrentSurveyService.getNavigationByOrigin(id);
@@ -6142,7 +6162,7 @@
   }
 }());
 
-(function() {
+(function () {
   'use strict';
 
   angular
@@ -6168,13 +6188,10 @@
     self.fill = fill;
     self.getFilling = getFilling;
     self.getFillingRules = getFillingRules;
-    self.getItem = getItem;
-    self.getSurveyItemGroup = getSurveyItemGroup;
-    self.getFillingRulesGroup = getFillingRulesGroup;
+    self.getItems = getItems;
     self.getNavigation = getNavigation;
     self.getValidationError = getValidationError;
-    self.hasItem = hasItem;
-    self.hasItemGroup = hasItemGroup;
+    self.hasItems = hasItems;
     self.shouldIgnoreResponseEvaluation = shouldIgnoreResponseEvaluation;
     self.shouldApplyAnswer = shouldApplyAnswer;
     self.observerRegistry = observerRegistry;
@@ -6193,7 +6210,6 @@
 
     function clearData() {
       _surveyGroupItem = null;
-      _surveyGroupItem = null;
       _filling = {};
       _navigation = null;
       _validationError = null;
@@ -6201,29 +6217,33 @@
     }
 
     function fill(filling) {
-      if (_surveyGroupItem.isQuestion()) {
-        _filling[filling.questionID] = filling;
-      }
+      console.log(filling);
+      _surveyGroupItem.forEach(function (surveyItem) {
+        if (surveyItem.isQuestion()) {
+          console.log(surveyItem);
+          _filling[filling.questionID] = filling;
+        }
+      });
     }
 
     function getFilling(questionID) {
       return _filling[questionID];
     }
 
-    function getFillingRules() {
-      return _surveyGroupItem.fillingRules.options;
+    function getFillingRules(templateID) {
+      var options = null;
+      _surveyGroupItem.forEach(function (surveyItem) {
+        if(surveyItem.templateID === templateID){
+          options = surveyItem.fillingRules.options;
+        }
+      });
+
+      return options;
     }
 
-    function getItem() {
+    function getItems() {
+      console.log(_surveyGroupItem);
       return _surveyGroupItem;
-    }
-
-    function getSurveyItemGroup() {
-      return _surveyGroupItem;
-    }
-
-    function getFillingRulesGroup() {
-      return _surveyGroupItem.fillingRules.options;
     }
 
     function getNavigation() {
@@ -6234,28 +6254,24 @@
       return _validationError;
     }
 
-    function hasItem() {
+    function hasItems() {
       if (_surveyGroupItem) {
-        return true;
-      } else {
-        return false;
-      }
-    }
-
-    function hasItemGroup() {
-      if (_surveyGroupItem) {
-        return true;
-      } else {
-        return false;
-      }
+          return true;
+        } else {
+          return false;
+        }
     }
 
     function shouldApplyAnswer() {
-      return _surveyGroupItem && _surveyGroupItem.isQuestion();
+      _surveyGroupItem.forEach(function (surveyItem) {
+        return surveyItem || surveyItem.isQuestion();
+      });
     }
 
     function shouldIgnoreResponseEvaluation() {
-      return !_surveyGroupItem || !_surveyGroupItem.isQuestion();
+      _surveyGroupItem.forEach(function (surveyItem) {
+        return !surveyItem || !surveyItem.isQuestion();
+      });
     }
 
     function observerRegistry(observer) {
@@ -6267,34 +6283,36 @@
       console.log('=================')
       console.log(data)
       clearData();
-      _surveyGroupItem = data.item;
-      _surveyGroupItem = data.surveyItemGroup;
+      _surveyGroupItem = data.items;
       _navigation = data.navigation;
 
       console.log(_surveyGroupItem);
-      console.log(_surveyGroupItem);
-      if (_surveyGroupItem) {
-        if (_surveyGroupItem.isQuestion()) {
-          _filling = ActivityFacadeService.getFillingByQuestionID(_surveyGroupItem.templateID);
-
-          if (!_filling) {
-            _filling = ActivityFacadeService.createQuestionFill(_surveyGroupItem);
-            _filling.answerType = _surveyGroupItem.objectType;
+      _surveyGroupItem.forEach(function (surveyItem) {
+        let filling;
+        console.log(surveyItem);
+        if (surveyItem.isQuestion()) {
+          filling = ActivityFacadeService.getFillingByQuestionID(surveyItem.templateID);
+          // filling = {
+          //   answer: {value: "dfgdfgfdg", objectType: "AnswerFill", type: "TextQuestion"},
+          //   comment: "",
+          //   forceAnswer: false,
+          //   metadata: {objectType: "MetadataFill", value: null},
+          //   objectType: "QuestionFill",
+          //   questionID: "ACTA1"
+          // };
+          console.log(filling);
+          if (!filling) {
+            filling = ActivityFacadeService.createQuestionFill(surveyItem);
+            filling.answerType = surveyItem.objectType;
+            console.log(filling);
           }
         } else {
-          _filling = null;
+          filling = null;
         }
-      }
 
-      if (_surveyGroupItem) {
-        // _data.members.forEach(function (surveyItemGroup) {
-          if (_surveyGroupItem.isQuestion()) {
-            _filling = ActivityFacadeService.getFillingByQuestionID(_surveyGroupItem.templateID);
-          } else {
-            _filling = null;
-          }
-        // });
-      }
+        _filling[surveyItem.templateID] = filling;
+        console.log(_filling);
+      });
     }
   }
 }());
@@ -6322,7 +6340,7 @@
     self.getItemByCustomID = getItemByCustomID;
     self.getItemByTemplateID = getItemByTemplateID;
     self.getGroupItemsByMemberID = getGroupItemsByMemberID;
-    self.getSurveyItemGroup = getSurveyItemGroup;
+    // self.getSurveyItemGroup = getSurveyItemGroup;
     self.getSurveyDatasources = getSurveyDatasources;
     self.getStaticVariableList = getStaticVariableList;
     self.initialize = initialize;
@@ -6400,9 +6418,9 @@
       // });
     }
 
-    function getSurveyItemGroup() {
-      // return getSurvey().SurveyItemGroupManager.getGroupMember();
-    }
+    // function getSurveyItemGroup() {
+    //   // return getSurvey().SurveyItemGroupManager.getGroupMember();
+    // }
 
     function getNavigations() {
       return ActivityFacadeService.surveyActivity.getNavigations();
@@ -6524,26 +6542,29 @@
     }
 
     function loadNextItem() {
-      if (ActivityFacadeService.getCurrentItem().hasItem()) {
+      if (ActivityFacadeService.getCurrentItem().hasItems()) {
+        console.log("passou hasItems")
         return _loadNextItem();
       } else if (_navigationTracker.getCurrentIndex()) {
+        console.log("passou getCurrentIndex")
         return _loadLastVisitedItem();
       } else {
+        console.log("passou para loadFirstItem")
         return _loadFirstItem();
       }
     }
 
     function loadPreviousItem() {
       if (hasPrevious()) {
-        var item = getPreviousItem();
-        var navigation = ActivityFacadeService.getCurrentSurvey().getNavigationByOrigin(item.templateID);
+        var items = getPreviousItem();
+        var navigation = ActivityFacadeService.getCurrentSurvey().getNavigationByOrigin(items.templateID);
 
         RouteService.setup(navigation);
         //todo model precisa visitar todos os items do grupo
-        _navigationTracker.visitItem(item.templateID);
+        _navigationTracker.visitItem(items.templateID);
 
         return {
-          items: item,
+          items: items,
           navigation: navigation
         };
       }
@@ -6578,11 +6599,13 @@
       if (!id) {
         //todo
         let firstItem = ActivityFacadeService.getCurrentSurvey().getItems()[0];
+        console.log(firstItem);
         itemsToLoad = ActivityFacadeService.fetchItemGroupByID(firstItem.templateID);
         console.log(itemsToLoad);
         // itemsToLoad = ActivityFacadeService.getCurrentSurvey().getSurveyItemGroup()[0];
         navigation = ActivityFacadeService.getCurrentSurvey().getNavigations()[2];
       } else {
+        console.log("passou pelo navegation else");
         itemsToLoad = ActivityFacadeService.fetchItemGroupByID(id);
         navigation = ActivityFacadeService.fetchNavigationByOrigin(itemsToLoad[itemsToLoad.length-1].templateID);
       }
@@ -6766,7 +6789,6 @@
 
       let items = ActivityFacadeService.surveyActivity.getItems();
       let navigationTrackerItems = ActivityFacadeService.getNavigationTracker().getItems();
-      console.log(items)
 
       self.itemContainer = items.map(item => {
         let trackingItem = navigationTrackerItems[item.templateID];
@@ -6782,7 +6804,6 @@
 
     function SurveyItemMapper(item, trackingItem, filling) {
       let objectType = item.objectType;
-      console.log(item);
 
       switch (objectType) {
 
@@ -7043,43 +7064,48 @@
     function applyValidation(currentItemService, callback) {
       ValidationService.unregisterElement(_elementRegister.id);
       setupValidation(currentItemService, _answer);
-
-      ValidationService.validateElement(currentItemService.getItem().customID, callback);
+      currentItemService.getItems().forEach(function (surveyItem) {
+        ValidationService.validateElement(surveyItem.customID, callback);
+      });
     }
 
     function setupValidation(currentItemService, answer) {
       _answer = answer;
-      _elementRegister = ElementRegisterFactory.create(currentItemService.getItem().customID, answer);
+      console.log(_answer);
+      _elementRegister = null;
 
-      if (currentItemService.getFilling().forceAnswer) {
-        Object.keys(currentItemService.getItem().fillingRules.options).filter(function(validator) {
-          if (!currentItemService.getItem().fillingRules.options[validator].data.canBeIgnored) {
-            _addValidator(validator, currentItemService);
-          }
-        });
-      } else {
-        Object.keys(currentItemService.getItem().fillingRules.options).map(function(validator) {
-          _addValidator(validator, currentItemService);
-        });
-        _setupImmutableDateValidation(currentItemService);
-      }
-
-      ValidationService.unregisterElement(_elementRegister.id);
-      ValidationService.registerElement(_elementRegister);
+      currentItemService.getItems().forEach(function (surveyItem) {
+        _elementRegister = ElementRegisterFactory.create(surveyItem.customID, answer);
+        if (currentItemService.getFilling(surveyItem.templateID).forceAnswer) {
+          console.log("Passou pelo if");
+          Object.keys(surveyItem.fillingRules.options).filter(function(validator) {
+            if (!surveyItem.fillingRules.options[validator].data.canBeIgnored) {
+              _addValidator(validator, surveyItem);
+            }
+          });
+        } else {
+          console.log("Passou pelo else");
+          Object.keys(surveyItem.fillingRules.options).map(function(validator) {
+            _addValidator(validator, surveyItem);
+          });
+          _setupImmutableDateValidation(surveyItem);
+        }
+        ValidationService.unregisterElement(_elementRegister.id);
+        ValidationService.registerElement(_elementRegister);
+      });
     }
 
-    function _addValidator(validator, currentItemService) {
-      var reference = currentItemService.getItem().fillingRules.options[validator].data;
+    function _addValidator(validator, surveyItem) {
+      var reference = surveyItem.fillingRules.options[validator].data;
       _elementRegister.addValidator(validator, reference);
     }
 
-    function _setupImmutableDateValidation(currentItemService) {
-      var currentItemItemType = currentItemService.getItem().objectType;
+    function _setupImmutableDateValidation(surveyItem) {
+      var currentItemItemType = surveyItem.objectType;
       if(currentItemItemType === "TimeQuestion" || currentItemItemType === "CalendarQuestion") {
-        _elementRegister.addValidator("ImmutableDate", currentItemService);
+        _elementRegister.addValidator("ImmutableDate", surveyItem);
       }
     }
-
   }
 }());
 
