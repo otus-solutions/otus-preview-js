@@ -34,17 +34,18 @@
       var mandatoryResults = [];
       var otherResults = [];
       flowData.validationResult = {};
-      if (_currentItem.getItem().isQuestion()) {
-        flowData.validationResponse.validatorsResponse.map(function(validator) {
-          if (validator.name === 'mandatory' || validator.data.reference) {
-            flowData.validationResult[validator.name] = !validator.result && (angular.equals(flowData.metadataToEvaluate.data, {}));
-          } else {
-            flowData.validationResult[validator.name] = !validator.result;
-          }
-        });
-      }
-
-      flowData.validationResult.hasError = _hasError(flowData);
+      _currentItem.getItems().forEach(function (surveyItem) {
+        if (surveyItem.isQuestion()) {
+          flowData.validationResponse.validatorsResponse.map(function(validator) {
+            if (validator.name === 'mandatory' || validator.data.reference) {
+              flowData.validationResult[validator.name] = !validator.result && (angular.equals(flowData.metadataToEvaluate.data, {}));
+            } else {
+              flowData.validationResult[validator.name] = !validator.result;
+            }
+          });
+        }
+        flowData.validationResult.hasError = _hasError(flowData);
+      });
     }
 
     function afterEffect(pipe, flowData) {}

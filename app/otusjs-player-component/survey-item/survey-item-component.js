@@ -23,7 +23,6 @@
     /* Public methods */
     self.isQuestion = isQuestion;
     self.isItem = isItem;
-    // self.isSurveyItemGroup = isSurveyItemGroup;
     self.restoreAll = restoreAll;
     self.update = update;
     self.clear = clear;
@@ -37,6 +36,8 @@
 
       $scope.$parent.$ctrl.currentItem = self;
       CurrentItemService.observerRegistry(self);
+
+      console.log(self.itemData.templateID);
 
       self.$error = {};
       self.questionComponent = {};
@@ -61,18 +62,18 @@
 
     function restoreAll() {}
 
-    function update(prop, value) {
+    function update(id, prop, value) {
       if (prop) {
         if (prop === 'comment' || prop === 'forceAnswer') {
-          self.filling[prop] = value;
+          self.filling[id][prop] = value;
         } else {
           clear(prop, value);
-          self.filling[prop].value = value;
+          self.filling[id][prop].value = value;
         }
       } else {
         throw new Error('Cannot determine property type to update', 72, 'survey-item-component.js');
       }
-      CurrentItemService.fill(self.filling);
+      CurrentItemService.fill(self.filling[id]);
     }
 
     function clear(prop) {

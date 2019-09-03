@@ -24,13 +24,10 @@
     self.fill = fill;
     self.getFilling = getFilling;
     self.getFillingRules = getFillingRules;
-    self.getItem = getItem;
-    self.getSurveyItemGroup = getSurveyItemGroup;
-    self.getFillingRulesGroup = getFillingRulesGroup;
+    self.getItems = getItems;
     self.getNavigation = getNavigation;
     self.getValidationError = getValidationError;
-    self.hasItem = hasItem;
-    self.hasItemGroup = hasItemGroup;
+    self.hasItems = hasItems;
     self.shouldIgnoreResponseEvaluation = shouldIgnoreResponseEvaluation;
     self.shouldApplyAnswer = shouldApplyAnswer;
     self.observerRegistry = observerRegistry;
@@ -56,29 +53,33 @@
     }
 
     function fill(filling) {
-      if (_surveyGroupItem.isQuestion()) {
-        _filling[filling.questionID] = filling;
-      }
+      console.log(filling);
+      _surveyGroupItem.forEach(function (surveyItem) {
+        if (surveyItem.isQuestion()) {
+          console.log(surveyItem);
+          _filling[filling.questionID] = filling;
+        }
+      });
     }
 
     function getFilling(questionID) {
       return _filling[questionID];
     }
 
-    function getFillingRules() {
-      return _surveyGroupItem.fillingRules.options;
+    function getFillingRules(templateID) {
+      var options = null;
+      _surveyGroupItem.forEach(function (surveyItem) {
+        if(surveyItem.templateID === templateID){
+          options = surveyItem.fillingRules.options;
+        }
+      });
+
+      return options;
     }
 
-    function getItem() {
+    function getItems() {
+      console.log(_surveyGroupItem);
       return _surveyGroupItem;
-    }
-
-    function getSurveyItemGroup() {
-      return _surveyGroupItem;
-    }
-
-    function getFillingRulesGroup() {
-      return _surveyGroupItem.fillingRules.options;
     }
 
     function getNavigation() {
@@ -89,28 +90,24 @@
       return _validationError;
     }
 
-    function hasItem() {
+    function hasItems() {
       if (_surveyGroupItem) {
-        return true;
-      } else {
-        return false;
-      }
-    }
-
-    function hasItemGroup() {
-      if (_surveyGroupItem) {
-        return true;
-      } else {
-        return false;
-      }
+          return true;
+        } else {
+          return false;
+        }
     }
 
     function shouldApplyAnswer() {
-      return _surveyGroupItem && _surveyGroupItem.isQuestion();
+      _surveyGroupItem.forEach(function (surveyItem) {
+        return surveyItem || surveyItem.isQuestion();
+      });
     }
 
     function shouldIgnoreResponseEvaluation() {
-      return !_surveyGroupItem || !_surveyGroupItem.isQuestion();
+      _surveyGroupItem.forEach(function (surveyItem) {
+        return !surveyItem || !surveyItem.isQuestion();
+      });
     }
 
     function observerRegistry(observer) {
@@ -128,18 +125,29 @@
       console.log(_surveyGroupItem);
       _surveyGroupItem.forEach(function (surveyItem) {
         let filling;
+        console.log(surveyItem);
         if (surveyItem.isQuestion()) {
           filling = ActivityFacadeService.getFillingByQuestionID(surveyItem.templateID);
-
-          if (filling) {
+          // filling = {
+          //   answer: {value: "dfgdfgfdg", objectType: "AnswerFill", type: "TextQuestion"},
+          //   comment: "",
+          //   forceAnswer: false,
+          //   metadata: {objectType: "MetadataFill", value: null},
+          //   objectType: "QuestionFill",
+          //   questionID: "ACTA1"
+          // };
+          console.log(filling);
+          if (!filling) {
             filling = ActivityFacadeService.createQuestionFill(surveyItem);
             filling.answerType = surveyItem.objectType;
+            console.log(filling);
           }
         } else {
           filling = null;
         }
 
         _filling[surveyItem.templateID] = filling;
+        console.log(_filling);
       });
     }
   }

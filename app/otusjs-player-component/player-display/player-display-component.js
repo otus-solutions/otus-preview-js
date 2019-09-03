@@ -26,7 +26,6 @@
     var self = this;
 
     var SURVEY_ITEM = '<otus-survey-item item-data="itemData" id="{{itemData.templateID}}" style="margin: 0;display:block;" class="animate-switch"/>';
-    // var SURVEY_ITEM_GROUP = '<otus-survey-item-group item-data="itemData" style="margin: 0;display:block;" class="animate-switch"/>';
     var SURVEY_COVER = '<otus-cover />';
 
     /* Public methods */
@@ -36,6 +35,8 @@
     self.$onInit = onInit;
     self.ids = [];
 
+    $scope.removeQuestion = removeQuestion;
+
     function _destroyCurrentItem() {
       if (self.currentItem) {
         self.currentItem.destroy();
@@ -43,16 +44,8 @@
     }
 
     function loadItem(itemsData) {
-      // if (_shouldLoadItem(itemsData)) {
-      //   _destroyCurrentItem();
-      //   _saveQuestion();
-      //   removeQuestion(itemsData.templateID);
-      //   $scope.itemData = itemsData;
-      //   _setQuestionId(itemsData.templateID);
-      //   $element.find('#pagePlayer').empty();
-      //   $element.find('#pagePlayer').append($compile(SURVEY_ITEM)($scope));
-      //   _onGoBottom(itemsData.templateID);
-      // }
+      console.log(itemsData);
+
       if (_shouldLoadItem(itemsData[0])) {
         _destroyCurrentItem();
         _saveQuestion();
@@ -65,18 +58,11 @@
             scope.itemData = itemsData[i];
             _setQuestionId(itemsData[0].templateID);
             let element = $compile(SURVEY_ITEM)(scope);
-            console.log(element);
             $element.find('#pagePlayer').append(element);
           }())
         }
         _onGoBottom(itemsData.templateID);
       }
-
-      //
-      // _destroyCurrentItem();
-      // $element.find('#pagePlayer').empty();
-      // $element.find('#pagePlayer').append($compile(SURVEY_ITEM_GROUP)($scope));
-
 
       if (PlayerService.isGoingBack()) {
         if (PlayerService.getGoBackTo() !== itemsData.templateID) {
@@ -86,8 +72,6 @@
         }
       }
     }
-
-    $scope.removeQuestion = removeQuestion;
 
     function removeQuestion(id) {
       var index = _getIndexQuestionId(id);
@@ -154,6 +138,7 @@
     }
 
     function _shouldLoadItem(itemData) {
+      console.log(itemData);
       return $scope.itemData && $scope.itemData.customID !== itemData.customID;
     }
   }

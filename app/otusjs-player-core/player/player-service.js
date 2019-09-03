@@ -35,7 +35,7 @@
 
     self.bindComponent = bindComponent;
     self.getItemData = getItemData;
-    self.getSurveyItemGroupData = getFake;
+    self.getSurveyItemGroupData = getSurveyItemGroupData;
     self.goAhead = goAhead;
     self.goBack = goBack;
     self.setGoBackTo = setGoBackTo;
@@ -82,12 +82,12 @@
     }
 
     function getItemData() {
-      return ActivityFacadeService.getCurrentItem().getItem();
+      return ActivityFacadeService.getCurrentItem().getItems();
     }
 
-    // function getSurveyItemGroupData() {
-    //   return ActivityFacadeService.getCurrentItem().getSurveyItemGroup();
-    // }
+    function getSurveyItemGroupData() {
+      return ActivityFacadeService.getCurrentItem().getItems();
+    }
 
     function getFake() {
       return ActivityFacadeService.getCurrentSurvey().getItems().splice(0,3);

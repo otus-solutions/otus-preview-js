@@ -22,42 +22,47 @@
     function applyValidation(currentItemService, callback) {
       ValidationService.unregisterElement(_elementRegister.id);
       setupValidation(currentItemService, _answer);
-
-      ValidationService.validateElement(currentItemService.getItem().customID, callback);
+      currentItemService.getItems().forEach(function (surveyItem) {
+        ValidationService.validateElement(surveyItem.customID, callback);
+      });
     }
 
     function setupValidation(currentItemService, answer) {
       _answer = answer;
-      _elementRegister = ElementRegisterFactory.create(currentItemService.getItem().customID, answer);
+      console.log(_answer);
+      _elementRegister = null;
 
-      if (currentItemService.getFilling().forceAnswer) {
-        Object.keys(currentItemService.getItem().fillingRules.options).filter(function(validator) {
-          if (!currentItemService.getItem().fillingRules.options[validator].data.canBeIgnored) {
-            _addValidator(validator, currentItemService);
-          }
-        });
-      } else {
-        Object.keys(currentItemService.getItem().fillingRules.options).map(function(validator) {
-          _addValidator(validator, currentItemService);
-        });
-        _setupImmutableDateValidation(currentItemService);
-      }
-
-      ValidationService.unregisterElement(_elementRegister.id);
-      ValidationService.registerElement(_elementRegister);
+      currentItemService.getItems().forEach(function (surveyItem) {
+        _elementRegister = ElementRegisterFactory.create(surveyItem.customID, answer);
+        if (currentItemService.getFilling(surveyItem.templateID).forceAnswer) {
+          console.log("Passou pelo if");
+          Object.keys(surveyItem.fillingRules.options).filter(function(validator) {
+            if (!surveyItem.fillingRules.options[validator].data.canBeIgnored) {
+              _addValidator(validator, surveyItem);
+            }
+          });
+        } else {
+          console.log("Passou pelo else");
+          Object.keys(surveyItem.fillingRules.options).map(function(validator) {
+            _addValidator(validator, surveyItem);
+          });
+          _setupImmutableDateValidation(surveyItem);
+        }
+        ValidationService.unregisterElement(_elementRegister.id);
+        ValidationService.registerElement(_elementRegister);
+      });
     }
 
-    function _addValidator(validator, currentItemService) {
-      var reference = currentItemService.getItem().fillingRules.options[validator].data;
+    function _addValidator(validator, surveyItem) {
+      var reference = surveyItem.fillingRules.options[validator].data;
       _elementRegister.addValidator(validator, reference);
     }
 
-    function _setupImmutableDateValidation(currentItemService) {
-      var currentItemItemType = currentItemService.getItem().objectType;
+    function _setupImmutableDateValidation(surveyItem) {
+      var currentItemItemType = surveyItem.objectType;
       if(currentItemItemType === "TimeQuestion" || currentItemItemType === "CalendarQuestion") {
-        _elementRegister.addValidator("ImmutableDate", currentItemService);
+        _elementRegister.addValidator("ImmutableDate", surveyItem);
       }
     }
-
   }
 }());

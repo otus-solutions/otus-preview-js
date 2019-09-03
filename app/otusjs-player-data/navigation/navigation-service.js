@@ -61,26 +61,29 @@
     }
 
     function loadNextItem() {
-      if (ActivityFacadeService.getCurrentItem().hasItem()) {
+      if (ActivityFacadeService.getCurrentItem().hasItems()) {
+        console.log("passou hasItems")
         return _loadNextItem();
       } else if (_navigationTracker.getCurrentIndex()) {
+        console.log("passou getCurrentIndex")
         return _loadLastVisitedItem();
       } else {
+        console.log("passou para loadFirstItem")
         return _loadFirstItem();
       }
     }
 
     function loadPreviousItem() {
       if (hasPrevious()) {
-        var item = getPreviousItem();
-        var navigation = ActivityFacadeService.getCurrentSurvey().getNavigationByOrigin(item.templateID);
+        var items = getPreviousItem();
+        var navigation = ActivityFacadeService.getCurrentSurvey().getNavigationByOrigin(items.templateID);
 
         RouteService.setup(navigation);
         //todo model precisa visitar todos os items do grupo
-        _navigationTracker.visitItem(item.templateID);
+        _navigationTracker.visitItem(items.templateID);
 
         return {
-          items: item,
+          items: items,
           navigation: navigation
         };
       }
@@ -115,11 +118,13 @@
       if (!id) {
         //todo
         let firstItem = ActivityFacadeService.getCurrentSurvey().getItems()[0];
+        console.log(firstItem);
         itemsToLoad = ActivityFacadeService.fetchItemGroupByID(firstItem.templateID);
         console.log(itemsToLoad);
         // itemsToLoad = ActivityFacadeService.getCurrentSurvey().getSurveyItemGroup()[0];
         navigation = ActivityFacadeService.getCurrentSurvey().getNavigations()[2];
       } else {
+        console.log("passou pelo navegation else");
         itemsToLoad = ActivityFacadeService.fetchItemGroupByID(id);
         navigation = ActivityFacadeService.fetchNavigationByOrigin(itemsToLoad[itemsToLoad.length-1].templateID);
       }
