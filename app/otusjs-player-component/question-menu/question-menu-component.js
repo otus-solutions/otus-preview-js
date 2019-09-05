@@ -16,11 +16,10 @@
     });
 
   OtusSurveyMenuController.$inject = [
-    '$mdDialog',
-    '$mdMedia'
+    '$mdDialog'
   ];
 
-  function OtusSurveyMenuController($mdDialog, $mdMedia) {
+  function OtusSurveyMenuController($mdDialog) {
     var self = this;
     self.forceAnswer = false;
 
@@ -31,6 +30,8 @@
       self.otusQuestion.menuComponent = self;
       _enableDialogSettings();
       _disableDialogSettings();
+
+      console.log(self.otusQuestion.menuComponent);
 
       self.forceAnswer = self.otusQuestion.menuComponent.otusQuestion.filling.forceAnswer;
     };
@@ -72,6 +73,7 @@
     };
 
     function _enableForwardSuccessfulExecution(response) {
+      console.log(response);
       if (response.action !== 'cancel') {
         self.onAccept({
           value: true
@@ -83,6 +85,7 @@
     function _enableForwardUnsuccessfulExecution(error) {}
 
     function _disableForwardSuccessfulExecution(response) {
+      console.log(response);
       if (response.action !== 'cancel') {
         self.onAccept({
           value: false
@@ -120,6 +123,7 @@
     }
 
     function showAccept() {
+      console.log(self.error);
       return (self.error && self.forceAnswer) || (self.error && self.otusQuestion.isAccept()) || self.forceAnswer;
     }
 

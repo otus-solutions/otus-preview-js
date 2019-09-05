@@ -28,9 +28,20 @@
       if (loadData && loadData !== 'END NODE') {
         CurrentItemService.setup(loadData);
         flowData.answerToEvaluate = {};
-        flowData.answerToEvaluate.data = {};
         flowData.metadataToEvaluate = {};
-        flowData.metadataToEvaluate.data = {};
+
+        CurrentItemService.getItems().forEach(item=> {
+          let templateID = item.templateID;
+          flowData.answerToEvaluate[templateID] = {};
+          flowData.answerToEvaluate[templateID].data = {};
+
+          flowData.metadataToEvaluate[templateID] = {};
+          flowData.metadataToEvaluate[templateID].data = {};
+        });
+
+        console.log('============')
+        console.log(flowData);
+
       } else {
         PlayerService.end();
       }

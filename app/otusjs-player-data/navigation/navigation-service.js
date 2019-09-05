@@ -118,10 +118,7 @@
       if (!id) {
         //todo
         let firstItem = ActivityFacadeService.getCurrentSurvey().getItems()[0];
-        console.log(firstItem);
         itemsToLoad = ActivityFacadeService.fetchItemGroupByID(firstItem.templateID);
-        console.log(itemsToLoad);
-        // itemsToLoad = ActivityFacadeService.getCurrentSurvey().getSurveyItemGroup()[0];
         navigation = ActivityFacadeService.getCurrentSurvey().getNavigations()[2];
       } else {
         console.log("passou pelo navegation else");

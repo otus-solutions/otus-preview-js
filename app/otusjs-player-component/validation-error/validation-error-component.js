@@ -28,7 +28,7 @@
     };
 
     self.referenceAsDate = function(type) {
-      var reference = CurrentItemService.getFillingRules()[type].data.reference;
+      var reference = CurrentItemService.getFillingRules(self.otusSurveyItem.itemData.templateID)[type].data.reference;
       var date;
       if (type === 'rangeDate') {
         date = {
@@ -42,12 +42,12 @@
     };
 
     self.referenceAsTime = function(type) {
-      var reference = CurrentItemService.getFillingRules()[type].data.reference.value;
+      var reference = CurrentItemService.getFillingRules(self.otusSurveyItem.itemData.templateID)[type].data.reference.value;
       return $filter('date')(new Date(reference), 'hh:mm a');
     };
 
     self.reference = function(type) {
-      var reference = CurrentItemService.getFillingRules()[type].data.reference;
+      var reference = CurrentItemService.getFillingRules(self.otusSurveyItem.itemData.templateID)[type].data.reference;
       return reference;
     };
 

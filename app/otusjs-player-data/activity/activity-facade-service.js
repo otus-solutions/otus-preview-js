@@ -55,10 +55,6 @@
       return CurrentSurveyService.getGroupItemsByMemberID(id);
     }
 
-    // function getItemGroup(id) {
-    //   return CurrentSurveyService.getGroupItemsByMemberID(id);
-    // }
-
     function fetchNavigationByOrigin(id) {
       return CurrentSurveyService.getNavigationByOrigin(id);
     }

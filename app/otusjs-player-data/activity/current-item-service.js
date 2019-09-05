@@ -11,11 +11,11 @@
 
   function Service(ActivityFacadeService) {
     var self = this;
-    var _surveyGroupItem = null;
-    var _filling = {};
+    var _surveyItemGroup = [];
+    var _fillingContainer = {};
     var _navigation = null;
     var _validationError = null;
-    var _observer = null;
+    var _observerArray = [];
 
     /* Public Interface */
     self.applyFilling = applyFilling;
@@ -23,8 +23,10 @@
     self.clearData = clearData;
     self.fill = fill;
     self.getFilling = getFilling;
+    self.getFillingContainer = getFillingContainer;
     self.getFillingRules = getFillingRules;
     self.getItems = getItems;
+    self.getItemsByTemplateID = getItemsByTemplateID;
     self.getNavigation = getNavigation;
     self.getValidationError = getValidationError;
     self.hasItems = hasItems;
@@ -34,41 +36,48 @@
     self.setup = setup;
 
     function applyFilling() {
-      if (_filling) {
-        ActivityFacadeService.fillQuestion(_filling);
-      }
+      Object.values(_fillingContainer).forEach(filling => {
+        if (filling) {
+          ActivityFacadeService.fillQuestion(filling);
+        }
+      });
     }
 
     function attachValidationError(validationError) {
+      console.log('ASDAS')
       _validationError = validationError;
-      _observer.updateValidation(validationError);
+      _observerArray.forEach(observer=>{
+        observer.updateValidation(validationError[observer.itemData.templateID]);
+      })
     }
 
     function clearData() {
-      _surveyGroupItem = null;
-      _filling = {};
+      _surveyItemGroup = [];
+      _fillingContainer = {};
       _navigation = null;
       _validationError = null;
-      _observer = null;
+      _observerArray = [];
     }
 
     function fill(filling) {
-      console.log(filling);
-      _surveyGroupItem.forEach(function (surveyItem) {
+      _surveyItemGroup.forEach(function (surveyItem) {
         if (surveyItem.isQuestion()) {
-          console.log(surveyItem);
-          _filling[filling.questionID] = filling;
+          _fillingContainer[filling.questionID] = filling;
         }
       });
     }
 
     function getFilling(questionID) {
-      return _filling[questionID];
+      return _fillingContainer[questionID];
+    }
+
+    function getFillingContainer() {
+      return _fillingContainer;
     }
 
     function getFillingRules(templateID) {
       var options = null;
-      _surveyGroupItem.forEach(function (surveyItem) {
+      _surveyItemGroup.forEach(function (surveyItem) {
         if(surveyItem.templateID === templateID){
           options = surveyItem.fillingRules.options;
         }
@@ -78,8 +87,10 @@
     }
 
     function getItems() {
-      console.log(_surveyGroupItem);
-      return _surveyGroupItem;
+      return _surveyItemGroup;
+    }
+    function getItemsByTemplateID(templateID) {
+      return _surveyItemGroup.find(item => {return item.templateID === templateID});
     }
 
     function getNavigation() {
@@ -91,7 +102,7 @@
     }
 
     function hasItems() {
-      if (_surveyGroupItem) {
+      if (_surveyItemGroup && _surveyItemGroup.length) {
           return true;
         } else {
           return false;
@@ -99,56 +110,44 @@
     }
 
     function shouldApplyAnswer() {
-      _surveyGroupItem.forEach(function (surveyItem) {
-        return surveyItem || surveyItem.isQuestion();
+      return _surveyItemGroup.some(function (surveyItem) {
+        return surveyItem && surveyItem.isQuestion();
       });
     }
 
     function shouldIgnoreResponseEvaluation() {
-      _surveyGroupItem.forEach(function (surveyItem) {
+      return _surveyItemGroup.every(function (surveyItem) {
         return !surveyItem || !surveyItem.isQuestion();
       });
     }
 
     function observerRegistry(observer) {
-      _observer = observer;
-      _observer.pushData(_filling);
+      observer.pushData(_fillingContainer[observer.itemData.templateID]);
+      _observerArray.push(observer);
+      console.log(_observerArray)
     }
 
     function setup(data) {
-      console.log('=================')
-      console.log(data)
       clearData();
-      _surveyGroupItem = data.items;
+      _surveyItemGroup = data.items;
       _navigation = data.navigation;
+      // console.log(_navigation);
 
-      console.log(_surveyGroupItem);
-      _surveyGroupItem.forEach(function (surveyItem) {
+      _surveyItemGroup.forEach(function (surveyItem) {
         let filling;
-        console.log(surveyItem);
         if (surveyItem.isQuestion()) {
           filling = ActivityFacadeService.getFillingByQuestionID(surveyItem.templateID);
-          // filling = {
-          //   answer: {value: "dfgdfgfdg", objectType: "AnswerFill", type: "TextQuestion"},
-          //   comment: "",
-          //   forceAnswer: false,
-          //   metadata: {objectType: "MetadataFill", value: null},
-          //   objectType: "QuestionFill",
-          //   questionID: "ACTA1"
-          // };
-          console.log(filling);
           if (!filling) {
             filling = ActivityFacadeService.createQuestionFill(surveyItem);
             filling.answerType = surveyItem.objectType;
-            console.log(filling);
           }
         } else {
           filling = null;
         }
 
-        _filling[surveyItem.templateID] = filling;
-        console.log(_filling);
+        _fillingContainer[surveyItem.templateID] = filling;
       });
+      return _surveyItemGroup;
     }
   }
 }());

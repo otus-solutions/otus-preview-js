@@ -27,7 +27,16 @@
       if (loadData) {
         CurrentItemService.setup(loadData);
         flowData.answerToEvaluate = {};
-        flowData.answerToEvaluate.data = {};
+        // flowData.metadataToEvaluate = {};
+
+        CurrentItemService.getItems().forEach(item=> {
+          let templateID = item.templateID;
+          flowData.answerToEvaluate[templateID] = {};
+          flowData.answerToEvaluate[templateID].data = {};
+
+          flowData.metadataToEvaluate[templateID] = {};
+          flowData.metadataToEvaluate[templateID].data = {};
+        });
       }
     }
 

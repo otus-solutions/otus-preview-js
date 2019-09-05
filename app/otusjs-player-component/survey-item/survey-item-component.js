@@ -21,31 +21,31 @@
     var self = this;
 
     /* Public methods */
+    self.$onInit = onInit;
     self.isQuestion = isQuestion;
     self.isItem = isItem;
-    self.restoreAll = restoreAll;
     self.update = update;
     self.clear = clear;
     self.pushData = pushData;
     self.destroy = destroy;
     self.updateValidation = updateValidation;
 
-    self.$onInit = function() {
+    function onInit() {
       self.filling = {};
       self.filling.questionID = self.itemData.templateID;
 
       $scope.$parent.$ctrl.currentItem = self;
       CurrentItemService.observerRegistry(self);
 
-      console.log(self.itemData.templateID);
-
       self.$error = {};
       self.questionComponent = {};
       self.errorComponent = {};
-    };
+    }
 
     function updateValidation(validationMap) {
       self.$error = validationMap;
+
+      console.log(self.$error);
 
       if (self.$error.hasError) {
         self.questionComponent.setError(self.$error);
@@ -59,8 +59,6 @@
     function isItem() {
       return (self.itemData.objectType === 'ImageItem') || (self.itemData.objectType === 'TextItem') ? true : false;
     }
-
-    function restoreAll() {}
 
     function update(id, prop, value) {
       if (prop) {

@@ -12,7 +12,7 @@
 
   function Service(ActivityFacadeService, ItemFillingValidatorService) {
     var self = this;
-    var _currentItem;
+    var _currentItemService;
 
     /* Public methods */
     self.beforeEffect = beforeEffect;
@@ -21,9 +21,9 @@
     self.getEffectResult = getEffectResult;
 
     function beforeEffect(pipe, flowData) {
-      _currentItem = ActivityFacadeService.getCurrentItem();
+      _currentItemService = ActivityFacadeService.getCurrentItem();
 
-      if (_currentItem.shouldIgnoreResponseEvaluation()) {
+      if (_currentItemService.shouldIgnoreResponseEvaluation()) {
         pipe.skipStep = true;
       } else {
         pipe.skipStep = false;
@@ -31,8 +31,10 @@
     }
 
     function effect(pipe, flowData) {
-      ItemFillingValidatorService.applyValidation(_currentItem, function(validationResponse) {
-        flowData.validationResponse = validationResponse[0];
+      flowData.validationResponse = {};
+      ItemFillingValidatorService.applyValidation(_currentItemService, function(validationResponse) {
+        let response = validationResponse[0];
+        flowData.validationResponse[response.elementID] = response;
       });
     }
 
@@ -40,10 +42,6 @@
 
     function getEffectResult(pipe, flowData) {
       return flowData;
-    }
-
-    function _parseBool(value) {
-      return (value === 'true');
     }
   }
 })();

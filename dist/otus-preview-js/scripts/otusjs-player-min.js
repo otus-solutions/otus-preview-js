@@ -1205,31 +1205,31 @@
     var self = this;
 
     /* Public methods */
+    self.$onInit = onInit;
     self.isQuestion = isQuestion;
     self.isItem = isItem;
-    self.restoreAll = restoreAll;
     self.update = update;
     self.clear = clear;
     self.pushData = pushData;
     self.destroy = destroy;
     self.updateValidation = updateValidation;
 
-    self.$onInit = function() {
+    function onInit() {
       self.filling = {};
       self.filling.questionID = self.itemData.templateID;
 
       $scope.$parent.$ctrl.currentItem = self;
       CurrentItemService.observerRegistry(self);
 
-      console.log(self.itemData.templateID);
-
       self.$error = {};
       self.questionComponent = {};
       self.errorComponent = {};
-    };
+    }
 
     function updateValidation(validationMap) {
       self.$error = validationMap;
+
+      console.log(self.$error);
 
       if (self.$error.hasError) {
         self.questionComponent.setError(self.$error);
@@ -1243,8 +1243,6 @@
     function isItem() {
       return (self.itemData.objectType === 'ImageItem') || (self.itemData.objectType === 'TextItem') ? true : false;
     }
-
-    function restoreAll() {}
 
     function update(id, prop, value) {
       if (prop) {
@@ -1289,7 +1287,7 @@
   angular
     .module('otusjs.player.component')
     .component('otusQuestion', {
-      template:'<md-content layout="column"><div layout="row"><md-tabs md-dynamic-height layout="column" flex="95"><md-tab label="Resposta"><md-content class="md-padding" bind-html-compile="$ctrl.template"></md-content></md-tab><md-tab label="Metadado"><md-content class="md-padding"><metadata-group on-update="$ctrl.update(questionID, valueType, value)" item-data="$ctrl.itemData"></metadata-group></md-content></md-tab><md-tab label="Comentário"><md-content class="md-padding"><otus-comment on-update="$ctrl.update(questionID, valueType, value)" item-data="$ctrl.itemData"></otus-comment></md-content></md-tab></md-tabs><div layout="column"><otus-question-menu on-clear="$ctrl.clear(value)" on-accept="$ctrl.forceAnswer(value)"></otus-question-menu></div></div></md-content>',
+      template:'<md-content layout="column"><div layout="row"><md-tabs md-dynamic-height layout="column" flex="95"><md-tab label="Resposta"><md-content class="md-padding" bind-html-compile="$ctrl.template"></md-content></md-tab><md-tab label="Metadado"><md-content class="md-padding"><metadata-group on-update="$ctrl.update(questionID, valueType, value)" item-data="$ctrl.itemData"></metadata-group></md-content></md-tab><md-tab label="Comentário"><md-content class="md-padding"><otus-comment on-update="$ctrl.update(questionID, valueType, value)" item-data="$ctrl.itemData"></otus-comment></md-content></md-tab></md-tabs><div layout="column"><otus-question-menu on-clear="$ctrl.clear(value)" on-accept="$ctrl.forceAnswer(questionID, value)"></otus-question-menu></div></div></md-content>',
       controller: OtusQuestionController,
       bindings: {
         itemData: '<',
@@ -1309,7 +1307,17 @@
   function OtusQuestionController(TagComponentBuilderService, CurrentItemService) {
     var self = this;
 
-    self.$onInit = function() {
+    self.$onInit = onInit;
+    self.setError = setError;
+    self.update = update;
+    self.forceAnswer = forceAnswer;
+    self.clear = clear;
+    self.clearAnswer = clearAnswer;
+    self.clearMetadataAnswer = clearMetadataAnswer;
+    self.clearCommentAnswer = clearCommentAnswer;
+    self.isAccept = isAccept;
+
+    function onInit() {
       self.template = TagComponentBuilderService.createTagElement(self.itemData.objectType);
       self.otusSurveyItem.questionComponent = self;
       self.filling = CurrentItemService.getFilling(self.itemData.templateID) || {};
@@ -1319,26 +1327,26 @@
       self.menuComponent = {};
       self.menuComponent.error = false;
 
-      self.setError();
-    };
+      setError();
+    }
 
-    self.update = function(questionID, prop, value) {
+    function update(questionID, prop, value) {
       self.onUpdate({
         questionID: questionID,
         valueType: prop,
         value: value
       });
-    };
+    }
 
-    self.forceAnswer = function(questionID, value) {
+    function forceAnswer(questionID, value) {
       self.onUpdate({
         questionID: questionID,
         valueType: 'forceAnswer',
         value: value
       });
-    };
+    }
 
-    self.clear = function(value) {
+    function clear(value) {
       if (value) {
         if (value === 'answer') {
           self.clearAnswer();
@@ -1348,21 +1356,22 @@
           self.clearCommentAnswer();
         }
       }
-    };
+    }
 
-    self.clearAnswer = function() {
+    function clearAnswer() {
       self.answer.clear();
-    };
+    }
 
-    self.clearMetadataAnswer = function() {
+    function clearMetadataAnswer() {
       self.metadata.clear();
-    };
+    }
 
-    self.clearCommentAnswer = function() {
+    function clearCommentAnswer() {
       self.comment.clear();
-    };
+    }
 
-    self.setError = function(error) {
+    function setError(error) {
+      console.log(error);
       if (self.filling.forceAnswer) {
         self.menuComponent.error = true;
       } else if (self.itemData.isQuestion() && error) {
@@ -1374,11 +1383,11 @@
       } else {
         self.menuComponent.error = false;
       }
-    };
+    }
 
-    self.isAccept = function() {
+    function isAccept() {
       return self.itemData.fillingRules.options.accept === undefined ? false : true;
-    };
+    }
 
     function _canBeIgnored(error) {
       return function(validator) {
@@ -2979,101 +2988,6 @@
 }());
 
 (function() {
-  'use strict';
-
-  angular
-    .module('otusjs.player.component')
-    .component('otusSurveyItemGroup', {
-      template:'<div layout="column" layout-align="start start" ng-repeat="item in $ctrl.itemData.members"><md-card flex><md-card-title layout="row" ng-if="!$ctrl.isItem()"><md-card-title-text layout="column" flex><div layout="row"><otus-label class="md-headline" item-label="item.label.ptBR.formattedText" flex layout-padding></otus-label></div></md-card-title-text></md-card-title><md-card-content layout="row" layout-align="space-between" flex><otus-question ng-if="$ctrl.isQuestion()" on-update="$ctrl.update(questionID, valueType, value)" item-data="item" layout="column" flex></otus-question><otus-misc-item ng-if="$ctrl.isItem()" item-data="item" layout="column" flex></otus-misc-item></md-card-content><otus-validation-error error="$ctrl.$error" layout="row"></otus-validation-error></md-card></div>',
-      controller: OtusSurveyItemGroupController,
-      bindings: {
-        itemData: '<'
-      }
-    });
-
-  OtusSurveyItemGroupController.$inject = [
-    '$scope',
-    '$element',
-    'otusjs.player.data.activity.CurrentItemService'
-  ];
-
-  function OtusSurveyItemGroupController($scope, $element, CurrentItemService) {
-    var self = this;
-
-    /* Public methods */
-    self.isQuestion = isQuestion;
-    self.isItem = isItem;
-    self.update = update;
-    self.clear = clear;
-    self.pushData = pushData;
-    self.destroy = destroy;
-    self.updateValidation = updateValidation;
-
-    self.$onInit = function() {
-      self.filling = {};
-      self.filling.questionID = self.itemData.members.templateID;
-
-      $scope.$parent.$ctrl.currentItem = self;
-      CurrentItemService.observerRegistry(self);
-
-      self.$error = {};
-      self.questionComponent = {};
-      self.errorComponent = {};
-    };
-
-    function updateValidation(validationMap) {
-      self.$error = validationMap;
-
-      if (self.$error.hasError) {
-        self.questionComponent.setError(self.$error);
-      }
-    }
-
-    function isQuestion() {
-      return (self.itemData.members.objectType === 'ImageItem') || (self.itemData.members.objectType === 'TextItem') ? false : true;
-    }
-
-    function isItem() {
-      return (self.itemData.members.objectType === 'ImageItem') || (self.itemData.members.objectType === 'TextItem') ? true : false;
-    }
-
-    function update(prop, value) {
-      if (prop) {
-        if (prop === 'comment' || prop === 'forceAnswer') {
-          self.filling[prop] = value;
-        } else {
-          clear(prop, value);
-          self.filling[prop].value = value;
-        }
-      } else {
-        throw new Error('Cannot determine property type to update', 72, 'survey-item-group-component.js');
-      }
-      CurrentItemService.fill(self.filling);
-    }
-
-    function clear(prop) {
-      if (prop) {
-        if (prop === 'metadata') {
-          self.questionComponent.clearAnswer();
-        } else if (prop === 'answer') {
-          self.questionComponent.clearMetadataAnswer();
-        }
-      } else {
-        throw new Error('Cannot determine property type to clear', 85, 'survey-item-group-component.js');
-      }
-    }
-
-    function pushData(filling) {
-      self.filling = filling;
-    }
-
-    function destroy() {
-      $element.remove();
-      $scope.$destroy();
-    }
-  }
-})();
-(function() {
     'use strict';
 
     angular
@@ -3186,7 +3100,7 @@
     };
 
     self.referenceAsDate = function(type) {
-      var reference = CurrentItemService.getFillingRules()[type].data.reference;
+      var reference = CurrentItemService.getFillingRules(self.otusSurveyItem.itemData.templateID)[type].data.reference;
       var date;
       if (type === 'rangeDate') {
         date = {
@@ -3200,12 +3114,12 @@
     };
 
     self.referenceAsTime = function(type) {
-      var reference = CurrentItemService.getFillingRules()[type].data.reference.value;
+      var reference = CurrentItemService.getFillingRules(self.otusSurveyItem.itemData.templateID)[type].data.reference.value;
       return $filter('date')(new Date(reference), 'hh:mm a');
     };
 
     self.reference = function(type) {
-      var reference = CurrentItemService.getFillingRules()[type].data.reference;
+      var reference = CurrentItemService.getFillingRules(self.otusSurveyItem.itemData.templateID)[type].data.reference;
       return reference;
     };
 
@@ -3233,11 +3147,10 @@
     });
 
   OtusSurveyMenuController.$inject = [
-    '$mdDialog',
-    '$mdMedia'
+    '$mdDialog'
   ];
 
-  function OtusSurveyMenuController($mdDialog, $mdMedia) {
+  function OtusSurveyMenuController($mdDialog) {
     var self = this;
     self.forceAnswer = false;
 
@@ -3248,6 +3161,8 @@
       self.otusQuestion.menuComponent = self;
       _enableDialogSettings();
       _disableDialogSettings();
+
+      console.log(self.otusQuestion.menuComponent);
 
       self.forceAnswer = self.otusQuestion.menuComponent.otusQuestion.filling.forceAnswer;
     };
@@ -3289,6 +3204,7 @@
     };
 
     function _enableForwardSuccessfulExecution(response) {
+      console.log(response);
       if (response.action !== 'cancel') {
         self.onAccept({
           value: true
@@ -3300,6 +3216,7 @@
     function _enableForwardUnsuccessfulExecution(error) {}
 
     function _disableForwardSuccessfulExecution(response) {
+      console.log(response);
       if (response.action !== 'cancel') {
         self.onAccept({
           value: false
@@ -3337,6 +3254,7 @@
     }
 
     function showAccept() {
+      console.log(self.error);
       return (self.error && self.forceAnswer) || (self.error && self.otusQuestion.isAccept()) || self.forceAnswer;
     }
 
@@ -5639,9 +5557,20 @@
       if (loadData && loadData !== 'END NODE') {
         CurrentItemService.setup(loadData);
         flowData.answerToEvaluate = {};
-        flowData.answerToEvaluate.data = {};
         flowData.metadataToEvaluate = {};
-        flowData.metadataToEvaluate.data = {};
+
+        CurrentItemService.getItems().forEach(item=> {
+          let templateID = item.templateID;
+          flowData.answerToEvaluate[templateID] = {};
+          flowData.answerToEvaluate[templateID].data = {};
+
+          flowData.metadataToEvaluate[templateID] = {};
+          flowData.metadataToEvaluate[templateID].data = {};
+        });
+
+        console.log('============')
+        console.log(flowData);
+
       } else {
         PlayerService.end();
       }
@@ -5684,7 +5613,16 @@
       if (loadData) {
         CurrentItemService.setup(loadData);
         flowData.answerToEvaluate = {};
-        flowData.answerToEvaluate.data = {};
+        // flowData.metadataToEvaluate = {};
+
+        CurrentItemService.getItems().forEach(item=> {
+          let templateID = item.templateID;
+          flowData.answerToEvaluate[templateID] = {};
+          flowData.answerToEvaluate[templateID].data = {};
+
+          flowData.metadataToEvaluate[templateID] = {};
+          flowData.metadataToEvaluate[templateID].data = {};
+        });
       }
     }
 
@@ -5732,7 +5670,7 @@
   }
 })();
 
-(function() {
+(function () {
   'use strict';
 
   angular
@@ -5745,7 +5683,7 @@
 
   function Service(ActivityFacadeService) {
     var self = this;
-    var _currentItem;
+    var _currentItemService;
 
     /* Public methods */
     self.beforeEffect = beforeEffect;
@@ -5754,9 +5692,9 @@
     self.getEffectResult = getEffectResult;
 
     function beforeEffect(pipe, flowData) {
-      _currentItem = ActivityFacadeService.getCurrentItem();
+      _currentItemService = ActivityFacadeService.getCurrentItem();
 
-      if (!_currentItem.shouldApplyAnswer()) {
+      if (!_currentItemService.shouldApplyAnswer()) {
         pipe.skipStep = true;
       } else {
         pipe.skipStep = false;
@@ -5766,23 +5704,27 @@
     }
 
     function effect(pipe, flowData) {
+      let fillingContainer = _currentItemService.getFillingContainer();
+
       ActivityFacadeService.applyAnswer();
-      flowData.answerToEvaluate.data = _ensureTestableValue(_currentItem.getFilling().answer);
-      flowData.metadataToEvaluate.data = _ensureTestableValue(_currentItem.getFilling().metadata);
+
+      Object.keys(fillingContainer).forEach(templateID => {
+        flowData.answerToEvaluate[templateID].data = _ensureTestableValue(fillingContainer[templateID].answer);
+        flowData.metadataToEvaluate[templateID].data = _ensureTestableValue(fillingContainer[templateID].metadata);
+      });
+
+      console.log(flowData);
     }
 
-    function afterEffect(pipe, flowData) { }
+    function afterEffect(pipe, flowData) {
+    }
 
     function getEffectResult(pipe, flowData) {
       return flowData;
     }
 
     function _isTestableValue(value) {
-      if (value !== null && value !== undefined ) {
-        return true;
-      } else {
-        return false;
-      }
+      return value !== null && value !== undefined;
     }
 
     function _ensureTestableValue(filling) {
@@ -5843,7 +5785,7 @@
 
   function Service(ActivityFacadeService) {
     var self = this;
-    var _currentItem;
+    var _currentItemService;
 
     /* Public methods */
     self.beforeEffect = beforeEffect;
@@ -5852,9 +5794,9 @@
     self.getEffectResult = getEffectResult;
 
     function beforeEffect(pipe, flowData) {
-      _currentItem = ActivityFacadeService.getCurrentItem();
+      _currentItemService = ActivityFacadeService.getCurrentItem();
 
-      if (_currentItem.shouldIgnoreResponseEvaluation()) {
+      if (_currentItemService.shouldIgnoreResponseEvaluation()) {
         pipe.skipStep = true;
       } else {
         pipe.skipStep = false;
@@ -5862,10 +5804,13 @@
     }
 
     function effect(pipe, flowData) {
+      console.log('handle');
+      console.log(flowData);
       ActivityFacadeService.attachItemValidationError(flowData.validationResult);
     }
 
     function afterEffect(pipe, flowData) {
+      console.log(flowData);
       if (flowData.validationResult.hasError) {
         pipe.isFlowing = false;
       }
@@ -5891,7 +5836,7 @@
 
   function Service(ActivityFacadeService) {
     var self = this;
-    var _currentItem;
+    var _currentItemService;
     var _validationResult = {};
 
     /* Public methods */
@@ -5901,9 +5846,10 @@
     self.getEffectResult = getEffectResult;
 
     function beforeEffect(pipe, flowData) {
-      _currentItem = ActivityFacadeService.getCurrentItem();
+      console.log(flowData);
+      _currentItemService = ActivityFacadeService.getCurrentItem();
 
-      if (_currentItem.shouldIgnoreResponseEvaluation()) {
+      if (_currentItemService.shouldIgnoreResponseEvaluation()) {
         pipe.skipStep = true;
       } else {
         pipe.skipStep = false;
@@ -5911,20 +5857,21 @@
     }
 
     function effect(pipe, flowData) {
-      var mandatoryResults = [];
-      var otherResults = [];
       flowData.validationResult = {};
-      _currentItem.getItems().forEach(function (surveyItem) {
+      _currentItemService.getItems().forEach(function (surveyItem) {
+        let templateID = surveyItem.templateID;
+
         if (surveyItem.isQuestion()) {
-          flowData.validationResponse.validatorsResponse.map(function(validator) {
+          flowData.validationResult[templateID] = {};
+          flowData.validationResponse[templateID].validatorsResponse.forEach(function(validator) {
             if (validator.name === 'mandatory' || validator.data.reference) {
-              flowData.validationResult[validator.name] = !validator.result && (angular.equals(flowData.metadataToEvaluate.data, {}));
+              flowData.validationResult[templateID][validator.name] = !validator.result && (angular.equals(flowData.metadataToEvaluate.data, {}));
             } else {
-              flowData.validationResult[validator.name] = !validator.result;
+              flowData.validationResult[templateID][validator.name] = !validator.result;
             }
           });
         }
-        flowData.validationResult.hasError = _hasError(flowData);
+        flowData.validationResult[templateID].hasError = _hasError(flowData, templateID);
       });
     }
 
@@ -5934,9 +5881,9 @@
       return flowData;
     }
 
-    function _hasError(flowData) {
-      return Object.keys(flowData.validationResult).some(function(validator) {
-        return flowData.validationResult[validator];
+    function _hasError(flowData, templateID) {
+      return Object.keys(flowData.validationResult[templateID]).some(function(validator) {
+        return flowData.validationResult[templateID][validator];
       });
     }
   }
@@ -5956,7 +5903,7 @@
 
   function Service(ActivityFacadeService, ItemFillingValidatorService) {
     var self = this;
-    var _currentItem;
+    var _currentItemService;
 
     /* Public methods */
     self.beforeEffect = beforeEffect;
@@ -5965,9 +5912,9 @@
     self.getEffectResult = getEffectResult;
 
     function beforeEffect(pipe, flowData) {
-      _currentItem = ActivityFacadeService.getCurrentItem();
+      _currentItemService = ActivityFacadeService.getCurrentItem();
 
-      if (_currentItem.shouldIgnoreResponseEvaluation()) {
+      if (_currentItemService.shouldIgnoreResponseEvaluation()) {
         pipe.skipStep = true;
       } else {
         pipe.skipStep = false;
@@ -5975,8 +5922,10 @@
     }
 
     function effect(pipe, flowData) {
-      ItemFillingValidatorService.applyValidation(_currentItem, function(validationResponse) {
-        flowData.validationResponse = validationResponse[0];
+      flowData.validationResponse = {};
+      ItemFillingValidatorService.applyValidation(_currentItemService, function(validationResponse) {
+        let response = validationResponse[0];
+        flowData.validationResponse[response.elementID] = response;
       });
     }
 
@@ -5985,14 +5934,10 @@
     function getEffectResult(pipe, flowData) {
       return flowData;
     }
-
-    function _parseBool(value) {
-      return (value === 'true');
-    }
   }
 })();
 
-(function() {
+(function () {
   'use strict';
 
   angular
@@ -6006,7 +5951,7 @@
 
   function Service(ActivityFacadeService, ItemFillingValidatorService) {
     var self = this;
-    var _currentItem;
+    var _currentItemService;
 
     /* Public methods */
     self.beforeEffect = beforeEffect;
@@ -6015,9 +5960,9 @@
     self.getEffectResult = getEffectResult;
 
     function beforeEffect(pipe, flowData) {
-      _currentItem = ActivityFacadeService.getCurrentItem();
+      _currentItemService = ActivityFacadeService.getCurrentItem();
 
-      if (_currentItem.shouldIgnoreResponseEvaluation()) {
+      if (_currentItemService.shouldIgnoreResponseEvaluation()) {
         pipe.skipStep = true;
       } else {
         pipe.skipStep = false;
@@ -6025,10 +5970,11 @@
     }
 
     function effect(pipe, flowData) {
-      ItemFillingValidatorService.setupValidation(_currentItem, flowData.answerToEvaluate);
+      ItemFillingValidatorService.setupValidation(_currentItemService, flowData.answerToEvaluate);
     }
 
-    function afterEffect(pipe, flowData) { }
+    function afterEffect(pipe, flowData) {
+    }
 
     function getEffectResult(pipe, flowData) {
       return flowData;
@@ -6115,10 +6061,6 @@
       return CurrentSurveyService.getGroupItemsByMemberID(id);
     }
 
-    // function getItemGroup(id) {
-    //   return CurrentSurveyService.getGroupItemsByMemberID(id);
-    // }
-
     function fetchNavigationByOrigin(id) {
       return CurrentSurveyService.getNavigationByOrigin(id);
     }
@@ -6175,11 +6117,11 @@
 
   function Service(ActivityFacadeService) {
     var self = this;
-    var _surveyGroupItem = null;
-    var _filling = {};
+    var _surveyItemGroup = [];
+    var _fillingContainer = {};
     var _navigation = null;
     var _validationError = null;
-    var _observer = null;
+    var _observerArray = [];
 
     /* Public Interface */
     self.applyFilling = applyFilling;
@@ -6187,8 +6129,10 @@
     self.clearData = clearData;
     self.fill = fill;
     self.getFilling = getFilling;
+    self.getFillingContainer = getFillingContainer;
     self.getFillingRules = getFillingRules;
     self.getItems = getItems;
+    self.getItemsByTemplateID = getItemsByTemplateID;
     self.getNavigation = getNavigation;
     self.getValidationError = getValidationError;
     self.hasItems = hasItems;
@@ -6198,41 +6142,48 @@
     self.setup = setup;
 
     function applyFilling() {
-      if (_filling) {
-        ActivityFacadeService.fillQuestion(_filling);
-      }
+      Object.values(_fillingContainer).forEach(filling => {
+        if (filling) {
+          ActivityFacadeService.fillQuestion(filling);
+        }
+      });
     }
 
     function attachValidationError(validationError) {
+      console.log('ASDAS')
       _validationError = validationError;
-      _observer.updateValidation(validationError);
+      _observerArray.forEach(observer=>{
+        observer.updateValidation(validationError[observer.itemData.templateID]);
+      })
     }
 
     function clearData() {
-      _surveyGroupItem = null;
-      _filling = {};
+      _surveyItemGroup = [];
+      _fillingContainer = {};
       _navigation = null;
       _validationError = null;
-      _observer = null;
+      _observerArray = [];
     }
 
     function fill(filling) {
-      console.log(filling);
-      _surveyGroupItem.forEach(function (surveyItem) {
+      _surveyItemGroup.forEach(function (surveyItem) {
         if (surveyItem.isQuestion()) {
-          console.log(surveyItem);
-          _filling[filling.questionID] = filling;
+          _fillingContainer[filling.questionID] = filling;
         }
       });
     }
 
     function getFilling(questionID) {
-      return _filling[questionID];
+      return _fillingContainer[questionID];
+    }
+
+    function getFillingContainer() {
+      return _fillingContainer;
     }
 
     function getFillingRules(templateID) {
       var options = null;
-      _surveyGroupItem.forEach(function (surveyItem) {
+      _surveyItemGroup.forEach(function (surveyItem) {
         if(surveyItem.templateID === templateID){
           options = surveyItem.fillingRules.options;
         }
@@ -6242,8 +6193,10 @@
     }
 
     function getItems() {
-      console.log(_surveyGroupItem);
-      return _surveyGroupItem;
+      return _surveyItemGroup;
+    }
+    function getItemsByTemplateID(templateID) {
+      return _surveyItemGroup.find(item => {return item.templateID === templateID});
     }
 
     function getNavigation() {
@@ -6255,7 +6208,7 @@
     }
 
     function hasItems() {
-      if (_surveyGroupItem) {
+      if (_surveyItemGroup && _surveyItemGroup.length) {
           return true;
         } else {
           return false;
@@ -6263,56 +6216,44 @@
     }
 
     function shouldApplyAnswer() {
-      _surveyGroupItem.forEach(function (surveyItem) {
-        return surveyItem || surveyItem.isQuestion();
+      return _surveyItemGroup.some(function (surveyItem) {
+        return surveyItem && surveyItem.isQuestion();
       });
     }
 
     function shouldIgnoreResponseEvaluation() {
-      _surveyGroupItem.forEach(function (surveyItem) {
+      return _surveyItemGroup.every(function (surveyItem) {
         return !surveyItem || !surveyItem.isQuestion();
       });
     }
 
     function observerRegistry(observer) {
-      _observer = observer;
-      _observer.pushData(_filling);
+      observer.pushData(_fillingContainer[observer.itemData.templateID]);
+      _observerArray.push(observer);
+      console.log(_observerArray)
     }
 
     function setup(data) {
-      console.log('=================')
-      console.log(data)
       clearData();
-      _surveyGroupItem = data.items;
+      _surveyItemGroup = data.items;
       _navigation = data.navigation;
+      // console.log(_navigation);
 
-      console.log(_surveyGroupItem);
-      _surveyGroupItem.forEach(function (surveyItem) {
+      _surveyItemGroup.forEach(function (surveyItem) {
         let filling;
-        console.log(surveyItem);
         if (surveyItem.isQuestion()) {
           filling = ActivityFacadeService.getFillingByQuestionID(surveyItem.templateID);
-          // filling = {
-          //   answer: {value: "dfgdfgfdg", objectType: "AnswerFill", type: "TextQuestion"},
-          //   comment: "",
-          //   forceAnswer: false,
-          //   metadata: {objectType: "MetadataFill", value: null},
-          //   objectType: "QuestionFill",
-          //   questionID: "ACTA1"
-          // };
-          console.log(filling);
           if (!filling) {
             filling = ActivityFacadeService.createQuestionFill(surveyItem);
             filling.answerType = surveyItem.objectType;
-            console.log(filling);
           }
         } else {
           filling = null;
         }
 
-        _filling[surveyItem.templateID] = filling;
-        console.log(_filling);
+        _fillingContainer[surveyItem.templateID] = filling;
       });
+      return _surveyItemGroup;
     }
   }
 }());
@@ -6599,10 +6540,7 @@
       if (!id) {
         //todo
         let firstItem = ActivityFacadeService.getCurrentSurvey().getItems()[0];
-        console.log(firstItem);
         itemsToLoad = ActivityFacadeService.fetchItemGroupByID(firstItem.templateID);
-        console.log(itemsToLoad);
-        // itemsToLoad = ActivityFacadeService.getCurrentSurvey().getSurveyItemGroup()[0];
         navigation = ActivityFacadeService.getCurrentSurvey().getNavigations()[2];
       } else {
         console.log("passou pelo navegation else");
@@ -7040,7 +6978,7 @@
 
 }());
 
-(function() {
+(function () {
   'use strict';
 
   angular
@@ -7054,56 +6992,58 @@
 
   function Service(ElementRegisterFactory, ValidationService) {
     var self = this;
-    var _elementRegister;
-    var _answer = {};
+    var _elementRegisters = {};
+    var _answers = [];
 
     /* Public methods */
     self.applyValidation = applyValidation;
     self.setupValidation = setupValidation;
 
     function applyValidation(currentItemService, callback) {
-      ValidationService.unregisterElement(_elementRegister.id);
-      setupValidation(currentItemService, _answer);
-      currentItemService.getItems().forEach(function (surveyItem) {
-        ValidationService.validateElement(surveyItem.customID, callback);
+      // ValidationService.unregisterElement(_elementRegisters.id);
+      // setupValidation(currentItemService, _answers);
+      Object.keys(_answers).forEach(templateID => {
+        ValidationService.validateElement(templateID, callback);
       });
     }
 
-    function setupValidation(currentItemService, answer) {
-      _answer = answer;
-      console.log(_answer);
-      _elementRegister = null;
+    function setupValidation(currentItemService, answerObject) {
+      _answers = answerObject;
 
       currentItemService.getItems().forEach(function (surveyItem) {
-        _elementRegister = ElementRegisterFactory.create(surveyItem.customID, answer);
-        if (currentItemService.getFilling(surveyItem.templateID).forceAnswer) {
-          console.log("Passou pelo if");
-          Object.keys(surveyItem.fillingRules.options).filter(function(validator) {
+        let templateID = surveyItem.templateID;
+        let answer = answerObject[templateID];
+
+        let elementRegister = ElementRegisterFactory.create(templateID, answer);
+
+        if (currentItemService.getFilling(templateID).forceAnswer) {
+          Object.keys(surveyItem.fillingRules.options).filter(function (validator) {
             if (!surveyItem.fillingRules.options[validator].data.canBeIgnored) {
-              _addValidator(validator, surveyItem);
+              _addValidator(elementRegister, validator, surveyItem);
             }
           });
         } else {
-          console.log("Passou pelo else");
-          Object.keys(surveyItem.fillingRules.options).map(function(validator) {
-            _addValidator(validator, surveyItem);
+          Object.keys(surveyItem.fillingRules.options).map(function (validator) {
+            _addValidator(elementRegister, validator, surveyItem);
           });
-          _setupImmutableDateValidation(surveyItem);
+          _setupImmutableDateValidation(elementRegister, surveyItem);
         }
-        ValidationService.unregisterElement(_elementRegister.id);
-        ValidationService.registerElement(_elementRegister);
+        _elementRegisters[templateID] = elementRegister;
+
+        ValidationService.unregisterElement(elementRegister.id);
+        ValidationService.registerElement(elementRegister);
       });
     }
 
-    function _addValidator(validator, surveyItem) {
+    function _addValidator(elementRegister, validator, surveyItem) {
       var reference = surveyItem.fillingRules.options[validator].data;
-      _elementRegister.addValidator(validator, reference);
+      elementRegister.addValidator(validator, reference);
     }
 
-    function _setupImmutableDateValidation(surveyItem) {
+    function _setupImmutableDateValidation(elementRegister, surveyItem) {
       var currentItemItemType = surveyItem.objectType;
-      if(currentItemItemType === "TimeQuestion" || currentItemItemType === "CalendarQuestion") {
-        _elementRegister.addValidator("ImmutableDate", surveyItem);
+      if (currentItemItemType === "TimeQuestion" || currentItemItemType === "CalendarQuestion") {
+        elementRegister.addValidator("ImmutableDate", surveyItem);
       }
     }
   }
