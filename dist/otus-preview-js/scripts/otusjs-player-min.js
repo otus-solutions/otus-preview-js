@@ -190,7 +190,6 @@
   ];
 
   function Controller(PlayerService) {
-    var SURVEY_ITEM = '<otus-survey-item item-data="itemData" />';
     var self = this;
 
     /* Public methods */
@@ -890,6 +889,7 @@
     var self = this;
 
     var SURVEY_ITEM = '<otus-survey-item item-data="itemData" id="{{itemData.templateID}}" style="margin: 0;display:block;" class="animate-switch"/>';
+    // var SURVEY_ITEM_GROUP = '<otus-survey-item-group item-data="itemData" style="margin: 0;display:block;" class="animate-switch"/>';
     var SURVEY_COVER = '<otus-cover />';
 
     /* Public methods */
@@ -898,8 +898,6 @@
     self.remove = remove;
     self.$onInit = onInit;
     self.ids = [];
-
-    $scope.removeQuestion = removeQuestion;
 
     function _destroyCurrentItem() {
       if (self.currentItem) {
@@ -913,29 +911,32 @@
       if (_shouldLoadItem(itemsData[0])) {
         _destroyCurrentItem();
         _saveQuestion();
-        removeQuestion(itemsData.templateID);
+        removeQuestion(itemsData[0].templateID);
 
         $element.find('#pagePlayer').empty();
         for (let i = 0; i < itemsData.length; i++) {
           (function () {
-            let scope = $scope.$new();
-            scope.itemData = itemsData[i];
+            $scope = $scope.$new();
+            $scope.itemData = itemsData[i];
             _setQuestionId(itemsData[0].templateID);
-            let element = $compile(SURVEY_ITEM)(scope);
+            let element = $compile(SURVEY_ITEM)($scope);
             $element.find('#pagePlayer').append(element);
+            _onGoBottom(itemsData[i].templateID);
           }())
         }
-        _onGoBottom(itemsData.templateID);
+
       }
 
       if (PlayerService.isGoingBack()) {
-        if (PlayerService.getGoBackTo() !== itemsData.templateID) {
+        if (PlayerService.getGoBackTo() !== itemsData[0].templateID) {
           self.goBack();
         } else {
           PlayerService.setGoBackTo(null);
         }
       }
     }
+
+    $scope.removeQuestion = removeQuestion;
 
     function removeQuestion(id) {
       var index = _getIndexQuestionId(id);
@@ -1002,7 +1003,7 @@
     }
 
     function _shouldLoadItem(itemData) {
-      console.log(itemData);
+      console.log(itemData)
       return $scope.itemData && $scope.itemData.customID !== itemData.customID;
     }
   }
@@ -1367,7 +1368,7 @@
     }
 
     function setError(error) {
-      console.log(error);
+      // console.log(error);
       if (self.filling.forceAnswer) {
         self.menuComponent.error = true;
       } else if (self.itemData.isQuestion() && error) {
@@ -2327,7 +2328,7 @@
       self.otusQuestion.answer = self;
 
       _uploadInterface = FileUploadService.getUploadInterface();
-      _questionID = CurrentItemService.getItems().templateID;
+      _questionID = CurrentItemService.getItemsByTemplateID(self.itemData.templateID);
       _deleteDialog = _createDeleteDialog();
       _pendingArrayControl = 0;
       self.pendingCounter = 0;
@@ -3073,14 +3074,16 @@
 
   function otusValidationErrorController(CurrentItemService, $filter, $element) {
     var self = this;
+    var templateID = null;
 
     self.$onInit = function() {
       self.otusSurveyItem.errorComponent = self;
-      console.log(self.otusSurveyItem.errorComponent);
+      templateID = self.otusSurveyItem.errorComponent.otusSurveyItem.itemData.templateID;
+      // console.log(self.otusSurveyItem.errorComponent);
     };
 
     self.referenceAsDate = function(type) {
-      var reference = CurrentItemService.getFillingRules(self.otusSurveyItem.itemData.templateID)[type].data.reference;
+      var reference = CurrentItemService.getFillingRules(templateID)[type].data.reference;
       var date;
       console.log(reference );
       if (type === 'rangeDate') {
@@ -3095,13 +3098,13 @@
     };
 
     self.referenceAsTime = function(type) {
-      var reference = CurrentItemService.getFillingRules(self.otusSurveyItem.itemData.templateID)[type].data.reference.value;
+      var reference = CurrentItemService.getFillingRules(templateID)[type].data.reference.value;
       console.log(reference );
       return $filter('date')(new Date(reference), 'hh:mm a');
     };
 
     self.reference = function(type) {
-      var reference = CurrentItemService.getFillingRules(self.otusSurveyItem.itemData.templateID)[type].data.reference;
+      var reference = CurrentItemService.getFillingRules(templateID)[type].data.reference;
       console.log(reference );
       return reference;
     };
@@ -3237,7 +3240,6 @@
     }
 
     function showAccept() {
-      console.log(self.error);
       return (self.error && self.forceAnswer) || (self.error && self.otusQuestion.isAccept()) || self.forceAnswer;
     }
 
@@ -5550,10 +5552,6 @@
           flowData.metadataToEvaluate[templateID] = {};
           flowData.metadataToEvaluate[templateID].data = {};
         });
-
-        console.log('============')
-        console.log(flowData);
-
       } else {
         PlayerService.end();
       }
@@ -5596,7 +5594,7 @@
       if (loadData) {
         CurrentItemService.setup(loadData);
         flowData.answerToEvaluate = {};
-        // flowData.metadataToEvaluate = {};
+        flowData.metadataToEvaluate = {};
 
         CurrentItemService.getItems().forEach(item=> {
           let templateID = item.templateID;
@@ -5630,7 +5628,7 @@
     'otusjs.player.core.player.PlayerService',
   ];
 
-  function Service(NavigationService, CurrentItemService, PlayerService) {
+  function Service(NavigationService) {
     var self = this;
 
     /* Public methods */
@@ -5642,6 +5640,7 @@
     function beforeEffect(pipe, flowData) {}
 
     function effect(pipe, flowData) {
+      console.log("UpdateItem"+flowData);
       NavigationService.updateItemTracking();
     }
 
@@ -6137,9 +6136,8 @@
     }
 
     function attachValidationError(validationError) {
-      console.log('ASDAS')
       _validationError = validationError;
-      _observerArray.forEach(observer=>{
+      _observerArray.forEach(observer => {
         observer.updateValidation(validationError[observer.itemData.templateID]);
       })
     }
@@ -6153,9 +6151,11 @@
     }
 
     function fill(filling) {
-      _surveyItemGroup.forEach(function (surveyItem) {
-        if (surveyItem.isQuestion()) {
-          _fillingContainer[filling.questionID] = filling;
+      _surveyItemGroup.find(item => {
+        if(item.templateID === filling.questionID){
+          if (item.isQuestion()) {
+            _fillingContainer[filling.questionID] = filling;
+          }
         }
       });
     }
@@ -6169,17 +6169,8 @@
     }
 
     function getFillingRules(templateID) {
-      // var options = null;
-      // _surveyItemGroup.forEach(function (surveyItem) {
-      //   if(surveyItem.templateID === templateID){
-      //     options = surveyItem.fillingRules.options;
-      //   }
-      // });
-      //
-      // return options;
-
       return _surveyItemGroup.find(item => {
-         if(item.templateID === templateID){
+        if(item.templateID === templateID){
           return item.fillingRules.options;
         }
       });
@@ -6189,7 +6180,9 @@
       return _surveyItemGroup;
     }
     function getItemsByTemplateID(templateID) {
-      return _surveyItemGroup.find(item => {return item.templateID === templateID});
+      return _surveyItemGroup.find(item => {
+        return item.templateID === templateID
+      });
     }
 
     function getNavigation() {
@@ -6202,10 +6195,10 @@
 
     function hasItems() {
       if (_surveyItemGroup && _surveyItemGroup.length) {
-          return true;
-        } else {
-          return false;
-        }
+        return true;
+      } else {
+        return false;
+      }
     }
 
     function shouldApplyAnswer() {
@@ -6230,7 +6223,7 @@
       clearData();
       _surveyItemGroup = data.items;
       _navigation = data.navigation;
-      // console.log(_navigation);
+      console.log(_navigation);
 
       _surveyItemGroup.forEach(function (surveyItem) {
         let filling;
@@ -6441,14 +6434,14 @@
 
     function getNextItems() {
       return ActivityFacadeService.getCurrentItem().getNavigation().listRoutes().map(function (route) {
-        return ActivityFacadeService.getCurrentSurvey().getItemByTemplateID(route.destination);
+        return ActivityFacadeService.getCurrentSurvey().getItemByTemplateID("ACTA4");
       });
     }
 
     function getPreviousItem() {
       if (hasPrevious()) {
         var previousID = _navigationTracker.getCurrentItem().getPrevious();
-        return ActivityFacadeService.getCurrentSurvey().getItemByTemplateID(previousID);
+        return ActivityFacadeService.getCurrentSurvey().getItemByTemplateID("ACTA1");
       } else {
         return null;
       }
@@ -6513,6 +6506,7 @@
     }
 
     function _loadLastVisitedItem() {
+      console.log(_navigationTracker.getCurrentItem().getID());
       return _loadItem(_navigationTracker.getCurrentItem().getID());
     }
 

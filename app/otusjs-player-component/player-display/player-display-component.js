@@ -26,6 +26,7 @@
     var self = this;
 
     var SURVEY_ITEM = '<otus-survey-item item-data="itemData" id="{{itemData.templateID}}" style="margin: 0;display:block;" class="animate-switch"/>';
+    // var SURVEY_ITEM_GROUP = '<otus-survey-item-group item-data="itemData" style="margin: 0;display:block;" class="animate-switch"/>';
     var SURVEY_COVER = '<otus-cover />';
 
     /* Public methods */
@@ -46,26 +47,30 @@
     function loadItem(itemsData) {
       console.log(itemsData);
 
+      itemsData.forEach(function () {
+
+      });
       if (_shouldLoadItem(itemsData[0])) {
         _destroyCurrentItem();
         _saveQuestion();
-        removeQuestion(itemsData.templateID);
+        removeQuestion(itemsData[0].templateID);
 
         $element.find('#pagePlayer').empty();
         for (let i = 0; i < itemsData.length; i++) {
           (function () {
-            let scope = $scope.$new();
-            scope.itemData = itemsData[i];
+            // $scope = $scope.$new();
+            $scope.itemData = itemsData[i];
             _setQuestionId(itemsData[0].templateID);
-            let element = $compile(SURVEY_ITEM)(scope);
+            let element = $compile(SURVEY_ITEM)($scope);
             $element.find('#pagePlayer').append(element);
+            _onGoBottom(itemsData[i].templateID);
           }())
         }
-        _onGoBottom(itemsData.templateID);
+
       }
 
       if (PlayerService.isGoingBack()) {
-        if (PlayerService.getGoBackTo() !== itemsData.templateID) {
+        if (PlayerService.getGoBackTo() !== itemsData[0].templateID) {
           self.goBack();
         } else {
           PlayerService.setGoBackTo(null);
@@ -138,7 +143,7 @@
     }
 
     function _shouldLoadItem(itemData) {
-      console.log(itemData);
+      console.log(itemData)
       return $scope.itemData && $scope.itemData.customID !== itemData.customID;
     }
   }

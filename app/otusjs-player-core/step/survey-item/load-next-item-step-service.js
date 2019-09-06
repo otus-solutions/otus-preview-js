@@ -38,10 +38,6 @@
           flowData.metadataToEvaluate[templateID] = {};
           flowData.metadataToEvaluate[templateID].data = {};
         });
-
-        console.log('============')
-        console.log(flowData);
-
       } else {
         PlayerService.end();
       }

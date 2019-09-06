@@ -22,14 +22,16 @@
 
   function otusValidationErrorController(CurrentItemService, $filter, $element) {
     var self = this;
+    var templateID = null;
 
     self.$onInit = function() {
       self.otusSurveyItem.errorComponent = self;
-      console.log(self.otusSurveyItem.errorComponent);
+      templateID = self.otusSurveyItem.errorComponent.otusSurveyItem.itemData.templateID;
+      // console.log(self.otusSurveyItem.errorComponent);
     };
 
     self.referenceAsDate = function(type) {
-      var reference = CurrentItemService.getFillingRules(self.otusSurveyItem.itemData.templateID)[type].data.reference;
+      var reference = CurrentItemService.getFillingRules(templateID)[type].data.reference;
       var date;
       console.log(reference );
       if (type === 'rangeDate') {
@@ -44,13 +46,13 @@
     };
 
     self.referenceAsTime = function(type) {
-      var reference = CurrentItemService.getFillingRules(self.otusSurveyItem.itemData.templateID)[type].data.reference.value;
+      var reference = CurrentItemService.getFillingRules(templateID)[type].data.reference.value;
       console.log(reference );
       return $filter('date')(new Date(reference), 'hh:mm a');
     };
 
     self.reference = function(type) {
-      var reference = CurrentItemService.getFillingRules(self.otusSurveyItem.itemData.templateID)[type].data.reference;
+      var reference = CurrentItemService.getFillingRules(templateID)[type].data.reference;
       console.log(reference );
       return reference;
     };

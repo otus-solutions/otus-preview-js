@@ -123,7 +123,6 @@
     }
 
     function showAccept() {
-      console.log(self.error);
       return (self.error && self.forceAnswer) || (self.error && self.otusQuestion.isAccept()) || self.forceAnswer;
     }
 

@@ -27,14 +27,14 @@
 
     function getNextItems() {
       return ActivityFacadeService.getCurrentItem().getNavigation().listRoutes().map(function (route) {
-        return ActivityFacadeService.getCurrentSurvey().getItemByTemplateID(route.destination);
+        return ActivityFacadeService.getCurrentSurvey().getItemByTemplateID("ACTA4");
       });
     }
 
     function getPreviousItem() {
       if (hasPrevious()) {
         var previousID = _navigationTracker.getCurrentItem().getPrevious();
-        return ActivityFacadeService.getCurrentSurvey().getItemByTemplateID(previousID);
+        return ActivityFacadeService.getCurrentSurvey().getItemByTemplateID("ACTA1");
       } else {
         return null;
       }
@@ -99,6 +99,7 @@
     }
 
     function _loadLastVisitedItem() {
+      console.log(_navigationTracker.getCurrentItem().getID());
       return _loadItem(_navigationTracker.getCurrentItem().getID());
     }
 

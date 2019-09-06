@@ -27,7 +27,7 @@
       if (loadData) {
         CurrentItemService.setup(loadData);
         flowData.answerToEvaluate = {};
-        // flowData.metadataToEvaluate = {};
+        flowData.metadataToEvaluate = {};
 
         CurrentItemService.getItems().forEach(item=> {
           let templateID = item.templateID;

@@ -44,9 +44,8 @@
     }
 
     function attachValidationError(validationError) {
-      console.log('ASDAS')
       _validationError = validationError;
-      _observerArray.forEach(observer=>{
+      _observerArray.forEach(observer => {
         observer.updateValidation(validationError[observer.itemData.templateID]);
       })
     }
@@ -60,9 +59,11 @@
     }
 
     function fill(filling) {
-      _surveyItemGroup.forEach(function (surveyItem) {
-        if (surveyItem.isQuestion()) {
-          _fillingContainer[filling.questionID] = filling;
+      _surveyItemGroup.find(item => {
+        if(item.templateID === filling.questionID){
+          if (item.isQuestion()) {
+            _fillingContainer[filling.questionID] = filling;
+          }
         }
       });
     }
@@ -76,17 +77,8 @@
     }
 
     function getFillingRules(templateID) {
-      // var options = null;
-      // _surveyItemGroup.forEach(function (surveyItem) {
-      //   if(surveyItem.templateID === templateID){
-      //     options = surveyItem.fillingRules.options;
-      //   }
-      // });
-      //
-      // return options;
-
       return _surveyItemGroup.find(item => {
-         if(item.templateID === templateID){
+        if(item.templateID === templateID){
           return item.fillingRules.options;
         }
       });
@@ -96,7 +88,9 @@
       return _surveyItemGroup;
     }
     function getItemsByTemplateID(templateID) {
-      return _surveyItemGroup.find(item => {return item.templateID === templateID});
+      return _surveyItemGroup.find(item => {
+        return item.templateID === templateID
+      });
     }
 
     function getNavigation() {
@@ -109,10 +103,10 @@
 
     function hasItems() {
       if (_surveyItemGroup && _surveyItemGroup.length) {
-          return true;
-        } else {
-          return false;
-        }
+        return true;
+      } else {
+        return false;
+      }
     }
 
     function shouldApplyAnswer() {
@@ -137,7 +131,7 @@
       clearData();
       _surveyItemGroup = data.items;
       _navigation = data.navigation;
-      // console.log(_navigation);
+      console.log(_navigation);
 
       _surveyItemGroup.forEach(function (surveyItem) {
         let filling;

@@ -58,7 +58,7 @@
       self.otusQuestion.answer = self;
 
       _uploadInterface = FileUploadService.getUploadInterface();
-      _questionID = CurrentItemService.getItems().templateID;
+      _questionID = CurrentItemService.getItemsByTemplateID(self.itemData.templateID);
       _deleteDialog = _createDeleteDialog();
       _pendingArrayControl = 0;
       self.pendingCounter = 0;
