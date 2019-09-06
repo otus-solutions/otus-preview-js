@@ -58,7 +58,6 @@
 
     self.update = function() {
       self.onUpdate({
-        questionID: self.itemData.templateID,
         valueType: 'answer',
         value: (self.answer.date instanceof Date) ? self.answer : null
       });

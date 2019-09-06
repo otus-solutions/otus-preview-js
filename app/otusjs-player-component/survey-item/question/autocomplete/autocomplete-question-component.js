@@ -44,7 +44,6 @@
         _answerUpdate = self.answer.value;
      }
       self.onUpdate({
-        questionID: self.itemData.templateID,
         valueType: 'answer',
         value: _answerUpdate
     });

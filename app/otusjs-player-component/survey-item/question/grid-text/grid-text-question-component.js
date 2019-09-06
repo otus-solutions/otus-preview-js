@@ -39,14 +39,12 @@
       if (!_checkIfAnswered()) {
         clear();
         self.onUpdate({
-          questionID: self.itemData.templateID,
           valueType: 'answer',
           value: null
         });
       } else {
         assignNullsToEmptyValues();
         self.onUpdate({
-          questionID: self.itemData.templateID,
           valueType: 'answer',
           value: self.answerArray
         });

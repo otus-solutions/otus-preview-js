@@ -35,7 +35,6 @@
 
     function update() {
       self.onUpdate({
-        questionID: self.itemData.templateID,
         valueType: 'answer',
         value: self.answer
       });

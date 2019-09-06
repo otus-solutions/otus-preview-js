@@ -69,7 +69,6 @@
 
     self.update = function() {
       self.onUpdate({
-        questionID: self.itemData.templateID,
         valueType: 'comment',
         value: self.comment
       });
@@ -160,7 +159,6 @@
 
     function update() {
       self.onUpdate({
-        questionID: self.itemData.templateID,
         valueType: 'metadata',
         value: self.metadata
       });
@@ -1188,7 +1186,7 @@
   angular
     .module('otusjs.player.component')
     .component('otusSurveyItem', {
-      template:'<md-card flex><md-card-title layout="row" ng-if="!$ctrl.isItem()"><md-card-title-text layout="column" flex><div layout="row"><otus-label class="md-headline" item-label="$ctrl.itemData.label.ptBR.formattedText" flex layout-padding></otus-label></div></md-card-title-text></md-card-title><md-card-content layout="row" layout-align="space-between" flex><otus-question ng-if="$ctrl.isQuestion()" on-update="$ctrl.update(questionID, valueType, value)" item-data="$ctrl.itemData" layout="column" flex></otus-question><otus-misc-item ng-if="$ctrl.isItem()" item-data="$ctrl.itemData" layout="column" flex></otus-misc-item></md-card-content><otus-validation-error error="$ctrl.$error" layout="row"></otus-validation-error></md-card>',
+      template:'<md-card flex><md-card-title layout="row" ng-if="!$ctrl.isItem()"><md-card-title-text layout="column" flex><div layout="row"><otus-label class="md-headline" item-label="$ctrl.itemData.label.ptBR.formattedText" flex layout-padding></otus-label></div></md-card-title-text></md-card-title><md-card-content layout="row" layout-align="space-between" flex><otus-question ng-if="$ctrl.isQuestion()" on-update="$ctrl.update(valueType, value)" item-data="$ctrl.itemData" layout="column" flex></otus-question><otus-misc-item ng-if="$ctrl.isItem()" item-data="$ctrl.itemData" layout="column" flex></otus-misc-item></md-card-content><otus-validation-error error="$ctrl.$error" layout="row"></otus-validation-error></md-card>',
       controller: OtusSurveyItemController,
       bindings: {
         itemData: '<'
@@ -1244,18 +1242,18 @@
       return (self.itemData.objectType === 'ImageItem') || (self.itemData.objectType === 'TextItem') ? true : false;
     }
 
-    function update(id, prop, value) {
+    function update(prop, value) {
       if (prop) {
         if (prop === 'comment' || prop === 'forceAnswer') {
-          self.filling[id][prop] = value;
+          self.filling[prop] = value;
         } else {
           clear(prop, value);
-          self.filling[id][prop].value = value;
+          self.filling[prop].value = value;
         }
       } else {
         throw new Error('Cannot determine property type to update', 72, 'survey-item-component.js');
       }
-      CurrentItemService.fill(self.filling[id]);
+      CurrentItemService.fill(self.filling);
     }
 
     function clear(prop) {
@@ -1287,7 +1285,7 @@
   angular
     .module('otusjs.player.component')
     .component('otusQuestion', {
-      template:'<md-content layout="column"><div layout="row"><md-tabs md-dynamic-height layout="column" flex="95"><md-tab label="Resposta"><md-content class="md-padding" bind-html-compile="$ctrl.template"></md-content></md-tab><md-tab label="Metadado"><md-content class="md-padding"><metadata-group on-update="$ctrl.update(questionID, valueType, value)" item-data="$ctrl.itemData"></metadata-group></md-content></md-tab><md-tab label="Comentário"><md-content class="md-padding"><otus-comment on-update="$ctrl.update(questionID, valueType, value)" item-data="$ctrl.itemData"></otus-comment></md-content></md-tab></md-tabs><div layout="column"><otus-question-menu on-clear="$ctrl.clear(value)" on-accept="$ctrl.forceAnswer(questionID, value)"></otus-question-menu></div></div></md-content>',
+      template:'<md-content layout="column"><div layout="row"><md-tabs md-dynamic-height layout="column" flex="95"><md-tab label="Resposta"><md-content class="md-padding" bind-html-compile="$ctrl.template"></md-content></md-tab><md-tab label="Metadado"><md-content class="md-padding"><metadata-group on-update="$ctrl.update(valueType, value)" item-data="$ctrl.itemData"></metadata-group></md-content></md-tab><md-tab label="Comentário"><md-content class="md-padding"><otus-comment on-update="$ctrl.update(valueType, value)" item-data="$ctrl.itemData"></otus-comment></md-content></md-tab></md-tabs><div layout="column"><otus-question-menu on-clear="$ctrl.clear(value)" on-accept="$ctrl.forceAnswer(value)"></otus-question-menu></div></div></md-content>',
       controller: OtusQuestionController,
       bindings: {
         itemData: '<',
@@ -1330,17 +1328,15 @@
       setError();
     }
 
-    function update(questionID, prop, value) {
+    function update(prop, value) {
       self.onUpdate({
-        questionID: questionID,
         valueType: prop,
         value: value
       });
     }
 
-    function forceAnswer(questionID, value) {
+    function forceAnswer(value) {
       self.onUpdate({
-        questionID: questionID,
         valueType: 'forceAnswer',
         value: value
       });
@@ -1458,7 +1454,6 @@
 
     self.update = function() {
       self.onUpdate({
-        questionID: self.itemData.templateID,
         valueType: 'answer',
         value: (self.answer.date instanceof Date) ? self.answer : null
       });
@@ -1535,7 +1530,6 @@
 
     function update() {
       self.onUpdate({
-        questionID: self.itemData.templateID,
         valueType: 'answer',
         value: self.answer
       });
@@ -1667,7 +1661,6 @@
 
     self.update = function() {
       self.onUpdate({
-        questionID: self.itemData.templateID,
         valueType: 'answer',
         value: self.answer
       });
@@ -1746,7 +1739,6 @@
 
     function update() {
       self.onUpdate({
-        questionID: self.itemData.templateID,
         valueType: 'answer',
         value: self.answer
       });
@@ -1828,13 +1820,11 @@
     self.update = function () {
       if (!_checkIfAnyTrue()) {
         self.onUpdate({
-          questionID: self.itemData.templateID,
           valueType: 'answer',
           value: null
         });
       } else {
         self.onUpdate({
-          questionID: self.itemData.templateID,
           valueType: 'answer',
           value: self.answerArray
         });
@@ -1944,7 +1934,6 @@
       _runValidationSteps();
 
       self.onUpdate({
-        questionID: self.itemData.templateID,
         valueType: 'answer',
         value: self.answer
       });
@@ -2046,7 +2035,6 @@
 
     self.update = function() {
       self.onUpdate({
-        questionID: self.itemData.templateID,
         valueType: 'answer',
         value: self.answer
       });
@@ -2152,7 +2140,6 @@
       }
 
       self.onUpdate({
-        questionID: self.itemData.templateID,
         valueType: 'answer',
         value: _answer
       });
@@ -2241,7 +2228,6 @@
 
     function update() {
       self.onUpdate({
-        questionID: self.itemData.templateID,
         valueType: 'answer',
         value: self.answer
       });
@@ -2470,13 +2456,11 @@
     function _updateAnswer() {
       if (self.sentFiles.length) {
         self.onUpdate({
-          questionID: self.itemData.templateID,
           valueType: 'answer',
           value: self.sentFiles
         });
       } else {
         self.onUpdate({
-          questionID: self.itemData.templateID,
           valueType: 'answer',
           value: {}
         });
@@ -2620,7 +2604,6 @@
         _answerUpdate = self.answer.value;
      }
       self.onUpdate({
-        questionID: self.itemData.templateID,
         valueType: 'answer',
         value: _answerUpdate
     });
@@ -2726,14 +2709,12 @@
       if (!_checkIfAnswered()) {
         clear();
         self.onUpdate({
-          questionID: self.itemData.templateID,
           valueType: 'answer',
           value: null
         });
       } else {
         assignNullsToEmptyValues();
         self.onUpdate({
-          questionID: self.itemData.templateID,
           valueType: 'answer',
           value: self.answerArray
         });
@@ -2861,13 +2842,11 @@
       if (!_checkIfAnswered()) {
         clear();
         self.onUpdate({
-          questionID: self.itemData.templateID,
           valueType: 'answer',
           value: null
         });
       } else {
         self.onUpdate({
-          questionID: self.itemData.templateID,
           valueType: 'answer',
           value: self.answerArray
         });
@@ -3097,11 +3076,13 @@
 
     self.$onInit = function() {
       self.otusSurveyItem.errorComponent = self;
+      console.log(self.otusSurveyItem.errorComponent);
     };
 
     self.referenceAsDate = function(type) {
       var reference = CurrentItemService.getFillingRules(self.otusSurveyItem.itemData.templateID)[type].data.reference;
       var date;
+      console.log(reference );
       if (type === 'rangeDate') {
         date = {
           'initial': $filter('date')(new Date(reference.initial.value), 'dd/MM/yyyy'),
@@ -3115,11 +3096,13 @@
 
     self.referenceAsTime = function(type) {
       var reference = CurrentItemService.getFillingRules(self.otusSurveyItem.itemData.templateID)[type].data.reference.value;
+      console.log(reference );
       return $filter('date')(new Date(reference), 'hh:mm a');
     };
 
     self.reference = function(type) {
       var reference = CurrentItemService.getFillingRules(self.otusSurveyItem.itemData.templateID)[type].data.reference;
+      console.log(reference );
       return reference;
     };
 
@@ -5180,7 +5163,7 @@
         return '<otus-' + tagName + '-view item-data="$ctrl.itemData" />';
       }else {
 
-        return '<otus-' + tagName + ' item-data="$ctrl.itemData" on-update="$ctrl.update(questionID, valueType, value)" />';
+        return '<otus-' + tagName + ' item-data="$ctrl.itemData" on-update="$ctrl.update(valueType, value)" />';
       }
     }
   }
@@ -5811,9 +5794,14 @@
 
     function afterEffect(pipe, flowData) {
       console.log(flowData);
-      if (flowData.validationResult.hasError) {
-        pipe.isFlowing = false;
+      for (var itemID in flowData.validationResult){
+        if (flowData.validationResult[itemID].hasError) {
+          pipe.isFlowing = false;
+        }
       }
+      // if (flowData.validationResult.hasError) {
+      //   pipe.isFlowing = false;
+      // }
       // delete flowData.validationResult;
     }
 
@@ -5846,7 +5834,6 @@
     self.getEffectResult = getEffectResult;
 
     function beforeEffect(pipe, flowData) {
-      console.log(flowData);
       _currentItemService = ActivityFacadeService.getCurrentItem();
 
       if (_currentItemService.shouldIgnoreResponseEvaluation()) {
@@ -5865,7 +5852,7 @@
           flowData.validationResult[templateID] = {};
           flowData.validationResponse[templateID].validatorsResponse.forEach(function(validator) {
             if (validator.name === 'mandatory' || validator.data.reference) {
-              flowData.validationResult[templateID][validator.name] = !validator.result && (angular.equals(flowData.metadataToEvaluate.data, {}));
+              flowData.validationResult[templateID][validator.name] = !validator.result && (angular.equals(flowData.metadataToEvaluate[templateID].data, {}));
             } else {
               flowData.validationResult[templateID][validator.name] = !validator.result;
             }
@@ -6182,14 +6169,20 @@
     }
 
     function getFillingRules(templateID) {
-      var options = null;
-      _surveyItemGroup.forEach(function (surveyItem) {
-        if(surveyItem.templateID === templateID){
-          options = surveyItem.fillingRules.options;
+      // var options = null;
+      // _surveyItemGroup.forEach(function (surveyItem) {
+      //   if(surveyItem.templateID === templateID){
+      //     options = surveyItem.fillingRules.options;
+      //   }
+      // });
+      //
+      // return options;
+
+      return _surveyItemGroup.find(item => {
+         if(item.templateID === templateID){
+          return item.fillingRules.options;
         }
       });
-
-      return options;
     }
 
     function getItems() {
@@ -6253,7 +6246,6 @@
 
         _fillingContainer[surveyItem.templateID] = filling;
       });
-      return _surveyItemGroup;
     }
   }
 }());

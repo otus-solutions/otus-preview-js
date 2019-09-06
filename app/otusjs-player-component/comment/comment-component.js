@@ -29,7 +29,6 @@
 
     self.update = function() {
       self.onUpdate({
-        questionID: self.itemData.templateID,
         valueType: 'comment',
         value: self.comment
       });

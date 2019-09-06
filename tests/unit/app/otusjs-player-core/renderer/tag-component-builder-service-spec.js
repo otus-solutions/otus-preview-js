@@ -1,6 +1,6 @@
 describe('otusjs.player.core.renderer.TagComponentBuilderService', function() {
   var service;
-  var expectedTagElement = '<otus-calendar-question item-data="$ctrl.itemData" on-update="$ctrl.update(questionID, valueType, value)" />';
+  var expectedTagElement = '<otus-calendar-question item-data="$ctrl.itemData" on-update="$ctrl.update(valueType, value)" />';
   var expectedTagElementView = '<otus-calendar-question-view item-data="$ctrl.itemData" />';
   var elementType = "CalendarQuestion";
   var Mock = {};

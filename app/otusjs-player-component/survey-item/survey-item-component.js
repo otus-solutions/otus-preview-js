@@ -60,18 +60,18 @@
       return (self.itemData.objectType === 'ImageItem') || (self.itemData.objectType === 'TextItem') ? true : false;
     }
 
-    function update(id, prop, value) {
+    function update(prop, value) {
       if (prop) {
         if (prop === 'comment' || prop === 'forceAnswer') {
-          self.filling[id][prop] = value;
+          self.filling[prop] = value;
         } else {
           clear(prop, value);
-          self.filling[id][prop].value = value;
+          self.filling[prop].value = value;
         }
       } else {
         throw new Error('Cannot determine property type to update', 72, 'survey-item-component.js');
       }
-      CurrentItemService.fill(self.filling[id]);
+      CurrentItemService.fill(self.filling);
     }
 
     function clear(prop) {

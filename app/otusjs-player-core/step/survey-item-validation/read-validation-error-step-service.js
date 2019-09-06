@@ -21,7 +21,6 @@
     self.getEffectResult = getEffectResult;
 
     function beforeEffect(pipe, flowData) {
-      console.log(flowData);
       _currentItemService = ActivityFacadeService.getCurrentItem();
 
       if (_currentItemService.shouldIgnoreResponseEvaluation()) {
@@ -40,7 +39,7 @@
           flowData.validationResult[templateID] = {};
           flowData.validationResponse[templateID].validatorsResponse.forEach(function(validator) {
             if (validator.name === 'mandatory' || validator.data.reference) {
-              flowData.validationResult[templateID][validator.name] = !validator.result && (angular.equals(flowData.metadataToEvaluate.data, {}));
+              flowData.validationResult[templateID][validator.name] = !validator.result && (angular.equals(flowData.metadataToEvaluate[templateID].data, {}));
             } else {
               flowData.validationResult[templateID][validator.name] = !validator.result;
             }

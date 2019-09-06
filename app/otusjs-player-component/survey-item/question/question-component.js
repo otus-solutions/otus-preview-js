@@ -47,17 +47,15 @@
       setError();
     }
 
-    function update(questionID, prop, value) {
+    function update(prop, value) {
       self.onUpdate({
-        questionID: questionID,
         valueType: prop,
         value: value
       });
     }
 
-    function forceAnswer(questionID, value) {
+    function forceAnswer(value) {
       self.onUpdate({
-        questionID: questionID,
         valueType: 'forceAnswer',
         value: value
       });

@@ -36,13 +36,11 @@
     self.update = function () {
       if (!_checkIfAnyTrue()) {
         self.onUpdate({
-          questionID: self.itemData.templateID,
           valueType: 'answer',
           value: null
         });
       } else {
         self.onUpdate({
-          questionID: self.itemData.templateID,
           valueType: 'answer',
           value: self.answerArray
         });

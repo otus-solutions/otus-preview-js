@@ -187,13 +187,11 @@
     function _updateAnswer() {
       if (self.sentFiles.length) {
         self.onUpdate({
-          questionID: self.itemData.templateID,
           valueType: 'answer',
           value: self.sentFiles
         });
       } else {
         self.onUpdate({
-          questionID: self.itemData.templateID,
           valueType: 'answer',
           value: {}
         });

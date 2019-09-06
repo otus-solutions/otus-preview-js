@@ -76,14 +76,20 @@
     }
 
     function getFillingRules(templateID) {
-      var options = null;
-      _surveyItemGroup.forEach(function (surveyItem) {
-        if(surveyItem.templateID === templateID){
-          options = surveyItem.fillingRules.options;
+      // var options = null;
+      // _surveyItemGroup.forEach(function (surveyItem) {
+      //   if(surveyItem.templateID === templateID){
+      //     options = surveyItem.fillingRules.options;
+      //   }
+      // });
+      //
+      // return options;
+
+      return _surveyItemGroup.find(item => {
+         if(item.templateID === templateID){
+          return item.fillingRules.options;
         }
       });
-
-      return options;
     }
 
     function getItems() {
@@ -147,7 +153,6 @@
 
         _fillingContainer[surveyItem.templateID] = filling;
       });
-      return _surveyItemGroup;
     }
   }
 }());

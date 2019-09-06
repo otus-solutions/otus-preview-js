@@ -37,9 +37,14 @@
 
     function afterEffect(pipe, flowData) {
       console.log(flowData);
-      if (flowData.validationResult.hasError) {
-        pipe.isFlowing = false;
+      for (var itemID in flowData.validationResult){
+        if (flowData.validationResult[itemID].hasError) {
+          pipe.isFlowing = false;
+        }
       }
+      // if (flowData.validationResult.hasError) {
+      //   pipe.isFlowing = false;
+      // }
       // delete flowData.validationResult;
     }
 
