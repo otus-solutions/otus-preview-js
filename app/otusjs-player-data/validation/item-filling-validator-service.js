@@ -21,7 +21,7 @@
 
     function applyValidation(currentItemService, callback) {
       // ValidationService.unregisterElement(_elementRegisters.id);
-      // setupValidation(currentItemService, _answers);
+      setupValidation(currentItemService, _answers);
       Object.keys(_answers).forEach(templateID => {
         ValidationService.validateElement(templateID, callback);
       });

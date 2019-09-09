@@ -5544,7 +5544,7 @@
         flowData.answerToEvaluate = {};
         flowData.metadataToEvaluate = {};
 
-        CurrentItemService.getItems().forEach(item=> {
+        CurrentItemService.getItems().forEach(item => {
           let templateID = item.templateID;
           flowData.answerToEvaluate[templateID] = {};
           flowData.answerToEvaluate[templateID].data = {};
@@ -6434,14 +6434,14 @@
 
     function getNextItems() {
       return ActivityFacadeService.getCurrentItem().getNavigation().listRoutes().map(function (route) {
-        return ActivityFacadeService.getCurrentSurvey().getItemByTemplateID("ACTA4");
+        return ActivityFacadeService.getCurrentSurvey().getItemByTemplateID(route.destination);
       });
     }
 
     function getPreviousItem() {
       if (hasPrevious()) {
         var previousID = _navigationTracker.getCurrentItem().getPrevious();
-        return ActivityFacadeService.getCurrentSurvey().getItemByTemplateID("ACTA1");
+        return ActivityFacadeService.getCurrentSurvey().getItemByTemplateID(previousID);
       } else {
         return null;
       }
@@ -6987,7 +6987,7 @@
 
     function applyValidation(currentItemService, callback) {
       // ValidationService.unregisterElement(_elementRegisters.id);
-      // setupValidation(currentItemService, _answers);
+      setupValidation(currentItemService, _answers);
       Object.keys(_answers).forEach(templateID => {
         ValidationService.validateElement(templateID, callback);
       });
