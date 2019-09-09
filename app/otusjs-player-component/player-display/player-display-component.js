@@ -47,30 +47,27 @@
     function loadItem(itemsData) {
       console.log(itemsData);
 
-      itemsData.forEach(function () {
-
-      });
-      if (_shouldLoadItem(itemsData[0])) {
+      if (_shouldLoadItem(itemsData[itemsData.length - 1])) {
         _destroyCurrentItem();
         _saveQuestion();
-        removeQuestion(itemsData[0].templateID);
+        removeQuestion(itemsData[itemsData.length - 1].templateID);
 
         $element.find('#pagePlayer').empty();
         for (let i = 0; i < itemsData.length; i++) {
           (function () {
-            // $scope = $scope.$new();
+            $scope = $scope.$new();
             $scope.itemData = itemsData[i];
-            _setQuestionId(itemsData[0].templateID);
+            _setQuestionId(itemsData[i].templateID);
             let element = $compile(SURVEY_ITEM)($scope);
             $element.find('#pagePlayer').append(element);
-            _onGoBottom(itemsData[i].templateID);
+
           }())
         }
-
+        _onGoBottom(itemsData[itemsData.length - 1].templateID);
       }
 
       if (PlayerService.isGoingBack()) {
-        if (PlayerService.getGoBackTo() !== itemsData[0].templateID) {
+        if (PlayerService.getGoBackTo() !== itemsData[itemsData.length - 1].templateID) {
           self.goBack();
         } else {
           PlayerService.setGoBackTo(null);
@@ -137,7 +134,7 @@
 
     function onInit() {
       $scope.$parent.$ctrl.playerDisplay = self;
-      $scope.itemData = {};
+      $scope.itemData = [];
       $scope.itemData.customID = '';
       $scope.questions = [];
     }
