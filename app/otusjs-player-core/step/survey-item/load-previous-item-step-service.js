@@ -29,7 +29,7 @@
         flowData.answerToEvaluate = {};
         flowData.metadataToEvaluate = {};
 
-        CurrentItemService.getItems().forEach(item=> {
+        CurrentItemService.getItems().forEach(item => {
           let templateID = item.templateID;
           flowData.answerToEvaluate[templateID] = {};
           flowData.answerToEvaluate[templateID].data = {};

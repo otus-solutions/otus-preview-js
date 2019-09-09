@@ -24,16 +24,21 @@
     var self = this;
     var templateID = null;
 
-    self.$onInit = function() {
+    self.$onInit = onInit;
+    self.referenceAsDate = referenceAsDate;
+    self.referenceAsTime = referenceAsTime;
+    self.reference = reference;
+    self.focus = focus;
+
+    function onInit() {
       self.otusSurveyItem.errorComponent = self;
       templateID = self.otusSurveyItem.errorComponent.otusSurveyItem.itemData.templateID;
-      // console.log(self.otusSurveyItem.errorComponent);
-    };
+    }
 
-    self.referenceAsDate = function(type) {
+    function referenceAsDate(type) {
       var reference = CurrentItemService.getFillingRules(templateID)[type].data.reference;
       var date;
-      console.log(reference );
+
       if (type === 'rangeDate') {
         date = {
           'initial': $filter('date')(new Date(reference.initial.value), 'dd/MM/yyyy'),
@@ -43,22 +48,20 @@
         date = $filter('date')(new Date(reference.value), 'dd/MM/yyyy');
       }
       return date;
-    };
+    }
 
-    self.referenceAsTime = function(type) {
+    function referenceAsTime(type) {
       var reference = CurrentItemService.getFillingRules(templateID)[type].data.reference.value;
-      console.log(reference );
       return $filter('date')(new Date(reference), 'hh:mm a');
-    };
+    }
 
-    self.reference = function(type) {
+    function reference (type) {
       var reference = CurrentItemService.getFillingRules(templateID)[type].data.reference;
-      console.log(reference );
       return reference;
-    };
+    }
 
-    self.focus = function() {
+    function focus() {
       $element.focus();
-    };
+    }
   }
 }());

@@ -26,6 +26,7 @@
     self.updateItemTracking = updateItemTracking;
 
     function getNextItems() {
+      console.log(ActivityFacadeService.getCurrentItem().getNavigation().listRoutes());
       return ActivityFacadeService.getCurrentItem().getNavigation().listRoutes().map(function (route) {
         return ActivityFacadeService.getCurrentSurvey().getItemByTemplateID(route.destination);
       });

@@ -77,11 +77,14 @@
     }
 
     function getFillingRules(templateID) {
-      return _surveyItemGroup.find(item => {
+      var options = null;
+      _surveyItemGroup.forEach(item => {
         if(item.templateID === templateID){
-          return item.fillingRules.options;
+          options = item.fillingRules.options;
         }
       });
+
+      return options;
     }
 
     function getItems() {
@@ -131,6 +134,7 @@
       clearData();
       _surveyItemGroup = data.items;
       _navigation = data.navigation;
+      console.log(_surveyItemGroup);
       console.log(_navigation);
 
       _surveyItemGroup.forEach(function (surveyItem) {

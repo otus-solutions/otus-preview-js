@@ -3076,16 +3076,21 @@
     var self = this;
     var templateID = null;
 
-    self.$onInit = function() {
+    self.$onInit = onInit;
+    self.referenceAsDate = referenceAsDate;
+    self.referenceAsTime = referenceAsTime;
+    self.reference = reference;
+    self.focus = focus;
+
+    function onInit() {
       self.otusSurveyItem.errorComponent = self;
       templateID = self.otusSurveyItem.errorComponent.otusSurveyItem.itemData.templateID;
-      // console.log(self.otusSurveyItem.errorComponent);
-    };
+    }
 
-    self.referenceAsDate = function(type) {
+    function referenceAsDate(type) {
       var reference = CurrentItemService.getFillingRules(templateID)[type].data.reference;
       var date;
-      console.log(reference );
+
       if (type === 'rangeDate') {
         date = {
           'initial': $filter('date')(new Date(reference.initial.value), 'dd/MM/yyyy'),
@@ -3095,23 +3100,21 @@
         date = $filter('date')(new Date(reference.value), 'dd/MM/yyyy');
       }
       return date;
-    };
+    }
 
-    self.referenceAsTime = function(type) {
+    function referenceAsTime(type) {
       var reference = CurrentItemService.getFillingRules(templateID)[type].data.reference.value;
-      console.log(reference );
       return $filter('date')(new Date(reference), 'hh:mm a');
-    };
+    }
 
-    self.reference = function(type) {
+    function reference (type) {
       var reference = CurrentItemService.getFillingRules(templateID)[type].data.reference;
-      console.log(reference );
       return reference;
-    };
+    }
 
-    self.focus = function() {
+    function focus() {
       $element.focus();
-    };
+    }
   }
 }());
 
@@ -5596,7 +5599,7 @@
         flowData.answerToEvaluate = {};
         flowData.metadataToEvaluate = {};
 
-        CurrentItemService.getItems().forEach(item=> {
+        CurrentItemService.getItems().forEach(item => {
           let templateID = item.templateID;
           flowData.answerToEvaluate[templateID] = {};
           flowData.answerToEvaluate[templateID].data = {};
@@ -6169,11 +6172,14 @@
     }
 
     function getFillingRules(templateID) {
-      return _surveyItemGroup.find(item => {
+      var options = null;
+      _surveyItemGroup.forEach(item => {
         if(item.templateID === templateID){
-          return item.fillingRules.options;
+          options = item.fillingRules.options;
         }
       });
+
+      return options;
     }
 
     function getItems() {
@@ -6223,6 +6229,7 @@
       clearData();
       _surveyItemGroup = data.items;
       _navigation = data.navigation;
+      console.log(_surveyItemGroup);
       console.log(_navigation);
 
       _surveyItemGroup.forEach(function (surveyItem) {
@@ -6266,7 +6273,6 @@
     self.getItemByCustomID = getItemByCustomID;
     self.getItemByTemplateID = getItemByTemplateID;
     self.getGroupItemsByMemberID = getGroupItemsByMemberID;
-    // self.getSurveyItemGroup = getSurveyItemGroup;
     self.getSurveyDatasources = getSurveyDatasources;
     self.getStaticVariableList = getStaticVariableList;
     self.initialize = initialize;
@@ -6310,26 +6316,17 @@
       return fetchedItem;
     }
 
-    // function getItemByTemplateID(templateID) {
-    //   return getItems().find(function (item) {
-    //     return item.templateID === templateID;
-    //   });
-    // }
-
     function getItemByTemplateID(templateID) {
-      var fetchedItem = null;
-      getItems().some(function (item) {
-        if(item.templateID === templateID){
-          fetchedItem = item;
-          return true;
-        }
+      return getItems().find(function (item) {
+        return item.templateID === templateID;
       });
-      return fetchedItem;
     }
 
     function getGroupItemsByMemberID(id) {
-      return getFake(id);
-      // return getSurvey().getGroupItemsByMemberID(id);
+      // return getFake(id);
+      return getSurvey().getGroupByItemID(id).members.map(member => {
+        return getItemByTemplateID(member.id);
+      });
     }
 
     function getFake(id) {
@@ -6343,10 +6340,6 @@
       //   return getItemByTemplateID(member.id);
       // });
     }
-
-    // function getSurveyItemGroup() {
-    //   // return getSurvey().SurveyItemGroupManager.getGroupMember();
-    // }
 
     function getNavigations() {
       return ActivityFacadeService.surveyActivity.getNavigations();
@@ -6433,6 +6426,7 @@
     self.updateItemTracking = updateItemTracking;
 
     function getNextItems() {
+      console.log(ActivityFacadeService.getCurrentItem().getNavigation().listRoutes());
       return ActivityFacadeService.getCurrentItem().getNavigation().listRoutes().map(function (route) {
         return ActivityFacadeService.getCurrentSurvey().getItemByTemplateID(route.destination);
       });
