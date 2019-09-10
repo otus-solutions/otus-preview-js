@@ -40,7 +40,7 @@
     $scope.removeQuestion = removeQuestion;
 
     function _destroyCurrentItems() {
-      if (self.currentItem.length) {
+      if (self.currentItem) {
         self.currentItems.forEach(item => {
           item.destroy();
         });
@@ -50,7 +50,7 @@
     }
 
     function loadItem(itemsData) {
-      if (_shouldLoadItem(itemsData)) {
+      if (_shouldLoadItem(itemsData[itemsData.length - 1])) {
         _destroyCurrentItems();
         _saveQuestion();
         removeQuestion(itemsData[itemsData.length - 1].templateID);
@@ -145,7 +145,7 @@
     }
 
     function _shouldLoadItem(itemData) {
-      return $scope.itemData && $scope.itemData[0].templateID !== itemData[0].templateID;
+      return $scope.itemData && $scope.itemData.templateID !== itemData.templateID;
     }
   }
 }());

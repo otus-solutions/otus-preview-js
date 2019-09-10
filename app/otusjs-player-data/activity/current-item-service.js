@@ -90,6 +90,7 @@
     function getItems() {
       return _surveyItemGroup;
     }
+
     function getItemsByTemplateID(templateID) {
       return _surveyItemGroup.find(item => {
         return item.templateID === templateID

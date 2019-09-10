@@ -26,7 +26,6 @@
     self.initialize = initialize;
     self.finalize = finalize;
     self.save = save;
-    self.setup = setup;
     self.clearSkippedAnswers = clearSkippedAnswers;
     self.getNavigationTracker = getNavigationTracker;
     self.getWholeTemplateStaticVariableList = getWholeTemplateStaticVariableList;
@@ -72,9 +71,18 @@
 
     function getGroupItemsByMemberID(id) {
       // return getFake(id);
-      return getSurvey().getGroupByItemID(id).members.map(member => {
-        return getItemByTemplateID(member.id);
-      });
+      // return getSurvey().getGroupByItemID(id).members.map(member => {
+      //   return getItemByTemplateID(member.id);
+      // });
+      let surveyItemsGroup = getSurvey().getGroupByItemID(id);
+
+      if(surveyItemsGroup){
+        return surveyItemsGroup.members.map(member => {
+          return getItemByTemplateID(member.id);
+        });
+      } else {
+        return getItemByTemplateID(id);
+      }
     }
 
     function getFake(id) {
@@ -117,9 +125,6 @@
     function save() {
       ActivityFacadeService.saveActivitySurvey();
     }
-
-    //todo: ver se alguém chama esse método
-    function setup() { }
 
     function clearSkippedAnswers() {
       ActivityFacadeService.clearSkippedAnswers();

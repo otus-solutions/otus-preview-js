@@ -903,7 +903,7 @@
     $scope.removeQuestion = removeQuestion;
 
     function _destroyCurrentItems() {
-      if (self.currentItem.length) {
+      if (self.currentItem) {
         self.currentItems.forEach(item => {
           item.destroy();
         });
@@ -913,7 +913,7 @@
     }
 
     function loadItem(itemsData) {
-      if (_shouldLoadItem(itemsData)) {
+      if (_shouldLoadItem(itemsData[itemsData.length - 1])) {
         _destroyCurrentItems();
         _saveQuestion();
         removeQuestion(itemsData[itemsData.length - 1].templateID);
@@ -1008,7 +1008,7 @@
     }
 
     function _shouldLoadItem(itemData) {
-      return $scope.itemData && $scope.itemData[0].templateID !== itemData[0].templateID;
+      return $scope.itemData && $scope.itemData.templateID !== itemData.templateID;
     }
   }
 }());
@@ -6090,7 +6090,6 @@
 
     function setup() {
       CurrentItemService.clearData();
-      CurrentSurveyService.setup();
     }
 
     function clearSkippedAnswers() {
@@ -6191,6 +6190,7 @@
     function getItems() {
       return _surveyItemGroup;
     }
+
     function getItemsByTemplateID(templateID) {
       return _surveyItemGroup.find(item => {
         return item.templateID === templateID
@@ -6284,7 +6284,6 @@
     self.initialize = initialize;
     self.finalize = finalize;
     self.save = save;
-    self.setup = setup;
     self.clearSkippedAnswers = clearSkippedAnswers;
     self.getNavigationTracker = getNavigationTracker;
     self.getWholeTemplateStaticVariableList = getWholeTemplateStaticVariableList;
@@ -6330,9 +6329,18 @@
 
     function getGroupItemsByMemberID(id) {
       // return getFake(id);
-      return getSurvey().getGroupByItemID(id).members.map(member => {
-        return getItemByTemplateID(member.id);
-      });
+      // return getSurvey().getGroupByItemID(id).members.map(member => {
+      //   return getItemByTemplateID(member.id);
+      // });
+      let surveyItemsGroup = getSurvey().getGroupByItemID(id);
+
+      if(surveyItemsGroup){
+        return surveyItemsGroup.members.map(member => {
+          return getItemByTemplateID(member.id);
+        });
+      } else {
+        return getItemByTemplateID(id);
+      }
     }
 
     function getFake(id) {
@@ -6375,9 +6383,6 @@
     function save() {
       ActivityFacadeService.saveActivitySurvey();
     }
-
-    //todo: ver se alguém chama esse método
-    function setup() { }
 
     function clearSkippedAnswers() {
       ActivityFacadeService.clearSkippedAnswers();
@@ -6432,7 +6437,6 @@
     self.updateItemTracking = updateItemTracking;
 
     function getNextItems() {
-      console.log(ActivityFacadeService.getCurrentItem().getNavigation().listRoutes());
       return ActivityFacadeService.getCurrentItem().getNavigation().listRoutes().map(function (route) {
         return ActivityFacadeService.getCurrentSurvey().getItemByTemplateID(route.destination);
       });
@@ -6465,6 +6469,7 @@
 
     function initialize() {
       _navigationTracker = ActivityFacadeService.getCurrentSurvey().getSurvey().getNavigationTracker();
+      console.log(_navigationTracker);
     }
 
     function loadNextItem() {
@@ -6522,16 +6527,32 @@
     function _loadItem(id) {
       var itemsToLoad = null;
       var navigation = null;
+      var itemsArray = [];
 
       if (!id) {
         //todo
         let firstItem = ActivityFacadeService.getCurrentSurvey().getItems()[0];
         itemsToLoad = ActivityFacadeService.fetchItemGroupByID(firstItem.templateID);
-        navigation = ActivityFacadeService.getCurrentSurvey().getNavigations()[2];
+
+        if(itemsToLoad.length){
+          itemsArray = itemsToLoad;
+          navigation = ActivityFacadeService.fetchNavigationByOrigin(itemsToLoad[itemsToLoad.length-1].templateID);
+        } else {
+          itemsArray.push(itemsToLoad);
+          navigation = ActivityFacadeService.fetchNavigationByOrigin(itemsToLoad.templateID);
+        }
+
       } else {
         console.log("passou pelo navegation else");
         itemsToLoad = ActivityFacadeService.fetchItemGroupByID(id);
-        navigation = ActivityFacadeService.fetchNavigationByOrigin(itemsToLoad[itemsToLoad.length-1].templateID);
+
+        if(itemsToLoad.length){
+          itemsArray = itemsToLoad;
+          navigation = ActivityFacadeService.fetchNavigationByOrigin(itemsToLoad[itemsToLoad.length-1].templateID);
+        } else {
+          itemsArray.push(itemsToLoad);
+          navigation = ActivityFacadeService.fetchNavigationByOrigin(itemsToLoad.templateID);
+        }
       }
 
       if (navigation) {
@@ -6547,7 +6568,7 @@
       // _navigationTracker.visitItem(itemsToLoad.templateID);
 
       return {
-        items: itemsToLoad,
+        items: itemsArray,
         navigation: navigation
       };
     }
