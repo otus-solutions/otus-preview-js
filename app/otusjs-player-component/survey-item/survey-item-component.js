@@ -34,7 +34,9 @@
       self.filling = {};
       self.filling.questionID = self.itemData.templateID;
 
-      $scope.$parent.$ctrl.currentItem = self;
+
+      //todo: checar se uma função exposta no self pode ser acessada via scope ($scope.$parent.$ctrl.addToCurrentItems() )
+      $scope.$parent.$ctrl.currentItems.push(self);
       CurrentItemService.observerRegistry(self);
 
       self.$error = {};

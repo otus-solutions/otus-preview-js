@@ -7,7 +7,7 @@
       templateUrl: 'app/otusjs-player-component/player-display/player-display-template.html',
       controller: Controller,
       bindings: {
-        goBack: "&"
+        goBack: '&'
       }
     });
 
@@ -35,20 +35,23 @@
     self.remove = remove;
     self.$onInit = onInit;
     self.ids = [];
+    self.currentItems = [];
 
     $scope.removeQuestion = removeQuestion;
 
-    function _destroyCurrentItem() {
-      if (self.currentItem) {
-        self.currentItem.destroy();
+    function _destroyCurrentItems() {
+      if (self.currentItem.length) {
+        self.currentItems.forEach(item => {
+          item.destroy();
+        });
       }
+
+      self.currentItems = [];
     }
 
     function loadItem(itemsData) {
-      console.log(itemsData);
-
-      if (_shouldLoadItem(itemsData[itemsData.length - 1])) {
-        _destroyCurrentItem();
+      if (_shouldLoadItem(itemsData)) {
+        _destroyCurrentItems();
         _saveQuestion();
         removeQuestion(itemsData[itemsData.length - 1].templateID);
 
@@ -61,13 +64,13 @@
             let element = $compile(SURVEY_ITEM)($scope);
             $element.find('#pagePlayer').append(element);
 
-          }())
+          }());
         }
-        _onGoBottom(itemsData[itemsData.length - 1].templateID);
+        _focusOnItem(itemsData[itemsData.length - 1].templateID);
       }
 
       if (PlayerService.isGoingBack()) {
-        if (PlayerService.getGoBackTo() !== itemsData[itemsData.length - 1].templateID) {
+        if (PlayerService.getGoBackTo() !== itemsData[0].templateID) {
           self.goBack();
         } else {
           PlayerService.setGoBackTo(null);
@@ -76,6 +79,8 @@
     }
 
     function removeQuestion(id) {
+      //todo checar se essa função é usada só nesse componente
+      //remove questão do histórico. Renomear
       var index = _getIndexQuestionId(id);
       if (index > -1) {
         var length = $scope.questions.length;
@@ -86,7 +91,6 @@
         return false;
       }
       return true;
-
     }
 
     function _setQuestionId(id) {
@@ -97,17 +101,19 @@
       return self.ids.indexOf(id);
     }
 
-    function _onGoBottom(idQuestion) {
+    function _focusOnItem(idQuestion) {
       $location.hash(idQuestion);
       $anchorScroll();
     }
 
     function _saveQuestion() {
-      if ($scope.itemData.templateID) {
-        var question = angular.copy($scope.itemData);
-        question.data = ActivityFacadeService.fetchItemAnswerByTemplateID(question.templateID);
-        question.data = question.data ? question.data : _setAnswerBlank();
-        $scope.questions.push(question);
+      if ($scope.itemData.length) {
+        $scope.itemData.forEach(itemData => {
+          var question = angular.copy(itemData);
+          question.data = ActivityFacadeService.fetchItemAnswerByTemplateID(question.templateID);
+          question.data = question.data ? question.data : _setAnswerBlank();
+          $scope.questions.push(question);
+        });
       }
     }
 
@@ -123,7 +129,7 @@
     }
 
     function showCover() {
-      _destroyCurrentItem();
+      _destroyCurrentItems();
       $element.find('#pagePlayer').empty();
       $element.find('#pagePlayer').append($compile(SURVEY_COVER)($scope));
     }
@@ -135,13 +141,11 @@
     function onInit() {
       $scope.$parent.$ctrl.playerDisplay = self;
       $scope.itemData = [];
-      $scope.itemData.customID = '';
       $scope.questions = [];
     }
 
     function _shouldLoadItem(itemData) {
-      console.log(itemData)
-      return $scope.itemData && $scope.itemData.customID !== itemData.customID;
+      return $scope.itemData && $scope.itemData[0].templateID !== itemData[0].templateID;
     }
   }
 }());
