@@ -76,15 +76,20 @@
 
     function loadPreviousItem() {
       if (hasPrevious()) {
+        var itemsPreviousArray = [];
         var items = getPreviousItem();
-        var navigation = ActivityFacadeService.getCurrentSurvey().getNavigationByOrigin(items.templateID);
+        var navigation = null;
+
+        itemsPreviousArray.push(items);
+
+        navigation = ActivityFacadeService.getCurrentSurvey().getNavigationByOrigin(itemsPreviousArray[itemsPreviousArray.length-1].templateID);
 
         RouteService.setup(navigation);
         //todo model precisa visitar todos os items do grupo
-        _navigationTracker.visitItem(items.templateID);
+        _navigationTracker.visitItem(itemsPreviousArray[0].templateID);
 
         return {
-          items: items,
+          items: itemsPreviousArray,
           navigation: navigation
         };
       }
@@ -154,7 +159,10 @@
       }
 
       //todo: model precisa visitar todos os items do grupo
-      // _navigationTracker.visitItem(itemsToLoad.templateID);
+      itemsArray.forEach(function (item) {
+         _navigationTracker.visitItem(item.templateID);
+      });
+      // _navigationTracker.visitItem(itemsArray[0].templateID);
 
       return {
         items: itemsArray,

@@ -70,10 +70,6 @@
     }
 
     function getGroupItemsByMemberID(id) {
-      // return getFake(id);
-      // return getSurvey().getGroupByItemID(id).members.map(member => {
-      //   return getItemByTemplateID(member.id);
-      // });
       let surveyItemsGroup = getSurvey().getGroupByItemID(id);
 
       if(surveyItemsGroup){
@@ -83,18 +79,6 @@
       } else {
         return getItemByTemplateID(id);
       }
-    }
-
-    function getFake(id) {
-      console.log(getSurvey());
-      return getSurvey().getSurveyItemGroupList(id).members.map(member => {
-        return getItemByTemplateID(member.id);
-        // return member.id;
-      });
-
-      // return getSurvey().getSurveyItemGroupList().getGroupByMember(id).members.map(member => {
-      //   return getItemByTemplateID(member.id);
-      // });
     }
 
     function getNavigations() {

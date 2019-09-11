@@ -2681,7 +2681,7 @@
   angular
     .module('otusjs.player.component')
     .component('otusGridTextQuestion', {
-      template:'<div ng-repeat="line in ::$ctrl.itemData.getLinesList()" ng-init="outerIndex=$index" layout="row" flex><div ng-repeat="gridText in ::line.getGridTextList()" ng-init="innerIndex=$index" layout-padding layout="row" flex><md-input-container flex><label>{{ ::gridText.label.ptBR.formattedText }}</label><div><textarea ng-model="$ctrl.answerArray[outerIndex][innerIndex].value" ng-blur="$ctrl.update(outerIndex, innerIndex)" ng-disabled="$ctrl.view"></textarea></div><div style="color: gray;">{{::gridText.unit.ptBR.plainText}}</div></md-input-container></div></div>',
+      template:'<div ng-repeat="line in ::$ctrl.itemData.getLinesList()" ng-init="outerIndex=$index" layout="row" flex><div ng-repeat="gridText in ::line.getGridTextList()" ng-init="innerIndex=$index" layout-padding layout="row" flex><md-input-container flex><label ng-bind-html="::gridText.label.ptBR.formattedText"></label><div><textarea ng-model="$ctrl.answerArray[outerIndex][innerIndex].value" ng-blur="$ctrl.update(outerIndex, innerIndex)" ng-disabled="$ctrl.view"></textarea></div><div style="color: gray;" ng-bind-html="::gridText.unit.ptBR.plainText"></div></md-input-container></div></div>',
       controller: "otusGridTextQuestionCtrl as $ctrl",
       bindings: {
         itemData: '<',
@@ -2785,7 +2785,7 @@
   angular
     .module('otusjs.player.component')
     .component('otusGridTextQuestionView', {
-      template:'<div ng-repeat="line in ::$ctrl.itemData.getLinesList()" ng-init="outerIndex=$index" layout="row" flex><div ng-repeat="gridText in ::line.getGridTextList()" ng-init="innerIndex=$index" layout-padding layout="row" flex><md-input-container flex><label>{{ ::gridText.label.ptBR.formattedText }}</label><div><textarea ng-model="$ctrl.answerArray[outerIndex][innerIndex].value" ng-blur="$ctrl.update(outerIndex, innerIndex)" ng-disabled="$ctrl.view"></textarea></div><div style="color: gray;">{{::gridText.unit.ptBR.plainText}}</div></md-input-container></div></div>',
+      template:'<div ng-repeat="line in ::$ctrl.itemData.getLinesList()" ng-init="outerIndex=$index" layout="row" flex><div ng-repeat="gridText in ::line.getGridTextList()" ng-init="innerIndex=$index" layout-padding layout="row" flex><md-input-container flex><label ng-bind-html="::gridText.label.ptBR.formattedText"></label><div><textarea ng-model="$ctrl.answerArray[outerIndex][innerIndex].value" ng-blur="$ctrl.update(outerIndex, innerIndex)" ng-disabled="$ctrl.view"></textarea></div><div style="color: gray;" ng-bind-html="::gridText.unit.ptBR.plainText"></div></md-input-container></div></div>',
       controller: "otusGridTextQuestionViewCtrl as $ctrl",
       bindings: {
         itemData: '<'
@@ -2813,7 +2813,7 @@
   angular
     .module('otusjs.player.component')
     .component('otusGridIntegerQuestion', {
-      template:'<div ng-repeat="line in ::$ctrl.itemData.getLinesList()" ng-init="outerIndex=$index" layout="row" flex><div ng-repeat="gridNumber in ::line.getGridIntegerList()" ng-init="innerIndex=$index" layout-padding layout="row" flex><md-input-container flex><label>{{ ::gridNumber.label.ptBR.formattedText }}</label><div><input type="text" numbers-only ng-model="$ctrl.answerArray[outerIndex][innerIndex].value" ng-blur="$ctrl.update(outerIndex, innerIndex)" ng-disabled="$ctrl.view"></div><div style="color: gray;">{{::gridNumber.unit.ptBR.plainText}}</div></md-input-container></div></div>',
+      template:'<div ng-repeat="line in ::$ctrl.itemData.getLinesList()" ng-init="outerIndex=$index" layout="row" flex><div ng-repeat="gridNumber in ::line.getGridIntegerList()" ng-init="innerIndex=$index" layout-padding layout="row" flex><md-input-container flex><label ng-bind-html="::gridNumber.label.ptBR.formattedText"></label><div><input type="text" numbers-only ng-model="$ctrl.answerArray[outerIndex][innerIndex].value" ng-blur="$ctrl.update(outerIndex, innerIndex)" ng-disabled="$ctrl.view"></div><div style="color: gray;" ng-bind-html="::gridNumber.unit.ptBR.plainText"></div></md-input-container></div></div>',
       controller: "otusGridIntegerQuestionCtrl as $ctrl",
       bindings: {
         itemData: '<',
@@ -2924,7 +2924,7 @@
   angular
     .module('otusjs.player.component')
     .component('otusGridIntegerQuestionView', {
-      template:'<div ng-repeat="line in ::$ctrl.itemData.getLinesList()" ng-init="outerIndex=$index" layout="row" flex><div ng-repeat="gridNumber in ::line.getGridIntegerList()" ng-init="innerIndex=$index" layout-padding layout="row" flex><md-input-container flex><label>{{ ::gridNumber.label.ptBR.formattedText }}</label><div><input type="text" numbers-only ng-model="$ctrl.answerArray[outerIndex][innerIndex].value" ng-blur="$ctrl.update(outerIndex, innerIndex)" ng-disabled="$ctrl.view"></div><div style="color: gray;">{{::gridNumber.unit.ptBR.plainText}}</div></md-input-container></div></div>',
+      template:'<div ng-repeat="line in ::$ctrl.itemData.getLinesList()" ng-init="outerIndex=$index" layout="row" flex><div ng-repeat="gridNumber in ::line.getGridIntegerList()" ng-init="innerIndex=$index" layout-padding layout="row" flex><md-input-container flex><label ng-bind-html="::gridNumber.label.ptBR.formattedText"></label><div><input type="text" numbers-only ng-model="$ctrl.answerArray[outerIndex][innerIndex].value" ng-blur="$ctrl.update(outerIndex, innerIndex)" ng-disabled="$ctrl.view"></div><div style="color: gray;" ng-bind-html="::gridNumber.unit.ptBR.plainText"></div></md-input-container></div></div>',
       controller: "otusGridIntegerQuestionViewCtrl as $ctrl",
       bindings: {
         itemData: '<'
@@ -4999,7 +4999,6 @@
 
     self.bindComponent = bindComponent;
     self.getItemData = getItemData;
-    self.getSurveyItemGroupData = getSurveyItemGroupData;
     self.goAhead = goAhead;
     self.goBack = goBack;
     self.setGoBackTo = setGoBackTo;
@@ -5047,14 +5046,6 @@
 
     function getItemData() {
       return ActivityFacadeService.getCurrentItem().getItems();
-    }
-
-    function getSurveyItemGroupData() {
-      return ActivityFacadeService.getCurrentItem().getItems();
-    }
-
-    function getFake() {
-      return ActivityFacadeService.getCurrentSurvey().getItems().splice(0,3);
     }
 
     function goAhead() {
@@ -5649,7 +5640,8 @@
     function beforeEffect(pipe, flowData) {}
 
     function effect(pipe, flowData) {
-      console.log("UpdateItem"+flowData);
+      console.log("UpdateItem");
+      console.log(flowData);
       NavigationService.updateItemTracking();
     }
 
@@ -6328,10 +6320,6 @@
     }
 
     function getGroupItemsByMemberID(id) {
-      // return getFake(id);
-      // return getSurvey().getGroupByItemID(id).members.map(member => {
-      //   return getItemByTemplateID(member.id);
-      // });
       let surveyItemsGroup = getSurvey().getGroupByItemID(id);
 
       if(surveyItemsGroup){
@@ -6341,18 +6329,6 @@
       } else {
         return getItemByTemplateID(id);
       }
-    }
-
-    function getFake(id) {
-      console.log(getSurvey());
-      return getSurvey().getSurveyItemGroupList(id).members.map(member => {
-        return getItemByTemplateID(member.id);
-        // return member.id;
-      });
-
-      // return getSurvey().getSurveyItemGroupList().getGroupByMember(id).members.map(member => {
-      //   return getItemByTemplateID(member.id);
-      // });
     }
 
     function getNavigations() {
@@ -6487,15 +6463,20 @@
 
     function loadPreviousItem() {
       if (hasPrevious()) {
+        var itemsPreviousArray = [];
         var items = getPreviousItem();
-        var navigation = ActivityFacadeService.getCurrentSurvey().getNavigationByOrigin(items.templateID);
+        var navigation = null;
+
+        itemsPreviousArray.push(items);
+
+        navigation = ActivityFacadeService.getCurrentSurvey().getNavigationByOrigin(itemsPreviousArray[itemsPreviousArray.length-1].templateID);
 
         RouteService.setup(navigation);
         //todo model precisa visitar todos os items do grupo
-        _navigationTracker.visitItem(items.templateID);
+        _navigationTracker.visitItem(itemsPreviousArray[0].templateID);
 
         return {
-          items: items,
+          items: itemsPreviousArray,
           navigation: navigation
         };
       }
@@ -6565,7 +6546,10 @@
       }
 
       //todo: model precisa visitar todos os items do grupo
-      // _navigationTracker.visitItem(itemsToLoad.templateID);
+      itemsArray.forEach(function (item) {
+         _navigationTracker.visitItem(item.templateID);
+      });
+      // _navigationTracker.visitItem(itemsArray[0].templateID);
 
       return {
         items: itemsArray,

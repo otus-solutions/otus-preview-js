@@ -23,7 +23,8 @@
     function beforeEffect(pipe, flowData) {}
 
     function effect(pipe, flowData) {
-      console.log("UpdateItem"+flowData);
+      console.log("UpdateItem");
+      console.log(flowData);
       NavigationService.updateItemTracking();
     }
 
