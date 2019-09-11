@@ -31,27 +31,29 @@
       _answers = answerObject;
 
       currentItemService.getItems().forEach(function (surveyItem) {
-        let templateID = surveyItem.templateID;
-        let answer = answerObject[templateID];
+        if (surveyItem.isQuestion()) {
+          let templateID = surveyItem.templateID;
+          let answer = answerObject[templateID];
 
-        let elementRegister = ElementRegisterFactory.create(templateID, answer);
+          let elementRegister = ElementRegisterFactory.create(templateID, answer);
 
-        if (currentItemService.getFilling(templateID).forceAnswer) {
-          Object.keys(surveyItem.fillingRules.options).filter(function (validator) {
-            if (!surveyItem.fillingRules.options[validator].data.canBeIgnored) {
+          if (currentItemService.getFilling(templateID).forceAnswer) {
+            Object.keys(surveyItem.fillingRules.options).filter(function (validator) {
+              if (!surveyItem.fillingRules.options[validator].data.canBeIgnored) {
+                _addValidator(elementRegister, validator, surveyItem);
+              }
+            });
+          } else {
+            Object.keys(surveyItem.fillingRules.options).map(function (validator) {
               _addValidator(elementRegister, validator, surveyItem);
-            }
-          });
-        } else {
-          Object.keys(surveyItem.fillingRules.options).map(function (validator) {
-            _addValidator(elementRegister, validator, surveyItem);
-          });
-          _setupImmutableDateValidation(elementRegister, surveyItem);
-        }
-        _elementRegisters[templateID] = elementRegister;
+            });
+            _setupImmutableDateValidation(elementRegister, surveyItem);
+          }
+          _elementRegisters[templateID] = elementRegister;
 
-        ValidationService.unregisterElement(elementRegister.id);
-        ValidationService.registerElement(elementRegister);
+          ValidationService.unregisterElement(elementRegister.id);
+          ValidationService.registerElement(elementRegister);
+        }
       });
     }
 

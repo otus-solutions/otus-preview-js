@@ -44,8 +44,8 @@
               flowData.validationResult[templateID][validator.name] = !validator.result;
             }
           });
+          flowData.validationResult[templateID].hasError = _hasError(flowData, templateID);
         }
-        flowData.validationResult[templateID].hasError = _hasError(flowData, templateID);
       });
     }
 

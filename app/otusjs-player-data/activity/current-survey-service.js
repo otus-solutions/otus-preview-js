@@ -71,14 +71,16 @@
 
     function getGroupItemsByMemberID(id) {
       let surveyItemsGroup = getSurvey().getGroupByItemID(id);
+      let groupItems = [];
 
-      if(surveyItemsGroup){
-        return surveyItemsGroup.members.map(member => {
+      if (surveyItemsGroup) {
+        groupItems = surveyItemsGroup.members.map(member => {
           return getItemByTemplateID(member.id);
         });
       } else {
-        return getItemByTemplateID(id);
+        groupItems.push(getItemByTemplateID(id));
       }
+      return groupItems;
     }
 
     function getNavigations() {

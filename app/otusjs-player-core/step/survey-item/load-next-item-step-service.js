@@ -31,12 +31,14 @@
         flowData.metadataToEvaluate = {};
 
         CurrentItemService.getItems().forEach(item => {
-          let templateID = item.templateID;
-          flowData.answerToEvaluate[templateID] = {};
-          flowData.answerToEvaluate[templateID].data = {};
+          if(item.isQuestion()){
+            let templateID = item.templateID;
+            flowData.answerToEvaluate[templateID] = {};
+            flowData.answerToEvaluate[templateID].data = {};
 
-          flowData.metadataToEvaluate[templateID] = {};
-          flowData.metadataToEvaluate[templateID].data = {};
+            flowData.metadataToEvaluate[templateID] = {};
+            flowData.metadataToEvaluate[templateID].data = {};
+          }
         });
       } else {
         PlayerService.end();

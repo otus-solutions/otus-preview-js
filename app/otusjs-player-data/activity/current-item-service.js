@@ -46,7 +46,9 @@
     function attachValidationError(validationError) {
       _validationError = validationError;
       _observerArray.forEach(observer => {
-        observer.updateValidation(validationError[observer.itemData.templateID]);
+        if(validationError[observer.itemData.templateID]){
+           observer.updateValidation(validationError[observer.itemData.templateID]);
+        }
       })
     }
 
@@ -59,13 +61,7 @@
     }
 
     function fill(filling) {
-      _surveyItemGroup.find(item => {
-        if(item.templateID === filling.questionID){
-          if (item.isQuestion()) {
-            _fillingContainer[filling.questionID] = filling;
-          }
-        }
-      });
+      _fillingContainer[filling.questionID] = filling;
     }
 
     function getFilling(questionID) {
@@ -79,7 +75,7 @@
     function getFillingRules(templateID) {
       var options = null;
       _surveyItemGroup.forEach(item => {
-        if(item.templateID === templateID){
+        if (item.templateID === templateID) {
           options = item.fillingRules.options;
         }
       });
@@ -106,11 +102,7 @@
     }
 
     function hasItems() {
-      if (_surveyItemGroup && _surveyItemGroup.length) {
-        return true;
-      } else {
-        return false;
-      }
+      return !!(_surveyItemGroup && _surveyItemGroup.length);
     }
 
     function shouldApplyAnswer() {
@@ -128,29 +120,27 @@
     function observerRegistry(observer) {
       observer.pushData(_fillingContainer[observer.itemData.templateID]);
       _observerArray.push(observer);
-      console.log(_observerArray)
     }
 
     function setup(data) {
       clearData();
       _surveyItemGroup = data.items;
       _navigation = data.navigation;
-      console.log(_surveyItemGroup);
-      console.log(_navigation);
 
       _surveyItemGroup.forEach(function (surveyItem) {
-        let filling;
         if (surveyItem.isQuestion()) {
-          filling = ActivityFacadeService.getFillingByQuestionID(surveyItem.templateID);
-          if (!filling) {
-            filling = ActivityFacadeService.createQuestionFill(surveyItem);
-            filling.answerType = surveyItem.objectType;
+          let filling;
+          if (surveyItem.isQuestion()) {
+            filling = ActivityFacadeService.getFillingByQuestionID(surveyItem.templateID);
+            if (!filling) {
+              filling = ActivityFacadeService.createQuestionFill(surveyItem);
+              filling.answerType = surveyItem.objectType;
+            }
+          } else {
+            filling = null;
           }
-        } else {
-          filling = null;
+          _fillingContainer[surveyItem.templateID] = filling;
         }
-
-        _fillingContainer[surveyItem.templateID] = filling;
       });
     }
   }

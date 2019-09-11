@@ -40,8 +40,6 @@
         flowData.answerToEvaluate[templateID].data = _ensureTestableValue(fillingContainer[templateID].answer);
         flowData.metadataToEvaluate[templateID].data = _ensureTestableValue(fillingContainer[templateID].metadata);
       });
-
-      console.log(flowData);
     }
 
     function afterEffect(pipe, flowData) {

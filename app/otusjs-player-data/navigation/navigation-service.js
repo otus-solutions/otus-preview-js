@@ -82,7 +82,7 @@
 
         itemsPreviousArray.push(items);
 
-        navigation = ActivityFacadeService.getCurrentSurvey().getNavigationByOrigin(itemsPreviousArray[itemsPreviousArray.length-1].templateID);
+        navigation = ActivityFacadeService.getCurrentSurvey().getNavigationByOrigin(itemsPreviousArray[itemsPreviousArray.length - 1].templateID);
 
         RouteService.setup(navigation);
         //todo model precisa visitar todos os items do grupo
@@ -121,32 +121,14 @@
     function _loadItem(id) {
       var itemsToLoad = null;
       var navigation = null;
-      var itemsArray = [];
 
       if (!id) {
-        //todo
         let firstItem = ActivityFacadeService.getCurrentSurvey().getItems()[0];
         itemsToLoad = ActivityFacadeService.fetchItemGroupByID(firstItem.templateID);
-
-        if(itemsToLoad.length){
-          itemsArray = itemsToLoad;
-          navigation = ActivityFacadeService.fetchNavigationByOrigin(itemsToLoad[itemsToLoad.length-1].templateID);
-        } else {
-          itemsArray.push(itemsToLoad);
-          navigation = ActivityFacadeService.fetchNavigationByOrigin(itemsToLoad.templateID);
-        }
-
+        navigation = ActivityFacadeService.fetchNavigationByOrigin(itemsToLoad[itemsToLoad.length - 1].templateID);
       } else {
-        console.log("passou pelo navegation else");
         itemsToLoad = ActivityFacadeService.fetchItemGroupByID(id);
-
-        if(itemsToLoad.length){
-          itemsArray = itemsToLoad;
-          navigation = ActivityFacadeService.fetchNavigationByOrigin(itemsToLoad[itemsToLoad.length-1].templateID);
-        } else {
-          itemsArray.push(itemsToLoad);
-          navigation = ActivityFacadeService.fetchNavigationByOrigin(itemsToLoad.templateID);
-        }
+        navigation = ActivityFacadeService.fetchNavigationByOrigin(itemsToLoad[itemsToLoad.length - 1].templateID);
       }
 
       if (navigation) {
@@ -159,13 +141,14 @@
       }
 
       //todo: model precisa visitar todos os items do grupo
-      itemsArray.forEach(function (item) {
-         _navigationTracker.visitItem(item.templateID);
+      //_navigationTracker.visitGroup()
+      itemsToLoad.forEach(function (item) {
+        _navigationTracker.visitItem(item.templateID);
       });
       // _navigationTracker.visitItem(itemsArray[0].templateID);
 
       return {
-        items: itemsArray,
+        items: itemsToLoad,
         navigation: navigation
       };
     }

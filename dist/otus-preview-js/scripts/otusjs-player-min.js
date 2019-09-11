@@ -889,7 +889,6 @@
     var self = this;
 
     var SURVEY_ITEM = '<otus-survey-item item-data="itemData" id="{{itemData.templateID}}" style="margin: 0;display:block;" class="animate-switch"/>';
-    // var SURVEY_ITEM_GROUP = '<otus-survey-item-group item-data="itemData" style="margin: 0;display:block;" class="animate-switch"/>';
     var SURVEY_COVER = '<otus-cover />';
 
     /* Public methods */
@@ -897,13 +896,19 @@
     self.showCover = showCover;
     self.remove = remove;
     self.$onInit = onInit;
-    self.ids = [];
-    self.currentItems = [];
 
-    $scope.removeQuestion = removeQuestion;
+    function onInit() {
+      $scope.$parent.$ctrl.playerDisplay = self;
+      $scope.itemData = {};
+      $scope.questions = [];
+      self.currentItems = [];
+      self.ids = [];
+
+    }
+
 
     function _destroyCurrentItems() {
-      if (self.currentItem) {
+      if (self.currentItems.length) {
         self.currentItems.forEach(item => {
           item.destroy();
         });
@@ -913,10 +918,10 @@
     }
 
     function loadItem(itemsData) {
-      if (_shouldLoadItem(itemsData[itemsData.length - 1])) {
+      if (_shouldLoadItem(itemsData)) {
         _destroyCurrentItems();
         _saveQuestion();
-        removeQuestion(itemsData[itemsData.length - 1].templateID);
+        _removeQuestions(itemsData);
 
         $element.find('#pagePlayer').empty();
         for (let i = 0; i < itemsData.length; i++) {
@@ -941,19 +946,17 @@
       }
     }
 
-    function removeQuestion(id) {
-      //todo checar se essa função é usada só nesse componente
-      //remove questão do histórico. Renomear
+    function _removeQuestions(itemsData) {
+      let id = itemsData[0].templateID;
+
       var index = _getIndexQuestionId(id);
       if (index > -1) {
         var length = $scope.questions.length;
         $scope.questions.splice(index, length);
         self.ids.splice(index, length);
 
-      } else {
-        return false;
       }
-      return true;
+
     }
 
     function _setQuestionId(id) {
@@ -970,9 +973,9 @@
     }
 
     function _saveQuestion() {
-      if ($scope.itemData.length) {
-        $scope.itemData.forEach(itemData => {
-          var question = angular.copy(itemData);
+      if (self.currentItems.length) {
+        self.currentItems.forEach(item => {
+          var question = angular.copy(item.itemData);
           question.data = ActivityFacadeService.fetchItemAnswerByTemplateID(question.templateID);
           question.data = question.data ? question.data : _setAnswerBlank();
           $scope.questions.push(question);
@@ -1001,14 +1004,8 @@
       $element.find('#pagePlayer').remove();
     }
 
-    function onInit() {
-      $scope.$parent.$ctrl.playerDisplay = self;
-      $scope.itemData = [];
-      $scope.questions = [];
-    }
-
     function _shouldLoadItem(itemData) {
-      return $scope.itemData && $scope.itemData.templateID !== itemData.templateID;
+      return !self.currentItems.length || (self.currentItems.length && self.currentItems[0].templateID !== itemData[0].templateID);
     }
   }
 }());
@@ -5545,12 +5542,14 @@
         flowData.metadataToEvaluate = {};
 
         CurrentItemService.getItems().forEach(item => {
-          let templateID = item.templateID;
-          flowData.answerToEvaluate[templateID] = {};
-          flowData.answerToEvaluate[templateID].data = {};
+          if(item.isQuestion()){
+            let templateID = item.templateID;
+            flowData.answerToEvaluate[templateID] = {};
+            flowData.answerToEvaluate[templateID].data = {};
 
-          flowData.metadataToEvaluate[templateID] = {};
-          flowData.metadataToEvaluate[templateID].data = {};
+            flowData.metadataToEvaluate[templateID] = {};
+            flowData.metadataToEvaluate[templateID].data = {};
+          }
         });
       } else {
         PlayerService.end();
@@ -5695,8 +5694,6 @@
         flowData.answerToEvaluate[templateID].data = _ensureTestableValue(fillingContainer[templateID].answer);
         flowData.metadataToEvaluate[templateID].data = _ensureTestableValue(fillingContainer[templateID].metadata);
       });
-
-      console.log(flowData);
     }
 
     function afterEffect(pipe, flowData) {
@@ -5857,8 +5854,8 @@
               flowData.validationResult[templateID][validator.name] = !validator.result;
             }
           });
+          flowData.validationResult[templateID].hasError = _hasError(flowData, templateID);
         }
-        flowData.validationResult[templateID].hasError = _hasError(flowData, templateID);
       });
     }
 
@@ -6138,7 +6135,9 @@
     function attachValidationError(validationError) {
       _validationError = validationError;
       _observerArray.forEach(observer => {
-        observer.updateValidation(validationError[observer.itemData.templateID]);
+        if(validationError[observer.itemData.templateID]){
+           observer.updateValidation(validationError[observer.itemData.templateID]);
+        }
       })
     }
 
@@ -6151,13 +6150,7 @@
     }
 
     function fill(filling) {
-      _surveyItemGroup.find(item => {
-        if(item.templateID === filling.questionID){
-          if (item.isQuestion()) {
-            _fillingContainer[filling.questionID] = filling;
-          }
-        }
-      });
+      _fillingContainer[filling.questionID] = filling;
     }
 
     function getFilling(questionID) {
@@ -6171,7 +6164,7 @@
     function getFillingRules(templateID) {
       var options = null;
       _surveyItemGroup.forEach(item => {
-        if(item.templateID === templateID){
+        if (item.templateID === templateID) {
           options = item.fillingRules.options;
         }
       });
@@ -6198,11 +6191,7 @@
     }
 
     function hasItems() {
-      if (_surveyItemGroup && _surveyItemGroup.length) {
-        return true;
-      } else {
-        return false;
-      }
+      return !!(_surveyItemGroup && _surveyItemGroup.length);
     }
 
     function shouldApplyAnswer() {
@@ -6220,29 +6209,27 @@
     function observerRegistry(observer) {
       observer.pushData(_fillingContainer[observer.itemData.templateID]);
       _observerArray.push(observer);
-      console.log(_observerArray)
     }
 
     function setup(data) {
       clearData();
       _surveyItemGroup = data.items;
       _navigation = data.navigation;
-      console.log(_surveyItemGroup);
-      console.log(_navigation);
 
       _surveyItemGroup.forEach(function (surveyItem) {
-        let filling;
         if (surveyItem.isQuestion()) {
-          filling = ActivityFacadeService.getFillingByQuestionID(surveyItem.templateID);
-          if (!filling) {
-            filling = ActivityFacadeService.createQuestionFill(surveyItem);
-            filling.answerType = surveyItem.objectType;
+          let filling;
+          if (surveyItem.isQuestion()) {
+            filling = ActivityFacadeService.getFillingByQuestionID(surveyItem.templateID);
+            if (!filling) {
+              filling = ActivityFacadeService.createQuestionFill(surveyItem);
+              filling.answerType = surveyItem.objectType;
+            }
+          } else {
+            filling = null;
           }
-        } else {
-          filling = null;
+          _fillingContainer[surveyItem.templateID] = filling;
         }
-
-        _fillingContainer[surveyItem.templateID] = filling;
       });
     }
   }
@@ -6321,14 +6308,16 @@
 
     function getGroupItemsByMemberID(id) {
       let surveyItemsGroup = getSurvey().getGroupByItemID(id);
+      let groupItems = [];
 
-      if(surveyItemsGroup){
-        return surveyItemsGroup.members.map(member => {
+      if (surveyItemsGroup) {
+        groupItems = surveyItemsGroup.members.map(member => {
           return getItemByTemplateID(member.id);
         });
       } else {
-        return getItemByTemplateID(id);
+        groupItems.push(getItemByTemplateID(id));
       }
+      return groupItems;
     }
 
     function getNavigations() {
@@ -6469,7 +6458,7 @@
 
         itemsPreviousArray.push(items);
 
-        navigation = ActivityFacadeService.getCurrentSurvey().getNavigationByOrigin(itemsPreviousArray[itemsPreviousArray.length-1].templateID);
+        navigation = ActivityFacadeService.getCurrentSurvey().getNavigationByOrigin(itemsPreviousArray[itemsPreviousArray.length - 1].templateID);
 
         RouteService.setup(navigation);
         //todo model precisa visitar todos os items do grupo
@@ -6508,32 +6497,14 @@
     function _loadItem(id) {
       var itemsToLoad = null;
       var navigation = null;
-      var itemsArray = [];
 
       if (!id) {
-        //todo
         let firstItem = ActivityFacadeService.getCurrentSurvey().getItems()[0];
         itemsToLoad = ActivityFacadeService.fetchItemGroupByID(firstItem.templateID);
-
-        if(itemsToLoad.length){
-          itemsArray = itemsToLoad;
-          navigation = ActivityFacadeService.fetchNavigationByOrigin(itemsToLoad[itemsToLoad.length-1].templateID);
-        } else {
-          itemsArray.push(itemsToLoad);
-          navigation = ActivityFacadeService.fetchNavigationByOrigin(itemsToLoad.templateID);
-        }
-
+        navigation = ActivityFacadeService.fetchNavigationByOrigin(itemsToLoad[itemsToLoad.length - 1].templateID);
       } else {
-        console.log("passou pelo navegation else");
         itemsToLoad = ActivityFacadeService.fetchItemGroupByID(id);
-
-        if(itemsToLoad.length){
-          itemsArray = itemsToLoad;
-          navigation = ActivityFacadeService.fetchNavigationByOrigin(itemsToLoad[itemsToLoad.length-1].templateID);
-        } else {
-          itemsArray.push(itemsToLoad);
-          navigation = ActivityFacadeService.fetchNavigationByOrigin(itemsToLoad.templateID);
-        }
+        navigation = ActivityFacadeService.fetchNavigationByOrigin(itemsToLoad[itemsToLoad.length - 1].templateID);
       }
 
       if (navigation) {
@@ -6546,13 +6517,14 @@
       }
 
       //todo: model precisa visitar todos os items do grupo
-      itemsArray.forEach(function (item) {
-         _navigationTracker.visitItem(item.templateID);
+      //_navigationTracker.visitGroup()
+      itemsToLoad.forEach(function (item) {
+        _navigationTracker.visitItem(item.templateID);
       });
       // _navigationTracker.visitItem(itemsArray[0].templateID);
 
       return {
-        items: itemsArray,
+        items: itemsToLoad,
         navigation: navigation
       };
     }
@@ -7002,27 +6974,29 @@
       _answers = answerObject;
 
       currentItemService.getItems().forEach(function (surveyItem) {
-        let templateID = surveyItem.templateID;
-        let answer = answerObject[templateID];
+        if (surveyItem.isQuestion()) {
+          let templateID = surveyItem.templateID;
+          let answer = answerObject[templateID];
 
-        let elementRegister = ElementRegisterFactory.create(templateID, answer);
+          let elementRegister = ElementRegisterFactory.create(templateID, answer);
 
-        if (currentItemService.getFilling(templateID).forceAnswer) {
-          Object.keys(surveyItem.fillingRules.options).filter(function (validator) {
-            if (!surveyItem.fillingRules.options[validator].data.canBeIgnored) {
+          if (currentItemService.getFilling(templateID).forceAnswer) {
+            Object.keys(surveyItem.fillingRules.options).filter(function (validator) {
+              if (!surveyItem.fillingRules.options[validator].data.canBeIgnored) {
+                _addValidator(elementRegister, validator, surveyItem);
+              }
+            });
+          } else {
+            Object.keys(surveyItem.fillingRules.options).map(function (validator) {
               _addValidator(elementRegister, validator, surveyItem);
-            }
-          });
-        } else {
-          Object.keys(surveyItem.fillingRules.options).map(function (validator) {
-            _addValidator(elementRegister, validator, surveyItem);
-          });
-          _setupImmutableDateValidation(elementRegister, surveyItem);
-        }
-        _elementRegisters[templateID] = elementRegister;
+            });
+            _setupImmutableDateValidation(elementRegister, surveyItem);
+          }
+          _elementRegisters[templateID] = elementRegister;
 
-        ValidationService.unregisterElement(elementRegister.id);
-        ValidationService.registerElement(elementRegister);
+          ValidationService.unregisterElement(elementRegister.id);
+          ValidationService.registerElement(elementRegister);
+        }
       });
     }
 
