@@ -33,18 +33,19 @@
     self.showCover = showCover;
     self.remove = remove;
     self.$onInit = onInit;
-    self.ids = [];
-    self.currentItems = [];
 
     function onInit() {
       $scope.$parent.$ctrl.playerDisplay = self;
       $scope.itemData = {};
       $scope.questions = [];
+      self.currentItems = [];
+      self.ids = [];
+
     }
 
 
     function _destroyCurrentItems() {
-      if (self.currentItem.length) {
+      if (self.currentItems.length) {
         self.currentItems.forEach(item => {
           item.destroy();
         });
@@ -141,7 +142,7 @@
     }
 
     function _shouldLoadItem(itemData) {
-      return self.currentItems.length && self.currentItems[0].templateID !== itemData[0].templateID;
+      return !self.currentItems.length || (self.currentItems.length && self.currentItems[0].templateID !== itemData[0].templateID);
     }
   }
 }());
