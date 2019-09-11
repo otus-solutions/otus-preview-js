@@ -26,7 +26,6 @@
     var self = this;
 
     var SURVEY_ITEM = '<otus-survey-item item-data="itemData" id="{{itemData.templateID}}" style="margin: 0;display:block;" class="animate-switch"/>';
-    // var SURVEY_ITEM_GROUP = '<otus-survey-item-group item-data="itemData" style="margin: 0;display:block;" class="animate-switch"/>';
     var SURVEY_COVER = '<otus-cover />';
 
     /* Public methods */
@@ -37,7 +36,12 @@
     self.ids = [];
     self.currentItems = [];
 
-    $scope.removeQuestion = removeQuestion;
+    function onInit() {
+      $scope.$parent.$ctrl.playerDisplay = self;
+      $scope.itemData = {};
+      $scope.questions = [];
+    }
+
 
     function _destroyCurrentItems() {
       if (self.currentItem.length) {
@@ -53,7 +57,7 @@
       if (_shouldLoadItem(itemsData)) {
         _destroyCurrentItems();
         _saveQuestion();
-        removeQuestion(itemsData[itemsData.length - 1].templateID);
+        _removeQuestions(itemsData);
 
         $element.find('#pagePlayer').empty();
         for (let i = 0; i < itemsData.length; i++) {
@@ -78,19 +82,17 @@
       }
     }
 
-    function removeQuestion(id) {
-      //todo checar se essa função é usada só nesse componente
-      //remove questão do histórico. Renomear
+    function _removeQuestions(itemsData) {
+      let id = itemsData[0].templateID;
+
       var index = _getIndexQuestionId(id);
       if (index > -1) {
         var length = $scope.questions.length;
         $scope.questions.splice(index, length);
         self.ids.splice(index, length);
 
-      } else {
-        return false;
       }
-      return true;
+
     }
 
     function _setQuestionId(id) {
@@ -107,9 +109,9 @@
     }
 
     function _saveQuestion() {
-      if ($scope.itemData.length) {
-        $scope.itemData.forEach(itemData => {
-          var question = angular.copy(itemData);
+      if (self.currentItems.length) {
+        self.currentItems.forEach(item => {
+          var question = angular.copy(item.itemData);
           question.data = ActivityFacadeService.fetchItemAnswerByTemplateID(question.templateID);
           question.data = question.data ? question.data : _setAnswerBlank();
           $scope.questions.push(question);
@@ -138,14 +140,8 @@
       $element.find('#pagePlayer').remove();
     }
 
-    function onInit() {
-      $scope.$parent.$ctrl.playerDisplay = self;
-      $scope.itemData = [];
-      $scope.questions = [];
-    }
-
     function _shouldLoadItem(itemData) {
-      return $scope.itemData && $scope.itemData[0].templateID !== itemData[0].templateID;
+      return self.currentItems.length && self.currentItems[0].templateID !== itemData[0].templateID;
     }
   }
 }());
