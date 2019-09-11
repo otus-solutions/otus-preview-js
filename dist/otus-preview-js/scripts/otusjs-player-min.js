@@ -903,7 +903,7 @@
     $scope.removeQuestion = removeQuestion;
 
     function _destroyCurrentItems() {
-      if (self.currentItem.length) {
+      if (self.currentItem) {
         self.currentItems.forEach(item => {
           item.destroy();
         });
@@ -913,7 +913,7 @@
     }
 
     function loadItem(itemsData) {
-      if (_shouldLoadItem(itemsData)) {
+      if (_shouldLoadItem(itemsData[itemsData.length - 1])) {
         _destroyCurrentItems();
         _saveQuestion();
         removeQuestion(itemsData[itemsData.length - 1].templateID);
@@ -1008,7 +1008,7 @@
     }
 
     function _shouldLoadItem(itemData) {
-      return $scope.itemData && $scope.itemData[0].templateID !== itemData[0].templateID;
+      return $scope.itemData && $scope.itemData.templateID !== itemData.templateID;
     }
   }
 }());
@@ -2681,7 +2681,7 @@
   angular
     .module('otusjs.player.component')
     .component('otusGridTextQuestion', {
-      template:'<div ng-repeat="line in ::$ctrl.itemData.getLinesList()" ng-init="outerIndex=$index" layout="row" flex><div ng-repeat="gridText in ::line.getGridTextList()" ng-init="innerIndex=$index" layout-padding layout="row" flex><md-input-container flex><label>{{ ::gridText.label.ptBR.formattedText }}</label><div><textarea ng-model="$ctrl.answerArray[outerIndex][innerIndex].value" ng-blur="$ctrl.update(outerIndex, innerIndex)" ng-disabled="$ctrl.view"></textarea></div><div style="color: gray;">{{::gridText.unit.ptBR.plainText}}</div></md-input-container></div></div>',
+      template:'<div ng-repeat="line in ::$ctrl.itemData.getLinesList()" ng-init="outerIndex=$index" layout="row" flex><div ng-repeat="gridText in ::line.getGridTextList()" ng-init="innerIndex=$index" layout-padding layout="row" flex><md-input-container flex><label ng-bind-html="::gridText.label.ptBR.formattedText"></label><div><textarea ng-model="$ctrl.answerArray[outerIndex][innerIndex].value" ng-blur="$ctrl.update(outerIndex, innerIndex)" ng-disabled="$ctrl.view"></textarea></div><div style="color: gray;" ng-bind-html="::gridText.unit.ptBR.plainText"></div></md-input-container></div></div>',
       controller: "otusGridTextQuestionCtrl as $ctrl",
       bindings: {
         itemData: '<',
@@ -2785,7 +2785,7 @@
   angular
     .module('otusjs.player.component')
     .component('otusGridTextQuestionView', {
-      template:'<div ng-repeat="line in ::$ctrl.itemData.getLinesList()" ng-init="outerIndex=$index" layout="row" flex><div ng-repeat="gridText in ::line.getGridTextList()" ng-init="innerIndex=$index" layout-padding layout="row" flex><md-input-container flex><label>{{ ::gridText.label.ptBR.formattedText }}</label><div><textarea ng-model="$ctrl.answerArray[outerIndex][innerIndex].value" ng-blur="$ctrl.update(outerIndex, innerIndex)" ng-disabled="$ctrl.view"></textarea></div><div style="color: gray;">{{::gridText.unit.ptBR.plainText}}</div></md-input-container></div></div>',
+      template:'<div ng-repeat="line in ::$ctrl.itemData.getLinesList()" ng-init="outerIndex=$index" layout="row" flex><div ng-repeat="gridText in ::line.getGridTextList()" ng-init="innerIndex=$index" layout-padding layout="row" flex><md-input-container flex><label ng-bind-html="::gridText.label.ptBR.formattedText"></label><div><textarea ng-model="$ctrl.answerArray[outerIndex][innerIndex].value" ng-blur="$ctrl.update(outerIndex, innerIndex)" ng-disabled="$ctrl.view"></textarea></div><div style="color: gray;" ng-bind-html="::gridText.unit.ptBR.plainText"></div></md-input-container></div></div>',
       controller: "otusGridTextQuestionViewCtrl as $ctrl",
       bindings: {
         itemData: '<'
@@ -2813,7 +2813,7 @@
   angular
     .module('otusjs.player.component')
     .component('otusGridIntegerQuestion', {
-      template:'<div ng-repeat="line in ::$ctrl.itemData.getLinesList()" ng-init="outerIndex=$index" layout="row" flex><div ng-repeat="gridNumber in ::line.getGridIntegerList()" ng-init="innerIndex=$index" layout-padding layout="row" flex><md-input-container flex><label>{{ ::gridNumber.label.ptBR.formattedText }}</label><div><input type="text" numbers-only ng-model="$ctrl.answerArray[outerIndex][innerIndex].value" ng-blur="$ctrl.update(outerIndex, innerIndex)" ng-disabled="$ctrl.view"></div><div style="color: gray;">{{::gridNumber.unit.ptBR.plainText}}</div></md-input-container></div></div>',
+      template:'<div ng-repeat="line in ::$ctrl.itemData.getLinesList()" ng-init="outerIndex=$index" layout="row" flex><div ng-repeat="gridNumber in ::line.getGridIntegerList()" ng-init="innerIndex=$index" layout-padding layout="row" flex><md-input-container flex><label ng-bind-html="::gridNumber.label.ptBR.formattedText"></label><div><input type="text" numbers-only ng-model="$ctrl.answerArray[outerIndex][innerIndex].value" ng-blur="$ctrl.update(outerIndex, innerIndex)" ng-disabled="$ctrl.view"></div><div style="color: gray;" ng-bind-html="::gridNumber.unit.ptBR.plainText"></div></md-input-container></div></div>',
       controller: "otusGridIntegerQuestionCtrl as $ctrl",
       bindings: {
         itemData: '<',
@@ -2924,7 +2924,7 @@
   angular
     .module('otusjs.player.component')
     .component('otusGridIntegerQuestionView', {
-      template:'<div ng-repeat="line in ::$ctrl.itemData.getLinesList()" ng-init="outerIndex=$index" layout="row" flex><div ng-repeat="gridNumber in ::line.getGridIntegerList()" ng-init="innerIndex=$index" layout-padding layout="row" flex><md-input-container flex><label>{{ ::gridNumber.label.ptBR.formattedText }}</label><div><input type="text" numbers-only ng-model="$ctrl.answerArray[outerIndex][innerIndex].value" ng-blur="$ctrl.update(outerIndex, innerIndex)" ng-disabled="$ctrl.view"></div><div style="color: gray;">{{::gridNumber.unit.ptBR.plainText}}</div></md-input-container></div></div>',
+      template:'<div ng-repeat="line in ::$ctrl.itemData.getLinesList()" ng-init="outerIndex=$index" layout="row" flex><div ng-repeat="gridNumber in ::line.getGridIntegerList()" ng-init="innerIndex=$index" layout-padding layout="row" flex><md-input-container flex><label ng-bind-html="::gridNumber.label.ptBR.formattedText"></label><div><input type="text" numbers-only ng-model="$ctrl.answerArray[outerIndex][innerIndex].value" ng-blur="$ctrl.update(outerIndex, innerIndex)" ng-disabled="$ctrl.view"></div><div style="color: gray;" ng-bind-html="::gridNumber.unit.ptBR.plainText"></div></md-input-container></div></div>',
       controller: "otusGridIntegerQuestionViewCtrl as $ctrl",
       bindings: {
         itemData: '<'
@@ -4999,7 +4999,6 @@
 
     self.bindComponent = bindComponent;
     self.getItemData = getItemData;
-    self.getSurveyItemGroupData = getSurveyItemGroupData;
     self.goAhead = goAhead;
     self.goBack = goBack;
     self.setGoBackTo = setGoBackTo;
@@ -5047,14 +5046,6 @@
 
     function getItemData() {
       return ActivityFacadeService.getCurrentItem().getItems();
-    }
-
-    function getSurveyItemGroupData() {
-      return ActivityFacadeService.getCurrentItem().getItems();
-    }
-
-    function getFake() {
-      return ActivityFacadeService.getCurrentSurvey().getItems().splice(0,3);
     }
 
     function goAhead() {
@@ -5649,7 +5640,8 @@
     function beforeEffect(pipe, flowData) {}
 
     function effect(pipe, flowData) {
-      console.log("UpdateItem"+flowData);
+      console.log("UpdateItem");
+      console.log(flowData);
       NavigationService.updateItemTracking();
     }
 
@@ -6090,7 +6082,6 @@
 
     function setup() {
       CurrentItemService.clearData();
-      CurrentSurveyService.setup();
     }
 
     function clearSkippedAnswers() {
@@ -6191,6 +6182,7 @@
     function getItems() {
       return _surveyItemGroup;
     }
+
     function getItemsByTemplateID(templateID) {
       return _surveyItemGroup.find(item => {
         return item.templateID === templateID
@@ -6284,7 +6276,6 @@
     self.initialize = initialize;
     self.finalize = finalize;
     self.save = save;
-    self.setup = setup;
     self.clearSkippedAnswers = clearSkippedAnswers;
     self.getNavigationTracker = getNavigationTracker;
     self.getWholeTemplateStaticVariableList = getWholeTemplateStaticVariableList;
@@ -6329,22 +6320,15 @@
     }
 
     function getGroupItemsByMemberID(id) {
-      // return getFake(id);
-      return getSurvey().getGroupByItemID(id).members.map(member => {
-        return getItemByTemplateID(member.id);
-      });
-    }
+      let surveyItemsGroup = getSurvey().getGroupByItemID(id);
 
-    function getFake(id) {
-      console.log(getSurvey());
-      return getSurvey().getSurveyItemGroupList(id).members.map(member => {
-        return getItemByTemplateID(member.id);
-        // return member.id;
-      });
-
-      // return getSurvey().getSurveyItemGroupList().getGroupByMember(id).members.map(member => {
-      //   return getItemByTemplateID(member.id);
-      // });
+      if(surveyItemsGroup){
+        return surveyItemsGroup.members.map(member => {
+          return getItemByTemplateID(member.id);
+        });
+      } else {
+        return getItemByTemplateID(id);
+      }
     }
 
     function getNavigations() {
@@ -6375,9 +6359,6 @@
     function save() {
       ActivityFacadeService.saveActivitySurvey();
     }
-
-    //todo: ver se alguém chama esse método
-    function setup() { }
 
     function clearSkippedAnswers() {
       ActivityFacadeService.clearSkippedAnswers();
@@ -6432,7 +6413,6 @@
     self.updateItemTracking = updateItemTracking;
 
     function getNextItems() {
-      console.log(ActivityFacadeService.getCurrentItem().getNavigation().listRoutes());
       return ActivityFacadeService.getCurrentItem().getNavigation().listRoutes().map(function (route) {
         return ActivityFacadeService.getCurrentSurvey().getItemByTemplateID(route.destination);
       });
@@ -6465,6 +6445,7 @@
 
     function initialize() {
       _navigationTracker = ActivityFacadeService.getCurrentSurvey().getSurvey().getNavigationTracker();
+      console.log(_navigationTracker);
     }
 
     function loadNextItem() {
@@ -6482,15 +6463,20 @@
 
     function loadPreviousItem() {
       if (hasPrevious()) {
+        var itemsPreviousArray = [];
         var items = getPreviousItem();
-        var navigation = ActivityFacadeService.getCurrentSurvey().getNavigationByOrigin(items.templateID);
+        var navigation = null;
+
+        itemsPreviousArray.push(items);
+
+        navigation = ActivityFacadeService.getCurrentSurvey().getNavigationByOrigin(itemsPreviousArray[itemsPreviousArray.length-1].templateID);
 
         RouteService.setup(navigation);
         //todo model precisa visitar todos os items do grupo
-        _navigationTracker.visitItem(items.templateID);
+        _navigationTracker.visitItem(itemsPreviousArray[0].templateID);
 
         return {
-          items: items,
+          items: itemsPreviousArray,
           navigation: navigation
         };
       }
@@ -6522,16 +6508,32 @@
     function _loadItem(id) {
       var itemsToLoad = null;
       var navigation = null;
+      var itemsArray = [];
 
       if (!id) {
         //todo
         let firstItem = ActivityFacadeService.getCurrentSurvey().getItems()[0];
         itemsToLoad = ActivityFacadeService.fetchItemGroupByID(firstItem.templateID);
-        navigation = ActivityFacadeService.getCurrentSurvey().getNavigations()[2];
+
+        if(itemsToLoad.length){
+          itemsArray = itemsToLoad;
+          navigation = ActivityFacadeService.fetchNavigationByOrigin(itemsToLoad[itemsToLoad.length-1].templateID);
+        } else {
+          itemsArray.push(itemsToLoad);
+          navigation = ActivityFacadeService.fetchNavigationByOrigin(itemsToLoad.templateID);
+        }
+
       } else {
         console.log("passou pelo navegation else");
         itemsToLoad = ActivityFacadeService.fetchItemGroupByID(id);
-        navigation = ActivityFacadeService.fetchNavigationByOrigin(itemsToLoad[itemsToLoad.length-1].templateID);
+
+        if(itemsToLoad.length){
+          itemsArray = itemsToLoad;
+          navigation = ActivityFacadeService.fetchNavigationByOrigin(itemsToLoad[itemsToLoad.length-1].templateID);
+        } else {
+          itemsArray.push(itemsToLoad);
+          navigation = ActivityFacadeService.fetchNavigationByOrigin(itemsToLoad.templateID);
+        }
       }
 
       if (navigation) {
@@ -6544,10 +6546,13 @@
       }
 
       //todo: model precisa visitar todos os items do grupo
-      // _navigationTracker.visitItem(itemsToLoad.templateID);
+      itemsArray.forEach(function (item) {
+         _navigationTracker.visitItem(item.templateID);
+      });
+      // _navigationTracker.visitItem(itemsArray[0].templateID);
 
       return {
-        items: itemsToLoad,
+        items: itemsArray,
         navigation: navigation
       };
     }

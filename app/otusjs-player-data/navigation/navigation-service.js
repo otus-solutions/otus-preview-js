@@ -26,7 +26,6 @@
     self.updateItemTracking = updateItemTracking;
 
     function getNextItems() {
-      console.log(ActivityFacadeService.getCurrentItem().getNavigation().listRoutes());
       return ActivityFacadeService.getCurrentItem().getNavigation().listRoutes().map(function (route) {
         return ActivityFacadeService.getCurrentSurvey().getItemByTemplateID(route.destination);
       });
@@ -59,6 +58,7 @@
 
     function initialize() {
       _navigationTracker = ActivityFacadeService.getCurrentSurvey().getSurvey().getNavigationTracker();
+      console.log(_navigationTracker);
     }
 
     function loadNextItem() {
@@ -76,15 +76,20 @@
 
     function loadPreviousItem() {
       if (hasPrevious()) {
+        var itemsPreviousArray = [];
         var items = getPreviousItem();
-        var navigation = ActivityFacadeService.getCurrentSurvey().getNavigationByOrigin(items.templateID);
+        var navigation = null;
+
+        itemsPreviousArray.push(items);
+
+        navigation = ActivityFacadeService.getCurrentSurvey().getNavigationByOrigin(itemsPreviousArray[itemsPreviousArray.length-1].templateID);
 
         RouteService.setup(navigation);
         //todo model precisa visitar todos os items do grupo
-        _navigationTracker.visitItem(items.templateID);
+        _navigationTracker.visitItem(itemsPreviousArray[0].templateID);
 
         return {
-          items: items,
+          items: itemsPreviousArray,
           navigation: navigation
         };
       }
@@ -116,16 +121,32 @@
     function _loadItem(id) {
       var itemsToLoad = null;
       var navigation = null;
+      var itemsArray = [];
 
       if (!id) {
         //todo
         let firstItem = ActivityFacadeService.getCurrentSurvey().getItems()[0];
         itemsToLoad = ActivityFacadeService.fetchItemGroupByID(firstItem.templateID);
-        navigation = ActivityFacadeService.getCurrentSurvey().getNavigations()[2];
+
+        if(itemsToLoad.length){
+          itemsArray = itemsToLoad;
+          navigation = ActivityFacadeService.fetchNavigationByOrigin(itemsToLoad[itemsToLoad.length-1].templateID);
+        } else {
+          itemsArray.push(itemsToLoad);
+          navigation = ActivityFacadeService.fetchNavigationByOrigin(itemsToLoad.templateID);
+        }
+
       } else {
         console.log("passou pelo navegation else");
         itemsToLoad = ActivityFacadeService.fetchItemGroupByID(id);
-        navigation = ActivityFacadeService.fetchNavigationByOrigin(itemsToLoad[itemsToLoad.length-1].templateID);
+
+        if(itemsToLoad.length){
+          itemsArray = itemsToLoad;
+          navigation = ActivityFacadeService.fetchNavigationByOrigin(itemsToLoad[itemsToLoad.length-1].templateID);
+        } else {
+          itemsArray.push(itemsToLoad);
+          navigation = ActivityFacadeService.fetchNavigationByOrigin(itemsToLoad.templateID);
+        }
       }
 
       if (navigation) {
@@ -138,10 +159,13 @@
       }
 
       //todo: model precisa visitar todos os items do grupo
-      // _navigationTracker.visitItem(itemsToLoad.templateID);
+      itemsArray.forEach(function (item) {
+         _navigationTracker.visitItem(item.templateID);
+      });
+      // _navigationTracker.visitItem(itemsArray[0].templateID);
 
       return {
-        items: itemsToLoad,
+        items: itemsArray,
         navigation: navigation
       };
     }

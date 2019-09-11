@@ -26,7 +26,6 @@
     self.initialize = initialize;
     self.finalize = finalize;
     self.save = save;
-    self.setup = setup;
     self.clearSkippedAnswers = clearSkippedAnswers;
     self.getNavigationTracker = getNavigationTracker;
     self.getWholeTemplateStaticVariableList = getWholeTemplateStaticVariableList;
@@ -71,22 +70,15 @@
     }
 
     function getGroupItemsByMemberID(id) {
-      // return getFake(id);
-      return getSurvey().getGroupByItemID(id).members.map(member => {
-        return getItemByTemplateID(member.id);
-      });
-    }
+      let surveyItemsGroup = getSurvey().getGroupByItemID(id);
 
-    function getFake(id) {
-      console.log(getSurvey());
-      return getSurvey().getSurveyItemGroupList(id).members.map(member => {
-        return getItemByTemplateID(member.id);
-        // return member.id;
-      });
-
-      // return getSurvey().getSurveyItemGroupList().getGroupByMember(id).members.map(member => {
-      //   return getItemByTemplateID(member.id);
-      // });
+      if(surveyItemsGroup){
+        return surveyItemsGroup.members.map(member => {
+          return getItemByTemplateID(member.id);
+        });
+      } else {
+        return getItemByTemplateID(id);
+      }
     }
 
     function getNavigations() {
@@ -117,9 +109,6 @@
     function save() {
       ActivityFacadeService.saveActivitySurvey();
     }
-
-    //todo: ver se alguém chama esse método
-    function setup() { }
 
     function clearSkippedAnswers() {
       ActivityFacadeService.clearSkippedAnswers();

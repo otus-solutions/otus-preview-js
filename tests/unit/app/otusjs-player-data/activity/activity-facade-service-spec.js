@@ -123,18 +123,6 @@ describe('ActivityFacadeService', function() {
 
   });
 
-  describe('setup method', function() {
-
-    it('should keep a reference to survey into activity module', function() {
-      spyOn(Mock.CurrentSurveyService, 'setup');
-
-      service.setup();
-
-      expect(Mock.CurrentSurveyService.setup).toHaveBeenCalledWith();
-    });
-
-  });
-
   describe('getWholeTemplateStaticVariableList method', function() {
 
     it('should keep a reference to variable into activity module', function() {

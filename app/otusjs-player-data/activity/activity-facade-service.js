@@ -89,7 +89,6 @@
 
     function setup() {
       CurrentItemService.clearData();
-      CurrentSurveyService.setup();
     }
 
     function clearSkippedAnswers() {
