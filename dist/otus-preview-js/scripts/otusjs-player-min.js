@@ -546,7 +546,7 @@
   angular
     .module('otusjs.player.component')
     .component('gridIntegerQuestionView', {
-      template:'<div id="answer" ng-if="$ctrl.item.hasAnswer" layout-fill><p class="md-caption" style="color: gray;">Resposta</p><div ng-repeat="position in $ctrl.item.answer" layout="row"><div ng-repeat="gridInteger in position.positions" layout="column" flex layout-margin><md-input-container flex><label>{{gridInteger.label.ptBR.formattedText}}</label> <textarea type="text" ng-model="gridInteger.value" scrolling="no" style="overflow:hidden; resize:none;" ng-disabled="true"></textarea><div style="color: gray;" ng-bind-html="gridInteger.unit.ptBR.formattedText"></div></md-input-container></div></div></div><div id="metadata" ng-if="$ctrl.item.hasMetadata" layout-fill><p class="md-caption" style="color: gray;">Metadado</p><p ng-bind-html="$ctrl.item.metadata.label.ptBR.formattedText"></p></div><div id="comment" ng-if="$ctrl.item.hasComment" layout-fill><p class="md-caption" style="color: gray;">Comentário</p><p ng-bind-html="$ctrl.item.comment"></p></div>',
+      template:'<div id="answer" ng-if="$ctrl.item.hasAnswer" layout-fill><p class="md-caption" style="color: gray;">Resposta</p><div ng-repeat="position in $ctrl.item.answer" layout="row"><div ng-repeat="gridInteger in position.positions" layout="column" flex layout-margin><md-input-container flex><label ng-bind-html="gridInteger.label.ptBR.formattedText"></label> <textarea type="text" ng-model="gridInteger.value" scrolling="no" style="overflow:hidden; resize:none;" ng-disabled="true"></textarea><div style="color: gray;" ng-bind-html="gridInteger.unit.ptBR.formattedText"></div></md-input-container></div></div></div><div id="metadata" ng-if="$ctrl.item.hasMetadata" layout-fill><p class="md-caption" style="color: gray;">Metadado</p><p ng-bind-html="$ctrl.item.metadata.label.ptBR.formattedText"></p></div><div id="comment" ng-if="$ctrl.item.hasComment" layout-fill><p class="md-caption" style="color: gray;">Comentário</p><p ng-bind-html="$ctrl.item.comment"></p></div>',
       controller: Controller,
       bindings: {
         filters: '=',
@@ -564,7 +564,7 @@
   angular
     .module('otusjs.player.component')
     .component('gridTextQuestionView', {
-      template:'<div id="answer" ng-if="$ctrl.item.hasAnswer" layout-fill><p class="md-caption" style="color: gray;">Resposta</p><div ng-repeat="position in $ctrl.item.answer" layout="row"><div ng-repeat="gridInteger in position.positions" layout="column" flex layout-margin><md-input-container flex><label>{{gridInteger.label.ptBR.formattedText}}</label> <textarea type="text" ng-model="gridInteger.value" scrolling="no" style="overflow:hidden; resize:none;" ng-disabled="true"></textarea><div style="color: gray;" ng-bind-html="gridInteger.unit.ptBR.formattedText"></div></md-input-container></div></div></div><div id="metadata" ng-if="$ctrl.item.hasMetadata" layout-fill><p class="md-caption" style="color: gray;">Metadado</p><p ng-bind-html="$ctrl.item.metadata.label.ptBR.formattedText"></p></div><div id="comment" ng-if="$ctrl.item.hasComment" layout-fill><p class="md-caption" style="color: gray;">Comentário</p><p ng-bind-html="$ctrl.item.comment"></p></div>',
+      template:'<div id="answer" ng-if="$ctrl.item.hasAnswer" layout-fill><p class="md-caption" style="color: gray;">Resposta</p><div ng-repeat="position in $ctrl.item.answer" layout="row"><div ng-repeat="gridInteger in position.positions" layout="column" flex layout-margin><md-input-container flex><label ng-bind-html="gridInteger.label.ptBR.formattedText"></label> <textarea type="text" ng-model="gridInteger.value" scrolling="no" style="overflow:hidden; resize:none;" ng-disabled="true"></textarea><div style="color: gray;" ng-bind-html="gridInteger.unit.ptBR.formattedText"></div></md-input-container></div></div></div><div id="metadata" ng-if="$ctrl.item.hasMetadata" layout-fill><p class="md-caption" style="color: gray;">Metadado</p><p ng-bind-html="$ctrl.item.metadata.label.ptBR.formattedText"></p></div><div id="comment" ng-if="$ctrl.item.hasComment" layout-fill><p class="md-caption" style="color: gray;">Comentário</p><p ng-bind-html="$ctrl.item.comment"></p></div>',
       controller: Controller,
       bindings: {
         filters: '=',
@@ -6502,9 +6502,11 @@
         let firstItem = ActivityFacadeService.getCurrentSurvey().getItems()[0];
         itemsToLoad = ActivityFacadeService.fetchItemGroupByID(firstItem.templateID);
         navigation = ActivityFacadeService.fetchNavigationByOrigin(itemsToLoad[itemsToLoad.length - 1].templateID);
-      } else {
+      } else if (id !== 'END NODE') {
         itemsToLoad = ActivityFacadeService.fetchItemGroupByID(id);
         navigation = ActivityFacadeService.fetchNavigationByOrigin(itemsToLoad[itemsToLoad.length - 1].templateID);
+      } else {
+         navigation = ActivityFacadeService.fetchNavigationByOrigin(id);
       }
 
       if (navigation) {

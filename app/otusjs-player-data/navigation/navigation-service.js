@@ -126,9 +126,11 @@
         let firstItem = ActivityFacadeService.getCurrentSurvey().getItems()[0];
         itemsToLoad = ActivityFacadeService.fetchItemGroupByID(firstItem.templateID);
         navigation = ActivityFacadeService.fetchNavigationByOrigin(itemsToLoad[itemsToLoad.length - 1].templateID);
-      } else {
+      } else if (id !== 'END NODE') {
         itemsToLoad = ActivityFacadeService.fetchItemGroupByID(id);
         navigation = ActivityFacadeService.fetchNavigationByOrigin(itemsToLoad[itemsToLoad.length - 1].templateID);
+      } else {
+         navigation = ActivityFacadeService.fetchNavigationByOrigin(id);
       }
 
       if (navigation) {
