@@ -34,8 +34,6 @@
       self.filling = {};
       self.filling.questionID = self.itemData.templateID;
 
-
-      //todo: checar se uma função exposta no self pode ser acessada via scope ($scope.$parent.$ctrl.addToCurrentItems() )
       $scope.$parent.$ctrl.currentItems.push(self);
       CurrentItemService.observerRegistry(self);
 
@@ -46,8 +44,6 @@
 
     function updateValidation(validationMap) {
       self.$error = validationMap;
-
-      console.log(self.$error);
 
       if (self.$error.hasError) {
         self.questionComponent.setError(self.$error);
