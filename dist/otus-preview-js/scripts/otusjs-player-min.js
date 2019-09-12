@@ -868,11 +868,11 @@
     .module('otusjs.player.component')
     .component('otusPlayerDisplay', {
       template:'<span flex="5"></span><div layout="row" flex><span flex="10"></span><div flex layout="column"><answer-view ng-repeat="item in questions" ng-show="questions.length" go-back="$ctrl.goBack()" icon="item.objectType" item-data="item" question="{{item.label.ptBR.formattedText}}"></answer-view><div flex layout="column" id="pagePlayer"></div></div></div>',
-      controller: Controller,
+      controller: 'otusPlayerDisplayCtrl as $ctrl',
       bindings: {
         goBack: '&'
       }
-    });
+    }).controller('otusPlayerDisplayCtrl', Controller);
 
   Controller.$inject = [
     '$scope',
@@ -892,10 +892,10 @@
     var SURVEY_COVER = '<otus-cover />';
 
     /* Public methods */
+    self.$onInit = onInit;
     self.loadItem = loadItem;
     self.showCover = showCover;
     self.remove = remove;
-    self.$onInit = onInit;
     self.currentItems = [];
 
 
@@ -3370,9 +3370,11 @@
 
     function formatFileUpload() {
       var _answer = "";
-      self.itemData.data.answer.value.forEach(function(value){
-        _answer = _answer + angular.copy(value.name) + "; ";
-      });
+      if(self.itemData.data.answer.value){
+        self.itemData.data.answer.value.forEach(function(value){
+          _answer = _answer + angular.copy(value.name) + "; ";
+        });
+      }
       return  _answer;
     }
 
@@ -5630,7 +5632,10 @@
     function effect(pipe, flowData) {
       console.log("UpdateItem");
       console.log(flowData);
-      NavigationService.updateItemTracking();
+      for (var itemID in flowData.answerToEvaluate){
+        console.log(itemID)
+        NavigationService.updateItemTracking(itemID);
+      }
     }
 
     function afterEffect(pipe, flowData) {}
@@ -6392,7 +6397,6 @@
     function getPreviousItem() {
       if (hasPrevious()) {
         var previousID = _navigationTracker.getCurrentItemGroup()[0].getPrevious();
-        //todo: getGroup
         return ActivityFacadeService.getCurrentSurvey().getItemByTemplateID(previousID);
       } else {
         return null;
@@ -6400,19 +6404,11 @@
     }
 
     function hasNext() {
-      if (ActivityFacadeService.getCurrentItem().getNavigation().listRoutes().length) {
-        return true;
-      } else {
-        return false;
-      }
+      return !!ActivityFacadeService.getCurrentItem().getNavigation().listRoutes().length;
     }
 
     function hasPrevious() {
-      if (_navigationTracker.hasPreviousItem()) {
-        return true;
-      } else {
-        return false;
-      }
+      return !!_navigationTracker.hasPreviousItem();
     }
 
     function initialize() {
@@ -6421,13 +6417,10 @@
 
     function loadNextItem() {
       if (ActivityFacadeService.getCurrentItem().hasItems()) {
-        console.log('passou hasItems');
         return _loadNextItem();
       } else if (_navigationTracker.getCurrentIndex()) {
-        console.log('passou getCurrentIndex');
         return _loadLastVisitedItem();
       } else {
-        console.log('passou para loadFirstItem');
         return _loadFirstItem();
       }
     }
@@ -6438,12 +6431,10 @@
         var items = getPreviousItem();
         var navigation = null;
 
-        itemsPreviousArray.push(items);
-
+        itemsPreviousArray = ActivityFacadeService.fetchItemGroupByID(items.templateID);
         navigation = ActivityFacadeService.getCurrentSurvey().getNavigationByOrigin(itemsPreviousArray[itemsPreviousArray.length - 1].templateID);
 
         RouteService.setup(navigation);
-        //todo model precisa visitar todos os items do grupo
         _navigationTracker.visitGroup(itemsPreviousArray.map(item=>item.templateID));
 
         return {
@@ -6483,11 +6474,15 @@
         let firstItem = ActivityFacadeService.getCurrentSurvey().getItems()[0];
         itemsToLoad = ActivityFacadeService.fetchItemGroupByID(firstItem.templateID);
         navigation = ActivityFacadeService.fetchNavigationByOrigin(itemsToLoad[itemsToLoad.length - 1].templateID);
+        _navigationTracker.visitGroup(itemsToLoad.map(item=>item.templateID));
+
       } else if (id !== 'END NODE') {
         itemsToLoad = ActivityFacadeService.fetchItemGroupByID(id);
         navigation = ActivityFacadeService.fetchNavigationByOrigin(itemsToLoad[itemsToLoad.length - 1].templateID);
+        _navigationTracker.visitGroup(itemsToLoad.map(item=>item.templateID));
+
       } else {
-        navigation = ActivityFacadeService.fetchNavigationByOrigin(id);
+         navigation = ActivityFacadeService.fetchNavigationByOrigin(id);
       }
 
       if (navigation) {
@@ -6498,8 +6493,6 @@
         _navigationTracker.visitGroup([id]);
         return id;
       }
-
-      _navigationTracker.visitGroup(itemsToLoad.map(item=>item.templateID));
 
       return {
         items: itemsToLoad,

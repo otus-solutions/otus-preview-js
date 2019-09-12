@@ -25,7 +25,10 @@
     function effect(pipe, flowData) {
       console.log("UpdateItem");
       console.log(flowData);
-      NavigationService.updateItemTracking();
+      for (var itemID in flowData.answerToEvaluate){
+        console.log(itemID)
+        NavigationService.updateItemTracking(itemID);
+      }
     }
 
     function afterEffect(pipe, flowData) {}

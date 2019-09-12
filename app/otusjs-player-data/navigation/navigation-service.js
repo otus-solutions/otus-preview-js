@@ -34,7 +34,6 @@
     function getPreviousItem() {
       if (hasPrevious()) {
         var previousID = _navigationTracker.getCurrentItemGroup()[0].getPrevious();
-        //todo: getGroup
         return ActivityFacadeService.getCurrentSurvey().getItemByTemplateID(previousID);
       } else {
         return null;
@@ -42,19 +41,11 @@
     }
 
     function hasNext() {
-      if (ActivityFacadeService.getCurrentItem().getNavigation().listRoutes().length) {
-        return true;
-      } else {
-        return false;
-      }
+      return !!ActivityFacadeService.getCurrentItem().getNavigation().listRoutes().length;
     }
 
     function hasPrevious() {
-      if (_navigationTracker.hasPreviousItem()) {
-        return true;
-      } else {
-        return false;
-      }
+      return !!_navigationTracker.hasPreviousItem();
     }
 
     function initialize() {
@@ -63,13 +54,10 @@
 
     function loadNextItem() {
       if (ActivityFacadeService.getCurrentItem().hasItems()) {
-        console.log('passou hasItems');
         return _loadNextItem();
       } else if (_navigationTracker.getCurrentIndex()) {
-        console.log('passou getCurrentIndex');
         return _loadLastVisitedItem();
       } else {
-        console.log('passou para loadFirstItem');
         return _loadFirstItem();
       }
     }
@@ -80,12 +68,10 @@
         var items = getPreviousItem();
         var navigation = null;
 
-        itemsPreviousArray.push(items);
-
+        itemsPreviousArray = ActivityFacadeService.fetchItemGroupByID(items.templateID);
         navigation = ActivityFacadeService.getCurrentSurvey().getNavigationByOrigin(itemsPreviousArray[itemsPreviousArray.length - 1].templateID);
 
         RouteService.setup(navigation);
-        //todo model precisa visitar todos os items do grupo
         _navigationTracker.visitGroup(itemsPreviousArray.map(item=>item.templateID));
 
         return {
@@ -125,11 +111,15 @@
         let firstItem = ActivityFacadeService.getCurrentSurvey().getItems()[0];
         itemsToLoad = ActivityFacadeService.fetchItemGroupByID(firstItem.templateID);
         navigation = ActivityFacadeService.fetchNavigationByOrigin(itemsToLoad[itemsToLoad.length - 1].templateID);
+        _navigationTracker.visitGroup(itemsToLoad.map(item=>item.templateID));
+
       } else if (id !== 'END NODE') {
         itemsToLoad = ActivityFacadeService.fetchItemGroupByID(id);
         navigation = ActivityFacadeService.fetchNavigationByOrigin(itemsToLoad[itemsToLoad.length - 1].templateID);
+        _navigationTracker.visitGroup(itemsToLoad.map(item=>item.templateID));
+
       } else {
-        navigation = ActivityFacadeService.fetchNavigationByOrigin(id);
+         navigation = ActivityFacadeService.fetchNavigationByOrigin(id);
       }
 
       if (navigation) {
@@ -140,8 +130,6 @@
         _navigationTracker.visitGroup([id]);
         return id;
       }
-
-      _navigationTracker.visitGroup(itemsToLoad.map(item=>item.templateID));
 
       return {
         items: itemsToLoad,

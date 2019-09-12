@@ -5,11 +5,11 @@
     .module('otusjs.player.component')
     .component('otusPlayerDisplay', {
       templateUrl: 'app/otusjs-player-component/player-display/player-display-template.html',
-      controller: Controller,
+      controller: 'otusPlayerDisplayCtrl as $ctrl',
       bindings: {
         goBack: '&'
       }
-    });
+    }).controller('otusPlayerDisplayCtrl', Controller);
 
   Controller.$inject = [
     '$scope',
@@ -29,10 +29,10 @@
     var SURVEY_COVER = '<otus-cover />';
 
     /* Public methods */
+    self.$onInit = onInit;
     self.loadItem = loadItem;
     self.showCover = showCover;
     self.remove = remove;
-    self.$onInit = onInit;
     self.currentItems = [];
 
 
