@@ -33,7 +33,8 @@
 
     function getPreviousItem() {
       if (hasPrevious()) {
-        var previousID = _navigationTracker.getCurrentItem().getPrevious();
+        var previousID = _navigationTracker.getCurrentItemGroup()[0].getPrevious();
+        //todo: getGroup
         return ActivityFacadeService.getCurrentSurvey().getItemByTemplateID(previousID);
       } else {
         return null;
@@ -58,18 +59,17 @@
 
     function initialize() {
       _navigationTracker = ActivityFacadeService.getCurrentSurvey().getSurvey().getNavigationTracker();
-      console.log(_navigationTracker);
     }
 
     function loadNextItem() {
       if (ActivityFacadeService.getCurrentItem().hasItems()) {
-        console.log("passou hasItems")
+        console.log('passou hasItems');
         return _loadNextItem();
       } else if (_navigationTracker.getCurrentIndex()) {
-        console.log("passou getCurrentIndex")
+        console.log('passou getCurrentIndex');
         return _loadLastVisitedItem();
       } else {
-        console.log("passou para loadFirstItem")
+        console.log('passou para loadFirstItem');
         return _loadFirstItem();
       }
     }
@@ -86,7 +86,7 @@
 
         RouteService.setup(navigation);
         //todo model precisa visitar todos os items do grupo
-        _navigationTracker.visitItem(itemsPreviousArray[0].templateID);
+        _navigationTracker.visitGroup(itemsPreviousArray.map(item=>item.templateID));
 
         return {
           items: itemsPreviousArray,
@@ -96,8 +96,8 @@
     }
 
     function updateItemTracking() {
-      var currentItemFilling = ActivityFacadeService.getCurrentItem().getFilling();
-      _navigationTracker.updateCurrentItem(currentItemFilling);
+      var currentItemFillingContainer = ActivityFacadeService.getCurrentItem().getFillingContainer();
+      _navigationTracker.updateCurrentGroup(currentItemFillingContainer);
     }
 
     function _loadFirstItem() {
@@ -105,8 +105,7 @@
     }
 
     function _loadLastVisitedItem() {
-      console.log(_navigationTracker.getCurrentItem().getID());
-      return _loadItem(_navigationTracker.getCurrentItem().getID());
+      return _loadItem(_navigationTracker.getCurrentItemGroup()[0].getID());
     }
 
     function _loadNextItem() {
@@ -130,7 +129,7 @@
         itemsToLoad = ActivityFacadeService.fetchItemGroupByID(id);
         navigation = ActivityFacadeService.fetchNavigationByOrigin(itemsToLoad[itemsToLoad.length - 1].templateID);
       } else {
-         navigation = ActivityFacadeService.fetchNavigationByOrigin(id);
+        navigation = ActivityFacadeService.fetchNavigationByOrigin(id);
       }
 
       if (navigation) {
@@ -138,16 +137,11 @@
       }
 
       if (id === 'END NODE') {
-        _navigationTracker.visitItem(id);
+        _navigationTracker.visitGroup([id]);
         return id;
       }
 
-      //todo: model precisa visitar todos os items do grupo
-      //_navigationTracker.visitGroup()
-      itemsToLoad.forEach(function (item) {
-        _navigationTracker.visitItem(item.templateID);
-      });
-      // _navigationTracker.visitItem(itemsArray[0].templateID);
+      _navigationTracker.visitGroup(itemsToLoad.map(item=>item.templateID));
 
       return {
         items: itemsToLoad,
