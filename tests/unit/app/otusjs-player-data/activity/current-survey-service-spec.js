@@ -24,10 +24,6 @@ describe('Current Question Service', function() {
 
   describe('getAnswerByItemID method', function() {
 
-    beforeEach(function() {
-      service.setup(Mock.ActivityFacadeService.surveyActivity);
-    });
-
     it('should retrieve the filling of item from survey activity', function() {
       spyOn(Mock.ActivityFacadeService, 'getFillingByQuestionID');
 

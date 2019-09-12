@@ -31,11 +31,6 @@ describe('ActivityFacadeService', function() {
 
   describe('applyAnswer method', function() {
 
-    beforeEach(function() {
-      spyOn(Mock.CurrentSurveyService, 'setup');
-      service.setup();
-    })
-
     it('should delegates the filling applies to current question', function() {
       spyOn(Mock.CurrentItemService, 'applyFilling');
 
@@ -47,11 +42,6 @@ describe('ActivityFacadeService', function() {
   });
 
   describe('attachItemValidationError method', function() {
-
-    beforeEach(function() {
-      spyOn(Mock.CurrentSurveyService, 'setup');
-      service.setup();
-    })
 
     it('should delegates the validation error attachment', function() {
       spyOn(Mock.CurrentItemService, 'attachValidationError');
@@ -90,9 +80,6 @@ describe('ActivityFacadeService', function() {
   describe('initialize method', function() {
 
     beforeEach(function() {
-      spyOn(Mock.CurrentSurveyService, 'setup');
-      service.setup();
-
       spyOn(Mock.CurrentSurveyService, 'initialize');
       spyOn(Mock.CurrentSurveyService, 'getItems').and.returnValue(Mock.surveyTemplate.itemContainer);
       spyOn(Mock.CurrentSurveyService, 'getNavigations').and.returnValue(Mock.surveyTemplate.navigationList);
@@ -107,11 +94,6 @@ describe('ActivityFacadeService', function() {
   });
 
   describe('setupAnswer method', function() {
-
-    beforeEach(function() {
-      spyOn(Mock.CurrentSurveyService, 'setup');
-      service.setup();
-    });
 
     it('should delegates the filling of current question', function() {
       spyOn(Mock.CurrentItemService, 'fill');
