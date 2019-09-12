@@ -57,8 +57,8 @@
 
     function loadItem(itemsData) {
       if (_shouldLoadItem(itemsData[itemsData.length -1])) {
-        _destroyCurrentItems();
         _saveQuestion();
+        _destroyCurrentItems();
         _removeQuestions(itemsData);
 
         $element.find('#pagePlayer').empty();

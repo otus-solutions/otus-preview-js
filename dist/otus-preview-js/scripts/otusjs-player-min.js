@@ -920,8 +920,8 @@
 
     function loadItem(itemsData) {
       if (_shouldLoadItem(itemsData[itemsData.length -1])) {
-        _destroyCurrentItems();
         _saveQuestion();
+        _destroyCurrentItems();
         _removeQuestions(itemsData);
 
         $element.find('#pagePlayer').empty();
@@ -1005,7 +1005,6 @@
 
     function _shouldLoadItem(itemData) {
       return !self.currentItems.length  || (self.currentItems.length && $scope.itemData.templateID !== itemData.templateID);
-      // return $scope.itemData && $scope.itemData.customID !== itemData.customID;
     }
   }
 }());
@@ -1371,7 +1370,6 @@
     }
 
     function setError(error) {
-      console.log(error);
       if (self.filling.forceAnswer) {
         self.menuComponent.error = true;
       } else if (self.itemData.isQuestion() && error) {
@@ -3093,7 +3091,6 @@
     function referenceAsDate(type) {
       var reference = CurrentItemService.getFillingRules(templateID)[type].data.reference;
       var date;
-      console.log("passou ASDATA")
 
       if (type === 'rangeDate') {
         date = {
@@ -3107,13 +3104,11 @@
     }
 
     function referenceAsTime(type) {
-      console.log("passou ASTIME")
       var reference = CurrentItemService.getFillingRules(templateID)[type].data.reference.value;
       return $filter('date')(new Date(reference), 'hh:mm a');
     }
 
     function reference (type) {
-      console.log("passou referente")
       var reference = CurrentItemService.getFillingRules(templateID)[type].data.reference;
       return reference;
     }
@@ -3157,8 +3152,6 @@
       _enableDialogSettings();
       _disableDialogSettings();
 
-      console.log(self.otusQuestion.menuComponent);
-
       self.forceAnswer = self.otusQuestion.menuComponent.otusQuestion.filling.forceAnswer;
     };
 
@@ -3173,8 +3166,7 @@
         $mdDialog
           .show(self.enableDialogSettings)
           .then(
-            _enableForwardSuccessfulExecution,
-            _enableForwardUnsuccessfulExecution
+            _enableForwardSuccessfulExecution
           );
 
         return {
@@ -3199,7 +3191,6 @@
     };
 
     function _enableForwardSuccessfulExecution(response) {
-      console.log(response);
       if (response.action !== 'cancel') {
         self.onAccept({
           value: true
@@ -3208,10 +3199,7 @@
       }
     }
 
-    function _enableForwardUnsuccessfulExecution(error) {}
-
     function _disableForwardSuccessfulExecution(response) {
-      console.log(response);
       if (response.action !== 'cancel') {
         self.onAccept({
           value: false
