@@ -896,14 +896,15 @@
     self.showCover = showCover;
     self.remove = remove;
     self.$onInit = onInit;
+    self.currentItems = [];
+
 
     function onInit() {
       $scope.$parent.$ctrl.playerDisplay = self;
-      $scope.itemData = {};
+      $scope.itemData = [];
+      $scope.itemData.templateID = '';
       $scope.questions = [];
-      self.currentItems = [];
       self.ids = [];
-
     }
 
 
@@ -918,7 +919,7 @@
     }
 
     function loadItem(itemsData) {
-      if (_shouldLoadItem(itemsData)) {
+      if (_shouldLoadItem(itemsData[itemsData.length -1])) {
         _destroyCurrentItems();
         _saveQuestion();
         _removeQuestions(itemsData);
@@ -931,10 +932,9 @@
             _setQuestionId(itemsData[i].templateID);
             let element = $compile(SURVEY_ITEM)($scope);
             $element.find('#pagePlayer').append(element);
-
           }());
         }
-        _focusOnItem(itemsData[itemsData.length - 1].templateID);
+        _focusOnItem(itemsData[0].templateID);
       }
 
       if (PlayerService.isGoingBack()) {
@@ -956,7 +956,6 @@
         self.ids.splice(index, length);
 
       }
-
     }
 
     function _setQuestionId(id) {
@@ -1005,7 +1004,8 @@
     }
 
     function _shouldLoadItem(itemData) {
-      return !self.currentItems.length || (self.currentItems.length && self.currentItems[0].templateID !== itemData[0].templateID);
+      return !self.currentItems.length  || (self.currentItems.length && $scope.itemData.templateID !== itemData.templateID);
+      // return $scope.itemData && $scope.itemData.customID !== itemData.customID;
     }
   }
 }());
@@ -1371,7 +1371,7 @@
     }
 
     function setError(error) {
-      // console.log(error);
+      console.log(error);
       if (self.filling.forceAnswer) {
         self.menuComponent.error = true;
       } else if (self.itemData.isQuestion() && error) {
@@ -3093,6 +3093,7 @@
     function referenceAsDate(type) {
       var reference = CurrentItemService.getFillingRules(templateID)[type].data.reference;
       var date;
+      console.log("passou ASDATA")
 
       if (type === 'rangeDate') {
         date = {
@@ -3106,11 +3107,13 @@
     }
 
     function referenceAsTime(type) {
+      console.log("passou ASTIME")
       var reference = CurrentItemService.getFillingRules(templateID)[type].data.reference.value;
       return $filter('date')(new Date(reference), 'hh:mm a');
     }
 
     function reference (type) {
+      console.log("passou referente")
       var reference = CurrentItemService.getFillingRules(templateID)[type].data.reference;
       return reference;
     }
@@ -5784,22 +5787,15 @@
     }
 
     function effect(pipe, flowData) {
-      console.log('handle');
-      console.log(flowData);
       ActivityFacadeService.attachItemValidationError(flowData.validationResult);
     }
 
     function afterEffect(pipe, flowData) {
-      console.log(flowData);
       for (var itemID in flowData.validationResult){
         if (flowData.validationResult[itemID].hasError) {
           pipe.isFlowing = false;
         }
       }
-      // if (flowData.validationResult.hasError) {
-      //   pipe.isFlowing = false;
-      // }
-      // delete flowData.validationResult;
     }
 
     function getEffectResult(pipe, flowData) {
@@ -6103,7 +6099,7 @@
     var _surveyItemGroup = [];
     var _fillingContainer = {};
     var _navigation = null;
-    var _validationError = null;
+    var _validationError = {};
     var _observerArray = [];
 
     /* Public Interface */
@@ -6145,7 +6141,7 @@
       _surveyItemGroup = [];
       _fillingContainer = {};
       _navigation = null;
-      _validationError = null;
+      _validationError = {};
       _observerArray = [];
     }
 

@@ -31,8 +31,6 @@
       _enableDialogSettings();
       _disableDialogSettings();
 
-      console.log(self.otusQuestion.menuComponent);
-
       self.forceAnswer = self.otusQuestion.menuComponent.otusQuestion.filling.forceAnswer;
     };
 
@@ -47,8 +45,7 @@
         $mdDialog
           .show(self.enableDialogSettings)
           .then(
-            _enableForwardSuccessfulExecution,
-            _enableForwardUnsuccessfulExecution
+            _enableForwardSuccessfulExecution
           );
 
         return {
@@ -73,7 +70,6 @@
     };
 
     function _enableForwardSuccessfulExecution(response) {
-      console.log(response);
       if (response.action !== 'cancel') {
         self.onAccept({
           value: true
@@ -82,10 +78,7 @@
       }
     }
 
-    function _enableForwardUnsuccessfulExecution(error) {}
-
     function _disableForwardSuccessfulExecution(response) {
-      console.log(response);
       if (response.action !== 'cancel') {
         self.onAccept({
           value: false

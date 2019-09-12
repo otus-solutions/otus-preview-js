@@ -86,7 +86,6 @@
     }
 
     function setError(error) {
-      // console.log(error);
       if (self.filling.forceAnswer) {
         self.menuComponent.error = true;
       } else if (self.itemData.isQuestion() && error) {

@@ -14,7 +14,7 @@
     var _surveyItemGroup = [];
     var _fillingContainer = {};
     var _navigation = null;
-    var _validationError = null;
+    var _validationError = {};
     var _observerArray = [];
 
     /* Public Interface */
@@ -56,7 +56,7 @@
       _surveyItemGroup = [];
       _fillingContainer = {};
       _navigation = null;
-      _validationError = null;
+      _validationError = {};
       _observerArray = [];
     }
 

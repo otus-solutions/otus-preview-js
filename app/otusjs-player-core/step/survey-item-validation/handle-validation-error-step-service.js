@@ -30,22 +30,15 @@
     }
 
     function effect(pipe, flowData) {
-      console.log('handle');
-      console.log(flowData);
       ActivityFacadeService.attachItemValidationError(flowData.validationResult);
     }
 
     function afterEffect(pipe, flowData) {
-      console.log(flowData);
       for (var itemID in flowData.validationResult){
         if (flowData.validationResult[itemID].hasError) {
           pipe.isFlowing = false;
         }
       }
-      // if (flowData.validationResult.hasError) {
-      //   pipe.isFlowing = false;
-      // }
-      // delete flowData.validationResult;
     }
 
     function getEffectResult(pipe, flowData) {
