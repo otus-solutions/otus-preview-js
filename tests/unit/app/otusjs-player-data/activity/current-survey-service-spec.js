@@ -1,4 +1,4 @@
-describe('Current Question Service', function() {
+describe('Current Question Service', function () {
 
   var UNIT_NAME = 'otusjs.player.data.activity.CurrentSurveyService';
   var Mock = {};
@@ -8,13 +8,13 @@ describe('Current Question Service', function() {
   var CAD2 = 'CAD2';
   var CAD90 = 'CAD90';
 
-  beforeEach(function() {
+  beforeEach(function () {
 
     angular.mock.module('otusjs.player.data', function ($provide) {
       $provide.value('otusjs.model.activity.ActivityFacadeService', Mock.ActivityFacadeService);
     });
 
-    inject(function(_$injector_) {
+    inject(function (_$injector_) {
       /* Test data */
       mockSurvey();
 
@@ -22,9 +22,9 @@ describe('Current Question Service', function() {
     });
   });
 
-  describe('getAnswerByItemID method', function() {
+  describe('getAnswerByItemID method', function () {
 
-    it('should retrieve the filling of item from survey activity', function() {
+    it('should retrieve the filling of item from survey activity', function () {
       spyOn(Mock.ActivityFacadeService, 'getFillingByQuestionID');
 
       service.getAnswerByItemID(CAD1);
@@ -34,27 +34,27 @@ describe('Current Question Service', function() {
 
   });
 
-  xdescribe('getItems method', function() {
+  xdescribe('getItems method', function () {
 
-    beforeEach(function() {
+    beforeEach(function () {
       service.setup(Mock.ActivityFacadeService.surveyActivity);
     });
 
-    it('should return the items of current survey', function() {
+    it('should return the items of current survey', function () {
       expect(service.getItems()).toEqual(Mock.surveyTemplate.itemContainer);
     });
 
   });
 
-  xdescribe('getItemByCustomID method', function() {
+  xdescribe('getItemByCustomID method', function () {
 
-    beforeEach(function() {
+    beforeEach(function () {
       service.setup(Mock.ActivityFacadeService.surveyActivity);
     });
 
-    describe('when exists an item', function() {
+    describe('when exists an item', function () {
 
-      it('should return the item', function() {
+      it('should return the item', function () {
         var item = service.getItemByCustomID(CAD2);
 
         expect(item.customID).toEqual(CAD2);
@@ -62,9 +62,9 @@ describe('Current Question Service', function() {
 
     });
 
-    describe('when not exists an item', function() {
+    describe('when not exists an item', function () {
 
-      it('should return null', function() {
+      it('should return null', function () {
         var item = service.getItemByCustomID(CAD90);
 
         expect(item).toBe(null);
@@ -74,15 +74,15 @@ describe('Current Question Service', function() {
 
   });
 
-  xdescribe('getItemByTemplateID method', function() {
+  xdescribe('getItemByTemplateID method', function () {
 
-    beforeEach(function() {
+    beforeEach(function () {
       service.setup(Mock.ActivityFacadeService.surveyActivity);
     });
 
-    describe('when exists an item', function() {
+    describe('when exists an item', function () {
 
-      it('should return the item', function() {
+      it('should return the item', function () {
         var item = service.getItemByTemplateID(CAD2);
 
         expect(item.customID).toEqual(CAD2);
@@ -90,15 +90,15 @@ describe('Current Question Service', function() {
 
     });
 
-    describe('when not exists an item', function() {
+    describe('when not exists an item', function () {
 
-      it('should return null', function() {
+      it('should return null', function () {
         var item = service.getItemByTemplateID(CAD90);
 
         expect(item).toBe(null);
       });
 
-      it('should return null', function() {
+      it('should return null', function () {
         var item = service.getItemByTemplateID();
 
         expect(item).toBe(null);
@@ -108,13 +108,13 @@ describe('Current Question Service', function() {
 
   });
 
-  xdescribe('getNavigations method', function() {
+  xdescribe('getNavigations method', function () {
 
-    beforeEach(function() {
+    beforeEach(function () {
       service.setup(Mock.ActivityFacadeService.surveyActivity);
     });
 
-    it('should return the list of navigations of current survey', function() {
+    it('should return the list of navigations of current survey', function () {
       var value = service.getNavigations();
 
       expect(value).toEqual(Mock.surveyTemplate.navigationList);
@@ -122,15 +122,15 @@ describe('Current Question Service', function() {
 
   });
 
-  xdescribe('getNavigationByOrigin method', function() {
+  xdescribe('getNavigationByOrigin method', function () {
 
-    beforeEach(function() {
+    beforeEach(function () {
       service.setup(Mock.ActivityFacadeService.surveyActivity);
     });
 
-    describe('when exists a navigation', function() {
+    describe('when exists a navigation', function () {
 
-      it('should return the navigation of origin', function() {
+      it('should return the navigation of origin', function () {
         var navigation = service.getNavigationByOrigin(CAD1);
 
         expect(navigation.origin).toEqual(CAD1);
@@ -138,9 +138,9 @@ describe('Current Question Service', function() {
 
     });
 
-    xdescribe('when not exists a navigation', function() {
+    xdescribe('when not exists a navigation', function () {
 
-      it('should return null', function() {
+      it('should return null', function () {
         var navigation = service.getNavigationByOrigin(CAD90);
 
         expect(navigation).toEqual(null);
@@ -150,9 +150,9 @@ describe('Current Question Service', function() {
 
   });
 
-  xdescribe('initialize method', function() {
+  xdescribe('initialize method', function () {
 
-    it('should open the survey activity', function() {
+    it('should open the survey activity', function () {
       spyOn(Mock.ActivityFacadeService, 'openActivitySurvey');
 
       service.initialize();
@@ -162,9 +162,9 @@ describe('Current Question Service', function() {
 
   });
 
-  xdescribe('setup method', function() {
+  xdescribe('setup method', function () {
 
-    it('should initialize the survey activity', function() {
+    it('should initialize the survey activity', function () {
       spyOn(Mock.ActivityFacadeService, 'initializeActivitySurvey');
 
       service.setup();
@@ -174,14 +174,29 @@ describe('Current Question Service', function() {
 
   });
 
-  describe('getWholeTemplateStaticVariableList method', function() {
+  describe('getWholeTemplateStaticVariableList method', function () {
 
-    it('should getWholeTemplateStaticVariableList the survey activity', function() {
+    it('should getWholeTemplateStaticVariableList the survey activity', function () {
       spyOn(Mock.ActivityFacadeService, 'getWholeTemplateVariableList');
 
       service.getWholeTemplateStaticVariableList();
 
       expect(Mock.ActivityFacadeService.getWholeTemplateVariableList).toHaveBeenCalledTimes(1);
+    });
+
+  });
+
+  describe('getGroupItemsByMemberID method', function () {
+
+    it('should getGroupItemsByMemberID the survey activity', function () {
+
+
+      // spyOn(Mock.ActivityFacadeService.surveyActivity, 'getGroupByItemID').and.callFake(a);
+      spyOn(Mock.ActivityFacadeService.surveyActivity, 'getGroupItemsByItemID');
+
+      service.getGroupItemsByMemberID();
+
+      expect(Mock.ActivityFacadeService.surveyActivity.getGroupItemsByItemID).toHaveBeenCalledTimes(1);
     });
 
   });
@@ -2225,11 +2240,19 @@ describe('Current Question Service', function() {
   }
 
   Mock.ActivityFacadeService = {
-    getFillingByQuestionID: function (){
+    getFillingByQuestionID: function () {
       return {};
     },
     getWholeTemplateVariableList: function () {
       return Promise.resolve();
+    },
+    getGroupByItemID: function () {
+      return Promise.resolve();
+    },
+    surveyActivity: {
+      getGroupByItemID: function () {
+      },
+      getGroupItemsByItemID: function(){}
     }
   };
 });

@@ -70,17 +70,7 @@
     }
 
     function getGroupItemsByMemberID(id) {
-      let surveyItemsGroup = getSurvey().getGroupByItemID(id);
-      let groupItems = [];
-
-      if (surveyItemsGroup) {
-        groupItems = surveyItemsGroup.members.map(member => {
-          return getItemByTemplateID(member.id);
-        });
-      } else {
-        groupItems.push(getItemByTemplateID(id));
-      }
-      return groupItems;
+      return getSurvey().getGroupItemsByItemID(id);
     }
 
     function getNavigations() {
