@@ -23,12 +23,7 @@
     function beforeEffect(pipe, flowData) {}
 
     function effect(pipe, flowData) {
-      console.log("UpdateItem");
-      console.log(flowData);
-      for (var itemID in flowData.answerToEvaluate){
-        console.log(itemID)
-        NavigationService.updateItemTracking(itemID);
-      }
+        NavigationService.updateItemTracking();
     }
 
     function afterEffect(pipe, flowData) {}

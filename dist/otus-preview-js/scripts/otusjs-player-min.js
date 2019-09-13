@@ -901,7 +901,7 @@
 
     function onInit() {
       $scope.$parent.$ctrl.playerDisplay = self;
-      $scope.itemData = [];
+      $scope.itemData = {};
       $scope.itemData.templateID = '';
       $scope.questions = [];
       self.ids = [];
@@ -1188,11 +1188,11 @@
     .module('otusjs.player.component')
     .component('otusSurveyItem', {
       template:'<md-card flex><md-card-title layout="row" ng-if="!$ctrl.isItem()"><md-card-title-text layout="column" flex><div layout="row"><otus-label class="md-headline" item-label="$ctrl.itemData.label.ptBR.formattedText" flex layout-padding></otus-label></div></md-card-title-text></md-card-title><md-card-content layout="row" layout-align="space-between" flex><otus-question ng-if="$ctrl.isQuestion()" on-update="$ctrl.update(valueType, value)" item-data="$ctrl.itemData" layout="column" flex></otus-question><otus-misc-item ng-if="$ctrl.isItem()" item-data="$ctrl.itemData" layout="column" flex></otus-misc-item></md-card-content><otus-validation-error error="$ctrl.$error" layout="row"></otus-validation-error></md-card>',
-      controller: OtusSurveyItemController,
+      controller: 'otusSurveyItemCtrl as $ctrl',
       bindings: {
         itemData: '<'
       }
-    });
+    }).controller('otusSurveyItemCtrl', OtusSurveyItemController);
 
   OtusSurveyItemController.$inject = [
     '$scope',
@@ -5630,12 +5630,7 @@
     function beforeEffect(pipe, flowData) {}
 
     function effect(pipe, flowData) {
-      console.log("UpdateItem");
-      console.log(flowData);
-      for (var itemID in flowData.answerToEvaluate){
-        console.log(itemID)
-        NavigationService.updateItemTracking(itemID);
-      }
+        NavigationService.updateItemTracking();
     }
 
     function afterEffect(pipe, flowData) {}

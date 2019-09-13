@@ -38,7 +38,7 @@
 
     function onInit() {
       $scope.$parent.$ctrl.playerDisplay = self;
-      $scope.itemData = [];
+      $scope.itemData = {};
       $scope.itemData.templateID = '';
       $scope.questions = [];
       self.ids = [];

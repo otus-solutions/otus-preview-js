@@ -5,11 +5,11 @@
     .module('otusjs.player.component')
     .component('otusSurveyItem', {
       templateUrl: 'app/otusjs-player-component/survey-item/survey-item-template.html',
-      controller: OtusSurveyItemController,
+      controller: 'otusSurveyItemCtrl as $ctrl',
       bindings: {
         itemData: '<'
       }
-    });
+    }).controller('otusSurveyItemCtrl', OtusSurveyItemController);
 
   OtusSurveyItemController.$inject = [
     '$scope',

@@ -117,6 +117,13 @@ describe('ActivityFacadeService', function() {
 
   });
 
+  it('Methods should fetchItemGroupByID execute', function () {
+    spyOn(Mock.CurrentSurveyService, 'getGroupItemsByMemberID');
+    service.fetchItemGroupByID(CAD2);
+
+    expect(Mock.CurrentSurveyService.getGroupItemsByMemberID).toHaveBeenCalledWith(CAD2);
+  });
+
   function mockCurrentSurveyService($injector) {
     Mock.CurrentSurveyService = $injector.get('otusjs.player.data.activity.CurrentSurveyService');
     Injections.CurrentSurveyService = Mock.CurrentSurveyService;
