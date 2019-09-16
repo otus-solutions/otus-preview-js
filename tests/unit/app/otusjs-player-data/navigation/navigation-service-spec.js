@@ -1,3 +1,202 @@
+describe('NavigationService', function() {
+  var UNIT_NAME = 'otusjs.player.data.navigation.NavigationService';
+  var Mock = {};
+  var Injections = [];
+  var service = {};
+
+  beforeEach(function() {
+    angular.mock.module('otusjs.player');
+
+    angular.mock.inject(function($injector) {
+      mockItemData($injector);
+      Injections.NavigationStackItemFactory = $injector.get('otusjs.model.navigation.NavigationTrackingItemFactory');
+      Injections.RouteService = $injector.get('otusjs.player.data.navigation.RouteService');
+      Injections.ActivityFacadeService = $injector.get('otusjs.player.data.activity.ActivityFacadeService');
+
+      service = $injector.get(UNIT_NAME, Injections);
+    });
+
+    spyOn(Injections.ActivityFacadeService, 'getCurrentSurvey').and.returnValue(Mock.currentSurvey);
+    spyOn(Injections.ActivityFacadeService, 'fetchItemGroupByID').and.returnValue([Mock.itemVAL1]);
+
+    service.initialize();
+
+  });
+
+  it('service method should have a defined service', function () {
+    expect(service).toBeDefined();
+  });
+
+  it('Methods should defined service', function () {
+    expect(service.getNextItems).toBeDefined();
+    expect(service.getPreviousItem).toBeDefined();
+    expect(service.hasNext).toBeDefined();
+    expect(service.hasPrevious).toBeDefined();
+    expect(service.initialize).toBeDefined();
+    expect(service.loadNextItem).toBeDefined();
+    expect(service.loadPreviousItem).toBeDefined();
+    expect(service.updateItemTracking).toBeDefined();
+  });
+
+  it('getPreviousItem Method should execute hasPrevious and ActivityFacadeService', function () {
+    expect(service.getPreviousItem()).toEqual(Mock.itemVAL1);
+    expect(Injections.ActivityFacadeService.getCurrentSurvey).toHaveBeenCalledTimes(2);
+  });
+
+  it('loadPreviousItem Method should execute', function () {
+    expect(JSON.stringify(service.loadPreviousItem())).toEqual(Mock.data);
+  });
+
+  it('updateItemTracking Method should execute', function () {
+    service.updateItemTracking();
+    expect(Injections.ActivityFacadeService.getCurrentSurvey).toHaveBeenCalledTimes(1);
+  });
+
+  function mockItemData($injector) {
+    Mock.data = '{"items":[{"extents":"SurveyItem","objectType":"CalendarQuestion","templateID":"VAL1","customID":"VAL1","dataType":"LocalDate","label":{"ptBR":{"extends":"StudioObject","objectType":"Label","oid":"","plainText":"","formattedText":""},"enUS":{"extends":"StudioObject","objectType":"Label","oid":"","plainText":"","formattedText":""},"esES":{"extends":"StudioObject","objectType":"Label","oid":"","plainText":"","formattedText":""}},"metadata":{"extents":"StudioObject","objectType":"MetadataGroup","options":[]},"fillingRules":{"extends":"StudioObject","objectType":"FillingRules","options":{"mandatory":{"extends":"StudioObject","objectType":"Rule","validatorType":"mandatory","data":{"reference":true}},"rangeDate":{"extends":"StudioObject","objectType":"Rule","validatorType":"rangeDate","data":{"reference":{"initial":"2016-09-01T03:00:00.000Z","end":"2016-10-01T03:00:00.000Z"}}},"minDate":{"extends":"StudioObject","objectType":"Rule","validatorType":"minDate","data":{"reference":"2016-07-01T03:00:00.000Z"}},"maxDate":{"extends":"StudioObject","objectType":"Rule","validatorType":"maxDate","data":{"reference":"2016-12-01T02:00:00.000Z"}}}}}],"navigation":{"extents":"SurveyItem","objectType":"CalendarQuestion","templateID":"VAL1","customID":"VAL1","dataType":"LocalDate","label":{"ptBR":{"extends":"StudioObject","objectType":"Label","oid":"","plainText":"","formattedText":""},"enUS":{"extends":"StudioObject","objectType":"Label","oid":"","plainText":"","formattedText":""},"esES":{"extends":"StudioObject","objectType":"Label","oid":"","plainText":"","formattedText":""}},"metadata":{"extents":"StudioObject","objectType":"MetadataGroup","options":[]},"fillingRules":{"extends":"StudioObject","objectType":"FillingRules","options":{"mandatory":{"extends":"StudioObject","objectType":"Rule","validatorType":"mandatory","data":{"reference":true}},"rangeDate":{"extends":"StudioObject","objectType":"Rule","validatorType":"rangeDate","data":{"reference":{"initial":"2016-09-01T03:00:00.000Z","end":"2016-10-01T03:00:00.000Z"}}},"minDate":{"extends":"StudioObject","objectType":"Rule","validatorType":"minDate","data":{"reference":"2016-07-01T03:00:00.000Z"}},"maxDate":{"extends":"StudioObject","objectType":"Rule","validatorType":"maxDate","data":{"reference":"2016-12-01T02:00:00.000Z"}}}}}}'
+    Mock.itemVAL1 = {
+      "extents": "SurveyItem",
+      "objectType": "CalendarQuestion",
+      "templateID": "VAL1",
+      "customID": "VAL1",
+      "dataType": "LocalDate",
+      "label": {
+        "ptBR": {
+          "extends": "StudioObject",
+          "objectType": "Label",
+          "oid": "",
+          "plainText": "",
+          "formattedText": ""
+        },
+        "enUS": {
+          "extends": "StudioObject",
+          "objectType": "Label",
+          "oid": "",
+          "plainText": "",
+          "formattedText": ""
+        },
+        "esES": {
+          "extends": "StudioObject",
+          "objectType": "Label",
+          "oid": "",
+          "plainText": "",
+          "formattedText": ""
+        }
+      },
+      "metadata": {
+        "extents": "StudioObject",
+        "objectType": "MetadataGroup",
+        "options": []
+      },
+      "fillingRules": {
+        "extends": "StudioObject",
+        "objectType": "FillingRules",
+        "options": {
+          "mandatory": {
+            "extends": "StudioObject",
+            "objectType": "Rule",
+            "validatorType": "mandatory",
+            "data": {
+              "reference": true
+            }
+          },
+          "rangeDate": {
+            "extends": "StudioObject",
+            "objectType": "Rule",
+            "validatorType": "rangeDate",
+            "data": {
+              "reference": {
+                "initial": "2016-09-01T03:00:00.000Z",
+                "end": "2016-10-01T03:00:00.000Z"
+              }
+            }
+          },
+          "minDate": {
+            "extends": "StudioObject",
+            "objectType": "Rule",
+            "validatorType": "minDate",
+            "data": {
+              "reference": "2016-07-01T03:00:00.000Z"
+            }
+          },
+          "maxDate": {
+            "extends": "StudioObject",
+            "objectType": "Rule",
+            "validatorType": "maxDate",
+            "data": {
+              "reference": "2016-12-01T02:00:00.000Z"
+            }
+          }
+        }
+      },
+      listRoutes: function () {
+        return [{
+          "extents": "SurveyTemplateObject",
+          "objectType": "Route",
+          "origin": "VAL1",
+          "destination": "VAL2",
+          "name": "VAL1_VAL2",
+          "isDefault": true,
+          "conditions": []
+        },{
+          "extents": "SurveyTemplateObject",
+          "objectType": "Route",
+          "origin": "VAL1",
+          "destination": "VAL2",
+          "name": "VAL1_VAL2",
+          "isDefault": true,
+          "conditions": []
+        }];
+      }
+    };
+
+    Mock.navigation = {
+      "extents": "SurveyTemplateObject",
+      "objectType": "Navigation",
+      "origin": "VAL1",
+      "index": 0,
+      "inNavigations": [],
+      "routes": [{
+        "extents": "SurveyTemplateObject",
+        "objectType": "Route",
+        "origin": "VAL1",
+        "destination": "VAL2",
+        "name": "VAL1_VAL2",
+        "isDefault": true,
+        "conditions": []
+      }],
+      hasPreviousItem: function () {
+        return true;
+      },
+      getCurrentItemGroup: function () {
+        return [{
+          getPrevious: function () {
+            return true;
+          }
+        }];
+      },
+      visitGroup: function () { },
+      updateCurrentGroup: function () {}
+    };
+
+    Mock.currentSurvey = {
+      getSurvey: function () {
+        return {getNavigationTracker: function () {
+            return Mock.navigation;
+          }
+        };
+      },
+      getItemByTemplateID: function () {
+        return Mock.itemVAL1;
+      },
+      getNavigationByOrigin: function () {
+        return Mock.itemVAL1;
+      }
+    };
+  }
+
+});
+
 xdescribe('NavigationService', function() {
 
   var UNIT_NAME = 'otusjs.player.data.navigation.NavigationService';
