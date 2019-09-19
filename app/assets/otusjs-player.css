@@ -21,7 +21,6 @@ otus-survey-header md-chips-wrap {
 /* SURVEY ITEM */
 
 otus-survey-item {
-  min-height: 510px;
   transition: opacity 2s linear;
 }
 

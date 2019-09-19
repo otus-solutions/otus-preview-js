@@ -52,7 +52,7 @@
     self.view = false;
 
     self.$onInit = function() {
-      self.answer = CurrentItemService.getFilling().answer.value || new ImmutableDate(null);
+      self.answer = CurrentItemService.getFilling(self.itemData.templateID).answer.value || new ImmutableDate(null);
       self.otusQuestion.answer = self;
     };
 
@@ -64,7 +64,7 @@
     };
 
     self.clear = function() {
-      CurrentItemService.getFilling().answer.clear();
+      CurrentItemService.getFilling(self.itemData.templateID).answer.clear();
       delete self.answer;
       self.$onInit();
     };

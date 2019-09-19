@@ -1,4 +1,4 @@
-(function() {
+(function () {
   'use strict';
 
   angular
@@ -6,17 +6,16 @@
     .service('otusjs.player.data.activity.CurrentItemService', Service);
 
   Service.$inject = [
-    'otusjs.model.activity.ActivityFacadeService',
-    'otusjs.utils.ImmutableDate'
+    'otusjs.model.activity.ActivityFacadeService'
   ];
 
-  function Service(ActivityFacadeService, ImmutableDate) {
+  function Service(ActivityFacadeService) {
     var self = this;
-    var _item = null;
-    var _filling = null;
+    var _surveyItemGroup = [];
+    var _fillingContainer = {};
     var _navigation = null;
-    var _validationError = null;
-    var _observer = null;
+    var _validationError = {};
+    var _observerArray = [];
 
     /* Public Interface */
     self.applyFilling = applyFilling;
@@ -24,51 +23,74 @@
     self.clearData = clearData;
     self.fill = fill;
     self.getFilling = getFilling;
+    self.getFillingContainer = getFillingContainer;
     self.getFillingRules = getFillingRules;
-    self.getItem = getItem;
+    self.getItems = getItems;
+    self.getItemsByTemplateID = getItemsByTemplateID;
     self.getNavigation = getNavigation;
     self.getValidationError = getValidationError;
-    self.hasItem = hasItem;
+    self.hasItems = hasItems;
     self.shouldIgnoreResponseEvaluation = shouldIgnoreResponseEvaluation;
     self.shouldApplyAnswer = shouldApplyAnswer;
     self.observerRegistry = observerRegistry;
     self.setup = setup;
 
     function applyFilling() {
-      if (_filling) {
-        ActivityFacadeService.fillQuestion(_filling);
-      }
+      Object.values(_fillingContainer).forEach(filling => {
+        if (filling) {
+          ActivityFacadeService.fillQuestion(filling);
+        }
+      });
     }
 
     function attachValidationError(validationError) {
       _validationError = validationError;
-      _observer.updateValidation(validationError);
+      _observerArray.forEach(observer => {
+        if(validationError[observer.itemData.templateID]){
+           observer.updateValidation(validationError[observer.itemData.templateID]);
+        }
+      })
     }
 
     function clearData() {
-      _item = null;
-      _filling = null;
+      _surveyItemGroup = [];
+      _fillingContainer = {};
       _navigation = null;
-      _validationError = null;
-      _observer = null;
+      _validationError = {};
+      _observerArray = [];
     }
 
     function fill(filling) {
-      if (_item.isQuestion()) {
-        _filling = filling;
-      }
+      _fillingContainer[filling.questionID] = filling;
     }
 
-    function getFilling() {
-      return _filling;
+    function getFilling(questionID) {
+      return _fillingContainer[questionID];
     }
 
-    function getFillingRules() {
-      return _item.fillingRules.options;
+    function getFillingContainer() {
+      return _fillingContainer;
     }
 
-    function getItem() {
-      return _item;
+    function getFillingRules(templateID) {
+      var options = null;
+      _surveyItemGroup.forEach(item => {
+        if (item.templateID === templateID) {
+          options = item.fillingRules.options;
+        }
+      });
+
+      return options;
+    }
+
+    function getItems() {
+      return _surveyItemGroup;
+    }
+
+    function getItemsByTemplateID(templateID) {
+      return _surveyItemGroup.find(item => {
+        return item.templateID === templateID
+      });
     }
 
     function getNavigation() {
@@ -79,42 +101,47 @@
       return _validationError;
     }
 
-    function hasItem() {
-      if (_item) {
-        return true;
-      } else {
-        return false;
-      }
+    function hasItems() {
+      return !!(_surveyItemGroup && _surveyItemGroup.length);
     }
 
     function shouldApplyAnswer() {
-      return _item && _item.isQuestion();
+      return _surveyItemGroup.some(function (surveyItem) {
+        return surveyItem && surveyItem.isQuestion();
+      });
     }
 
     function shouldIgnoreResponseEvaluation() {
-      return !_item || !_item.isQuestion();
+      return _surveyItemGroup.every(function (surveyItem) {
+        return !surveyItem || !surveyItem.isQuestion();
+      });
     }
 
     function observerRegistry(observer) {
-      _observer = observer;
-      _observer.pushData(_filling);
+      observer.pushData(_fillingContainer[observer.itemData.templateID]);
+      _observerArray.push(observer);
     }
 
     function setup(data) {
       clearData();
-      _item = data.item;
+      _surveyItemGroup = data.items;
       _navigation = data.navigation;
 
-      if (_item.isQuestion()) {
-        _filling = ActivityFacadeService.getFillingByQuestionID(_item.templateID);
-
-        if (!_filling) {
-          _filling = ActivityFacadeService.createQuestionFill(_item);
-          _filling.answerType = _item.objectType;
+      _surveyItemGroup.forEach(function (surveyItem) {
+        if (surveyItem.isQuestion()) {
+          let filling;
+          if (surveyItem.isQuestion()) {
+            filling = ActivityFacadeService.getFillingByQuestionID(surveyItem.templateID);
+            if (!filling) {
+              filling = ActivityFacadeService.createQuestionFill(surveyItem);
+              filling.answerType = surveyItem.objectType;
+            }
+          } else {
+            filling = null;
+          }
+          _fillingContainer[surveyItem.templateID] = filling;
         }
-      } else {
-        _filling = null;
-      }
+      });
     }
   }
 }());

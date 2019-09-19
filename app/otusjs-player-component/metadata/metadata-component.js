@@ -23,26 +23,30 @@
   function MetadataGroupController(CurrentItemService, $element) {
     var self = this;
 
-    self.$onInit = function() {
-      self.metadata = CurrentItemService.getFilling().metadata.value;
-      self.otusQuestion.metadata = self;
-    };
+    self.$onInit = onInit;
+    self.update = update;
+    self.clear = clear;
+    self.blurOnClick = blurOnClick;
 
-    self.update = function() {
+    function onInit() {
+        self.metadata = CurrentItemService.getFilling(self.itemData.templateID).metadata.value;
+        self.otusQuestion.metadata = self;
+    }
+
+    function update() {
       self.onUpdate({
         valueType: 'metadata',
         value: self.metadata
       });
-    };
+    }
 
-    self.clear = function() {
-      CurrentItemService.getFilling().metadata.clear();
-      delete self.metadata;
-    };
+    function clear() {
+        CurrentItemService.getFilling(self.itemData.templateID).metadata.clear();
+        delete self.metadata;
+    }
 
-    self.blurOnClick = function() {
+    function blurOnClick() {
       $element.find('#metadataGroupRadioGroup').removeClass('md-focused');
     }
   }
-
 })();

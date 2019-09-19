@@ -112,9 +112,11 @@
 
     function formatFileUpload() {
       var _answer = "";
-      self.itemData.data.answer.value.forEach(function(value){
-        _answer = _answer + angular.copy(value.name) + "; ";
-      });
+      if(self.itemData.data.answer.value){
+        self.itemData.data.answer.value.forEach(function(value){
+          _answer = _answer + angular.copy(value.name) + "; ";
+        });
+      }
       return  _answer;
     }
 

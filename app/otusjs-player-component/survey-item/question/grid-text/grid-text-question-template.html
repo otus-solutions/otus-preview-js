@@ -1,11 +1,11 @@
 <div ng-repeat="line in ::$ctrl.itemData.getLinesList()" ng-init="outerIndex=$index" layout="row" flex>
     <div ng-repeat="gridText in ::line.getGridTextList()" ng-init="innerIndex=$index" layout-padding layout="row" flex>
         <md-input-container flex>
-            <label>{{ ::gridText.label.ptBR.formattedText }}</label>
+            <label ng-bind-html="::gridText.label.ptBR.formattedText"></label>
             <div>
                 <textarea ng-model="$ctrl.answerArray[outerIndex][innerIndex].value" ng-blur="$ctrl.update(outerIndex, innerIndex)" ng-disabled="$ctrl.view"></textarea>
             </div>
-            <div style="color: gray;">{{::gridText.unit.ptBR.plainText}}</div>
+            <div style="color: gray;" ng-bind-html="::gridText.unit.ptBR.plainText"></div>
         </md-input-container>
     </div>
 </div>

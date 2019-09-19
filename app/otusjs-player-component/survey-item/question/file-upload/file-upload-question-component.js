@@ -46,7 +46,7 @@
     self.view = false;
 
     function onInit() {
-      var answerFiles = CurrentItemService.getFilling().answer.value || [];
+      var answerFiles = CurrentItemService.getFilling(self.itemData.templateID).answer.value || [];
       self.sentFiles = FileUploadAnswerFactory.buildFromJson(answerFiles);
       self.pendingList = [];
       self.promise = 0;
@@ -58,7 +58,7 @@
       self.otusQuestion.answer = self;
 
       _uploadInterface = FileUploadService.getUploadInterface();
-      _questionID = CurrentItemService.getItem().templateID;
+      _questionID = CurrentItemService.getItemsByTemplateID(self.itemData.templateID);
       _deleteDialog = _createDeleteDialog();
       _pendingArrayControl = 0;
       self.pendingCounter = 0;

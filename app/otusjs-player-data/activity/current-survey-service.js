@@ -20,12 +20,12 @@
     self.getNavigationByOrigin = getNavigationByOrigin;
     self.getItemByCustomID = getItemByCustomID;
     self.getItemByTemplateID = getItemByTemplateID;
+    self.getGroupItemsByMemberID = getGroupItemsByMemberID;
     self.getSurveyDatasources = getSurveyDatasources;
     self.getStaticVariableList = getStaticVariableList;
     self.initialize = initialize;
     self.finalize = finalize;
     self.save = save;
-    self.setup = setup;
     self.clearSkippedAnswers = clearSkippedAnswers;
     self.getNavigationTracker = getNavigationTracker;
     self.getWholeTemplateStaticVariableList = getWholeTemplateStaticVariableList;
@@ -64,16 +64,13 @@
     }
 
     function getItemByTemplateID(templateID) {
-      var fetchedItem = null;
-
-      getItems().some(function (item) {
-        if (item.templateID === templateID) {
-          fetchedItem = item;
-          return true;
-        }
+      return getItems().find(function (item) {
+        return item.templateID === templateID;
       });
+    }
 
-      return fetchedItem;
+    function getGroupItemsByMemberID(id) {
+      return getSurvey().getGroupItemsByItemID(id);
     }
 
     function getNavigations() {
@@ -104,8 +101,6 @@
     function save() {
       ActivityFacadeService.saveActivitySurvey();
     }
-
-    function setup() { }
 
     function clearSkippedAnswers() {
       ActivityFacadeService.clearSkippedAnswers();

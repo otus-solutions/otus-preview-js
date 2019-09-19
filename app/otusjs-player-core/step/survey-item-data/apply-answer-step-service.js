@@ -1,4 +1,4 @@
-(function() {
+(function () {
   'use strict';
 
   angular
@@ -11,7 +11,7 @@
 
   function Service(ActivityFacadeService) {
     var self = this;
-    var _currentItem;
+    var _currentItemService;
 
     /* Public methods */
     self.beforeEffect = beforeEffect;
@@ -20,9 +20,9 @@
     self.getEffectResult = getEffectResult;
 
     function beforeEffect(pipe, flowData) {
-      _currentItem = ActivityFacadeService.getCurrentItem();
+      _currentItemService = ActivityFacadeService.getCurrentItem();
 
-      if (!_currentItem.shouldApplyAnswer()) {
+      if (!_currentItemService.shouldApplyAnswer()) {
         pipe.skipStep = true;
       } else {
         pipe.skipStep = false;
@@ -32,23 +32,25 @@
     }
 
     function effect(pipe, flowData) {
+      let fillingContainer = _currentItemService.getFillingContainer();
+
       ActivityFacadeService.applyAnswer();
-      flowData.answerToEvaluate.data = _ensureTestableValue(_currentItem.getFilling().answer);
-      flowData.metadataToEvaluate.data = _ensureTestableValue(_currentItem.getFilling().metadata);
+
+      Object.keys(fillingContainer).forEach(templateID => {
+        flowData.answerToEvaluate[templateID].data = _ensureTestableValue(fillingContainer[templateID].answer);
+        flowData.metadataToEvaluate[templateID].data = _ensureTestableValue(fillingContainer[templateID].metadata);
+      });
     }
 
-    function afterEffect(pipe, flowData) { }
+    function afterEffect(pipe, flowData) {
+    }
 
     function getEffectResult(pipe, flowData) {
       return flowData;
     }
 
     function _isTestableValue(value) {
-      if (value !== null && value !== undefined ) {
-        return true;
-      } else {
-        return false;
-      }
+      return value !== null && value !== undefined;
     }
 
     function _ensureTestableValue(filling) {

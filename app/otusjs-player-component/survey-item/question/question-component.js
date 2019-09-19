@@ -24,34 +24,44 @@
   function OtusQuestionController(TagComponentBuilderService, CurrentItemService) {
     var self = this;
 
-    self.$onInit = function() {
+    self.$onInit = onInit;
+    self.setError = setError;
+    self.update = update;
+    self.forceAnswer = forceAnswer;
+    self.clear = clear;
+    self.clearAnswer = clearAnswer;
+    self.clearMetadataAnswer = clearMetadataAnswer;
+    self.clearCommentAnswer = clearCommentAnswer;
+    self.isAccept = isAccept;
+
+    function onInit() {
       self.template = TagComponentBuilderService.createTagElement(self.itemData.objectType);
       self.otusSurveyItem.questionComponent = self;
-      self.filling = CurrentItemService.getFilling() || {};
-      self.answer = CurrentItemService.getFilling().answer || {};
-      self.metadata = CurrentItemService.getFilling().metadata || {};
-      self.comment = CurrentItemService.getFilling().comment || {};
+      self.filling = CurrentItemService.getFilling(self.itemData.templateID) || {};
+      self.answer = CurrentItemService.getFilling(self.itemData.templateID).answer || {};
+      self.metadata = CurrentItemService.getFilling(self.itemData.templateID).metadata || {};
+      self.comment = CurrentItemService.getFilling(self.itemData.templateID).comment || {};
       self.menuComponent = {};
       self.menuComponent.error = false;
 
-      self.setError();
-    };
+      setError();
+    }
 
-    self.update = function(prop, value) {
+    function update(prop, value) {
       self.onUpdate({
         valueType: prop,
         value: value
       });
-    };
+    }
 
-    self.forceAnswer = function(value) {
+    function forceAnswer(value) {
       self.onUpdate({
         valueType: 'forceAnswer',
         value: value
       });
-    };
+    }
 
-    self.clear = function(value) {
+    function clear(value) {
       if (value) {
         if (value === 'answer') {
           self.clearAnswer();
@@ -61,21 +71,21 @@
           self.clearCommentAnswer();
         }
       }
-    };
+    }
 
-    self.clearAnswer = function() {
+    function clearAnswer() {
       self.answer.clear();
-    };
+    }
 
-    self.clearMetadataAnswer = function() {
+    function clearMetadataAnswer() {
       self.metadata.clear();
-    };
+    }
 
-    self.clearCommentAnswer = function() {
+    function clearCommentAnswer() {
       self.comment.clear();
-    };
+    }
 
-    self.setError = function(error) {
+    function setError(error) {
       if (self.filling.forceAnswer) {
         self.menuComponent.error = true;
       } else if (self.itemData.isQuestion() && error) {
@@ -87,11 +97,11 @@
       } else {
         self.menuComponent.error = false;
       }
-    };
+    }
 
-    self.isAccept = function() {
+    function isAccept() {
       return self.itemData.fillingRules.options.accept === undefined ? false : true;
-    };
+    }
 
     function _canBeIgnored(error) {
       return function(validator) {

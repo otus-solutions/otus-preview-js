@@ -136,7 +136,7 @@ describe('PlayerService', function() {
     Mock.PlayerStartActionService = $injector.get('otusjs.player.core.phase.PlayerStartActionService');
     Mock.itemData = { customID: 'VAL1' };
     Mock.itemService = {};
-    Mock.itemService.getItem = jasmine.createSpy('getItem').and.returnValue(Mock.itemData);
+    Mock.itemService.getItems = jasmine.createSpy('getItems').and.returnValue(Mock.itemData);
     spyOn(Mock.ActivityFacadeService, 'getCurrentItem').and.returnValue(Mock.itemService);
     Injections.PlayerStartActionService = Mock.PlayerStartActionService;
   }

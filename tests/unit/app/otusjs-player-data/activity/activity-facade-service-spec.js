@@ -31,11 +31,6 @@ describe('ActivityFacadeService', function() {
 
   describe('applyAnswer method', function() {
 
-    beforeEach(function() {
-      spyOn(Mock.CurrentSurveyService, 'setup');
-      service.setup();
-    })
-
     it('should delegates the filling applies to current question', function() {
       spyOn(Mock.CurrentItemService, 'applyFilling');
 
@@ -47,11 +42,6 @@ describe('ActivityFacadeService', function() {
   });
 
   describe('attachItemValidationError method', function() {
-
-    beforeEach(function() {
-      spyOn(Mock.CurrentSurveyService, 'setup');
-      service.setup();
-    })
 
     it('should delegates the validation error attachment', function() {
       spyOn(Mock.CurrentItemService, 'attachValidationError');
@@ -90,9 +80,6 @@ describe('ActivityFacadeService', function() {
   describe('initialize method', function() {
 
     beforeEach(function() {
-      spyOn(Mock.CurrentSurveyService, 'setup');
-      service.setup();
-
       spyOn(Mock.CurrentSurveyService, 'initialize');
       spyOn(Mock.CurrentSurveyService, 'getItems').and.returnValue(Mock.surveyTemplate.itemContainer);
       spyOn(Mock.CurrentSurveyService, 'getNavigations').and.returnValue(Mock.surveyTemplate.navigationList);
@@ -108,29 +95,12 @@ describe('ActivityFacadeService', function() {
 
   describe('setupAnswer method', function() {
 
-    beforeEach(function() {
-      spyOn(Mock.CurrentSurveyService, 'setup');
-      service.setup();
-    });
-
     it('should delegates the filling of current question', function() {
       spyOn(Mock.CurrentItemService, 'fill');
 
       service.setupAnswer(Mock.answerData);
 
       expect(Mock.CurrentItemService.fill).toHaveBeenCalledWith(Mock.answerData);
-    });
-
-  });
-
-  describe('setup method', function() {
-
-    it('should keep a reference to survey into activity module', function() {
-      spyOn(Mock.CurrentSurveyService, 'setup');
-
-      service.setup();
-
-      expect(Mock.CurrentSurveyService.setup).toHaveBeenCalledWith();
     });
 
   });
@@ -145,6 +115,13 @@ describe('ActivityFacadeService', function() {
       expect(Mock.CurrentSurveyService.getWholeTemplateStaticVariableList).toHaveBeenCalledWith();
     });
 
+  });
+
+  it('Methods should fetchItemGroupByID execute', function () {
+    spyOn(Mock.CurrentSurveyService, 'getGroupItemsByMemberID');
+    service.fetchItemGroupByID(CAD2);
+
+    expect(Mock.CurrentSurveyService.getGroupItemsByMemberID).toHaveBeenCalledWith(CAD2);
   });
 
   function mockCurrentSurveyService($injector) {

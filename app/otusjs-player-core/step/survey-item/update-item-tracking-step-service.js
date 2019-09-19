@@ -11,7 +11,7 @@
     'otusjs.player.core.player.PlayerService',
   ];
 
-  function Service(NavigationService, CurrentItemService, PlayerService) {
+  function Service(NavigationService) {
     var self = this;
 
     /* Public methods */
@@ -23,7 +23,7 @@
     function beforeEffect(pipe, flowData) {}
 
     function effect(pipe, flowData) {
-      NavigationService.updateItemTracking();
+        NavigationService.updateItemTracking();
     }
 
     function afterEffect(pipe, flowData) {}

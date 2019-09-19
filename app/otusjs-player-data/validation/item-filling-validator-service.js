@@ -1,4 +1,4 @@
-(function() {
+(function () {
   'use strict';
 
   angular
@@ -12,52 +12,60 @@
 
   function Service(ElementRegisterFactory, ValidationService) {
     var self = this;
-    var _elementRegister;
-    var _answer = {};
+    var _elementRegisters = {};
+    var _answers = [];
 
     /* Public methods */
     self.applyValidation = applyValidation;
     self.setupValidation = setupValidation;
 
     function applyValidation(currentItemService, callback) {
-      ValidationService.unregisterElement(_elementRegister.id);
-      setupValidation(currentItemService, _answer);
-
-      ValidationService.validateElement(currentItemService.getItem().customID, callback);
+      setupValidation(currentItemService, _answers);
+      Object.keys(_answers).forEach(templateID => {
+        ValidationService.validateElement(templateID, callback);
+      });
     }
 
-    function setupValidation(currentItemService, answer) {
-      _answer = answer;
-      _elementRegister = ElementRegisterFactory.create(currentItemService.getItem().customID, answer);
+    function setupValidation(currentItemService, answerObject) {
+      _answers = answerObject;
 
-      if (currentItemService.getFilling().forceAnswer) {
-        Object.keys(currentItemService.getItem().fillingRules.options).filter(function(validator) {
-          if (!currentItemService.getItem().fillingRules.options[validator].data.canBeIgnored) {
-            _addValidator(validator, currentItemService);
+      currentItemService.getItems().forEach(function (surveyItem) {
+        if (surveyItem.isQuestion()) {
+          let templateID = surveyItem.templateID;
+          let answer = answerObject[templateID];
+
+          let elementRegister = ElementRegisterFactory.create(templateID, answer);
+
+          if (currentItemService.getFilling(templateID).forceAnswer) {
+            Object.keys(surveyItem.fillingRules.options).filter(function (validator) {
+              if (!surveyItem.fillingRules.options[validator].data.canBeIgnored) {
+                _addValidator(elementRegister, validator, surveyItem);
+              }
+            });
+          } else {
+            Object.keys(surveyItem.fillingRules.options).map(function (validator) {
+              _addValidator(elementRegister, validator, surveyItem);
+            });
+            _setupImmutableDateValidation(elementRegister, surveyItem);
           }
-        });
-      } else {
-        Object.keys(currentItemService.getItem().fillingRules.options).map(function(validator) {
-          _addValidator(validator, currentItemService);
-        });
-        _setupImmutableDateValidation(currentItemService);
-      }
+          _elementRegisters[templateID] = elementRegister;
 
-      ValidationService.unregisterElement(_elementRegister.id);
-      ValidationService.registerElement(_elementRegister);
+          ValidationService.unregisterElement(elementRegister.id);
+          ValidationService.registerElement(elementRegister);
+        }
+      });
     }
 
-    function _addValidator(validator, currentItemService) {
-      var reference = currentItemService.getItem().fillingRules.options[validator].data;
-      _elementRegister.addValidator(validator, reference);
+    function _addValidator(elementRegister, validator, surveyItem) {
+      var reference = surveyItem.fillingRules.options[validator].data;
+      elementRegister.addValidator(validator, reference);
     }
 
-    function _setupImmutableDateValidation(currentItemService) {
-      var currentItemItemType = currentItemService.getItem().objectType;
-      if(currentItemItemType === "TimeQuestion" || currentItemItemType === "CalendarQuestion") {
-        _elementRegister.addValidator("ImmutableDate", currentItemService);
+    function _setupImmutableDateValidation(elementRegister, surveyItem) {
+      var currentItemItemType = surveyItem.objectType;
+      if (currentItemItemType === "TimeQuestion" || currentItemItemType === "CalendarQuestion") {
+        elementRegister.addValidator("ImmutableDate", surveyItem);
       }
     }
-
   }
 }());

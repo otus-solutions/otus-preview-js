@@ -13,7 +13,6 @@
   ];
 
   function Controller(PlayerService) {
-    var SURVEY_ITEM = '<otus-survey-item item-data="itemData" />';
     var self = this;
 
     /* Public methods */
@@ -106,7 +105,7 @@
     }
 
     function _loadItem() {
-      if (PlayerService.getItemData()) {
+      if(PlayerService.getItemData()){
         self.playerDisplay.loadItem(PlayerService.getItemData());
       }
     }

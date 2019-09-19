@@ -25,7 +25,7 @@
     self.view = false;
 
     self.$onInit = function() {
-      self.answer = CurrentItemService.getFilling().answer.value;
+      self.answer = CurrentItemService.getFilling(self.itemData.templateID).answer.value;
       self.otusQuestion.answer = self;
     };
 
@@ -41,8 +41,8 @@
     };
 
     self.clear = function() {
-      CurrentItemService.getFilling().answer.clear();
+      CurrentItemService.getFilling(self.itemData.templateID).answer.clear();
       delete self.answer;
-    }
+    };
   }
 }());

@@ -33,7 +33,7 @@
 
     function getPreviousItem() {
       if (hasPrevious()) {
-        var previousID = _navigationTracker.getCurrentItem().getPrevious();
+        var previousID = _navigationTracker.getCurrentItemGroup()[0].getPrevious();
         return ActivityFacadeService.getCurrentSurvey().getItemByTemplateID(previousID);
       } else {
         return null;
@@ -41,19 +41,11 @@
     }
 
     function hasNext() {
-      if (ActivityFacadeService.getCurrentItem().getNavigation().listRoutes().length) {
-        return true;
-      } else {
-        return false;
-      }
+      return !!ActivityFacadeService.getCurrentItem().getNavigation().listRoutes().length;
     }
 
     function hasPrevious() {
-      if (_navigationTracker.hasPreviousItem()) {
-        return true;
-      } else {
-        return false;
-      }
+      return !!_navigationTracker.hasPreviousItem();
     }
 
     function initialize() {
@@ -61,7 +53,7 @@
     }
 
     function loadNextItem() {
-      if (ActivityFacadeService.getCurrentItem().hasItem()) {
+      if (ActivityFacadeService.getCurrentItem().hasItems()) {
         return _loadNextItem();
       } else if (_navigationTracker.getCurrentIndex()) {
         return _loadLastVisitedItem();
@@ -72,22 +64,26 @@
 
     function loadPreviousItem() {
       if (hasPrevious()) {
-        var item = getPreviousItem();
-        var navigation = ActivityFacadeService.getCurrentSurvey().getNavigationByOrigin(item.templateID);
+        var itemsPreviousArray = [];
+        var items = getPreviousItem();
+        var navigation = null;
+
+        itemsPreviousArray = ActivityFacadeService.fetchItemGroupByID(items.templateID);
+        navigation = ActivityFacadeService.getCurrentSurvey().getNavigationByOrigin(itemsPreviousArray[itemsPreviousArray.length - 1].templateID);
 
         RouteService.setup(navigation);
-        _navigationTracker.visitItem(item.templateID);
+        _navigationTracker.visitGroup(itemsPreviousArray.map(item=>item.templateID));
 
         return {
-          item: item,
+          items: itemsPreviousArray,
           navigation: navigation
         };
       }
     }
 
     function updateItemTracking() {
-      var currentItemFilling = ActivityFacadeService.getCurrentItem().getFilling();
-      _navigationTracker.updateCurrentItem(currentItemFilling);
+      var currentItemFillingContainer = ActivityFacadeService.getCurrentItem().getFillingContainer();
+      _navigationTracker.updateCurrentGroup(currentItemFillingContainer);
     }
 
     function _loadFirstItem() {
@@ -95,7 +91,7 @@
     }
 
     function _loadLastVisitedItem() {
-      return _loadItem(_navigationTracker.getCurrentItem().getID());
+      return _loadItem(_navigationTracker.getCurrentItemGroup()[0].getID());
     }
 
     function _loadNextItem() {
@@ -108,15 +104,22 @@
     }
 
     function _loadItem(id) {
-      var itemToLoad = null;
+      var itemsToLoad = null;
       var navigation = null;
 
       if (!id) {
-        itemToLoad = ActivityFacadeService.getCurrentSurvey().getItems()[0];
-        navigation = ActivityFacadeService.getCurrentSurvey().getNavigations()[2];
+        let firstItem = ActivityFacadeService.getCurrentSurvey().getItems()[0];
+        itemsToLoad = ActivityFacadeService.fetchItemGroupByID(firstItem.templateID);
+        navigation = ActivityFacadeService.fetchNavigationByOrigin(itemsToLoad[itemsToLoad.length - 1].templateID);
+        _navigationTracker.visitGroup(itemsToLoad.map(item=>item.templateID));
+
+      } else if (id !== 'END NODE') {
+        itemsToLoad = ActivityFacadeService.fetchItemGroupByID(id);
+        navigation = ActivityFacadeService.fetchNavigationByOrigin(itemsToLoad[itemsToLoad.length - 1].templateID);
+        _navigationTracker.visitGroup(itemsToLoad.map(item=>item.templateID));
+
       } else {
-        itemToLoad = ActivityFacadeService.fetchItemByID(id);
-        navigation = ActivityFacadeService.fetchNavigationByOrigin(id);
+         navigation = ActivityFacadeService.fetchNavigationByOrigin(id);
       }
 
       if (navigation) {
@@ -124,14 +127,12 @@
       }
 
       if (id === 'END NODE') {
-        _navigationTracker.visitItem(id);
+        _navigationTracker.visitGroup([id]);
         return id;
       }
 
-      _navigationTracker.visitItem(itemToLoad.templateID);
-
       return {
-        item: itemToLoad,
+        items: itemsToLoad,
         navigation: navigation
       };
     }

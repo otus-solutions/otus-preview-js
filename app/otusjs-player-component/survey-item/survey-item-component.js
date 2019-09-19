@@ -5,11 +5,11 @@
     .module('otusjs.player.component')
     .component('otusSurveyItem', {
       templateUrl: 'app/otusjs-player-component/survey-item/survey-item-template.html',
-      controller: OtusSurveyItemController,
+      controller: 'otusSurveyItemCtrl as $ctrl',
       bindings: {
         itemData: '<'
       }
-    });
+    }).controller('otusSurveyItemCtrl', OtusSurveyItemController);
 
   OtusSurveyItemController.$inject = [
     '$scope',
@@ -21,26 +21,26 @@
     var self = this;
 
     /* Public methods */
+    self.$onInit = onInit;
     self.isQuestion = isQuestion;
     self.isItem = isItem;
-    self.restoreAll = restoreAll;
     self.update = update;
     self.clear = clear;
     self.pushData = pushData;
     self.destroy = destroy;
     self.updateValidation = updateValidation;
 
-    self.$onInit = function() {
+    function onInit() {
       self.filling = {};
       self.filling.questionID = self.itemData.templateID;
 
-      $scope.$parent.$ctrl.currentItem = self;
+      $scope.$parent.$ctrl.currentItems.push(self);
       CurrentItemService.observerRegistry(self);
 
       self.$error = {};
       self.questionComponent = {};
       self.errorComponent = {};
-    };
+    }
 
     function updateValidation(validationMap) {
       self.$error = validationMap;
@@ -57,8 +57,6 @@
     function isItem() {
       return (self.itemData.objectType === 'ImageItem') || (self.itemData.objectType === 'TextItem') ? true : false;
     }
-
-    function restoreAll() {}
 
     function update(prop, value) {
       if (prop) {

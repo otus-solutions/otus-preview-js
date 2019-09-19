@@ -16,11 +16,10 @@
     });
 
   OtusSurveyMenuController.$inject = [
-    '$mdDialog',
-    '$mdMedia'
+    '$mdDialog'
   ];
 
-  function OtusSurveyMenuController($mdDialog, $mdMedia) {
+  function OtusSurveyMenuController($mdDialog) {
     var self = this;
     self.forceAnswer = false;
 
@@ -46,8 +45,7 @@
         $mdDialog
           .show(self.enableDialogSettings)
           .then(
-            _enableForwardSuccessfulExecution,
-            _enableForwardUnsuccessfulExecution
+            _enableForwardSuccessfulExecution
           );
 
         return {
@@ -79,8 +77,6 @@
         self.forceAnswer = true;
       }
     }
-
-    function _enableForwardUnsuccessfulExecution(error) {}
 
     function _disableForwardSuccessfulExecution(response) {
       if (response.action !== 'cancel') {

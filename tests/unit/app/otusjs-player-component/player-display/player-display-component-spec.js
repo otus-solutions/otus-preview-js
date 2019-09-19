@@ -1,3 +1,76 @@
+describe('otusPlayerDisplay Component Test unit', function() {
+
+  var Mock = {};
+  var Injections = [];
+  var controller;
+
+  beforeEach(function() {
+    angular.mock.module('otusjs.player');
+
+    angular.mock.inject(function (_$controller_, _$injector_,$rootScope, $compile) {
+      mock($rootScope, $compile);
+      Injections.$scope = Mock.$scope;
+      Injections.$document = _$injector_.get('$document');
+      Injections.$element = Mock.$element;
+      Injections.$compile = $compile;
+      Injections.$location = _$injector_.get('$location');
+      Injections.$anchorScroll = _$injector_.get('$anchorScroll');
+      Injections.ActivityFacadeService = _$injector_.get('otusjs.player.data.activity.ActivityFacadeService');
+      Injections.PlayerService = _$injector_.get('otusjs.player.core.player.PlayerService');
+
+      controller = _$controller_('otusPlayerDisplayCtrl', Injections);
+    });
+    // spyOn(Injections.$element, 'find').and.callThrough;
+    // spyOn(Injections.$element.find, 'empty').and.returnValue(Promise.resolve());
+    spyOn(Injections.$element, 'find').and.returnValue(Mock.$section);
+
+    controller.$onInit();
+  });
+
+  it('controller method should have a defined controller', function () {
+    expect(controller).toBeDefined();
+  });
+
+  it('Methods should defined controller', function () {
+    expect(controller.$onInit).toBeDefined();
+    expect(controller.loadItem).toBeDefined();
+    expect(controller.showCover).toBeDefined();
+    expect(controller.remove).toBeDefined();
+  });
+
+  it('Methods should $onInit execute', function () {
+    expect(Injections.$scope.$parent.$ctrl.playerDisplay).toEqual(controller);
+    expect(Injections.$scope.itemData.templateID).toEqual('');
+    expect(Injections.$scope.questions).toEqual([]);
+    expect(controller.ids).toEqual([]);
+  });
+
+  xit('should try to find element section on controller template', function() {
+    Mock.itemData = [{'templateID':'ATCA1'}];
+
+    controller.loadItem(Mock.itemData);
+    // Injections.$scope.$digest();
+
+    expect(Injections.$element.find).toHaveBeenCalledWith('section');
+
+    // expect(Injections.$scope.itemData).toEqual(Mock.itemData);
+  });
+
+  function mock($rootScope, $compile) {
+    Mock.$scope = $rootScope.$new();
+    Mock.$scope.$parent.$ctrl = {};
+
+    Mock.$element = $;
+    // Mock.$element = $compile('<div id="pagePlayer"></div>')(Mock.$scope);
+
+    // Mock.$element = $compile(angular.element('<div id="pagePlayer"></div>'))(Mock.$scope);
+
+    Mock.$section = $;
+
+    Mock.$section.prepend = jasmine.createSpy('empty');
+  }
+});
+
 xdescribe('otusPlayerDisplay component', function() {
 
   var UNIT_NAME = 'otusPlayerDisplay';

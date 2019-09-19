@@ -63,8 +63,8 @@
     var self = this;
 
     self.$onInit = function() {
-      self.comment = CurrentItemService.getFilling().comment;
-      self.otusQuestion.comment = self;
+        self.comment = CurrentItemService.getFilling(self.itemData.templateID).comment;
+        self.otusQuestion.comment = self;
     };
 
     self.update = function() {
@@ -75,7 +75,7 @@
     };
 
     self.clear = function() {
-      CurrentItemService.getFilling().comment = "";
+      CurrentItemService.getFilling(self.itemData.templateID).comment = "";
       delete self.comment;
     };
   }
@@ -147,28 +147,32 @@
   function MetadataGroupController(CurrentItemService, $element) {
     var self = this;
 
-    self.$onInit = function() {
-      self.metadata = CurrentItemService.getFilling().metadata.value;
-      self.otusQuestion.metadata = self;
-    };
+    self.$onInit = onInit;
+    self.update = update;
+    self.clear = clear;
+    self.blurOnClick = blurOnClick;
 
-    self.update = function() {
+    function onInit() {
+        self.metadata = CurrentItemService.getFilling(self.itemData.templateID).metadata.value;
+        self.otusQuestion.metadata = self;
+    }
+
+    function update() {
       self.onUpdate({
         valueType: 'metadata',
         value: self.metadata
       });
-    };
+    }
 
-    self.clear = function() {
-      CurrentItemService.getFilling().metadata.clear();
-      delete self.metadata;
-    };
+    function clear() {
+        CurrentItemService.getFilling(self.itemData.templateID).metadata.clear();
+        delete self.metadata;
+    }
 
-    self.blurOnClick = function() {
+    function blurOnClick() {
       $element.find('#metadataGroupRadioGroup').removeClass('md-focused');
     }
   }
-
 })();
 
 (function() {
@@ -186,7 +190,6 @@
   ];
 
   function Controller(PlayerService) {
-    var SURVEY_ITEM = '<otus-survey-item item-data="itemData" />';
     var self = this;
 
     /* Public methods */
@@ -279,7 +282,7 @@
     }
 
     function _loadItem() {
-      if (PlayerService.getItemData()) {
+      if(PlayerService.getItemData()){
         self.playerDisplay.loadItem(PlayerService.getItemData());
       }
     }
@@ -543,7 +546,7 @@
   angular
     .module('otusjs.player.component')
     .component('gridIntegerQuestionView', {
-      template:'<div id="answer" ng-if="$ctrl.item.hasAnswer" layout-fill><p class="md-caption" style="color: gray;">Resposta</p><div ng-repeat="position in $ctrl.item.answer" layout="row"><div ng-repeat="gridInteger in position.positions" layout="column" flex layout-margin><md-input-container flex><label>{{gridInteger.label.ptBR.formattedText}}</label> <textarea type="text" ng-model="gridInteger.value" scrolling="no" style="overflow:hidden; resize:none;" ng-disabled="true"></textarea><div style="color: gray;" ng-bind-html="gridInteger.unit.ptBR.formattedText"></div></md-input-container></div></div></div><div id="metadata" ng-if="$ctrl.item.hasMetadata" layout-fill><p class="md-caption" style="color: gray;">Metadado</p><p ng-bind-html="$ctrl.item.metadata.label.ptBR.formattedText"></p></div><div id="comment" ng-if="$ctrl.item.hasComment" layout-fill><p class="md-caption" style="color: gray;">Comentário</p><p ng-bind-html="$ctrl.item.comment"></p></div>',
+      template:'<div id="answer" ng-if="$ctrl.item.hasAnswer" layout-fill><p class="md-caption" style="color: gray;">Resposta</p><div ng-repeat="position in $ctrl.item.answer" layout="row"><div ng-repeat="gridInteger in position.positions" layout="column" flex layout-margin><md-input-container flex><label ng-bind-html="gridInteger.label.ptBR.formattedText"></label> <textarea type="text" ng-model="gridInteger.value" scrolling="no" style="overflow:hidden; resize:none;" ng-disabled="true"></textarea><div style="color: gray;" ng-bind-html="gridInteger.unit.ptBR.formattedText"></div></md-input-container></div></div></div><div id="metadata" ng-if="$ctrl.item.hasMetadata" layout-fill><p class="md-caption" style="color: gray;">Metadado</p><p ng-bind-html="$ctrl.item.metadata.label.ptBR.formattedText"></p></div><div id="comment" ng-if="$ctrl.item.hasComment" layout-fill><p class="md-caption" style="color: gray;">Comentário</p><p ng-bind-html="$ctrl.item.comment"></p></div>',
       controller: Controller,
       bindings: {
         filters: '=',
@@ -561,7 +564,7 @@
   angular
     .module('otusjs.player.component')
     .component('gridTextQuestionView', {
-      template:'<div id="answer" ng-if="$ctrl.item.hasAnswer" layout-fill><p class="md-caption" style="color: gray;">Resposta</p><div ng-repeat="position in $ctrl.item.answer" layout="row"><div ng-repeat="gridInteger in position.positions" layout="column" flex layout-margin><md-input-container flex><label>{{gridInteger.label.ptBR.formattedText}}</label> <textarea type="text" ng-model="gridInteger.value" scrolling="no" style="overflow:hidden; resize:none;" ng-disabled="true"></textarea><div style="color: gray;" ng-bind-html="gridInteger.unit.ptBR.formattedText"></div></md-input-container></div></div></div><div id="metadata" ng-if="$ctrl.item.hasMetadata" layout-fill><p class="md-caption" style="color: gray;">Metadado</p><p ng-bind-html="$ctrl.item.metadata.label.ptBR.formattedText"></p></div><div id="comment" ng-if="$ctrl.item.hasComment" layout-fill><p class="md-caption" style="color: gray;">Comentário</p><p ng-bind-html="$ctrl.item.comment"></p></div>',
+      template:'<div id="answer" ng-if="$ctrl.item.hasAnswer" layout-fill><p class="md-caption" style="color: gray;">Resposta</p><div ng-repeat="position in $ctrl.item.answer" layout="row"><div ng-repeat="gridInteger in position.positions" layout="column" flex layout-margin><md-input-container flex><label ng-bind-html="gridInteger.label.ptBR.formattedText"></label> <textarea type="text" ng-model="gridInteger.value" scrolling="no" style="overflow:hidden; resize:none;" ng-disabled="true"></textarea><div style="color: gray;" ng-bind-html="gridInteger.unit.ptBR.formattedText"></div></md-input-container></div></div></div><div id="metadata" ng-if="$ctrl.item.hasMetadata" layout-fill><p class="md-caption" style="color: gray;">Metadado</p><p ng-bind-html="$ctrl.item.metadata.label.ptBR.formattedText"></p></div><div id="comment" ng-if="$ctrl.item.hasComment" layout-fill><p class="md-caption" style="color: gray;">Comentário</p><p ng-bind-html="$ctrl.item.comment"></p></div>',
       controller: Controller,
       bindings: {
         filters: '=',
@@ -858,18 +861,18 @@
   }
 }());
 
-(function() {
+(function () {
   'use strict';
 
   angular
     .module('otusjs.player.component')
     .component('otusPlayerDisplay', {
       template:'<span flex="5"></span><div layout="row" flex><span flex="10"></span><div flex layout="column"><answer-view ng-repeat="item in questions" ng-show="questions.length" go-back="$ctrl.goBack()" icon="item.objectType" item-data="item" question="{{item.label.ptBR.formattedText}}"></answer-view><div flex layout="column" id="pagePlayer"></div></div></div>',
-      controller: Controller,
-      bindings:{
-        goBack: "&"
+      controller: 'otusPlayerDisplayCtrl as $ctrl',
+      bindings: {
+        goBack: '&'
       }
-    });
+    }).controller('otusPlayerDisplayCtrl', Controller);
 
   Controller.$inject = [
     '$scope',
@@ -889,56 +892,70 @@
     var SURVEY_COVER = '<otus-cover />';
 
     /* Public methods */
+    self.$onInit = onInit;
     self.loadItem = loadItem;
     self.showCover = showCover;
     self.remove = remove;
-    self.$onInit = onInit;
-    self.ids = [];
+    self.currentItems = [];
 
-    function _destroyCurrentItem() {
-      if (self.currentItem) {
-        self.currentItem.destroy();
-      }
+
+    function onInit() {
+      $scope.$parent.$ctrl.playerDisplay = self;
+      $scope.itemData = {};
+      $scope.itemData.templateID = '';
+      $scope.questions = [];
+      self.ids = [];
     }
 
-    function loadItem(itemData) {
-      if (_shouldLoadItem(itemData)) {
-        _destroyCurrentItem();
-        _saveQuestion();
-        removeQuestion(itemData.templateID);
-        $scope.itemData = itemData;
-        _setQuestionId(itemData.templateID);
-        $element.find('#pagePlayer').empty();
-        $element.find('#pagePlayer').append($compile(SURVEY_ITEM)($scope));
-        _onGoBottom(itemData.templateID);
+
+    function _destroyCurrentItems() {
+      if (self.currentItems.length) {
+        self.currentItems.forEach(item => {
+          item.destroy();
+        });
       }
 
+      self.currentItems = [];
+    }
 
+    function loadItem(itemsData) {
+      if (_shouldLoadItem(itemsData[itemsData.length -1])) {
+        _saveQuestion();
+        _destroyCurrentItems();
+        _removeQuestions(itemsData);
 
-      if(PlayerService.isGoingBack()){
-        if(PlayerService.getGoBackTo() !== itemData.templateID){
-          self.goBack()
+        $element.find('#pagePlayer').empty();
+        for (let i = 0; i < itemsData.length; i++) {
+          (function () {
+            $scope = $scope.$new();
+            $scope.itemData = itemsData[i];
+            _setQuestionId(itemsData[i].templateID);
+            let element = $compile(SURVEY_ITEM)($scope);
+            $element.find('#pagePlayer').append(element);
+          }());
+        }
+        _focusOnItem(itemsData[0].templateID);
+      }
+
+      if (PlayerService.isGoingBack()) {
+        if (PlayerService.getGoBackTo() !== itemsData[0].templateID) {
+          self.goBack();
         } else {
-          PlayerService.setGoBackTo(null)
+          PlayerService.setGoBackTo(null);
         }
       }
     }
 
+    function _removeQuestions(itemsData) {
+      let id = itemsData[0].templateID;
 
-    $scope.removeQuestion = removeQuestion;
-
-    function removeQuestion(id) {
       var index = _getIndexQuestionId(id);
-      if(index > -1){
+      if (index > -1) {
         var length = $scope.questions.length;
         $scope.questions.splice(index, length);
         self.ids.splice(index, length);
 
-      } else {
-        return false;
       }
-      return true;
-
     }
 
     function _setQuestionId(id) {
@@ -949,17 +966,19 @@
       return self.ids.indexOf(id);
     }
 
-    function _onGoBottom(idQuestion) {
+    function _focusOnItem(idQuestion) {
       $location.hash(idQuestion);
       $anchorScroll();
     }
 
     function _saveQuestion() {
-      if($scope.itemData.templateID){
-        var question = angular.copy($scope.itemData);
-        question.data = ActivityFacadeService.fetchItemAnswerByTemplateID(question.templateID);
-        question.data = question.data ? question.data : _setAnswerBlank();
-        $scope.questions.push(question);
+      if (self.currentItems.length) {
+        self.currentItems.forEach(item => {
+          var question = angular.copy(item.itemData);
+          question.data = ActivityFacadeService.fetchItemAnswerByTemplateID(question.templateID);
+          question.data = question.data ? question.data : _setAnswerBlank();
+          $scope.questions.push(question);
+        });
       }
     }
 
@@ -968,14 +987,14 @@
         metadata: {
           value: null
         },
-        answer : {
+        answer: {
           value: null
         }
       };
     }
 
     function showCover() {
-      _destroyCurrentItem();
+      _destroyCurrentItems();
       $element.find('#pagePlayer').empty();
       $element.find('#pagePlayer').append($compile(SURVEY_COVER)($scope));
     }
@@ -984,15 +1003,8 @@
       $element.find('#pagePlayer').remove();
     }
 
-    function onInit() {
-      $scope.$parent.$ctrl.playerDisplay = self;
-      $scope.itemData = {};
-      $scope.itemData.customID = '';
-      $scope.questions = [];
-    }
-
     function _shouldLoadItem(itemData) {
-      return $scope.itemData && $scope.itemData.customID !== itemData.customID;
+      return !self.currentItems.length  || (self.currentItems.length && $scope.itemData.templateID !== itemData.templateID);
     }
   }
 }());
@@ -1176,11 +1188,11 @@
     .module('otusjs.player.component')
     .component('otusSurveyItem', {
       template:'<md-card flex><md-card-title layout="row" ng-if="!$ctrl.isItem()"><md-card-title-text layout="column" flex><div layout="row"><otus-label class="md-headline" item-label="$ctrl.itemData.label.ptBR.formattedText" flex layout-padding></otus-label></div></md-card-title-text></md-card-title><md-card-content layout="row" layout-align="space-between" flex><otus-question ng-if="$ctrl.isQuestion()" on-update="$ctrl.update(valueType, value)" item-data="$ctrl.itemData" layout="column" flex></otus-question><otus-misc-item ng-if="$ctrl.isItem()" item-data="$ctrl.itemData" layout="column" flex></otus-misc-item></md-card-content><otus-validation-error error="$ctrl.$error" layout="row"></otus-validation-error></md-card>',
-      controller: OtusSurveyItemController,
+      controller: 'otusSurveyItemCtrl as $ctrl',
       bindings: {
         itemData: '<'
       }
-    });
+    }).controller('otusSurveyItemCtrl', OtusSurveyItemController);
 
   OtusSurveyItemController.$inject = [
     '$scope',
@@ -1192,26 +1204,26 @@
     var self = this;
 
     /* Public methods */
+    self.$onInit = onInit;
     self.isQuestion = isQuestion;
     self.isItem = isItem;
-    self.restoreAll = restoreAll;
     self.update = update;
     self.clear = clear;
     self.pushData = pushData;
     self.destroy = destroy;
     self.updateValidation = updateValidation;
 
-    self.$onInit = function() {
+    function onInit() {
       self.filling = {};
       self.filling.questionID = self.itemData.templateID;
 
-      $scope.$parent.$ctrl.currentItem = self;
+      $scope.$parent.$ctrl.currentItems.push(self);
       CurrentItemService.observerRegistry(self);
 
       self.$error = {};
       self.questionComponent = {};
       self.errorComponent = {};
-    };
+    }
 
     function updateValidation(validationMap) {
       self.$error = validationMap;
@@ -1228,8 +1240,6 @@
     function isItem() {
       return (self.itemData.objectType === 'ImageItem') || (self.itemData.objectType === 'TextItem') ? true : false;
     }
-
-    function restoreAll() {}
 
     function update(prop, value) {
       if (prop) {
@@ -1294,34 +1304,44 @@
   function OtusQuestionController(TagComponentBuilderService, CurrentItemService) {
     var self = this;
 
-    self.$onInit = function() {
+    self.$onInit = onInit;
+    self.setError = setError;
+    self.update = update;
+    self.forceAnswer = forceAnswer;
+    self.clear = clear;
+    self.clearAnswer = clearAnswer;
+    self.clearMetadataAnswer = clearMetadataAnswer;
+    self.clearCommentAnswer = clearCommentAnswer;
+    self.isAccept = isAccept;
+
+    function onInit() {
       self.template = TagComponentBuilderService.createTagElement(self.itemData.objectType);
       self.otusSurveyItem.questionComponent = self;
-      self.filling = CurrentItemService.getFilling() || {};
-      self.answer = CurrentItemService.getFilling().answer || {};
-      self.metadata = CurrentItemService.getFilling().metadata || {};
-      self.comment = CurrentItemService.getFilling().comment || {};
+      self.filling = CurrentItemService.getFilling(self.itemData.templateID) || {};
+      self.answer = CurrentItemService.getFilling(self.itemData.templateID).answer || {};
+      self.metadata = CurrentItemService.getFilling(self.itemData.templateID).metadata || {};
+      self.comment = CurrentItemService.getFilling(self.itemData.templateID).comment || {};
       self.menuComponent = {};
       self.menuComponent.error = false;
 
-      self.setError();
-    };
+      setError();
+    }
 
-    self.update = function(prop, value) {
+    function update(prop, value) {
       self.onUpdate({
         valueType: prop,
         value: value
       });
-    };
+    }
 
-    self.forceAnswer = function(value) {
+    function forceAnswer(value) {
       self.onUpdate({
         valueType: 'forceAnswer',
         value: value
       });
-    };
+    }
 
-    self.clear = function(value) {
+    function clear(value) {
       if (value) {
         if (value === 'answer') {
           self.clearAnswer();
@@ -1331,21 +1351,21 @@
           self.clearCommentAnswer();
         }
       }
-    };
+    }
 
-    self.clearAnswer = function() {
+    function clearAnswer() {
       self.answer.clear();
-    };
+    }
 
-    self.clearMetadataAnswer = function() {
+    function clearMetadataAnswer() {
       self.metadata.clear();
-    };
+    }
 
-    self.clearCommentAnswer = function() {
+    function clearCommentAnswer() {
       self.comment.clear();
-    };
+    }
 
-    self.setError = function(error) {
+    function setError(error) {
       if (self.filling.forceAnswer) {
         self.menuComponent.error = true;
       } else if (self.itemData.isQuestion() && error) {
@@ -1357,11 +1377,11 @@
       } else {
         self.menuComponent.error = false;
       }
-    };
+    }
 
-    self.isAccept = function() {
+    function isAccept() {
       return self.itemData.fillingRules.options.accept === undefined ? false : true;
-    };
+    }
 
     function _canBeIgnored(error) {
       return function(validator) {
@@ -1426,7 +1446,7 @@
     self.view = false;
 
     self.$onInit = function() {
-      self.answer = CurrentItemService.getFilling().answer.value || new ImmutableDate(null);
+      self.answer = CurrentItemService.getFilling(self.itemData.templateID).answer.value || new ImmutableDate(null);
       self.otusQuestion.answer = self;
     };
 
@@ -1438,7 +1458,7 @@
     };
 
     self.clear = function() {
-      CurrentItemService.getFilling().answer.clear();
+      CurrentItemService.getFilling(self.itemData.templateID).answer.clear();
       delete self.answer;
       self.$onInit();
     };
@@ -1495,22 +1515,26 @@
   function Controller(CurrentItemService) {
     var self = this;
 
+    self.$onInit = onInit;
+    self.update = update;
+    self.clear = clear;
+
     self.view = false;
 
-    self.$onInit = function() {
-      self.answer = CurrentItemService.getFilling().answer.value;
+    function onInit() {
+      self.answer = CurrentItemService.getFilling(self.itemData.templateID).answer.value;
       self.otusQuestion.answer = self;
-    };
+    }
 
-    self.update = function() {
+    function update() {
       self.onUpdate({
         valueType: 'answer',
         value: self.answer
       });
-    };
+    }
 
-    self.clear = function() {
-      CurrentItemService.getFilling().answer.clear();
+    function clear() {
+      CurrentItemService.getFilling(self.itemData.templateID).answer.clear();
       delete self.answer;
     }
   }
@@ -1629,7 +1653,7 @@
     self.view = false;
 
     self.$onInit = function() {
-      self.answer = CurrentItemService.getFilling().answer.value;
+      self.answer = CurrentItemService.getFilling(self.itemData.templateID).answer.value;
       self.otusQuestion.answer = self;
     };
 
@@ -1641,9 +1665,9 @@
     };
 
     self.clear = function() {
-      CurrentItemService.getFilling().answer.clear();
+      CurrentItemService.getFilling(self.itemData.templateID).answer.clear();
       delete self.answer;
-    }
+    };
   }
 }());
 
@@ -1699,28 +1723,33 @@
   function Controller(CurrentItemService,$element) {
     var self = this;
 
+    self.$onInit = onInit;
+    self.update = update;
+    self.clear = clear;
+    self.blurOnClick = blurOnClick;
+
     self.view = false;
 
-    self.$onInit = function() {
-      self.answer = CurrentItemService.getFilling().answer.value;
+    function onInit() {
+      self.answer = CurrentItemService.getFilling(self.itemData.templateID).answer.value;
       self.otusQuestion.answer = self;
-    };
+    }
 
-    self.update = function() {
+    function update() {
       self.onUpdate({
         valueType: 'answer',
         value: self.answer
       });
-    };
+    }
 
-    self.clear = function() {
-      CurrentItemService.getFilling().answer.clear();
+    function clear() {
+      CurrentItemService.getFilling(self.itemData.templateID).answer.clear();
       delete self.answer;
     }
 
     //OPJ-21 Remove classe md-focused que é adicionada pelo componete radiogroup do angular-material para que
     //não ative os atalhos do teclado nativos do componente
-    self.blurOnClick = function() {
+    function blurOnClick() {
       $element.find('#singleSelectionQuestionRadioGroup').removeClass('md-focused');
     }
   }
@@ -1781,7 +1810,7 @@
     self.view = false;
 
     self.$onInit = function () {
-      self.answerArray = CurrentItemService.getFilling().answer.value;
+      self.answerArray = CurrentItemService.getFilling(self.itemData.templateID).answer.value;
       self.otusQuestion.answer = self;
       _buildAnswerArray();
     };
@@ -1801,7 +1830,7 @@
     };
 
     self.clear = function () {
-      CurrentItemService.getFilling().answer.clear();
+      CurrentItemService.getFilling(self.itemData.templateID).answer.clear();
       delete self.answerArray;
       _buildAnswerArray();
     };
@@ -1884,30 +1913,34 @@
   function Controller($element, CurrentItemService) {
     var self = this;
 
+    self.$onInit = onInit;
+    self.update = update;
+    self.clear = clear;
+
     self.view = false;
 
-    self.$onInit = function () {
-      self.answer = CurrentItemService.getFilling().answer.value;
-      self.hasAlphanumeric = CurrentItemService.getFillingRules().alphanumeric;
-      self.hasSpecials = CurrentItemService.getFillingRules().specials;
-      self.hasUpperCase = CurrentItemService.getFillingRules().upperCase;
-      self.hasLowerCase = CurrentItemService.getFillingRules().lowerCase;
+    function onInit() {
+      self.answer = CurrentItemService.getFilling(self.itemData.templateID).answer.value;
+      self.hasAlphanumeric = CurrentItemService.getFillingRules(self.itemData.templateID).alphanumeric;
+      self.hasSpecials = CurrentItemService.getFillingRules(self.itemData.templateID).specials;
+      self.hasUpperCase = CurrentItemService.getFillingRules(self.itemData.templateID).upperCase;
+      self.hasLowerCase = CurrentItemService.getFillingRules(self.itemData.templateID).lowerCase;
       self.otusQuestion.answer = self;
-    };
+    }
 
-    self.update = function () {
+    function update() {
       _runValidationSteps();
 
       self.onUpdate({
         valueType: 'answer',
         value: self.answer
       });
-    };
+    }
 
-    self.clear = function () {
-      CurrentItemService.getFilling().answer.clear();
+    function clear() {
+      CurrentItemService.getFilling(self.itemData.templateID).answer.clear();
       delete self.answer;
-    };
+    }
 
     function _filter() {
       var element = angular.element($element[0].querySelector('textarea#textQuestion'));
@@ -1936,9 +1969,7 @@
       if (_isEmpty()) {
         delete self.answer;
       }
-
     }
-
   }
 }());
 
@@ -1996,7 +2027,7 @@
     self.view = false;
 
     self.$onInit = function() {
-      self.answer = CurrentItemService.getFilling().answer.value;
+      self.answer = CurrentItemService.getFilling(self.itemData.templateID).answer.value;
       self.otusQuestion.answer = self;
     };
 
@@ -2012,9 +2043,9 @@
     };
 
     self.clear = function() {
-      CurrentItemService.getFilling().answer.clear();
+      CurrentItemService.getFilling(self.itemData.templateID).answer.clear();
       delete self.answer;
-    }
+    };
   }
 }());
 
@@ -2076,14 +2107,19 @@
   function Controller(CurrentItemService, ImmutableDate, $element) {
     var self = this;
 
+    self.$onInit = onInit;
+    self.update = update;
+    self.clear = clear;
+    self.currentTime = currentTime;
+
     self.view = false;
 
-    self.$onInit = function() {
-      self.answer = CurrentItemService.getFilling().answer.value || new ImmutableDate(null);
+    function onInit() {
+      self.answer = CurrentItemService.getFilling(self.itemData.templateID).answer.value || new ImmutableDate(null);
       self.otusQuestion.answer = self;
-    };
+    }
 
-    self.update = function(e) {
+    function update(e) {
       var _answer = {};
 
       if (e.target.validity.valid) {
@@ -2101,21 +2137,18 @@
         _answer = "invalid format";
       }
 
-
-
       self.onUpdate({
         valueType: 'answer',
         value: _answer
       });
-    };
+    }
 
-
-    self.clear = function() {
-      CurrentItemService.getFilling().answer.clear();
+    function clear() {
+      CurrentItemService.getFilling(self.itemData.templateID).answer.clear();
       delete self.answer;
-    };
+    }
 
-    self.currentTime = function(e) {
+    function currentTime(e) {
       var imuDate = new ImmutableDate()
 
       imuDate.setSeconds(0);
@@ -2124,9 +2157,8 @@
       self.answer = imuDate;
 
       $element.find('#inputtime').blur();
-    };
+    }
   }
-
 }());
 
 (function() {
@@ -2181,22 +2213,26 @@
   function Controller(CurrentItemService) {
     var self = this;
 
+    self.$onInit = onInit;
+    self.update = update;
+    self.clear = clear;
+
     self.view = false;
 
-    self.$onInit = function() {
-      self.answer = CurrentItemService.getFilling().answer.value;
+    function onInit() {
+      self.answer = CurrentItemService.getFilling(self.itemData.templateID).answer.value;
       self.otusQuestion.answer = self;
-    };
+    }
 
-    self.update = function() {
+    function update() {
       self.onUpdate({
         valueType: 'answer',
         value: self.answer
       });
-    };
+    }
 
-    self.clear = function() {
-      CurrentItemService.getFilling().answer.clear();
+    function clear() {
+      CurrentItemService.getFilling(self.itemData.templateID).answer.clear();
       delete self.answer;
     }
   }
@@ -2277,7 +2313,7 @@
     self.view = false;
 
     function onInit() {
-      var answerFiles = CurrentItemService.getFilling().answer.value || [];
+      var answerFiles = CurrentItemService.getFilling(self.itemData.templateID).answer.value || [];
       self.sentFiles = FileUploadAnswerFactory.buildFromJson(answerFiles);
       self.pendingList = [];
       self.promise = 0;
@@ -2289,7 +2325,7 @@
       self.otusQuestion.answer = self;
 
       _uploadInterface = FileUploadService.getUploadInterface();
-      _questionID = CurrentItemService.getItem().templateID;
+      _questionID = CurrentItemService.getItemsByTemplateID(self.itemData.templateID);
       _deleteDialog = _createDeleteDialog();
       _pendingArrayControl = 0;
       self.pendingCounter = 0;
@@ -2553,7 +2589,7 @@
     /* Question Methods */
     self.$onInit = function() {
       self.dataReady = false;
-      self.answer = CurrentItemService.getFilling().answer.value;
+      self.answer = CurrentItemService.getFilling(self.itemData.templateID).answer.value;
       self.otusQuestion.answer = self;
       _setupDatasourceQuery();
     };
@@ -2572,7 +2608,7 @@
     };
 
     self.clear = function() {
-      CurrentItemService.getFilling().answer.clear();
+      CurrentItemService.getFilling(self.itemData.templateID).answer.clear();
       delete self.answer;
     };
 
@@ -2636,7 +2672,7 @@
   angular
     .module('otusjs.player.component')
     .component('otusGridTextQuestion', {
-      template:'<div ng-repeat="line in ::$ctrl.itemData.getLinesList()" ng-init="outerIndex=$index" layout="row" flex><div ng-repeat="gridText in ::line.getGridTextList()" ng-init="innerIndex=$index" layout-padding layout="row" flex><md-input-container flex><label>{{ ::gridText.label.ptBR.formattedText }}</label><div><textarea ng-model="$ctrl.answerArray[outerIndex][innerIndex].value" ng-blur="$ctrl.update(outerIndex, innerIndex)" ng-disabled="$ctrl.view"></textarea></div><div style="color: gray;">{{::gridText.unit.ptBR.plainText}}</div></md-input-container></div></div>',
+      template:'<div ng-repeat="line in ::$ctrl.itemData.getLinesList()" ng-init="outerIndex=$index" layout="row" flex><div ng-repeat="gridText in ::line.getGridTextList()" ng-init="innerIndex=$index" layout-padding layout="row" flex><md-input-container flex><label ng-bind-html="::gridText.label.ptBR.formattedText"></label><div><textarea ng-model="$ctrl.answerArray[outerIndex][innerIndex].value" ng-blur="$ctrl.update(outerIndex, innerIndex)" ng-disabled="$ctrl.view"></textarea></div><div style="color: gray;" ng-bind-html="::gridText.unit.ptBR.plainText"></div></md-input-container></div></div>',
       controller: "otusGridTextQuestionCtrl as $ctrl",
       bindings: {
         itemData: '<',
@@ -2658,10 +2694,11 @@
     self.$onInit = onInit;
     self.update = update;
     self.clear = clear;
+
     self.view = false;
 
     function onInit() {
-      self.answerArray = CurrentItemService.getFilling().answer.value;
+      self.answerArray = CurrentItemService.getFilling(self.itemData.templateID).answer.value;
       self.otusQuestion.answer = self;
       _fixArray();
     }
@@ -2726,7 +2763,7 @@
     }
 
     function clear() {
-      CurrentItemService.getFilling().answer.clear();
+      CurrentItemService.getFilling(self.itemData.templateID).answer.clear();
       delete self.answerArray;
       _fixArray();
     }
@@ -2739,7 +2776,7 @@
   angular
     .module('otusjs.player.component')
     .component('otusGridTextQuestionView', {
-      template:'<div ng-repeat="line in ::$ctrl.itemData.getLinesList()" ng-init="outerIndex=$index" layout="row" flex><div ng-repeat="gridText in ::line.getGridTextList()" ng-init="innerIndex=$index" layout-padding layout="row" flex><md-input-container flex><label>{{ ::gridText.label.ptBR.formattedText }}</label><div><textarea ng-model="$ctrl.answerArray[outerIndex][innerIndex].value" ng-blur="$ctrl.update(outerIndex, innerIndex)" ng-disabled="$ctrl.view"></textarea></div><div style="color: gray;">{{::gridText.unit.ptBR.plainText}}</div></md-input-container></div></div>',
+      template:'<div ng-repeat="line in ::$ctrl.itemData.getLinesList()" ng-init="outerIndex=$index" layout="row" flex><div ng-repeat="gridText in ::line.getGridTextList()" ng-init="innerIndex=$index" layout-padding layout="row" flex><md-input-container flex><label ng-bind-html="::gridText.label.ptBR.formattedText"></label><div><textarea ng-model="$ctrl.answerArray[outerIndex][innerIndex].value" ng-blur="$ctrl.update(outerIndex, innerIndex)" ng-disabled="$ctrl.view"></textarea></div><div style="color: gray;" ng-bind-html="::gridText.unit.ptBR.plainText"></div></md-input-container></div></div>',
       controller: "otusGridTextQuestionViewCtrl as $ctrl",
       bindings: {
         itemData: '<'
@@ -2767,7 +2804,7 @@
   angular
     .module('otusjs.player.component')
     .component('otusGridIntegerQuestion', {
-      template:'<div ng-repeat="line in ::$ctrl.itemData.getLinesList()" ng-init="outerIndex=$index" layout="row" flex><div ng-repeat="gridNumber in ::line.getGridIntegerList()" ng-init="innerIndex=$index" layout-padding layout="row" flex><md-input-container flex><label>{{ ::gridNumber.label.ptBR.formattedText }}</label><div><input type="text" numbers-only ng-model="$ctrl.answerArray[outerIndex][innerIndex].value" ng-blur="$ctrl.update(outerIndex, innerIndex)" ng-disabled="$ctrl.view"></div><div style="color: gray;">{{::gridNumber.unit.ptBR.plainText}}</div></md-input-container></div></div>',
+      template:'<div ng-repeat="line in ::$ctrl.itemData.getLinesList()" ng-init="outerIndex=$index" layout="row" flex><div ng-repeat="gridNumber in ::line.getGridIntegerList()" ng-init="innerIndex=$index" layout-padding layout="row" flex><md-input-container flex><label ng-bind-html="::gridNumber.label.ptBR.formattedText"></label><div><input type="text" numbers-only ng-model="$ctrl.answerArray[outerIndex][innerIndex].value" ng-blur="$ctrl.update(outerIndex, innerIndex)" ng-disabled="$ctrl.view"></div><div style="color: gray;" ng-bind-html="::gridNumber.unit.ptBR.plainText"></div></md-input-container></div></div>',
       controller: "otusGridIntegerQuestionCtrl as $ctrl",
       bindings: {
         itemData: '<',
@@ -2792,7 +2829,7 @@
     self.view = false;
 
     function onInit() {
-      self.answerArray = CurrentItemService.getFilling().answer.value;
+      self.answerArray = CurrentItemService.getFilling(self.itemData.templateID).answer.value;
       self.otusQuestion.answer = self;
       _fixArray();
 
@@ -2865,7 +2902,7 @@
     }
 
     function clear() {
-      CurrentItemService.getFilling().answer.clear();
+      CurrentItemService.getFilling(self.itemData.templateID).answer.clear();
       delete self.answerArray;
       _fixArray();
     }
@@ -2878,7 +2915,7 @@
   angular
     .module('otusjs.player.component')
     .component('otusGridIntegerQuestionView', {
-      template:'<div ng-repeat="line in ::$ctrl.itemData.getLinesList()" ng-init="outerIndex=$index" layout="row" flex><div ng-repeat="gridNumber in ::line.getGridIntegerList()" ng-init="innerIndex=$index" layout-padding layout="row" flex><md-input-container flex><label>{{ ::gridNumber.label.ptBR.formattedText }}</label><div><input type="text" numbers-only ng-model="$ctrl.answerArray[outerIndex][innerIndex].value" ng-blur="$ctrl.update(outerIndex, innerIndex)" ng-disabled="$ctrl.view"></div><div style="color: gray;">{{::gridNumber.unit.ptBR.plainText}}</div></md-input-container></div></div>',
+      template:'<div ng-repeat="line in ::$ctrl.itemData.getLinesList()" ng-init="outerIndex=$index" layout="row" flex><div ng-repeat="gridNumber in ::line.getGridIntegerList()" ng-init="innerIndex=$index" layout-padding layout="row" flex><md-input-container flex><label ng-bind-html="::gridNumber.label.ptBR.formattedText"></label><div><input type="text" numbers-only ng-model="$ctrl.answerArray[outerIndex][innerIndex].value" ng-blur="$ctrl.update(outerIndex, innerIndex)" ng-disabled="$ctrl.view"></div><div style="color: gray;" ng-bind-html="::gridNumber.unit.ptBR.plainText"></div></md-input-container></div></div>',
       controller: "otusGridIntegerQuestionViewCtrl as $ctrl",
       bindings: {
         itemData: '<'
@@ -3034,14 +3071,23 @@
 
   function otusValidationErrorController(CurrentItemService, $filter, $element) {
     var self = this;
+    var templateID = null;
 
-    self.$onInit = function() {
+    self.$onInit = onInit;
+    self.referenceAsDate = referenceAsDate;
+    self.referenceAsTime = referenceAsTime;
+    self.reference = reference;
+    self.focus = focus;
+
+    function onInit() {
       self.otusSurveyItem.errorComponent = self;
-    };
+      templateID = self.otusSurveyItem.errorComponent.otusSurveyItem.itemData.templateID;
+    }
 
-    self.referenceAsDate = function(type) {
-      var reference = CurrentItemService.getFillingRules()[type].data.reference;
+    function referenceAsDate(type) {
+      var reference = CurrentItemService.getFillingRules(templateID)[type].data.reference;
       var date;
+
       if (type === 'rangeDate') {
         date = {
           'initial': $filter('date')(new Date(reference.initial.value), 'dd/MM/yyyy'),
@@ -3051,21 +3097,21 @@
         date = $filter('date')(new Date(reference.value), 'dd/MM/yyyy');
       }
       return date;
-    };
+    }
 
-    self.referenceAsTime = function(type) {
-      var reference = CurrentItemService.getFillingRules()[type].data.reference.value;
+    function referenceAsTime(type) {
+      var reference = CurrentItemService.getFillingRules(templateID)[type].data.reference.value;
       return $filter('date')(new Date(reference), 'hh:mm a');
-    };
+    }
 
-    self.reference = function(type) {
-      var reference = CurrentItemService.getFillingRules()[type].data.reference;
+    function reference (type) {
+      var reference = CurrentItemService.getFillingRules(templateID)[type].data.reference;
       return reference;
-    };
+    }
 
-    self.focus = function() {
+    function focus() {
       $element.focus();
-    };
+    }
   }
 }());
 
@@ -3087,11 +3133,10 @@
     });
 
   OtusSurveyMenuController.$inject = [
-    '$mdDialog',
-    '$mdMedia'
+    '$mdDialog'
   ];
 
-  function OtusSurveyMenuController($mdDialog, $mdMedia) {
+  function OtusSurveyMenuController($mdDialog) {
     var self = this;
     self.forceAnswer = false;
 
@@ -3117,8 +3162,7 @@
         $mdDialog
           .show(self.enableDialogSettings)
           .then(
-            _enableForwardSuccessfulExecution,
-            _enableForwardUnsuccessfulExecution
+            _enableForwardSuccessfulExecution
           );
 
         return {
@@ -3150,8 +3194,6 @@
         self.forceAnswer = true;
       }
     }
-
-    function _enableForwardUnsuccessfulExecution(error) {}
 
     function _disableForwardSuccessfulExecution(response) {
       if (response.action !== 'cancel') {
@@ -3328,9 +3370,11 @@
 
     function formatFileUpload() {
       var _answer = "";
-      self.itemData.data.answer.value.forEach(function(value){
-        _answer = _answer + angular.copy(value.name) + "; ";
-      });
+      if(self.itemData.data.answer.value){
+        self.itemData.data.answer.value.forEach(function(value){
+          _answer = _answer + angular.copy(value.name) + "; ";
+        });
+      }
       return  _answer;
     }
 
@@ -4987,7 +5031,7 @@
     }
 
     function getItemData() {
-      return ActivityFacadeService.getCurrentItem().getItem();
+      return ActivityFacadeService.getCurrentItem().getItems();
     }
 
     function goAhead() {
@@ -5484,9 +5528,18 @@
       if (loadData && loadData !== 'END NODE') {
         CurrentItemService.setup(loadData);
         flowData.answerToEvaluate = {};
-        flowData.answerToEvaluate.data = {};
         flowData.metadataToEvaluate = {};
-        flowData.metadataToEvaluate.data = {};
+
+        CurrentItemService.getItems().forEach(item => {
+          if(item.isQuestion()){
+            let templateID = item.templateID;
+            flowData.answerToEvaluate[templateID] = {};
+            flowData.answerToEvaluate[templateID].data = {};
+
+            flowData.metadataToEvaluate[templateID] = {};
+            flowData.metadataToEvaluate[templateID].data = {};
+          }
+        });
       } else {
         PlayerService.end();
       }
@@ -5529,7 +5582,18 @@
       if (loadData) {
         CurrentItemService.setup(loadData);
         flowData.answerToEvaluate = {};
-        flowData.answerToEvaluate.data = {};
+        flowData.metadataToEvaluate = {};
+
+        CurrentItemService.getItems().forEach(item => {
+          if(item.isQuestion()) {
+            let templateID = item.templateID;
+            flowData.answerToEvaluate[templateID] = {};
+            flowData.answerToEvaluate[templateID].data = {};
+
+            flowData.metadataToEvaluate[templateID] = {};
+            flowData.metadataToEvaluate[templateID].data = {};
+          }
+        });
       }
     }
 
@@ -5554,7 +5618,7 @@
     'otusjs.player.core.player.PlayerService',
   ];
 
-  function Service(NavigationService, CurrentItemService, PlayerService) {
+  function Service(NavigationService) {
     var self = this;
 
     /* Public methods */
@@ -5566,7 +5630,7 @@
     function beforeEffect(pipe, flowData) {}
 
     function effect(pipe, flowData) {
-      NavigationService.updateItemTracking();
+        NavigationService.updateItemTracking();
     }
 
     function afterEffect(pipe, flowData) {}
@@ -5577,7 +5641,7 @@
   }
 })();
 
-(function() {
+(function () {
   'use strict';
 
   angular
@@ -5590,7 +5654,7 @@
 
   function Service(ActivityFacadeService) {
     var self = this;
-    var _currentItem;
+    var _currentItemService;
 
     /* Public methods */
     self.beforeEffect = beforeEffect;
@@ -5599,9 +5663,9 @@
     self.getEffectResult = getEffectResult;
 
     function beforeEffect(pipe, flowData) {
-      _currentItem = ActivityFacadeService.getCurrentItem();
+      _currentItemService = ActivityFacadeService.getCurrentItem();
 
-      if (!_currentItem.shouldApplyAnswer()) {
+      if (!_currentItemService.shouldApplyAnswer()) {
         pipe.skipStep = true;
       } else {
         pipe.skipStep = false;
@@ -5611,23 +5675,25 @@
     }
 
     function effect(pipe, flowData) {
+      let fillingContainer = _currentItemService.getFillingContainer();
+
       ActivityFacadeService.applyAnswer();
-      flowData.answerToEvaluate.data = _ensureTestableValue(_currentItem.getFilling().answer);
-      flowData.metadataToEvaluate.data = _ensureTestableValue(_currentItem.getFilling().metadata);
+
+      Object.keys(fillingContainer).forEach(templateID => {
+        flowData.answerToEvaluate[templateID].data = _ensureTestableValue(fillingContainer[templateID].answer);
+        flowData.metadataToEvaluate[templateID].data = _ensureTestableValue(fillingContainer[templateID].metadata);
+      });
     }
 
-    function afterEffect(pipe, flowData) { }
+    function afterEffect(pipe, flowData) {
+    }
 
     function getEffectResult(pipe, flowData) {
       return flowData;
     }
 
     function _isTestableValue(value) {
-      if (value !== null && value !== undefined ) {
-        return true;
-      } else {
-        return false;
-      }
+      return value !== null && value !== undefined;
     }
 
     function _ensureTestableValue(filling) {
@@ -5688,7 +5754,7 @@
 
   function Service(ActivityFacadeService) {
     var self = this;
-    var _currentItem;
+    var _currentItemService;
 
     /* Public methods */
     self.beforeEffect = beforeEffect;
@@ -5697,9 +5763,9 @@
     self.getEffectResult = getEffectResult;
 
     function beforeEffect(pipe, flowData) {
-      _currentItem = ActivityFacadeService.getCurrentItem();
+      _currentItemService = ActivityFacadeService.getCurrentItem();
 
-      if (_currentItem.shouldIgnoreResponseEvaluation()) {
+      if (_currentItemService.shouldIgnoreResponseEvaluation()) {
         pipe.skipStep = true;
       } else {
         pipe.skipStep = false;
@@ -5711,10 +5777,11 @@
     }
 
     function afterEffect(pipe, flowData) {
-      if (flowData.validationResult.hasError) {
-        pipe.isFlowing = false;
+      for (var itemID in flowData.validationResult){
+        if (flowData.validationResult[itemID].hasError) {
+          pipe.isFlowing = false;
+        }
       }
-      // delete flowData.validationResult;
     }
 
     function getEffectResult(pipe, flowData) {
@@ -5736,7 +5803,7 @@
 
   function Service(ActivityFacadeService) {
     var self = this;
-    var _currentItem;
+    var _currentItemService;
     var _validationResult = {};
 
     /* Public methods */
@@ -5746,9 +5813,9 @@
     self.getEffectResult = getEffectResult;
 
     function beforeEffect(pipe, flowData) {
-      _currentItem = ActivityFacadeService.getCurrentItem();
+      _currentItemService = ActivityFacadeService.getCurrentItem();
 
-      if (_currentItem.shouldIgnoreResponseEvaluation()) {
+      if (_currentItemService.shouldIgnoreResponseEvaluation()) {
         pipe.skipStep = true;
       } else {
         pipe.skipStep = false;
@@ -5756,20 +5823,22 @@
     }
 
     function effect(pipe, flowData) {
-      var mandatoryResults = [];
-      var otherResults = [];
       flowData.validationResult = {};
-      if (_currentItem.getItem().isQuestion()) {
-        flowData.validationResponse.validatorsResponse.map(function(validator) {
-          if (validator.name === 'mandatory' || validator.data.reference) {
-            flowData.validationResult[validator.name] = !validator.result && (angular.equals(flowData.metadataToEvaluate.data, {}));
-          } else {
-            flowData.validationResult[validator.name] = !validator.result;
-          }
-        });
-      }
+      _currentItemService.getItems().forEach(function (surveyItem) {
+        let templateID = surveyItem.templateID;
 
-      flowData.validationResult.hasError = _hasError(flowData);
+        if (surveyItem.isQuestion()) {
+          flowData.validationResult[templateID] = {};
+          flowData.validationResponse[templateID].validatorsResponse.forEach(function(validator) {
+            if (validator.name === 'mandatory' || validator.data.reference) {
+              flowData.validationResult[templateID][validator.name] = !validator.result && (angular.equals(flowData.metadataToEvaluate[templateID].data, {}));
+            } else {
+              flowData.validationResult[templateID][validator.name] = !validator.result;
+            }
+          });
+          flowData.validationResult[templateID].hasError = _hasError(flowData, templateID);
+        }
+      });
     }
 
     function afterEffect(pipe, flowData) {}
@@ -5778,9 +5847,9 @@
       return flowData;
     }
 
-    function _hasError(flowData) {
-      return Object.keys(flowData.validationResult).some(function(validator) {
-        return flowData.validationResult[validator];
+    function _hasError(flowData, templateID) {
+      return Object.keys(flowData.validationResult[templateID]).some(function(validator) {
+        return flowData.validationResult[templateID][validator];
       });
     }
   }
@@ -5800,7 +5869,7 @@
 
   function Service(ActivityFacadeService, ItemFillingValidatorService) {
     var self = this;
-    var _currentItem;
+    var _currentItemService;
 
     /* Public methods */
     self.beforeEffect = beforeEffect;
@@ -5809,9 +5878,9 @@
     self.getEffectResult = getEffectResult;
 
     function beforeEffect(pipe, flowData) {
-      _currentItem = ActivityFacadeService.getCurrentItem();
+      _currentItemService = ActivityFacadeService.getCurrentItem();
 
-      if (_currentItem.shouldIgnoreResponseEvaluation()) {
+      if (_currentItemService.shouldIgnoreResponseEvaluation()) {
         pipe.skipStep = true;
       } else {
         pipe.skipStep = false;
@@ -5819,8 +5888,10 @@
     }
 
     function effect(pipe, flowData) {
-      ItemFillingValidatorService.applyValidation(_currentItem, function(validationResponse) {
-        flowData.validationResponse = validationResponse[0];
+      flowData.validationResponse = {};
+      ItemFillingValidatorService.applyValidation(_currentItemService, function(validationResponse) {
+        let response = validationResponse[0];
+        flowData.validationResponse[response.elementID] = response;
       });
     }
 
@@ -5829,14 +5900,10 @@
     function getEffectResult(pipe, flowData) {
       return flowData;
     }
-
-    function _parseBool(value) {
-      return (value === 'true');
-    }
   }
 })();
 
-(function() {
+(function () {
   'use strict';
 
   angular
@@ -5850,7 +5917,7 @@
 
   function Service(ActivityFacadeService, ItemFillingValidatorService) {
     var self = this;
-    var _currentItem;
+    var _currentItemService;
 
     /* Public methods */
     self.beforeEffect = beforeEffect;
@@ -5859,9 +5926,9 @@
     self.getEffectResult = getEffectResult;
 
     function beforeEffect(pipe, flowData) {
-      _currentItem = ActivityFacadeService.getCurrentItem();
+      _currentItemService = ActivityFacadeService.getCurrentItem();
 
-      if (_currentItem.shouldIgnoreResponseEvaluation()) {
+      if (_currentItemService.shouldIgnoreResponseEvaluation()) {
         pipe.skipStep = true;
       } else {
         pipe.skipStep = false;
@@ -5869,10 +5936,11 @@
     }
 
     function effect(pipe, flowData) {
-      ItemFillingValidatorService.setupValidation(_currentItem, flowData.answerToEvaluate);
+      ItemFillingValidatorService.setupValidation(_currentItemService, flowData.answerToEvaluate);
     }
 
-    function afterEffect(pipe, flowData) { }
+    function afterEffect(pipe, flowData) {
+    }
 
     function getEffectResult(pipe, flowData) {
       return flowData;
@@ -5923,6 +5991,7 @@
     self.fetchItemAnswerByCustomID = fetchItemAnswerByCustomID;
     self.fetchItemAnswerByTemplateID = fetchItemAnswerByTemplateID;
     self.fetchItemByID = fetchItemByID;
+    self.fetchItemGroupByID = fetchItemGroupByID;
     self.fetchNavigationByOrigin = fetchNavigationByOrigin;
     self.getCurrentItem = getCurrentItem;
     self.getCurrentSurvey = getCurrentSurvey;
@@ -5952,6 +6021,10 @@
 
     function fetchItemByID(id) {
       return CurrentSurveyService.getItemByTemplateID(id);
+    }
+
+    function fetchItemGroupByID(id) {
+      return CurrentSurveyService.getGroupItemsByMemberID(id);
     }
 
     function fetchNavigationByOrigin(id) {
@@ -5988,7 +6061,6 @@
 
     function setup() {
       CurrentItemService.clearData();
-      CurrentSurveyService.setup();
     }
 
     function clearSkippedAnswers() {
@@ -5997,7 +6069,7 @@
   }
 }());
 
-(function() {
+(function () {
   'use strict';
 
   angular
@@ -6005,17 +6077,16 @@
     .service('otusjs.player.data.activity.CurrentItemService', Service);
 
   Service.$inject = [
-    'otusjs.model.activity.ActivityFacadeService',
-    'otusjs.utils.ImmutableDate'
+    'otusjs.model.activity.ActivityFacadeService'
   ];
 
-  function Service(ActivityFacadeService, ImmutableDate) {
+  function Service(ActivityFacadeService) {
     var self = this;
-    var _item = null;
-    var _filling = null;
+    var _surveyItemGroup = [];
+    var _fillingContainer = {};
     var _navigation = null;
-    var _validationError = null;
-    var _observer = null;
+    var _validationError = {};
+    var _observerArray = [];
 
     /* Public Interface */
     self.applyFilling = applyFilling;
@@ -6023,51 +6094,74 @@
     self.clearData = clearData;
     self.fill = fill;
     self.getFilling = getFilling;
+    self.getFillingContainer = getFillingContainer;
     self.getFillingRules = getFillingRules;
-    self.getItem = getItem;
+    self.getItems = getItems;
+    self.getItemsByTemplateID = getItemsByTemplateID;
     self.getNavigation = getNavigation;
     self.getValidationError = getValidationError;
-    self.hasItem = hasItem;
+    self.hasItems = hasItems;
     self.shouldIgnoreResponseEvaluation = shouldIgnoreResponseEvaluation;
     self.shouldApplyAnswer = shouldApplyAnswer;
     self.observerRegistry = observerRegistry;
     self.setup = setup;
 
     function applyFilling() {
-      if (_filling) {
-        ActivityFacadeService.fillQuestion(_filling);
-      }
+      Object.values(_fillingContainer).forEach(filling => {
+        if (filling) {
+          ActivityFacadeService.fillQuestion(filling);
+        }
+      });
     }
 
     function attachValidationError(validationError) {
       _validationError = validationError;
-      _observer.updateValidation(validationError);
+      _observerArray.forEach(observer => {
+        if(validationError[observer.itemData.templateID]){
+           observer.updateValidation(validationError[observer.itemData.templateID]);
+        }
+      })
     }
 
     function clearData() {
-      _item = null;
-      _filling = null;
+      _surveyItemGroup = [];
+      _fillingContainer = {};
       _navigation = null;
-      _validationError = null;
-      _observer = null;
+      _validationError = {};
+      _observerArray = [];
     }
 
     function fill(filling) {
-      if (_item.isQuestion()) {
-        _filling = filling;
-      }
+      _fillingContainer[filling.questionID] = filling;
     }
 
-    function getFilling() {
-      return _filling;
+    function getFilling(questionID) {
+      return _fillingContainer[questionID];
     }
 
-    function getFillingRules() {
-      return _item.fillingRules.options;
+    function getFillingContainer() {
+      return _fillingContainer;
     }
 
-    function getItem() {
-      return _item;
+    function getFillingRules(templateID) {
+      var options = null;
+      _surveyItemGroup.forEach(item => {
+        if (item.templateID === templateID) {
+          options = item.fillingRules.options;
+        }
+      });
+
+      return options;
+    }
+
+    function getItems() {
+      return _surveyItemGroup;
+    }
+
+    function getItemsByTemplateID(templateID) {
+      return _surveyItemGroup.find(item => {
+        return item.templateID === templateID
+      });
     }
 
     function getNavigation() {
@@ -6078,42 +6172,47 @@
       return _validationError;
     }
 
-    function hasItem() {
-      if (_item) {
-        return true;
-      } else {
-        return false;
-      }
+    function hasItems() {
+      return !!(_surveyItemGroup && _surveyItemGroup.length);
     }
 
     function shouldApplyAnswer() {
-      return _item && _item.isQuestion();
+      return _surveyItemGroup.some(function (surveyItem) {
+        return surveyItem && surveyItem.isQuestion();
+      });
     }
 
     function shouldIgnoreResponseEvaluation() {
-      return !_item || !_item.isQuestion();
+      return _surveyItemGroup.every(function (surveyItem) {
+        return !surveyItem || !surveyItem.isQuestion();
+      });
     }
 
     function observerRegistry(observer) {
-      _observer = observer;
-      _observer.pushData(_filling);
+      observer.pushData(_fillingContainer[observer.itemData.templateID]);
+      _observerArray.push(observer);
     }
 
     function setup(data) {
       clearData();
-      _item = data.item;
+      _surveyItemGroup = data.items;
       _navigation = data.navigation;
 
-      if (_item.isQuestion()) {
-        _filling = ActivityFacadeService.getFillingByQuestionID(_item.templateID);
-
-        if (!_filling) {
-          _filling = ActivityFacadeService.createQuestionFill(_item);
-          _filling.answerType = _item.objectType;
+      _surveyItemGroup.forEach(function (surveyItem) {
+        if (surveyItem.isQuestion()) {
+          let filling;
+          if (surveyItem.isQuestion()) {
+            filling = ActivityFacadeService.getFillingByQuestionID(surveyItem.templateID);
+            if (!filling) {
+              filling = ActivityFacadeService.createQuestionFill(surveyItem);
+              filling.answerType = surveyItem.objectType;
+            }
+          } else {
+            filling = null;
+          }
+          _fillingContainer[surveyItem.templateID] = filling;
         }
-      } else {
-        _filling = null;
-      }
+      });
     }
   }
 }());
@@ -6140,12 +6239,12 @@
     self.getNavigationByOrigin = getNavigationByOrigin;
     self.getItemByCustomID = getItemByCustomID;
     self.getItemByTemplateID = getItemByTemplateID;
+    self.getGroupItemsByMemberID = getGroupItemsByMemberID;
     self.getSurveyDatasources = getSurveyDatasources;
     self.getStaticVariableList = getStaticVariableList;
     self.initialize = initialize;
     self.finalize = finalize;
     self.save = save;
-    self.setup = setup;
     self.clearSkippedAnswers = clearSkippedAnswers;
     self.getNavigationTracker = getNavigationTracker;
     self.getWholeTemplateStaticVariableList = getWholeTemplateStaticVariableList;
@@ -6184,16 +6283,13 @@
     }
 
     function getItemByTemplateID(templateID) {
-      var fetchedItem = null;
-
-      getItems().some(function (item) {
-        if (item.templateID === templateID) {
-          fetchedItem = item;
-          return true;
-        }
+      return getItems().find(function (item) {
+        return item.templateID === templateID;
       });
+    }
 
-      return fetchedItem;
+    function getGroupItemsByMemberID(id) {
+      return getSurvey().getGroupItemsByItemID(id);
     }
 
     function getNavigations() {
@@ -6224,8 +6320,6 @@
     function save() {
       ActivityFacadeService.saveActivitySurvey();
     }
-
-    function setup() { }
 
     function clearSkippedAnswers() {
       ActivityFacadeService.clearSkippedAnswers();
@@ -6287,7 +6381,7 @@
 
     function getPreviousItem() {
       if (hasPrevious()) {
-        var previousID = _navigationTracker.getCurrentItem().getPrevious();
+        var previousID = _navigationTracker.getCurrentItemGroup()[0].getPrevious();
         return ActivityFacadeService.getCurrentSurvey().getItemByTemplateID(previousID);
       } else {
         return null;
@@ -6295,19 +6389,11 @@
     }
 
     function hasNext() {
-      if (ActivityFacadeService.getCurrentItem().getNavigation().listRoutes().length) {
-        return true;
-      } else {
-        return false;
-      }
+      return !!ActivityFacadeService.getCurrentItem().getNavigation().listRoutes().length;
     }
 
     function hasPrevious() {
-      if (_navigationTracker.hasPreviousItem()) {
-        return true;
-      } else {
-        return false;
-      }
+      return !!_navigationTracker.hasPreviousItem();
     }
 
     function initialize() {
@@ -6315,7 +6401,7 @@
     }
 
     function loadNextItem() {
-      if (ActivityFacadeService.getCurrentItem().hasItem()) {
+      if (ActivityFacadeService.getCurrentItem().hasItems()) {
         return _loadNextItem();
       } else if (_navigationTracker.getCurrentIndex()) {
         return _loadLastVisitedItem();
@@ -6326,22 +6412,26 @@
 
     function loadPreviousItem() {
       if (hasPrevious()) {
-        var item = getPreviousItem();
-        var navigation = ActivityFacadeService.getCurrentSurvey().getNavigationByOrigin(item.templateID);
+        var itemsPreviousArray = [];
+        var items = getPreviousItem();
+        var navigation = null;
+
+        itemsPreviousArray = ActivityFacadeService.fetchItemGroupByID(items.templateID);
+        navigation = ActivityFacadeService.getCurrentSurvey().getNavigationByOrigin(itemsPreviousArray[itemsPreviousArray.length - 1].templateID);
 
         RouteService.setup(navigation);
-        _navigationTracker.visitItem(item.templateID);
+        _navigationTracker.visitGroup(itemsPreviousArray.map(item=>item.templateID));
 
         return {
-          item: item,
+          items: itemsPreviousArray,
           navigation: navigation
         };
       }
     }
 
     function updateItemTracking() {
-      var currentItemFilling = ActivityFacadeService.getCurrentItem().getFilling();
-      _navigationTracker.updateCurrentItem(currentItemFilling);
+      var currentItemFillingContainer = ActivityFacadeService.getCurrentItem().getFillingContainer();
+      _navigationTracker.updateCurrentGroup(currentItemFillingContainer);
     }
 
     function _loadFirstItem() {
@@ -6349,7 +6439,7 @@
     }
 
     function _loadLastVisitedItem() {
-      return _loadItem(_navigationTracker.getCurrentItem().getID());
+      return _loadItem(_navigationTracker.getCurrentItemGroup()[0].getID());
     }
 
     function _loadNextItem() {
@@ -6362,15 +6452,22 @@
     }
 
     function _loadItem(id) {
-      var itemToLoad = null;
+      var itemsToLoad = null;
       var navigation = null;
 
       if (!id) {
-        itemToLoad = ActivityFacadeService.getCurrentSurvey().getItems()[0];
-        navigation = ActivityFacadeService.getCurrentSurvey().getNavigations()[2];
+        let firstItem = ActivityFacadeService.getCurrentSurvey().getItems()[0];
+        itemsToLoad = ActivityFacadeService.fetchItemGroupByID(firstItem.templateID);
+        navigation = ActivityFacadeService.fetchNavigationByOrigin(itemsToLoad[itemsToLoad.length - 1].templateID);
+        _navigationTracker.visitGroup(itemsToLoad.map(item=>item.templateID));
+
+      } else if (id !== 'END NODE') {
+        itemsToLoad = ActivityFacadeService.fetchItemGroupByID(id);
+        navigation = ActivityFacadeService.fetchNavigationByOrigin(itemsToLoad[itemsToLoad.length - 1].templateID);
+        _navigationTracker.visitGroup(itemsToLoad.map(item=>item.templateID));
+
       } else {
-        itemToLoad = ActivityFacadeService.fetchItemByID(id);
-        navigation = ActivityFacadeService.fetchNavigationByOrigin(id);
+         navigation = ActivityFacadeService.fetchNavigationByOrigin(id);
       }
 
       if (navigation) {
@@ -6378,14 +6475,12 @@
       }
 
       if (id === 'END NODE') {
-        _navigationTracker.visitItem(id);
+        _navigationTracker.visitGroup([id]);
         return id;
       }
 
-      _navigationTracker.visitItem(itemToLoad.templateID);
-
       return {
-        item: itemToLoad,
+        items: itemsToLoad,
         navigation: navigation
       };
     }
@@ -6802,7 +6897,7 @@
 
 }());
 
-(function() {
+(function () {
   'use strict';
 
   angular
@@ -6816,53 +6911,61 @@
 
   function Service(ElementRegisterFactory, ValidationService) {
     var self = this;
-    var _elementRegister;
-    var _answer = {};
+    var _elementRegisters = {};
+    var _answers = [];
 
     /* Public methods */
     self.applyValidation = applyValidation;
     self.setupValidation = setupValidation;
 
     function applyValidation(currentItemService, callback) {
-      ValidationService.unregisterElement(_elementRegister.id);
-      setupValidation(currentItemService, _answer);
-
-      ValidationService.validateElement(currentItemService.getItem().customID, callback);
+      setupValidation(currentItemService, _answers);
+      Object.keys(_answers).forEach(templateID => {
+        ValidationService.validateElement(templateID, callback);
+      });
     }
 
-    function setupValidation(currentItemService, answer) {
-      _answer = answer;
-      _elementRegister = ElementRegisterFactory.create(currentItemService.getItem().customID, answer);
+    function setupValidation(currentItemService, answerObject) {
+      _answers = answerObject;
 
-      if (currentItemService.getFilling().forceAnswer) {
-        Object.keys(currentItemService.getItem().fillingRules.options).filter(function(validator) {
-          if (!currentItemService.getItem().fillingRules.options[validator].data.canBeIgnored) {
-            _addValidator(validator, currentItemService);
+      currentItemService.getItems().forEach(function (surveyItem) {
+        if (surveyItem.isQuestion()) {
+          let templateID = surveyItem.templateID;
+          let answer = answerObject[templateID];
+
+          let elementRegister = ElementRegisterFactory.create(templateID, answer);
+
+          if (currentItemService.getFilling(templateID).forceAnswer) {
+            Object.keys(surveyItem.fillingRules.options).filter(function (validator) {
+              if (!surveyItem.fillingRules.options[validator].data.canBeIgnored) {
+                _addValidator(elementRegister, validator, surveyItem);
+              }
+            });
+          } else {
+            Object.keys(surveyItem.fillingRules.options).map(function (validator) {
+              _addValidator(elementRegister, validator, surveyItem);
+            });
+            _setupImmutableDateValidation(elementRegister, surveyItem);
           }
-        });
-      } else {
-        Object.keys(currentItemService.getItem().fillingRules.options).map(function(validator) {
-          _addValidator(validator, currentItemService);
-        });
-        _setupImmutableDateValidation(currentItemService);
-      }
+          _elementRegisters[templateID] = elementRegister;
 
-      ValidationService.unregisterElement(_elementRegister.id);
-      ValidationService.registerElement(_elementRegister);
+          ValidationService.unregisterElement(elementRegister.id);
+          ValidationService.registerElement(elementRegister);
+        }
+      });
     }
 
-    function _addValidator(validator, currentItemService) {
-      var reference = currentItemService.getItem().fillingRules.options[validator].data;
-      _elementRegister.addValidator(validator, reference);
+    function _addValidator(elementRegister, validator, surveyItem) {
+      var reference = surveyItem.fillingRules.options[validator].data;
+      elementRegister.addValidator(validator, reference);
     }
 
-    function _setupImmutableDateValidation(currentItemService) {
-      var currentItemItemType = currentItemService.getItem().objectType;
-      if(currentItemItemType === "TimeQuestion" || currentItemItemType === "CalendarQuestion") {
-        _elementRegister.addValidator("ImmutableDate", currentItemService);
+    function _setupImmutableDateValidation(elementRegister, surveyItem) {
+      var currentItemItemType = surveyItem.objectType;
+      if (currentItemItemType === "TimeQuestion" || currentItemItemType === "CalendarQuestion") {
+        elementRegister.addValidator("ImmutableDate", surveyItem);
       }
     }
-
   }
 }());
 

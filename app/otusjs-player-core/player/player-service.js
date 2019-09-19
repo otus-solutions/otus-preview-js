@@ -81,7 +81,7 @@
     }
 
     function getItemData() {
-      return ActivityFacadeService.getCurrentItem().getItem();
+      return ActivityFacadeService.getCurrentItem().getItems();
     }
 
     function goAhead() {

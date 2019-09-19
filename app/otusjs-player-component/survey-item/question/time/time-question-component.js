@@ -24,14 +24,19 @@
   function Controller(CurrentItemService, ImmutableDate, $element) {
     var self = this;
 
+    self.$onInit = onInit;
+    self.update = update;
+    self.clear = clear;
+    self.currentTime = currentTime;
+
     self.view = false;
 
-    self.$onInit = function() {
-      self.answer = CurrentItemService.getFilling().answer.value || new ImmutableDate(null);
+    function onInit() {
+      self.answer = CurrentItemService.getFilling(self.itemData.templateID).answer.value || new ImmutableDate(null);
       self.otusQuestion.answer = self;
-    };
+    }
 
-    self.update = function(e) {
+    function update(e) {
       var _answer = {};
 
       if (e.target.validity.valid) {
@@ -49,21 +54,18 @@
         _answer = "invalid format";
       }
 
-
-
       self.onUpdate({
         valueType: 'answer',
         value: _answer
       });
-    };
+    }
 
-
-    self.clear = function() {
-      CurrentItemService.getFilling().answer.clear();
+    function clear() {
+      CurrentItemService.getFilling(self.itemData.templateID).answer.clear();
       delete self.answer;
-    };
+    }
 
-    self.currentTime = function(e) {
+    function currentTime(e) {
       var imuDate = new ImmutableDate()
 
       imuDate.setSeconds(0);
@@ -72,7 +74,6 @@
       self.answer = imuDate;
 
       $element.find('#inputtime').blur();
-    };
+    }
   }
-
 }());

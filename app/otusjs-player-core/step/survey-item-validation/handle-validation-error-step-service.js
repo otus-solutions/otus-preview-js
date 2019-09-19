@@ -11,7 +11,7 @@
 
   function Service(ActivityFacadeService) {
     var self = this;
-    var _currentItem;
+    var _currentItemService;
 
     /* Public methods */
     self.beforeEffect = beforeEffect;
@@ -20,9 +20,9 @@
     self.getEffectResult = getEffectResult;
 
     function beforeEffect(pipe, flowData) {
-      _currentItem = ActivityFacadeService.getCurrentItem();
+      _currentItemService = ActivityFacadeService.getCurrentItem();
 
-      if (_currentItem.shouldIgnoreResponseEvaluation()) {
+      if (_currentItemService.shouldIgnoreResponseEvaluation()) {
         pipe.skipStep = true;
       } else {
         pipe.skipStep = false;
@@ -34,10 +34,11 @@
     }
 
     function afterEffect(pipe, flowData) {
-      if (flowData.validationResult.hasError) {
-        pipe.isFlowing = false;
+      for (var itemID in flowData.validationResult){
+        if (flowData.validationResult[itemID].hasError) {
+          pipe.isFlowing = false;
+        }
       }
-      // delete flowData.validationResult;
     }
 
     function getEffectResult(pipe, flowData) {
