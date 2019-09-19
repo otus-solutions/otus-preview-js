@@ -1,12 +1,10 @@
 describe('surveyItem Component Test unit', function() {
-
   var controller;
   var Injections = [];
   var Mock = {};
 
   beforeEach(function() {
     angular.mock.module('otusjs.player');
-
     angular.mock.inject(function (_$controller_, $rootScope, _$injector_) {
       mock($rootScope);
       Injections.$scope = Mock.$scope;
@@ -14,10 +12,9 @@ describe('surveyItem Component Test unit', function() {
       Injections.CurrentItemService = _$injector_.get('otusjs.player.data.activity.CurrentItemService');
 
       controller = _$controller_('otusSurveyItemCtrl', Injections);
+      controller.itemData = {templateID:"TST1"}
     });
-
-    controller.$onInit();
-
+     controller.$onInit();
   });
 
   it('controller method should have a defined controller', function () {
@@ -35,42 +32,13 @@ describe('surveyItem Component Test unit', function() {
     expect(controller.updateValidation).toBeDefined();
   });
 
-  xit('Methods should $onInit execute', function () {
-
-    expect(Injections.$scope.$parent.$ctrl.currentItems).toEqual(controller);
-    expect(controller.questionComponent).toEqual({});
-    expect(controller.$error).toEqual({});
-    expect(controller.errorComponent).toEqual({});
+  it('Methods should $onInit execute', function () {
+    expect(Injections.$scope.$parent.$ctrl.currentItems[0]).toEqual(controller);
   });
 
   function mock($rootScope) {
     Mock.$scope = $rootScope.$new();
     Mock.$scope.$parent.$ctrl = {};
-
-    Mock.$element = $;
+    Mock.$scope.$parent.$ctrl.currentItems = [];
   }
-});
-
-xdescribe('surveyItem component', function() {
-
-  var $ctrl;
-  var $componentController;
-  var Mock = {};
-
-  beforeEach(function() {
-    module('otusjs.player.data');
-    module('otusjs.player.component');
-    inject(function(_$componentController_) {
-      $componentController = _$componentController_;
-    });
-  });
-
-  it('should have a defined controller', function() {
-    var bindings = {
-      'itemData': '<'
-    };
-    $ctrl = $componentController('otusCheckboxQuestion', null, bindings);
-    expect($ctrl).toBeDefined();
-  });
-
 });
