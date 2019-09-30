@@ -30,18 +30,23 @@
     function _getWholeStaticVariableList() {
       _variable = ActivityFacadeService.getWholeTemplateStaticVariableList();
 
-      _variable.forEach(function(variable){
-        if(!variable.translatedValue){
-          variable.translatedValue = "Não há dados.";
-        }
-      });
-
-     self.variable = _variable;
+      if (_variable.length > 0){
+        _variable.forEach(function (variable) {
+          if (!variable.translatedValue) {
+            variable.translatedValue = 'Não há dados.';
+          }
+        });
+        self.variable = _variable;
+      } else {
+        self.variable = [{
+          translatedValue : 'Não há dados.'
+        }];
+      }
 
       return self.variable;
     }
 
-    function isLockOpenClose(){
+    function isLockOpenClose() {
       self.shouldLockOpenClose = !self.shouldLockOpenClose;
       self.iconLockOpenClose = self.shouldLockOpenClose ? 'arrow_left' : 'arrow_right';
       self.tooltipLockOpenClose = self.shouldLockOpenClose ? 'Fechar' : 'Abrir';

@@ -181,7 +181,7 @@
   angular
     .module('otusjs.player.component')
     .component('otusPlayer', {
-      template:'<otus-survey-cover on-play="$ctrl.play()" on-stop="$ctrl.stop()" soft-blocker="$ctrl.softBlocker" hard-blocker="$ctrl.hardBlocker" ng-show="$ctrl.showCover" layout-align="center center" layout="column" flex class="player-cover"></otus-survey-cover><div layout="column" flex ng-show="$ctrl.showActivity"><otus-survey-header layout="row" layout-xs="column"></otus-survey-header><div layout="row" layout-xs="column" flex><md-content layout="row" layout-xs="column"><otus-static-variable layout="row"></otus-static-variable><md-content layout="row" flex><otus-player-display go-back="$ctrl.goBack()" layout="column" flex style="position: relative !important"></otus-player-display><otus-player-commander hide-xs class="md-fab-bottom-right md-fling" layout="column" flex="10" layout-align="center center" style="max-height:none!important;" on-go-back="$ctrl.goBack()" on-pause="$ctrl.pause()" on-stop="$ctrl.stop()" on-go-ahead="$ctrl.goAhead()" on-eject="$ctrl.eject()"></otus-player-commander></md-content></md-content><div layout="row" hide-gt-xs><otus-player-commander class="md-fab-bottom-right md-fling" layout="column" flex layout-align="center center" on-go-back="$ctrl.goBack()" on-pause="$ctrl.pause()" on-stop="$ctrl.stop()" on-go-ahead="$ctrl.goAhead()" on-eject="$ctrl.eject()"></otus-player-commander></div></div></div><otus-survey-back-cover on-finalize="$ctrl.eject()" on-stop="$ctrl.stop()" ng-show="$ctrl.showBackCover" layout-align="center center" layout="column" flex class="player-back-cover"></otus-survey-back-cover>',
+      template:'<otus-survey-cover on-play="$ctrl.play()" on-stop="$ctrl.stop()" soft-blocker="$ctrl.softBlocker" hard-blocker="$ctrl.hardBlocker" ng-show="$ctrl.showCover" layout-align="center center" layout="column" flex class="player-cover"></otus-survey-cover><div layout="column" flex ng-show="$ctrl.showActivity"><otus-survey-header layout="row" layout-xs="column"></otus-survey-header><div layout="row" layout-xs="column" flex><md-content layout="row" layout-xs="column" flex><otus-static-variable layout="row"></otus-static-variable><md-content layout="row" flex><otus-player-display go-back="$ctrl.goBack()" layout="column" flex style="position: relative !important"></otus-player-display><otus-player-commander hide-xs class="md-fab-bottom-right md-fling" layout="column" flex="10" layout-align="center center" style="max-height:none!important;" on-go-back="$ctrl.goBack()" on-pause="$ctrl.pause()" on-stop="$ctrl.stop()" on-go-ahead="$ctrl.goAhead()" on-eject="$ctrl.eject()"></otus-player-commander></md-content></md-content><div layout="row" hide-gt-xs><otus-player-commander class="md-fab-bottom-right md-fling" layout="column" flex layout-align="center center" on-go-back="$ctrl.goBack()" on-pause="$ctrl.pause()" on-stop="$ctrl.stop()" on-go-ahead="$ctrl.goAhead()" on-eject="$ctrl.eject()"></otus-player-commander></div></div></div><otus-survey-back-cover on-finalize="$ctrl.eject()" on-stop="$ctrl.stop()" ng-show="$ctrl.showBackCover" layout-align="center center" layout="column" flex class="player-back-cover"></otus-survey-back-cover>',
       controller: Controller
     });
 
@@ -689,41 +689,25 @@
     }
 
     function _getWholeStaticVariableList() {
-      // _variable = ActivityFacadeService.getWholeTemplateStaticVariableList();
-      _variable = [{
-        "label": "var11",
-        "translatedValue": 321
-      },
-        {
-          "label": "var11",
-          "translatedValue": 321
-        },
-        {
-          "label": "var11",
-          "translatedValue": 321
-        },
-        {
-          "label": "var11",
-          "translatedValue": 321
-        },
-        {
-          "label": "var11",
-          "translatedValue": 321
-        }
-      ];
+      _variable = ActivityFacadeService.getWholeTemplateStaticVariableList();
 
-      _variable.forEach(function(variable){
-        if(!variable.translatedValue){
-          variable.translatedValue = "Não há dados.";
-        }
-      });
-
-     self.variable = _variable;
+      if (_variable.length > 0){
+        _variable.forEach(function (variable) {
+          if (!variable.translatedValue) {
+            variable.translatedValue = 'Não há dados.';
+          }
+        });
+        self.variable = _variable;
+      } else {
+        self.variable = [{
+          translatedValue : 'Não há dados.'
+        }];
+      }
 
       return self.variable;
     }
 
-    function isLockOpenClose(){
+    function isLockOpenClose() {
       self.shouldLockOpenClose = !self.shouldLockOpenClose;
       self.iconLockOpenClose = self.shouldLockOpenClose ? 'arrow_left' : 'arrow_right';
       self.tooltipLockOpenClose = self.shouldLockOpenClose ? 'Fechar' : 'Abrir';
