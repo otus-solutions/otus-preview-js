@@ -6,11 +6,14 @@
     </md-tooltip>
   </md-button>
 </div>
-<md-sidenav class="md-sidenav-left md-whiteframe-5dp" md-is-locked-open="$ctrl.shouldLockOpenClose && $mdMedia('gt-xs')">
-  <div layout-padding>
+<div class="md-sidenav-left md-whiteframe-5dp" ng-show="$ctrl.shouldLockOpenClose" flex>
+  <div hide-xs layout-padding>
     <h3>Informações Auxiliares</h3>
   </div>
   <md-content layout="column">
+    <div hide-gt-xs layout-padding>
+      <h3>Informações Auxiliares</h3>
+    </div>
     <div layout="column" layout-padding layout-align="start none" ng-repeat="option in $ctrl.variable">
       <div layout="column" layout-align="center start">
         <span class="md-caption" style="color: gray;">{{ option.label }}</span>
@@ -19,4 +22,4 @@
       <md-divider ></md-divider>
     </div>
   </md-content>
-</md-sidenav>
+</div>

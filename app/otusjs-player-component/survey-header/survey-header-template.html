@@ -1,5 +1,5 @@
 <md-toolbar layout="row" class="md-whiteframe-5dp" flex>
-  <div layout="row" layout-align="start center" flex="40">
+  <div layout="row" layout-align="start center" flex-gt-xs="40" flex>
     <span flex="10"></span>
     <div class="md-padding">
       <img src="app/static-resource/image/coruja_pesquisadora.png" class="toolbar-icon">
@@ -12,6 +12,16 @@
       <span>{{ $ctrl.surveyIdentity.name }}</span>
     </div>
   </div>
+  <div hide-xs layout="row" layout-margin layout-align="center center">
+    <md-icon md-svg-icon="file-document-box"></md-icon>
+    <div>
+      <span>{{ $ctrl.participantData.name }}</span>
+      <span> | </span>
+      <span>{{ $ctrl.participantData.recruitmentNumber }}</span>
+    </div>
+  </div>
+</md-toolbar>
+<md-toolbar hide-gt-xs layout="row" class="md-whiteframe-5dp" flex>
   <div layout="row" layout-margin layout-align="center center">
     <md-icon md-svg-icon="file-document-box"></md-icon>
     <div>

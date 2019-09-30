@@ -42,8 +42,19 @@ otus-survey-item {
   left: 15px;
 }
 
+otus-static-variable {
+  max-height: 89%;
+}
+otus-static-variable div md-content {
+  max-height: 100%;
+}
+
 @media screen and (max-width: 600px) {
   .fab-speed-dial {
-    top: 17%;
+    top: 20%;
+    left: 2px;
+  }
+  otus-static-variable {
+    max-height: 60%;
   }
 }
