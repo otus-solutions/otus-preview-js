@@ -1,4 +1,4 @@
-<md-fab-speed-dial style="position:absolute; top:50px; right:0; transform: translate(0%, 0%);" md-direction="left" class="md-scale">
+<md-fab-speed-dial style="position:absolute; bottom:0; right:0; transform: translate(0%, 0%);" md-direction="up" class="md-scale">
   <md-fab-trigger>
     <md-button class="md-fab md-mini md-raised" aria-label="Limpar Resposta">
       <md-icon>delete</md-icon>
@@ -28,7 +28,7 @@
     </md-button>
   </md-fab-actions>
 </md-fab-speed-dial>
-<md-button id="accept-button" ng-class="{ 'md-primary': $ctrl.forceAnswer, 'md-raised': !$ctrl.forceAnswer }" style="position:absolute; top:30px; right:0; transform: translate(0%, 0%);" ng-click="$ctrl.showConfirm($event)" ng-show="$ctrl.showAccept()" class="md-fab md-mini md-raised" aria-label="Aceitar resposta">
+<md-button id="accept-button" ng-class="{ 'md-primary': $ctrl.forceAnswer, 'md-raised': !$ctrl.forceAnswer }" style="position: absolute; margin-bottom: 4px; left: 0; bottom: 0" ng-click="$ctrl.showConfirm($event)" ng-show="$ctrl.showAccept()" class="md-fab md-mini md-raised" aria-label="Aceitar resposta">
   <md-icon>check</md-icon>
   <md-tooltip md-direction="down">
     Aceitar resposta
