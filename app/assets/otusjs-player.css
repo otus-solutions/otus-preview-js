@@ -44,6 +44,7 @@ otus-survey-item {
 
 otus-static-variable {
   max-height: 89%;
+  min-width: 250px;
 }
 otus-static-variable div md-content {
   max-height: 100%;
