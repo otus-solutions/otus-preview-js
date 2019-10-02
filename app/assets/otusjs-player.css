@@ -59,3 +59,21 @@ otus-static-variable div md-content {
     max-height: 60%;
   }
 }
+
+
+@media screen and (max-height: 650px) {
+  .nav-up {
+    height: 0 !important;
+    width: 0 !important;
+    top:-200px;
+    left: 200px;
+  }
+}
+
+otus-survey-header {
+  transition: top 0.2s ease-in-out;
+  height: 100px;
+  position: relative;
+  top: 0;
+  left: 0;
+}

@@ -27,6 +27,42 @@
     self.showCover = showCover;
     self.$onInit = onInit;
 
+    var didScroll;
+    var lastScrollTop = 0;
+    var delta = 5;
+
+    angular.element(document.querySelector('.otus-player-display-container')).bind('wheel', function(){
+      didScroll = true;
+    });
+
+    angular.element(document.querySelector('.otus-player-display-container')).bind('touchmove', function(){
+      didScroll = true;
+    });
+
+    setInterval(function() {
+      if (didScroll) {
+        hasScrolled();
+        didScroll = false;
+      }
+    }, 250);
+
+    function hasScrolled() {
+      var st = angular.element(document.querySelector('.otus-player-display-container')).scrollTop();
+
+      if(Math.abs(lastScrollTop - st) <= delta)
+        return;
+
+      if (st > lastScrollTop){
+        $('otus-survey-header').removeClass('nav-down').addClass('nav-up');
+      } else {
+
+          $('otus-survey-header').removeClass('nav-up').addClass('nav-down');
+
+      }
+
+      lastScrollTop = st;
+    }
+
     function catchMouseWheel($event) {
       if (event.deltaY > 0) {
         goAhead();
@@ -105,7 +141,7 @@
     }
 
     function _loadItem() {
-      if(PlayerService.getItemData()){
+      if (PlayerService.getItemData()) {
         self.playerDisplay.loadItem(PlayerService.getItemData());
       }
     }
