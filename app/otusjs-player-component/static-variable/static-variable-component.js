@@ -48,9 +48,10 @@
     }
 
     function isLockOpenClose(){
-      $mdSidenav('left').toggle();
+      self.shouldLockOpenClose = !self.shouldLockOpenClose;
       self.iconLockOpenClose = self.shouldLockOpenClose ? 'arrow_left' : 'arrow_right';
       self.tooltipLockOpenClose = self.shouldLockOpenClose ? 'Fechar' : 'Abrir';
+      $mdSidenav('left').toggle();
     }
   }
 }());
