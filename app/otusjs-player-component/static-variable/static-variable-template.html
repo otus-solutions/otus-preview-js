@@ -1,14 +1,31 @@
-<md-button id="ButtonIsLockOpenClose" ng-click="$ctrl.isLockOpenClose()" class="md-accent" aria-label="button isLockOpenClose">
-  <span>Informações Auxiliares</span>
-</md-button>
-<div class="md-sidenav-left md-whiteframe-5dp" ng-show="$ctrl.shouldLockOpenClose" flex>
-  <md-content layout="column">
-    <div layout="column" layout-padding layout-align="start none" ng-repeat="option in $ctrl.variable">
-      <div layout="column" layout-align="center start">
-        <span class="md-caption" style="color: gray;">{{ option.label }}</span>
-        <span class="md-subhead">{{ option.translatedValue }}</span>
-      </div>
-      <md-divider ></md-divider>
-    </div>
-  </md-content>
+<div hide-xs hide-gt-md class="fab-speed-dial">
+  <md-button id="ButtonIsLockOpenClose" ng-click="$ctrl.isLockOpenClose()"
+             class="md-icon-button md-fab md-mini md-accent" aria-label="button isLockOpenClose">
+    <md-icon md-font-set="material-icons">{{ $ctrl.iconLockOpenClose }}</md-icon>
+    <md-tooltip md-direction="bottom">
+      {{ $ctrl.tooltipLockOpenClose }}
+    </md-tooltip>
+  </md-button>
 </div>
+<div layout="row" layout-align="center center">
+  <md-button hide-gt-xs ng-click="$ctrl.isLockOpenClose()" class="md-icon-button md-accent"
+             aria-label="button isLockOpenClose" flex>
+    Imformações Auxiliares
+  </md-button>
+</div>
+<md-sidenav class="md-sidenav-left" md-is-locked-open="$mdMedia('gt-md')" md-component-id="left">
+  <md-toolbar layout-align="center center">
+    <span>Informações Auxiliares</span>
+  </md-toolbar>
+  <div layout="column" ng-if="$ctrl.variable.length" layout-padding layout-align="start none"
+       ng-repeat="option in $ctrl.variable">
+    <div layout="column" layout-align="center start">
+      <span class="md-caption" style="color: gray;">{{ option.label }}</span>
+      <span class="md-subhead">{{ option.translatedValue }}</span>
+    </div>
+    <md-divider></md-divider>
+  </div>
+  <div ng-if="!$ctrl.variable.length" layout="row" layout-align="center center">
+    <span>Não ah variáveis disponíveis</span>
+  </div>
+</md-sidenav>
