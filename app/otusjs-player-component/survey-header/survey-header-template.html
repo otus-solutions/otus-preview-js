@@ -1,10 +1,9 @@
 <md-toolbar layout="row" class="md-whiteframe-5dp" layout-align="center center">
-  <div layout="row" layout-align="start center" flex-gt-xs="40" flex="">
-    <span hide-xs flex="15"></span>
+  <div layout="row" layout-align="start center"flex="">
+    <span hide-xs flex-gt-xs="10" flex-gt-sm="5"></span>
     <div class="md-padding">
       <img src="app/static-resource/image/coruja_pesquisadora.png" class="toolbar-icon">
     </div>
-    <span flex="5"></span>
     <md-chips>
       <md-chip>{{ $ctrl.surveyIdentity.acronym }}</md-chip>
     </md-chips>
@@ -12,7 +11,7 @@
       <span>{{ $ctrl.surveyIdentity.name }}</span>
     </div>
   </div>
-  <div flex></div>
+
   <div hide-xs layout="row" layout-margin layout-align="center center">
     <md-icon md-svg-icon="file-document-box"></md-icon>
     <div>
