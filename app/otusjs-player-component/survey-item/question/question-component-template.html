@@ -1,5 +1,5 @@
 <md-content layout="column">
-  <div layout="row">
+<!--  <div layout="row">-->
     <md-tabs md-dynamic-height layout="column" flex=95>
       <md-tab label="Resposta">
         <md-content class="md-padding" bind-html-compile="$ctrl.template"></md-content>
@@ -15,8 +15,8 @@
         </md-content>
       </md-tab>
     </md-tabs>
-    <div layout="column">
+    <div layout="row">
       <otus-question-menu on-clear="$ctrl.clear(value)" on-accept="$ctrl.forceAnswer(value)"></otus-question-menu>
     </div>
-  </div>
+<!--  </div>-->
 </md-content>

@@ -6,20 +6,20 @@ md-icon[md-svg-icon="check"] {
   color: green
 }
 
-
 /* SURVEY HEADER */
-
 otus-survey-header {
   color: #727272;
+}
+
+otus-survey-header > md-toolbar  {
+  min-height: 50px !important;
 }
 
 otus-survey-header md-chips-wrap {
   box-shadow: 0 0px !important;
 }
 
-
 /* SURVEY ITEM */
-
 otus-survey-item {
   transition: opacity 2s linear;
 }
@@ -38,12 +38,48 @@ otus-survey-item {
 .fab-speed-dial {
   z-index: 70;
   position: fixed;
-  top: 65px;
-  left: 15px;
+  top: 30px;
+  left: 10px;
+}
+
+otus-static-variable div md-content {
+  max-height: 100%;
 }
 
 @media screen and (max-width: 600px) {
   .fab-speed-dial {
-    top: 17%;
+    left: 2px;
   }
+  otus-static-variable {
+    max-height: 60%;
+  }
+}
+
+
+@media screen and (max-height: 650px) {
+  .nav-up {
+    height: 0 !important;
+    width: 0 !important;
+    top:-200px;
+    left: 200px;
+  }
+}
+
+otus-survey-header {
+  transition: top 0.2s ease-in-out;
+  height: 50px !important;
+  position: relative;
+  top: 0;
+  left: 0;
+}
+
+@media screen and (max-width: 600px) {
+  otus-survey-header {
+    height: 100px !important;
+  }
+}
+
+md-sidenav {
+  z-index: 65 !important;
+  min-width: 320px !important;
 }

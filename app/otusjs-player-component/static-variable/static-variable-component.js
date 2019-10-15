@@ -9,10 +9,11 @@
     }).controller('otusStaticVariableCtrl', Controller);
 
   Controller.$inject = [
+    '$mdSidenav',
     'otusjs.player.data.activity.ActivityFacadeService'
   ];
 
-  function Controller(ActivityFacadeService) {
+  function Controller($mdSidenav, ActivityFacadeService) {
     var self = this;
     var _variable = null;
 
@@ -30,13 +31,18 @@
     function _getWholeStaticVariableList() {
       _variable = ActivityFacadeService.getWholeTemplateStaticVariableList();
 
-      _variable.forEach(function(variable){
-        if(!variable.translatedValue){
-          variable.translatedValue = "Não há dados.";
-        }
-      });
+      if(_variable.length){
+        _variable.forEach(function(variable){
+          if(!variable.translatedValue){
+            variable.translatedValue = 'Não há dados.';
+          }
+        });
 
-     self.variable = _variable;
+        self.variable = _variable;
+      } else {
+        self.variable = [];
+      }
+
 
       return self.variable;
     }
@@ -45,6 +51,7 @@
       self.shouldLockOpenClose = !self.shouldLockOpenClose;
       self.iconLockOpenClose = self.shouldLockOpenClose ? 'arrow_left' : 'arrow_right';
       self.tooltipLockOpenClose = self.shouldLockOpenClose ? 'Fechar' : 'Abrir';
+      $mdSidenav('left').toggle();
     }
   }
 }());
