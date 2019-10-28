@@ -1,6 +1,6 @@
 {
   "name": "otus-preview-js",
-  "version": "0.0.1-SNAPSHOT",
+  "version": "1.15.0",
   "description": "Preview Module Otus",
   "keywords": [
     "preview",
@@ -19,7 +19,8 @@
     "gulp": "gulp",
     "start": "npm run gulp browser-sync",
     "karma": "karma",
-    "build": "gulp compress"
+    "build": "gulp compress",
+    "production": "npm install && npm test && npm run build && npm prune --production"
   },
   "dependencies": {
     "angular": "1.5.8",
@@ -31,8 +32,8 @@
     "angular-mousewheel": "^1.0.5",
     "angular-ui-router": "0.2.14",
     "jquery": "^3.1.1",
-    "otus-model-js": "git@github.com:ccem-dev/otus-model-js.git#dev",
-    "otus-validation-js": "git@github.com:ccem-dev/otus-validation-js.git#v1.0",
+    "otus-model-js": "git@github.com:ccem-dev/otus-model-js.git#1.25.0",
+    "otus-validation-js": "git@github.com:ccem-dev/otus-validation-js.git#1.1.0",
     "trail-js": "git@github.com:ccem-dev/trail-js.git#dev"
   },
   "devDependencies": {
