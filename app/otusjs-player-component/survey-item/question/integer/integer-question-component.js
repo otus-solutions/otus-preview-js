@@ -16,10 +16,11 @@
     }).controller("otusIntegerQuestionCtrl", Controller);
 
   Controller.$inject = [
+    '$document',
     'otusjs.player.data.activity.CurrentItemService'
   ];
 
-  function Controller(CurrentItemService) {
+  function Controller($document, CurrentItemService) {
     var self = this;
 
     self.$onInit = onInit;
@@ -31,6 +32,15 @@
     function onInit() {
       self.answer = CurrentItemService.getFilling(self.itemData.templateID).answer.value;
       self.otusQuestion.answer = self;
+
+      $document.on('focus blur', 'select, textarea, input', function(e){
+        if( /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent) ){
+          self.mobileInput = true;
+        }
+        else{
+          self.mobileInput = false;
+        }
+      });
     }
 
     function update() {
