@@ -175,13 +175,13 @@
   }
 })();
 
-(function() {
+(function () {
   'use strict';
 
   angular
     .module('otusjs.player.component')
     .component('otusPlayer', {
-      template:'<otus-survey-cover on-play="$ctrl.play()" on-stop="$ctrl.stop()" soft-blocker="$ctrl.softBlocker" hard-blocker="$ctrl.hardBlocker" ng-show="$ctrl.showCover" layout-align="center center" layout="column" flex class="player-cover"></otus-survey-cover><div layout="column" flex ng-show="$ctrl.showActivity"><otus-survey-header class="nav-down" layout="row" layout-xs="column"></otus-survey-header><div layout="row" layout-xs="column" flex><md-content layout="row" layout-xs="column" flex><otus-static-variable layout="column"></otus-static-variable><md-content class="otus-player-display-container" layout="row" flex><otus-player-display go-back="$ctrl.goBack()" layout="column" flex style="position: relative !important"></otus-player-display><otus-player-commander hide-xs class="md-fab-bottom-right md-fling" layout="column" flex="10" layout-align="center center" style="max-height:none!important;" on-go-back="$ctrl.goBack()" on-pause="$ctrl.pause()" on-stop="$ctrl.stop()" on-go-ahead="$ctrl.goAhead()" on-eject="$ctrl.eject()"></otus-player-commander></md-content></md-content><div layout="row" hide-gt-xs><otus-player-commander class="md-fab-bottom-right md-fling" layout="column" flex layout-align="center center" on-go-back="$ctrl.goBack()" on-pause="$ctrl.pause()" on-stop="$ctrl.stop()" on-go-ahead="$ctrl.goAhead()" on-eject="$ctrl.eject()"></otus-player-commander></div></div></div><otus-survey-back-cover on-finalize="$ctrl.eject()" on-stop="$ctrl.stop()" ng-show="$ctrl.showBackCover" layout-align="center center" layout="column" flex class="player-back-cover"></otus-survey-back-cover>',
+      template:'<otus-survey-cover on-play="$ctrl.play()" on-stop="$ctrl.stop()" soft-blocker="$ctrl.softBlocker" hard-blocker="$ctrl.hardBlocker" ng-show="$ctrl.showCover" layout-align="center center" layout="column" flex class="player-cover"></otus-survey-cover><div layout="column" flex ng-show="$ctrl.showActivity"><otus-survey-header class="nav-down" layout="row" layout-xs="column"></otus-survey-header><div layout="row" layout-xs="column" flex><md-content layout="row" layout-xs="column" flex><otus-static-variable layout="column"></otus-static-variable><md-content class="otus-player-display-container" layout="row" flex><otus-player-display go-back="$ctrl.goBack()" layout="column" flex style="position: relative !important"></otus-player-display><otus-player-commander hide-xs class="md-fab-bottom-right md-fling" layout="column" flex="10" layout-align="center center" style="max-height:none!important;" on-go-back="$ctrl.goBack()" on-pause="$ctrl.pause()" on-stop="$ctrl.stop()" on-go-ahead="$ctrl.goAhead()" on-processing="$ctrl.onProcessing" on-eject="$ctrl.eject()"></otus-player-commander></md-content></md-content><div layout="row" hide-gt-xs><otus-player-commander class="md-fab-bottom-right md-fling" layout="column" flex layout-align="center center" on-go-back="$ctrl.goBack()" on-pause="$ctrl.pause()" on-stop="$ctrl.stop()" on-go-ahead="$ctrl.goAhead()" on-processing="$ctrl.onProcessing" on-eject="$ctrl.eject()"></otus-player-commander></div></div></div><otus-survey-back-cover on-finalize="$ctrl.eject()" on-stop="$ctrl.stop()" ng-show="$ctrl.showBackCover" layout-align="center center" layout="column" flex class="player-back-cover"></otus-survey-back-cover>',
       controller: Controller
     });
 
@@ -208,15 +208,15 @@
     var lastScrollTop = 0;
     var delta = 5;
 
-    angular.element(document.querySelector('.otus-player-display-container')).bind('wheel', function(){
+    angular.element(document.querySelector('.otus-player-display-container')).bind('wheel', function () {
       didScroll = true;
     });
 
-    angular.element(document.querySelector('.otus-player-display-container')).bind('touchmove', function(){
+    angular.element(document.querySelector('.otus-player-display-container')).bind('touchmove', function () {
       didScroll = true;
     });
 
-    setInterval(function() {
+    setInterval(function () {
       if (didScroll) {
         hasScrolled();
         didScroll = false;
@@ -226,14 +226,14 @@
     function hasScrolled() {
       var st = angular.element(document.querySelector('.otus-player-display-container')).scrollTop();
 
-      if(Math.abs(lastScrollTop - st) <= delta)
+      if (Math.abs(lastScrollTop - st) <= delta)
         return;
 
-      if (st > lastScrollTop){
+      if (st > lastScrollTop) {
         $('otus-survey-header').removeClass('nav-down').addClass('nav-up');
       } else {
 
-          $('otus-survey-header').removeClass('nav-up').addClass('nav-down');
+        $('otus-survey-header').removeClass('nav-up').addClass('nav-down');
 
       }
 
@@ -318,8 +318,10 @@
     }
 
     function _loadItem() {
-      if (PlayerService.getItemData()) {
-        self.playerDisplay.loadItem(PlayerService.getItemData());
+      let itemData = PlayerService.getItemData();
+      if (itemData) {
+        self.playerDisplay.loadItem(itemData);
+        self.onProcessing = true;
       }
     }
   }
@@ -758,13 +760,14 @@
   angular
     .module('otusjs.player.component')
     .component('otusPlayerCommander', {
-      template:'<md-toolbar hide-gt-xs layout="row" flex layout-align="center center"><span flex="5"></span><md-button id="previousQuestion" class="md-fab md-warn md-mini" aria-label="Voltar" ng-click="$ctrl.goBack()" ng-disabled="$ctrl.isGoBackDisabled"><md-icon>arrow_drop_up</md-icon><md-tooltip md-direction="bottom">Voltar</md-tooltip></md-button><span flex="5"></span><md-button id="cancelActivity" class="md-fab md-raised md-mini" aria-label="Cancelar" ng-click="$ctrl.stop()"><md-icon md-font-set="material-icons">close</md-icon><md-tooltip md-direction="bottom">Cancelar</md-tooltip></md-button><span flex="5"></span><md-button id="saveActivity" class="md-fab md-accent md-mini" aria-label="Salvar" ng-click="$ctrl.pause()"><md-icon md-font-set="material-icons">save</md-icon><md-tooltip md-direction="bottom">Salvar</md-tooltip></md-button><span flex="5"></span><md-button id="nextQuestion" class="md-fab md-warn md-mini" aria-label="Avançar" ng-click="$ctrl.goAhead()" ng-disabled="$ctrl.isGoAheadDisabled"><md-icon>arrow_drop_down</md-icon><md-tooltip md-direction="bottom">Avançar</md-tooltip></md-button><span flex="5"></span></md-toolbar><div hide-xs layout-padding layout="column" flex layout-align="space-around center" style="position: fixed;"><md-button id="previousQuestion" class="md-fab md-warn md-mini" aria-label="Voltar" ng-click="$ctrl.goBack()" ng-disabled="$ctrl.isGoBackDisabled"><md-icon md-font-set="material-icons">arrow_drop_up</md-icon><md-tooltip md-direction="bottom">Voltar</md-tooltip></md-button><span flex="5"></span><md-button id="cancelActivity" class="md-fab md-raised md-mini" aria-label="Cancelar" ng-click="$ctrl.stop()"><md-icon md-font-set="material-icons">close</md-icon><md-tooltip md-direction="bottom">Cancelar</md-tooltip></md-button><span flex="5"></span><md-button id="saveActivity" class="md-fab md-accent md-mini" aria-label="Salvar" ng-click="$ctrl.pause()"><md-icon md-font-set="material-icons">save</md-icon><md-tooltip md-direction="bottom">Salvar</md-tooltip></md-button><span flex="5"></span><md-button id="nextQuestion" class="md-fab md-warn md-mini" aria-label="Avançar" ng-click="$ctrl.goAhead()" ng-disabled="$ctrl.isGoAheadDisabled"><md-icon md-font-set="material-icons">arrow_drop_down</md-icon><md-tooltip md-direction="bottom">Avançar</md-tooltip></md-button><span flex="5"></span></div>',
+      template:'<md-toolbar hide-gt-xs layout="row" flex layout-align="center center"><span flex="5"></span><md-button id="previousQuestion" class="md-fab md-warn md-mini" aria-label="Voltar" ng-click="$ctrl.goBack()" ng-disabled="$ctrl.isGoBackDisabled"><md-icon ng-hide="$ctrl.loadingBack">arrow_drop_up</md-icon><md-progress-circular md-mode="indeterminate" ng-show="$ctrl.loadingBack" md-diameter="28px"></md-progress-circular><md-tooltip md-direction="bottom">Voltar</md-tooltip></md-button><span flex="5"></span><md-button id="cancelActivity" class="md-fab md-raised md-mini" aria-label="Cancelar" ng-click="$ctrl.stop()"><md-icon md-font-set="material-icons">close</md-icon><md-tooltip md-direction="bottom">Cancelar</md-tooltip></md-button><span flex="5"></span><md-button id="saveActivity" class="md-fab md-accent md-mini" aria-label="Salvar" ng-click="$ctrl.pause()"><md-icon md-font-set="material-icons">save</md-icon><md-tooltip md-direction="bottom">Salvar</md-tooltip></md-button><span flex="5"></span><md-button id="nextQuestion" class="md-fab md-warn md-mini" aria-label="Avançar" ng-click="$ctrl.goAhead()" ng-disabled="$ctrl.isGoAheadDisabled"><md-icon ng-hide="$ctrl.loadingAhead">arrow_drop_down</md-icon><md-progress-circular md-mode="indeterminate" ng-show="$ctrl.loadingAhead" md-diameter="28px"></md-progress-circular><md-tooltip md-direction="bottom">Avançar</md-tooltip></md-button><span flex="5"></span></md-toolbar><div hide-xs layout-padding layout="column" flex layout-align="space-around center" style="position: fixed;"><md-button id="previousQuestion" class="md-fab md-warn md-mini" aria-label="Voltar" ng-click="$ctrl.goBack()" ng-disabled="$ctrl.isGoBackDisabled"><md-icon md-font-set="material-icons" ng-hide="$ctrl.loadingBack">arrow_drop_up</md-icon><md-progress-circular md-mode="indeterminate" ng-show="$ctrl.loadingBack" md-diameter="28px"></md-progress-circular><md-tooltip md-direction="bottom">Voltar</md-tooltip></md-button><span flex="5"></span><md-button id="cancelActivity" class="md-fab md-raised md-mini" aria-label="Cancelar" ng-click="$ctrl.stop()"><md-icon md-font-set="material-icons">close</md-icon><md-tooltip md-direction="bottom">Cancelar</md-tooltip></md-button><span flex="5"></span><md-button id="saveActivity" class="md-fab md-accent md-mini" aria-label="Salvar" ng-click="$ctrl.pause()"><md-icon md-font-set="material-icons">save</md-icon><md-tooltip md-direction="bottom">Salvar</md-tooltip></md-button><span flex="5"></span><md-button id="nextQuestion" class="md-fab md-warn md-mini" aria-label="Avançar" ng-click="$ctrl.goAhead()" ng-disabled="$ctrl.isGoAheadDisabled"><md-icon ng-hide="$ctrl.loadingAhead" md-font-set="material-icons">arrow_drop_down</md-icon><md-progress-circular md-mode="indeterminate" ng-show="$ctrl.loadingAhead" md-diameter="28px"></md-progress-circular><md-tooltip md-direction="bottom">Avançar</md-tooltip></md-button><span flex="5"></span></div>',
       controller: Controller,
       bindings: {
         onGoAhead: '&',
         onGoBack: '&',
         onPause: '&',
-        onStop: '&'
+        onStop: '&',
+        onProcessing: '@'
       }
     });
 
@@ -773,10 +776,11 @@
     '$mdDialog',
     '$scope',
     '$document',
-    '$element'
+    '$element',
+    '$timeout'
   ];
 
-  function Controller($q, $mdDialog, $scope, $document, $element) {
+  function Controller($q, $mdDialog, $scope, $document, $element, $timeout) {
     var SAVE_TITLE = 'Salvar Atividade';
     var SAVE_CONTENT = 'Você tem certeza que deseja salvar a atividade?';
     var CANCEL_TITLE = 'Cancelar Atividade';
@@ -784,6 +788,9 @@
 
     var self = this;
     var pressedControl = false;
+
+    self.loadingAhead = false;
+    self.loadingBack = false;
 
     /* Public methods */
     self.goBack = goBack;
@@ -798,15 +805,35 @@
       $scope.$parent.$ctrl.playerCommander = self;
     }
 
+    function _onProcessing() {
+      console.log('ready');
+       $timeout(() => {
+        self.loadingAhead = false;
+        self.loadingBack = false;
+        self.isGoAheadDisabled = false;
+        self.isGoBackDisabled = false;
+        }, Math.random() * 1000, self.onProcessing);
+    }
+
     function postLink() {
       shortcutAction();
     }
 
     function goAhead() {
+      self.loadingAhead = true;
+      self.isGoAheadDisabled = true;
+
+       _onProcessing();
+
       self.onGoAhead();
     }
 
     function goBack() {
+      self.loadingBack = true;
+      self.isGoBackDisabled = true;
+
+       _onProcessing();
+
       self.onGoBack();
     }
 

@@ -1,7 +1,8 @@
 <md-toolbar hide-gt-xs layout="row" flex layout-align="center center">
   <span flex="5"></span>
   <md-button id="previousQuestion" class="md-fab md-warn md-mini" aria-label="Voltar" ng-click="$ctrl.goBack()"  ng-disabled="$ctrl.isGoBackDisabled">
-    <md-icon>arrow_drop_up</md-icon>
+    <md-icon ng-hide="$ctrl.loadingBack">arrow_drop_up</md-icon>
+    <md-progress-circular md-mode="indeterminate" ng-show="$ctrl.loadingBack" md-diameter="28px" ></md-progress-circular>
     <md-tooltip md-direction="bottom">
       Voltar
     </md-tooltip>
@@ -25,7 +26,8 @@
 
   <span flex="5"></span>
   <md-button id="nextQuestion" class="md-fab md-warn md-mini" aria-label="Avançar" ng-click="$ctrl.goAhead()" ng-disabled="$ctrl.isGoAheadDisabled">
-    <md-icon>arrow_drop_down</md-icon>
+    <md-icon ng-hide="$ctrl.loadingAhead">arrow_drop_down</md-icon>
+    <md-progress-circular md-mode="indeterminate" ng-show="$ctrl.loadingAhead" md-diameter="28px" ></md-progress-circular>
     <md-tooltip md-direction="bottom">
       Avançar
     </md-tooltip>
@@ -34,7 +36,8 @@
 </md-toolbar>
 <div hide-xs layout-padding layout="column" flex layout-align="space-around center" style="position: fixed;">
   <md-button id="previousQuestion" class="md-fab md-warn md-mini" aria-label="Voltar" ng-click="$ctrl.goBack()"  ng-disabled="$ctrl.isGoBackDisabled">
-    <md-icon md-font-set="material-icons">arrow_drop_up</md-icon>
+    <md-icon md-font-set="material-icons" ng-hide="$ctrl.loadingBack">arrow_drop_up</md-icon>
+    <md-progress-circular md-mode="indeterminate" ng-show="$ctrl.loadingBack" md-diameter="28px" ></md-progress-circular>
     <md-tooltip md-direction="bottom">
       Voltar
     </md-tooltip>
@@ -58,11 +61,11 @@
 
   <span flex="5"></span>
   <md-button id="nextQuestion" class="md-fab md-warn md-mini" aria-label="Avançar" ng-click="$ctrl.goAhead()" ng-disabled="$ctrl.isGoAheadDisabled">
-    <md-icon md-font-set="material-icons">arrow_drop_down</md-icon>
+    <md-icon ng-hide="$ctrl.loadingAhead" md-font-set="material-icons">arrow_drop_down</md-icon>
+    <md-progress-circular md-mode="indeterminate" ng-show="$ctrl.loadingAhead" md-diameter="28px" ></md-progress-circular>
     <md-tooltip md-direction="bottom">
       Avançar
     </md-tooltip>
   </md-button>
   <span flex="5"></span>
-
 </div>

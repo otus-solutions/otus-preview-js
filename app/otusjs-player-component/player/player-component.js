@@ -1,4 +1,4 @@
-(function() {
+(function () {
   'use strict';
 
   angular
@@ -31,15 +31,15 @@
     var lastScrollTop = 0;
     var delta = 5;
 
-    angular.element(document.querySelector('.otus-player-display-container')).bind('wheel', function(){
+    angular.element(document.querySelector('.otus-player-display-container')).bind('wheel', function () {
       didScroll = true;
     });
 
-    angular.element(document.querySelector('.otus-player-display-container')).bind('touchmove', function(){
+    angular.element(document.querySelector('.otus-player-display-container')).bind('touchmove', function () {
       didScroll = true;
     });
 
-    setInterval(function() {
+    setInterval(function () {
       if (didScroll) {
         hasScrolled();
         didScroll = false;
@@ -49,14 +49,14 @@
     function hasScrolled() {
       var st = angular.element(document.querySelector('.otus-player-display-container')).scrollTop();
 
-      if(Math.abs(lastScrollTop - st) <= delta)
+      if (Math.abs(lastScrollTop - st) <= delta)
         return;
 
-      if (st > lastScrollTop){
+      if (st > lastScrollTop) {
         $('otus-survey-header').removeClass('nav-down').addClass('nav-up');
       } else {
 
-          $('otus-survey-header').removeClass('nav-up').addClass('nav-down');
+        $('otus-survey-header').removeClass('nav-up').addClass('nav-down');
 
       }
 
@@ -141,8 +141,10 @@
     }
 
     function _loadItem() {
-      if (PlayerService.getItemData()) {
-        self.playerDisplay.loadItem(PlayerService.getItemData());
+      let itemData = PlayerService.getItemData();
+      if (itemData) {
+        self.playerDisplay.loadItem(itemData);
+        self.onProcessing = true;
       }
     }
   }
