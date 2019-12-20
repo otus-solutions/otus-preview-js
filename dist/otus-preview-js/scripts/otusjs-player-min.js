@@ -767,7 +767,7 @@
         onGoBack: '&',
         onPause: '&',
         onStop: '&',
-        onProcessing: '@'
+        onProcessing: '<'
       }
     });
 
@@ -806,7 +806,7 @@
     }
 
     function _onProcessing() {
-      console.log('ready');
+
        $timeout(() => {
         self.loadingAhead = false;
         self.loadingBack = false;
