@@ -35,6 +35,7 @@
 
     self.loadingAhead = false;
     self.loadingBack = false;
+    self.onProcessing = true;
 
     /* Public methods */
     self.goBack = goBack;

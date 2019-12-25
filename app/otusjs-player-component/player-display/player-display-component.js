@@ -57,6 +57,7 @@
 
     function loadItem(itemsData) {
       if (_shouldLoadItem(itemsData[itemsData.length -1])) {
+        self.onProcessing = false;
         _saveQuestion();
         _destroyCurrentItems();
         _removeQuestions(itemsData);
@@ -69,6 +70,7 @@
             _setQuestionId(itemsData[i].templateID);
             let element = $compile(SURVEY_ITEM)($scope);
             $element.find('#pagePlayer').append(element);
+            self.onProcessing = true;
           }());
         }
         _focusOnItem(itemsData[0].templateID);

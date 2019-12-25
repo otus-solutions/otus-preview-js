@@ -142,9 +142,9 @@
 
     function _loadItem() {
       let itemData = PlayerService.getItemData();
+
       if (itemData) {
         self.playerDisplay.loadItem(itemData);
-        self.onProcessing = true;
       }
     }
   }
