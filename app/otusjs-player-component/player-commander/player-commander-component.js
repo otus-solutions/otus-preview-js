@@ -110,9 +110,8 @@
               if (pressedControl) {
                 event.preventDefault();
                 $element.find('#previousQuestion').focus();
-                // self.goBack();
-                $scope.$applyAsync(self.goBack());
-                // $scope.$digest();
+                self.goBack();
+                $scope.$apply();
               }
               break;
             }
@@ -121,8 +120,8 @@
               if (pressedControl) {
                 event.preventDefault();
                 $element.find('#nextQuestion').focus();
-                // self.goAhead();
-                $scope.$applyAsync(self.goAhead());
+                self.goAhead();
+                $scope.$apply();
               }
               break;
             }
