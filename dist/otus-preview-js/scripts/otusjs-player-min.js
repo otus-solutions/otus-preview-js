@@ -796,6 +796,8 @@
 
     self.loadingAhead = false;
     self.loadingBack = false;
+    self.isGoAheadDisabled = false;
+    self.isGoBackDisabled = false;
 
     /* Public methods */
     self.goBack = goBack;
@@ -869,8 +871,9 @@
               if (pressedControl) {
                 event.preventDefault();
                 $element.find('#previousQuestion').focus();
-                self.goBack();
-                $scope.$apply();
+                // self.goBack();
+                $scope.$applyAsync(self.goBack());
+                // $scope.$digest();
               }
               break;
             }
@@ -879,8 +882,8 @@
               if (pressedControl) {
                 event.preventDefault();
                 $element.find('#nextQuestion').focus();
-                self.goAhead();
-                $scope.$apply();
+                // self.goAhead();
+                $scope.$applyAsync(self.goAhead());
               }
               break;
             }
@@ -1008,6 +1011,8 @@
         }
         _onProcessingPlayer();
         _focusOnItem(itemsData[0].templateID);
+      } else {
+        _onProcessingPlayer();
       }
 
       if (PlayerService.isGoingBack()) {
