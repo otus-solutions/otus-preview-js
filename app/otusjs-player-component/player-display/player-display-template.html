@@ -1,7 +1,7 @@
 <span flex="5"></span>
 <div layout="row" flex>
   <div flex layout="column">
-    <answer-view ng-repeat="item in questions" ng-show="questions.length" go-back="$ctrl.goBack()" icon="item.objectType" item-data="item" question="{{item.label.ptBR.formattedText}}"></answer-view>
+    <answer-view ng-repeat="item in questions" ng-show="questions.length" go-back="$ctrl.goBack()" on-processing-player="$ctrl.onProcessingPlayer()" icon="item.objectType" item-data="item" question="{{item.label.ptBR.formattedText}}"></answer-view>
     <div flex layout="column" id="pagePlayer">
     </div>
   </div>

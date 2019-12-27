@@ -7,7 +7,8 @@
       templateUrl: 'app/otusjs-player-component/survey-item/survey-item-template.html',
       controller: 'otusSurveyItemCtrl as $ctrl',
       bindings: {
-        itemData: '<'
+        itemData: '<',
+        onProcessingPlayer: '&'
       }
     }).controller('otusSurveyItemCtrl', OtusSurveyItemController);
 
@@ -47,6 +48,7 @@
 
       if (self.$error.hasError) {
         self.questionComponent.setError(self.$error);
+        self.onProcessingPlayer();
       }
     }
 
