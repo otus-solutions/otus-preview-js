@@ -76,6 +76,7 @@
         _focusOnItem(itemsData[0].templateID);
       } else {
         _onProcessingPlayer();
+        _focusOnItem(itemsData[0].templateID);
       }
 
       if (PlayerService.isGoingBack()) {

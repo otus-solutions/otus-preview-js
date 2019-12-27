@@ -871,9 +871,8 @@
               if (pressedControl) {
                 event.preventDefault();
                 $element.find('#previousQuestion').focus();
-                // self.goBack();
-                $scope.$applyAsync(self.goBack());
-                // $scope.$digest();
+                self.goBack();
+                $scope.$apply();
               }
               break;
             }
@@ -882,8 +881,8 @@
               if (pressedControl) {
                 event.preventDefault();
                 $element.find('#nextQuestion').focus();
-                // self.goAhead();
-                $scope.$applyAsync(self.goAhead());
+                self.goAhead();
+                $scope.$apply();
               }
               break;
             }
@@ -1013,6 +1012,7 @@
         _focusOnItem(itemsData[0].templateID);
       } else {
         _onProcessingPlayer();
+        _focusOnItem(itemsData[0].templateID);
       }
 
       if (PlayerService.isGoingBack()) {
