@@ -11,7 +11,7 @@
         onGoBack: '&',
         onPause: '&',
         onStop: '&',
-        onProcessing: '<'
+        onProcessing:'=?',
       }
     });
 
@@ -35,7 +35,6 @@
 
     self.loadingAhead = false;
     self.loadingBack = false;
-    self.onProcessing = true;
 
     /* Public methods */
     self.goBack = goBack;
@@ -45,19 +44,19 @@
     self.remove = remove;
     self.$onInit = onInit;
     self.$postLink = postLink;
+    self.onProcessing = _onProcessing;
 
     function onInit() {
       $scope.$parent.$ctrl.playerCommander = self;
     }
 
     function _onProcessing() {
-
-       $timeout(() => {
+      $timeout(function () {
         self.loadingAhead = false;
         self.loadingBack = false;
         self.isGoAheadDisabled = false;
         self.isGoBackDisabled = false;
-        }, Math.random() * 1000, self.onProcessing);
+      },300);
     }
 
     function postLink() {
@@ -68,16 +67,12 @@
       self.loadingAhead = true;
       self.isGoAheadDisabled = true;
 
-       _onProcessing();
-
       self.onGoAhead();
     }
 
     function goBack() {
       self.loadingBack = true;
       self.isGoBackDisabled = true;
-
-       _onProcessing();
 
       self.onGoBack();
     }
