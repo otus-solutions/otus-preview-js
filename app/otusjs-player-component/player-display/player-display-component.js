@@ -7,7 +7,8 @@
       templateUrl: 'app/otusjs-player-component/player-display/player-display-template.html',
       controller: 'otusPlayerDisplayCtrl as $ctrl',
       bindings: {
-        goBack: '&'
+        goBack: '&',
+        onProcessingPlayer: '&'
       }
     }).controller('otusPlayerDisplayCtrl', Controller);
 
@@ -25,7 +26,7 @@
   function Controller($scope, $document, $element, $compile, $location, $anchorScroll, ActivityFacadeService, PlayerService) {
     var self = this;
 
-    var SURVEY_ITEM = '<otus-survey-item item-data="itemData" id="{{itemData.templateID}}" style="margin: 0;display:block;" class="animate-switch"/>';
+    var SURVEY_ITEM = '<otus-survey-item item-data="itemData" id="{{itemData.templateID}}" on-processing-player="$ctrl.onProcessingPlayer()" style="margin: 0;display:block;" class="animate-switch"/>';
     var SURVEY_COVER = '<otus-cover />';
 
     /* Public methods */
@@ -71,12 +72,17 @@
             $element.find('#pagePlayer').append(element);
           }());
         }
+        _onProcessingPlayer();
+        _focusOnItem(itemsData[0].templateID);
+      } else {
+        _onProcessingPlayer();
         _focusOnItem(itemsData[0].templateID);
       }
 
       if (PlayerService.isGoingBack()) {
         if (PlayerService.getGoBackTo() !== itemsData[0].templateID) {
           self.goBack();
+          _onProcessingPlayer();
         } else {
           PlayerService.setGoBackTo(null);
         }
@@ -142,6 +148,10 @@
 
     function _shouldLoadItem(itemData) {
       return !self.currentItems.length  || (self.currentItems.length && $scope.itemData.templateID !== itemData.templateID);
+    }
+
+    function _onProcessingPlayer() {
+      self.onProcessingPlayer();
     }
   }
 }());
