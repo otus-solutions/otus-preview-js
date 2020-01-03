@@ -10,7 +10,8 @@
         onGoAhead: '&',
         onGoBack: '&',
         onPause: '&',
-        onStop: '&'
+        onStop: '&',
+        onProcessing:'=?',
       }
     });
 
@@ -19,10 +20,11 @@
     '$mdDialog',
     '$scope',
     '$document',
-    '$element'
+    '$element',
+    '$timeout'
   ];
 
-  function Controller($q, $mdDialog, $scope, $document, $element) {
+  function Controller($q, $mdDialog, $scope, $document, $element, $timeout) {
     var SAVE_TITLE = 'Salvar Atividade';
     var SAVE_CONTENT = 'Você tem certeza que deseja salvar a atividade?';
     var CANCEL_TITLE = 'Cancelar Atividade';
@@ -30,6 +32,11 @@
 
     var self = this;
     var pressedControl = false;
+
+    self.loadingAhead = false;
+    self.loadingBack = false;
+    self.isGoAheadDisabled = false;
+    self.isGoBackDisabled = false;
 
     /* Public methods */
     self.goBack = goBack;
@@ -39,9 +46,19 @@
     self.remove = remove;
     self.$onInit = onInit;
     self.$postLink = postLink;
+    self.onProcessing = _onProcessing;
 
     function onInit() {
       $scope.$parent.$ctrl.playerCommander = self;
+    }
+
+    function _onProcessing() {
+      $timeout(function () {
+        self.loadingAhead = false;
+        self.loadingBack = false;
+        self.isGoAheadDisabled = false;
+        self.isGoBackDisabled = false;
+      },300);
     }
 
     function postLink() {
@@ -49,10 +66,16 @@
     }
 
     function goAhead() {
+      self.loadingAhead = true;
+      self.isGoAheadDisabled = true;
+
       self.onGoAhead();
     }
 
     function goBack() {
+      self.loadingBack = true;
+      self.isGoBackDisabled = true;
+
       self.onGoBack();
     }
 
